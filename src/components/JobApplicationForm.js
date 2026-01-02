@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-const API_BASE = "http://127.0.0.1:3500"; // ✅ change to your deployed backend URL in production
+const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";// ✅ change to your deployed backend URL in production
 
 const initial = {
   jobTitle: "",
