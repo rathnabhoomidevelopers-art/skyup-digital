@@ -12,10 +12,8 @@ const HeroSection = () => {
   const primaryBtnRef = useRef(null);
   const secondaryBtnRef = useRef(null);
 
-  // ✅ Modal state
   const [auditOpen, setAuditOpen] = useState(false);
 
-  // ✅ FORM STATE (self-contained)
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,14 +25,11 @@ const HeroSection = () => {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  // ✅ rename "status" -> "formStatus" (fix eslint no-restricted-globals)
   const [formStatus, setFormStatus] = useState({ type: "", message: "" });
 
   const setField = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
-    // clear error while typing
     setErrors((prev) => ({ ...prev, [key]: "" }));
-    // clear status message when user edits anything
     if (formStatus.message) setFormStatus({ type: "", message: "" });
   };
 
@@ -58,7 +53,6 @@ const HeroSection = () => {
     return Object.keys(next).length === 0;
   };
 
-  // ✅ Replace this API call with your real backend endpoint
   const API_BASE = process.env.REACT_APP_API_BASE_URL || "https://skyup-backend.vercel.app"; 
 
   const onSubmit = async (e) => {
@@ -72,7 +66,7 @@ const HeroSection = () => {
     const payload = {
       name: form.name.trim(),
       email: form.email.trim(),
-      mobile: form.mobile.trim(),   // backend will parseInt
+      mobile: form.mobile.trim(),
       subject: form.subject.trim(),
       message: form.message.trim(),
     };
@@ -102,8 +96,6 @@ const HeroSection = () => {
       message: "",
     });
 
-    // Optional: close modal after success
-    // setTimeout(() => setAuditOpen(false), 800);
   } catch (err) {
     setFormStatus({
       type: "error",
@@ -114,8 +106,6 @@ const HeroSection = () => {
   }
 };
 
-
-  // Close modal on ESC + lock body scroll
   useEffect(() => {
     if (!auditOpen) return;
 
@@ -132,7 +122,6 @@ const HeroSection = () => {
     };
   }, [auditOpen]);
 
-  // GSAP animation
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -153,7 +142,6 @@ const HeroSection = () => {
   return (
     <>
       <section ref={sectionRef} className="relative overflow-hidden text-white">
-        {/* ✅ PAGE-ONLY two-color animated glow */}
         <style>{`
           .animated-gradient-text {
             background: linear-gradient(-45deg, #60A5FA, #60A5FA, #FA9F43, #60A5FA);
