@@ -69,14 +69,29 @@ export default function WhatWeDo() {
         </div>
 
         {/* Cards */}
-        <div className="grid gap-6 sm:gap-52 md:grid-cols-2 xl:grid-cols-4 justify-items-center">
+        <div
+          className="
+            grid 
+            grid-cols-1
+            gap-6 
+            sm:gap-10
+            lg:gap-12                // larger gap on lg+ (1024px+)
+            xl:gap-40                // even larger on xl+ (1280px+)
+            md:grid-cols-2 
+            xl:grid-cols-4 
+            justify-items-center
+            mx-auto
+          "
+        >
+
+
           {services.map((item) => {
            
             return (
               <div
                 key={item.title}
                 className={`${item.cardBg} border ${item.border} rounded-3xl 
-                  sm:w-[304px] sm:h-[345px] w-[340px] h-[300px] 
+                  w-full max-w-[340px] h-[300px] sm:w-[304px] sm:h-[345px] 
                   px-6 py-8 
                   flex flex-col justify-center items-center
                   shadow-[0_20px_40px_rgba(15,23,42,0.04)]`}
@@ -99,7 +114,7 @@ export default function WhatWeDo() {
                   {item.title}
                 </h3>
 
-                <p className="text-sm text-[#2B2B2B] mb-3 flex-1">
+                <p className="text-sm text-[#2B2B2B] mb-3 flex-1 text-center">
                   {item.desc}
                 </p>
 
