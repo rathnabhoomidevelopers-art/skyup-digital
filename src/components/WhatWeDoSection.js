@@ -78,7 +78,7 @@ export default function WhatWeDo() {
                 className={`${item.cardBg} border ${item.border} rounded-3xl 
                   sm:w-[304px] sm:h-[345px] w-[340px] h-[300px] 
                   px-6 py-8 
-                  flex flex-col 
+                  flex flex-col justify-center items-center
                   shadow-[0_20px_40px_rgba(15,23,42,0.04)]`}
               >
                 {/* Icon */}
