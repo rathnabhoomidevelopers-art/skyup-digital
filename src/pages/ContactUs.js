@@ -5,7 +5,7 @@ import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon, MessageCircleIcon, Ph
 import React, { useMemo, useState } from "react";
 import axios from "axios";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://127.0.0.1:3500";
+const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
