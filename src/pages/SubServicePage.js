@@ -51,7 +51,7 @@ export default function SubServicePage() {
       <div
         className="
           relative w-full overflow-hidden
-          h-[320px] sm:h-[466px]
+          h-[350px] sm:h-[466px]
           bg-gradient-to-b from-[#F4F7FF] to-[#DCE6FF]
           sm:bg-transparent
         "
@@ -74,9 +74,8 @@ export default function SubServicePage() {
             sm:items-start sm:text-left sm:gap-8 sm:px-6 lg:px-10
           "
         >
-
         <div className="max-w-[721px] sm:h-[361px] sm:mt-2">
-          <h1 className="text-[28px] text-start font-bold leading-tight text-[#2B2B2B]
+          <h1 className="text-[24px] text-start font-bold leading-tight text-[#2B2B2B]
                         sm:w-[730px] sm:text-[56px] lg:text-[60px]">
             {data.heroTitle}
           </h1>

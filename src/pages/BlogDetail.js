@@ -192,7 +192,7 @@ export default function BlogDetail() {
               <img
                 src={blog.heroImage || blog.image}
                 alt={blog.title}
-                className="w-full h-[210px] sm:h-[360px] sm:h-full object-cover"
+                className="w-full h-[210px] sm:h-full object-cover"
               />
             </div>
 

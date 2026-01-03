@@ -1,5 +1,5 @@
 // src/components/ServiceCardsSection.jsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -20,6 +20,10 @@ export default function ServiceCardsSection() {
 
   const [activeFilter, setActiveFilter] = useState("All");
   const [page, setPage] = useState(1);
+
+  // ✅ scroll-to-cards refs
+  const cardsRef = useRef(null);
+  const headerOffset = 90; // adjust if your header height differs
 
   const cards = [
     {
@@ -88,7 +92,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_9.svg",
-      slug: "machine-learning", // ✅ removed trailing space
+      slug: "machine-learning",
       title: "Machine Learning",
       desc: "Engage customers 24/7 with smart chatbots for websites, WhatsApp, and social media",
       category: "AI-Automation",
@@ -104,7 +108,16 @@ export default function ServiceCardsSection() {
     },
   ];
 
-  // ✅ Read category from URL & apply filter
+  // smooth scroll to cards (with header offset)
+  const scrollToCards = () => {
+    const el = cardsRef.current;
+    if (!el) return;
+
+    const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  // Read category from URL & apply filter
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
     if (!categoryFromUrl) return;
@@ -115,26 +128,33 @@ export default function ServiceCardsSection() {
     }
   }, [searchParams]);
 
-  // ✅ Update URL when user changes filter
+  // Update URL when user changes filter + don't jump to top + scroll to cards
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
     setPage(1);
 
-    // IMPORTANT: keep this route exactly as your Service page route
     if (filter === "All") {
-      navigate("/service", { replace: true });
+      navigate("/service", { replace: true, preventScrollReset: true });
     } else {
-      navigate(`/service?category=${encodeURIComponent(filter)}`, { replace: true });
+      navigate(`/service?category=${encodeURIComponent(filter)}`, {
+        replace: true,
+        preventScrollReset: true,
+      });
     }
+
+    // wait for render then scroll
+    requestAnimationFrame(() => {
+      requestAnimationFrame(scrollToCards);
+    });
   };
 
-  // ✅ Filtered cards
+  // Filtered cards
   const filteredCards = useMemo(() => {
     if (activeFilter === "All") return cards;
     return cards.filter((c) => c.category === activeFilter);
-  }, [activeFilter]); // cards is static here, no need in deps
+  }, [activeFilter]);
 
-  // ✅ Pagination calculations
+  // Pagination calculations
   const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
 
   useEffect(() => {
@@ -146,7 +166,7 @@ export default function ServiceCardsSection() {
     return filteredCards.slice(start, start + PAGE_SIZE);
   }, [filteredCards, page]);
 
-  // ✅ Animations
+  // Animations
   const grid = {
     hidden: {},
     show: { transition: { staggerChildren: 0.08, delayChildren: 0.02 } },
@@ -177,7 +197,38 @@ export default function ServiceCardsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
         {/* FILTER BAR */}
         <div className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          {/* Mobile: Dropdown */}
+          <div className="sm:hidden">
+            <label className="block text-[16px] font-semibold text-[#111827] mb-2">
+              Filter by category
+            </label>
+
+            <div className="relative">
+              <select
+                value={activeFilter}
+                onChange={(e) => handleFilterChange(e.target.value)}
+                className="
+                  w-full appearance-none
+                  rounded-xl bg-white
+                  border border-[#E7E9F5]
+                  px-4 py-3 pr-10
+                  text-[13px] font-semibold text-[#111827]
+                  focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30
+                "
+              >
+                {FILTERS.map((f) => (
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
+                ))}
+              </select>
+
+              <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#111827]/60 rotate-90" />
+            </div>
+          </div>
+
+          {/* ✅ Desktop/Tablet: Pills */}
+          <div className="hidden sm:flex flex-wrap gap-2 sm:gap-3">
             {FILTERS.map((filter) => {
               const isActive = filter === activeFilter;
               return (
@@ -201,6 +252,7 @@ export default function ServiceCardsSection() {
 
         {/* CARD GRID */}
         <motion.div
+          ref={cardsRef}
           key={`${activeFilter}-${page}`}
           variants={grid}
           initial="hidden"
@@ -317,7 +369,7 @@ function Card({ title, desc, badge = "Featured Service", icon, variants, onClick
         />
       </div>
 
-      <span className="mt-3 inline-block  text-[11px] sm:text-[12px] font-medium text-[#ff8000] w-fit">
+      <span className="mt-3 inline-block text-[11px] sm:text-[12px] font-medium text-[#ff8000] w-fit">
         {badge}
       </span>
 

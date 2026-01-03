@@ -61,6 +61,13 @@ export default function Header() {
     setMobileOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+  if (mobileOpen) document.body.style.overflow = "hidden";
+  else document.body.style.overflow = "";
+  return () => (document.body.style.overflow = "");
+}, [mobileOpen]);
+
+
   return (
     <>
       <motion.header
@@ -181,72 +188,76 @@ export default function Header() {
       </motion.header>
 
       <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ height: 0, opacity: 0, y: -10 }}
-            animate={{ height: "auto", opacity: 1, y: 0 }}
-            exit={{ height: 0, opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="md:hidden bg-[#F9ECDE] w-full z-40 shadow-lg overflow-hidden"
-          >
-            <nav className="flex flex-col px-4 pb-4 pt-2 space-y-2">
-              {links.map((l) => {
-                const isActive = getIsActive(l.to);
-                if (l.to === "#") {
-                  return (
-                    <button
-                      key={l.label}
-                      type="button"
-                      onClick={() => setMobileOpen(false)}
-                      className={[
-                        "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
-                        isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
-                      ].join(" ")}
-                    >
-                      {l.label}
-                    </button>
-                  );
-                }
+  {mobileOpen && (
+    <motion.div
+      key="mobile-menu"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="md:hidden fixed left-0 right-0 top-20 bg-[#F9ECDE] z-[9999] shadow-lg"
+    >
+      <nav className="flex flex-col px-4 pb-4 pt-3 space-y-2">
+        {links.map((l) => {
+          const isActive = getIsActive(l.to);
 
-                return (
-                  <Link
-                    key={l.label}
-                    to={l.to}
-                    className={[
-                      "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
-                      isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
-                    ].join(" ")}
-                  >
-                    {l.label}
-                  </Link>
-                );
-              })}
-
-              <div className="flex items-center gap-3 pt-2">
-                {socialLinks.map(({ Icon, href, bg, hoverBg, text }, i) => (
-                  <a
-                    key={i}
-                    href={href}
-                    target="_blank"
-                    className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
-                  >
-                    <img src={Icon}  />
-                  </a>
-                ))}
-              </div>
-
-              <Link
-                to="/contactus"
+          if (l.to === "#") {
+            return (
+              <button
+                key={l.label}
+                type="button"
                 onClick={() => setMobileOpen(false)}
-                className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
+                className={[
+                  "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
+                  isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
+                ].join(" ")}
               >
-                Contact US
-              </Link>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {l.label}
+              </button>
+            );
+          }
+
+          return (
+            <Link
+              key={l.label}
+              to={l.to}
+              onClick={() => setMobileOpen(false)}
+              className={[
+                "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
+                isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
+              ].join(" ")}
+            >
+              {l.label}
+            </Link>
+          );
+        })}
+
+        <div className="flex items-center gap-3 pt-2">
+          {socialLinks.map(({ Icon, href, bg, hoverBg, text }, i) => (
+            <a
+              key={i}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
+            >
+              <img src={Icon} alt="" />
+            </a>
+          ))}
+        </div>
+
+        <Link
+          to="/contactus"
+          onClick={() => setMobileOpen(false)}
+          className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
+        >
+          Contact US
+        </Link>
+      </nav>
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </>
   );
 }
