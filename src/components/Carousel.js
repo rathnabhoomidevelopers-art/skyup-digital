@@ -41,7 +41,7 @@ export default function Carousel() {
         <div className="flex flex-col md:h-[640px] md:justify-center">
           {/* Header */}
           <div className="text-center">
-            <h2 className="text-[24px] md:text-[64px] font-bold text-[#2B2B2B] mb-3 md:mb-6">
+            <h2 className="text-[32px] md:text-[64px] font-bold text-[#2B2B2B] mb-4 md:mb-6">
               Our Recent Works
             </h2>
           </div>
@@ -106,7 +106,7 @@ export default function Carousel() {
             >
               {projects.map((project) => (
                 <div key={project.id} className="w-full flex-shrink-0">
-                  <div className="h-[300px] w-[342px] mx-auto rounded-2xl overflow-hidden relative cursor-pointer transition-transform duration-300 hover:-translate-y-2">
+                  <div className="h-[300px] w-[345px] mx-auto rounded-2xl overflow-hidden relative cursor-pointer transition-transform duration-300 hover:-translate-y-2">
                     <img
                       src={project.mobileImage}
                       alt={project.title}
@@ -114,7 +114,7 @@ export default function Carousel() {
                     />
 
                     <div className="absolute inset-0 px-2 flex items-end justify-center">
-                      <div className="text-[#0037CA] bg-white/90  px-2 mb-2 py-1 h-[111px] w-[320px] rounded-md shadow-sm backdrop-blur-sm border border-white/50 hover:bg-white/90 transition-all duration-300">
+                      <div className="text-[#0037CA] bg-white/90  px-2 mb-2 py-1 h-[111px] w-[290px] rounded-md shadow-sm backdrop-blur-sm border border-white/50 hover:bg-white/90 transition-all duration-300">
                         <span className="font-semibold text-[14px]">{project.title}</span>
                         <p className="text-[#2B2B2B] mt-1 text-[12px]">
                           {project.description}

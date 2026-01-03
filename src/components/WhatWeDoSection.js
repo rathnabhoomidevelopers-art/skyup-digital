@@ -83,10 +83,7 @@ export default function WhatWeDo() {
             mx-auto
           "
         >
-
-
           {services.map((item) => {
-           
             return (
               <div
                 key={item.title}
