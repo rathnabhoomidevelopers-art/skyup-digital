@@ -89,7 +89,7 @@ export default function Footer() {
                 Email:{" "}
                 <a
                   href="mailto:info@skyupdigitalsolutions.com"
-                  className="hover:text-white no-underline"
+                  className="text-white/85 no-underline"
                 >
                   info@skyupdigitalsolutions.com
                 </a>
@@ -98,7 +98,7 @@ export default function Footer() {
                 Phone:{" "}
                 <a
                   href="tel:+918867867775"
-                  className="hover:text-white no-underline"
+                  className="text-white/85 no-underline"
                 >
                   +91 8867867775
                 </a>
