@@ -105,18 +105,23 @@ export default function Carousel() {
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {projects.map((project) => (
-                <div key={project.id} className="w-full flex-shrink-0">
-                  <div className="h-[300px] w-[345px] mx-auto rounded-2xl overflow-hidden relative cursor-pointer transition-transform duration-300 hover:-translate-y-2">
+                <div key={project.id} className="w-full flex-shrink-0 px-3">
+                  {/* ✅ card takes full width but never exceeds 345px */}
+                  <div className="h-[300px] w-full max-w-[345px] mx-auto rounded-2xl overflow-hidden relative cursor-pointer transition-transform duration-300 box-border">
                     <img
                       src={project.mobileImage}
                       alt={project.title}
-                      className="w-full h-full object-cover border-1 border-[#FFDEBB] rounded-2xl transition-transform duration-700 hover:scale-110"
+                      className="w-full h-full object-cover border border-[#FFDEBB] rounded-2xl transition-transform duration-700 hover:scale-110 box-border"
                     />
 
                     <div className="absolute inset-0 px-2 flex items-end justify-center">
-                      <div className="text-[#0037CA] bg-white/90  px-2 mb-2 py-1 h-[111px] w-[290px] rounded-md shadow-sm backdrop-blur-sm border border-white/50 hover:bg-white/90 transition-all duration-300">
-                        <span className="font-semibold text-[14px]">{project.title}</span>
-                        <p className="text-[#2B2B2B] mt-1 text-[12px]">
+                      {/* ✅ no fixed width, wrap text safely */}
+                      <div className="bg-white/90 mb-2 w-full rounded-md shadow-sm backdrop-blur-sm border border-white/50 hover:bg-white/90 transition-all duration-300 px-2 py-2 box-border">
+                        <span className="block font-semibold text-[14px] text-[#0037CA] leading-snug break-words">
+                          {project.title}
+                        </span>
+
+                        <p className="text-[#2B2B2B] mt-1 text-[12px] leading-snug break-words">
                           {project.description}
                         </p>
                       </div>
@@ -126,6 +131,7 @@ export default function Carousel() {
               ))}
             </div>
           </div>
+
 
           {/* Mobile Arrows */}
           <div className="md:hidden flex justify-center gap-4 mt-4">
