@@ -392,7 +392,7 @@ export function HomePage() {
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
           className=" whatsapp-chat
@@ -408,7 +408,7 @@ export function HomePage() {
         </a>
 
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
           className=" whatsapp-chat-gtm
@@ -439,7 +439,7 @@ export function HomePage() {
         </a>
 
         <a
-          href="tel:+917090170524"
+          href="tel:+918867867775"
           className=" tel-chat
             sm:hidden
             w-12 h-12
@@ -453,7 +453,7 @@ export function HomePage() {
         </a>
 
         <a
-          href="tel:+917090170524"
+          href="tel:+918867867775"
           className=" tel-chat-gtm
             hidden sm:inline-flex
             group no-underline relative items-center
