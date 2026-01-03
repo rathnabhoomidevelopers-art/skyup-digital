@@ -9,8 +9,7 @@ export default function TestimonialsSection() {
         role: "Founder",
         text:
           "Their  PPC strategy generated consistent leads, improved cost control, and provided clear performance insights, boosting confidence in ad spend. ",
-        avatar:
-          "/images/ellipse_1.svg",
+        avatar: "/images/ellipse_1.svg",
         variant: "blue",
       },
       {
@@ -19,8 +18,7 @@ export default function TestimonialsSection() {
         role: "CEO",
         text:
           "SKYUP DIGITAL built a fast, user-friendly website that drives lead generation, with a design and structure that encourages visitor action.",
-        avatar:
-          "/images/ellipse_2.svg",
+        avatar: "/images/ellipse_2.svg",
         variant: "white",
       },
       {
@@ -29,8 +27,7 @@ export default function TestimonialsSection() {
         role: "Marketing Director",
         text:
           "Working with SKYUP DIGITAL boosted our online presence with SEO and content marketing, improving rankings, and website traffic quickly.",
-        avatar:
-          "/images/ellipse_3.svg",
+        avatar: "/images/ellipse_3.svg",
         variant: "blue",
       },
       {
@@ -39,23 +36,83 @@ export default function TestimonialsSection() {
         role: "Business Head",
         text:
           "Their  structured lead generation delivers consistent, qualified enquiries through a transparent, reliable process aligned with sales goals.",
-        avatar:
-          "/images/ellipse_4.svg",
+        avatar: "/images/ellipse_4.svg",
         variant: "white",
       },
     ],
     []
   );
 
-  // Mobile slider state
-  const [index, setIndex] = useState(0);
+  // ✅ Infinite-loop slider setup (mobile)
+  const [slideIndex, setSlideIndex] = useState(1); // start at 1 (0 is last-clone)
+  const [withTransition, setWithTransition] = useState(true);
   const trackRef = useRef(null);
 
-  const goTo = (i) => setIndex(Math.max(0, Math.min(testimonials.length - 1, i)));
-  const next = () => goTo(index + 1);
-  const prev = () => goTo(index - 1);
+  // clones: [last, ...all, first]
+  const slides = useMemo(() => {
+    if (!testimonials.length) return [];
+    const first = testimonials[0];
+    const last = testimonials[testimonials.length - 1];
+    return [last, ...testimonials, first];
+  }, [testimonials]);
 
-  // Optional: enable swipe on mobile
+  const next = () => {
+    setWithTransition(true);
+    setSlideIndex((v) => v + 1);
+  };
+
+  const prev = () => {
+    setWithTransition(true);
+    setSlideIndex((v) => v - 1);
+  };
+
+  const goTo = (i) => {
+    // jump to real slide i => in cloned track it is i+1
+    setWithTransition(true);
+    setSlideIndex(i + 1);
+  };
+
+  // ✅ Dot index should follow real testimonials (0..len-1)
+  const realIndex = useMemo(() => {
+    const n = testimonials.length;
+    if (!n) return 0;
+
+    let idx = slideIndex - 1; // slideIndex=1 => real 0
+    if (idx < 0) idx = n - 1;
+    if (idx >= n) idx = 0;
+
+    return idx;
+  }, [slideIndex, testimonials.length]);
+
+  // ✅ Auto-slide every 3000ms
+  useEffect(() => {
+    const id = setInterval(() => {
+      next();
+    }, 3000);
+
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ✅ Snap to real slide after reaching clone edges
+  const handleTransitionEnd = () => {
+    const n = testimonials.length;
+    if (!n) return;
+
+    // moved to last clone (index 0) => snap to real last (index n)
+    if (slideIndex === 0) {
+      setWithTransition(false);
+      setSlideIndex(n);
+    }
+
+    // moved to first clone (index n+1) => snap to real first (index 1)
+    if (slideIndex === n + 1) {
+      setWithTransition(false);
+      setSlideIndex(1);
+    }
+  };
+
+  // ✅ Swipe on mobile (works with infinite loop)
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
@@ -78,6 +135,7 @@ export default function TestimonialsSection() {
     const onUp = () => {
       if (!isDown) return;
       isDown = false;
+
       const diff = currentX - startX;
 
       // swipe threshold
@@ -102,15 +160,17 @@ export default function TestimonialsSection() {
       el.removeEventListener("touchmove", onMove);
       el.removeEventListener("touchend", onUp);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
+    // ✅ no dependency needed
+  }, []);
 
   return (
     <section className="w-full bg-white mb-3 font-poppins">
       <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-20">
         {/* Heading */}
         <div className="text-center">
-          <p className="text-[#5376D5] font-bold text-[16px] sm:text-[24px]">Testimonial</p>
+          <p className="text-[#5376D5] font-bold text-[16px] sm:text-[24px]">
+            Testimonial
+          </p>
           <h2 className="mt-2 text-[#343434] font-bold leading-tight text-[34px] md:text-[44px]">
             What the people think about us
           </h2>
@@ -123,22 +183,28 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* Mobile slider */}
+        {/* Mobile slider (infinite loop + autoplay) */}
         <div className="mt-10 md:hidden">
-        {/* ✅ allow avatar to be visible */}
-        <div className="relative overflow-x-hidden overflow-y-visible pt-10">
+          {/* ✅ allow avatar to be visible */}
+          <div className="relative overflow-x-hidden overflow-y-visible pt-10">
             <div
-            ref={trackRef}
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${index * 100}%)` }}
+              ref={trackRef}
+              onTransitionEnd={handleTransitionEnd}
+              className="flex"
+              style={{
+                transform: `translateX(-${slideIndex * 100}%)`,
+                transition: withTransition
+                  ? "transform 500ms ease-in-out"
+                  : "none",
+              }}
             >
-            {testimonials.map((t) => (
-                <div key={t.id} className="w-full flex-shrink-0 px-6">
-                <TestimonialCard {...t} mobile />
+              {slides.map((t, i) => (
+                <div key={`${t.id}-${i}`} className="w-full flex-shrink-0 px-6">
+                  <TestimonialCard {...t} mobile />
                 </div>
-            ))}
+              ))}
             </div>
-        </div>
+          </div>
 
           {/* Dots */}
           <div className="mt-6 flex items-center justify-center gap-3">
@@ -148,7 +214,7 @@ export default function TestimonialsSection() {
                 aria-label={`Go to slide ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={`h-2.5 w-2.5 rounded-full transition-all ${
-                  i === index ? "bg-[#0b46ff]" : "bg-[#e6e6e6]"
+                  i === realIndex ? "bg-[#0b46ff]" : "bg-[#e6e6e6]"
                 }`}
               />
             ))}
@@ -166,7 +232,7 @@ function TestimonialCard({ name, role, text, avatar, variant, mobile = false }) 
     <div className="relative">
       {/* Avatar (top centered, overlaps card) */}
       <div className="absolute left-1/2 -top-7 -translate-x-1/2 z-10">
-        <div className="h-14 w-14 rounded-full   flex items-center justify-center">
+        <div className="h-14 w-14 rounded-full flex items-center justify-center">
           <img
             src={avatar}
             alt={name}
@@ -180,28 +246,36 @@ function TestimonialCard({ name, role, text, avatar, variant, mobile = false }) 
       <div
         className={[
           "relative rounded-[18px] px-3 pt-12 pb-8 text-center",
-          " md:shadow-[0_18px_40px_rgba(0,0,0,0.15)]",
+          "md:shadow-[0_18px_40px_rgba(0,0,0,0.15)]",
           "max-w-[276px] mx-auto",
           "h-[260px]",
           "md:max-w-none md:w-[276px] md:h-[260px]",
           isBlue ? "bg-[#0037CA] text-white" : "bg-[#f8f8f8] text-[#2B2B2B]",
         ].join(" ")}
       >
-
-
         <div className="absolute left-6 top-6">
           <QuoteMark color={isBlue ? "#ffffff" : "#f0d9c9"} />
         </div>
-        <h3 className={`font-semibold text-[18px] ${isBlue ? "text-white" : "text-[#2b2b2b]"}`}>
+
+        <h3
+          className={`font-semibold text-[18px] ${
+            isBlue ? "text-white" : "text-[#2b2b2b]"
+          }`}
+        >
           {name}
         </h3>
-        <p className={`mt-1 text-[12px] ${isBlue ? "text-white/80" : "text-[#2B2B2B]"}`}>
+
+        <p
+          className={`mt-1 text-[12px] ${
+            isBlue ? "text-white/80" : "text-[#2B2B2B]"
+          }`}
+        >
           {role}
         </p>
 
         <p
           className={[
-            " text-[14px] leading-6 lg:text-[14px] ",
+            "text-[14px] leading-6 lg:text-[14px]",
             isBlue ? "text-white/90" : "text-[#2B2B2B]",
           ].join(" ")}
         >
@@ -213,7 +287,5 @@ function TestimonialCard({ name, role, text, avatar, variant, mobile = false }) 
 }
 
 function QuoteMark({ color = "#ffffff" }) {
-  return (
-    <img src="/images/inverted_comma.svg"/>
-  );
+  return <img src="/images/inverted_comma.svg" alt="quote" />;
 }

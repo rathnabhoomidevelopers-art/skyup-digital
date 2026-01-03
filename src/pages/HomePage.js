@@ -339,53 +339,51 @@ export function HomePage() {
       >
       </motion.div>
       {/* CTA */}
-     <div className="bg-[#FFF8F0]">
-  <motion.section
-    initial="hidden"
-    whileInView="show"
-    viewport={{ once: true, amount: 0.2 }}
-    variants={fadeUp}
-    className="
-      mx-auto 
-      text-center
-      font-poppins
-      px-3 py-8 sm:py-12       
-      sm:max-w-[800px]
-    "
-  >
-    <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
-      Ready to Grow Faster?
-    </h2>
+      <div className="bg-[#FFF8F0]">
+        <motion.section
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+          className="
+            mx-auto 
+            text-center
+            font-poppins
+            px-3 py-8 sm:py-12       
+            sm:max-w-[800px]
+          "
+        >
+          <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
+            Ready to Grow Faster?
+          </h2>
 
-    <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-      Serving companies of every scale. Connect with us to start the conversation.
-    </p>
+          <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
+            Serving companies of every scale. Connect with us to start the conversation.
+          </p>
 
-    <div className="mt-8 flex justify-center">
-      <MotionLink
-        to="/contactus"
-        whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ type: "spring", stiffness: 400, damping: 22 }}
-        className="
-          bg-[#0037CA] text-white
-          font-semibold text-sm sm:text-base
-          px-6 py-2.5
-          rounded-full
-          shadow-[0_10px_24px_rgba(0,0,0,0.18)]
-          hover:scale-[1.03] active:scale-[0.99]
-          transition-transform
-          inline-flex items-center justify-center
-          no-underline
-        "
-      >
-        GET STARTED
-      </MotionLink>
-    </div>
-  </motion.section>
-</div>
-
-
+          <div className="mt-8 flex justify-center">
+            <MotionLink
+              to="/contactus"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 22 }}
+              className="
+                bg-[#0037CA] text-white
+                font-semibold text-sm sm:text-base
+                px-6 py-2.5
+                rounded-full
+                shadow-[0_10px_24px_rgba(0,0,0,0.18)]
+                hover:scale-[1.03] active:scale-[0.99]
+                transition-transform
+                inline-flex items-center justify-center
+                no-underline
+              "
+            >
+              GET STARTED
+            </MotionLink>
+          </div>
+        </motion.section>
+      </div>
       {/* FLOATING CONTACT BUTTONS */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
