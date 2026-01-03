@@ -22,7 +22,7 @@ export default function JourneySection({ title, subTitle, steps }) {
         </div>
 
         {/* Mobile marquee (below sm) */}
-        <div className="sm:hidden overflow-hidden">
+        <div className="sm:hidden lg:hidden overflow-hidden">
           <div className="marquee">
             <div
               className="marquee-track"
@@ -32,19 +32,17 @@ export default function JourneySection({ title, subTitle, steps }) {
               {[...steps, ...steps].map((step, idx) => (
                 <div
                   key={`${step.no}-${idx}`}
-                  className="min-w-[260px] max-w-[260px] text-left px-2"
+                  className="min-w-[210px] max-w-[210px] text-left"
                 >
-                  <div className="mb-3 inline-flex h-[60px] w-[60px] items-center justify-center rounded-[14px] bg-white shadow-[0_10px_30px_rgba(15,23,42,0.10)] border border-[#E5E9F5]">
+                  <div className="mb-2 inline-flex h-[52px] w-[52px] items-center justify-center rounded-[12px] bg-white shadow-[0_10px_30px_rgba(15,23,42,0.10)] border border-[#E5E9F5]">
                     <span className="text-[28px] italic text-[#6B7280]">
                       {String(step.no).padStart(2, "0")}
                     </span>
                   </div>
-
-                  <h3 className="text-[15px] font-bold text-[#0B3BFF]">
+                  <h3 className="text-[14px] w-[160px] font-bold text-[#0B3BFF]">
                     {step.title}
                   </h3>
-
-                  <p className="mt-1 text-[13px] leading-relaxed text-[#2B2B2B]">
+                  <p className="mt-0.5 text-[12px] w-[200px] text-[#2B2B2B]">
                     {step.desc}
                   </p>
                 </div>
