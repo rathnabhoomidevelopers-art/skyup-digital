@@ -86,7 +86,7 @@ export function Careers() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-        className="h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center"
+        className="h-[221px] px-2 lg:h-[332px] flex flex-col items-center bg-[#EEF1FC] justify-center"
       >
         <motion.h1
           variants={fadeUp}

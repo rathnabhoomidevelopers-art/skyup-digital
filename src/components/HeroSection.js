@@ -216,7 +216,7 @@ const HeroSection = () => {
       <AnimatePresence>
         {auditOpen && (
           <motion.div
-            className="fixed inset-0 z-[99999] flex items-center justify-center px-4"
+            className="fixed inset-0 z-[99999] flex sm:items-center items-start justify-center p-3 sm:p-4 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -234,7 +234,7 @@ const HeroSection = () => {
             <motion.div
               role="dialog"
               aria-modal="true"
-              className="relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)] overflow-hidden"
+              className="relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)] overflow-hidden my-3 sm:my-0 max-h-[calc(100vh-24px)] sm:max-h-[calc(100vh-48px)]"
               initial={{ y: 18, opacity: 0, scale: 0.98 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 12, opacity: 0, scale: 0.98 }}
@@ -242,7 +242,7 @@ const HeroSection = () => {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="flex items-start justify-between gap-4 px-5 sm:px-6 py-4 border-b">
+              <div className="flex items-start justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b">
                 <div>
                   <h3 className="text-[18px] sm:text-[22px] font-bold text-slate-900">
                     Get Free Audit
@@ -263,7 +263,7 @@ const HeroSection = () => {
               </div>
 
               {/* Body */}
-              <div className="px-5 sm:px-6 py-5 max-h-[70vh] overflow-y-auto">
+              <div className="px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto max-h-[calc(100vh-210px)] sm:max-h-[70vh]">
                 <form onSubmit={onSubmit} className="mt-0 space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 text-[12px] sm:text-[16px] gap-4">
                     <Field

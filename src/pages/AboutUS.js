@@ -71,15 +71,19 @@ export function AboutUS() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-        className="h-[332px] flex flex-col items-center justify-center relative"
+        className="h-[221px] px-2 lg:h-[332px] flex flex-col items-center justify-center relative"
       >
 
 
         <motion.h1
           variants={fadeUp}
-          className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold "
+          className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold"
         >
-          We Create<span className="text-[#0037CA]">&nbsp;Brands </span>That Stand Out
+          We Create
+          <span className="text-[#0037CA]">&nbsp;Brands&nbsp;</span>
+          That&nbsp;
+          <br className="block sm:hidden" />
+          Stand Out
         </motion.h1>
 
         <motion.p

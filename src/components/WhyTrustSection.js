@@ -82,10 +82,14 @@ export default function WhyTrustSkyUp({ title, highlight, cards }) {
                   boxShadow: "0 18px 45px rgba(15,23,42,0.08)",
                 }}
                 transition={{ duration: 0.18 }}
-                className="rounded-[18px] border-1 border-[#FFE2C0] bg-[#FFF8F0]
-                           px-3 py-3 cursor-pointer text-center
-                           sm:w-[370px] sm:h-[210px] w-[340px] h-[200px]
-                           shadow-[0_10px_30px_rgba(255,226,192,0.05)] mx-auto"
+                className="
+                  rounded-[18px] border border-[#FFE2C0] bg-[#FFF8F0]
+                  px-3 py-3 cursor-pointer text-center
+                  w-full max-w-[300px] h-[200px]
+                  sm:max-w-[370px] sm:h-[210px]
+                  shadow-[0_10px_30px_rgba(255,226,192,0.05)]
+                  mx-auto
+                "
               >
                 <div className="mx-auto mb-4 inline-flex h-[48px] w-[48px] items-center justify-center rounded-[12px] ">
                   <CardIcon icon={c.icon} />
