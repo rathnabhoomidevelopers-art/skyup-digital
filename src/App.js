@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import Carousel from "./components/Carousel";
@@ -30,7 +29,6 @@ import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
-    <HelmetProvider>
     <BrowserRouter>
       <ScrollToTop/>
       <Routes>
@@ -73,7 +71,6 @@ function App() {
         <Route path="/privacypolicy" element={<PrivacyPolicy/>}/>
       </Routes>
     </BrowserRouter>
-    </HelmetProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon, MessageCircleIcon, PhoneIcon} from "lucide-react";
@@ -108,8 +109,14 @@ export function ContactUs() {
 
   return (
     <div className="font-poppins">
+      <Helmet>
+        <title>Contact Us | SKYUP Digital Solutions</title>
+        <meta
+          name="description"
+          content="Have questions or ready to start? Contact us at SKYUP Digital Solutions to grow your business with expert digital marketing and web solutions."
+        />
+      </Helmet>
       <Header />
-
       <motion.div
         initial="hidden"
         animate="show"

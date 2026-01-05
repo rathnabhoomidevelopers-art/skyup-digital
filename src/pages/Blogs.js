@@ -130,99 +130,99 @@ export function Blogs(){
                       </motion.section>
                </div>
                 <motion.div
-        initial={{ opacity: 0, y: 12, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
-        className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
-      >
-        <a
-          href="https://wa.me/917090170524"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" whatsapp-chat
-            sm:hidden
-            w-12 h-12
-            rounded-xl
-            bg-[#25D366]
-            flex items-center justify-center
-            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
-          "
-        >
-          <MessageCircleIcon className="w-6 h-6 text-white" />
-        </a>
+                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
+                  className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
+                >
+                  <a
+                    href="https://wa.me/917090170524"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className=" whatsapp-chat
+                      sm:hidden
+                      w-12 h-12
+                      rounded-xl
+                      bg-[#25D366]
+                      flex items-center justify-center
+                      shadow-[0_12px_30px_rgba(0,0,0,0.25)]
+                    "
+                  >
+                    <MessageCircleIcon className="w-6 h-6 text-white" />
+                  </a>
 
-        <a
-          href="https://wa.me/917090170524"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" whatsapp-chat-gtm
-            hidden sm:inline-flex
-            group no-underline relative items-center
-            bg-white
-            pl-3 pr-[70px] py-3
-            rounded-xl
-            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-            hover:scale-[1.02] transition-transform
-          "
-        >
-          <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">
-            WhatsApp
-          </span>
+                  <a
+                    href="https://wa.me/917090170524"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className=" whatsapp-chat-gtm
+                      hidden sm:inline-flex
+                      group no-underline relative items-center
+                      bg-white
+                      pl-3 pr-[70px] py-3
+                      rounded-xl
+                      shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+                      hover:scale-[1.02] transition-transform
+                    "
+                  >
+                    <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">
+                      WhatsApp
+                    </span>
 
-          <span
-            className="
-              absolute right-3 top-1/2 -translate-y-1/2
-              w-11 h-11 rounded-xl
-              bg-[#25D366]
-              flex items-center justify-center
-              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
-            "
-          >
-            <MessageCircleIcon className="w-5 h-5 text-white" />
-          </span>
-        </a>
+                    <span
+                      className="
+                        absolute right-3 top-1/2 -translate-y-1/2
+                        w-11 h-11 rounded-xl
+                        bg-[#25D366]
+                        flex items-center justify-center
+                        shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+                      "
+                    >
+                      <MessageCircleIcon className="w-5 h-5 text-white" />
+                    </span>
+                  </a>
 
-        <a
-          href="tel:+917090170524"
-          className=" tel-chat
-            sm:hidden
-            w-12 h-12
-            rounded-xl
-            bg-[#3B46F6]
-            flex items-center justify-center
-            shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
-        >
-          <PhoneIcon className="w-6 h-6 text-white" />
-        </a>
-        <a
-          href="tel:+917090170524"
-          className=" tel-chat-gtm
-            hidden sm:inline-flex
-            group no-underline relative items-center
-            bg-white
-            pl-3 pr-[66px] py-3
-            rounded-xl
-            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-            hover:scale-[1.02] transition-transform
-          "
-        >
-          <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">
-            +91 8867867775
-          </span>
+                  <a
+                    href="tel:+917090170524"
+                    className=" tel-chat
+                      sm:hidden
+                      w-12 h-12
+                      rounded-xl
+                      bg-[#3B46F6]
+                      flex items-center justify-center
+                      shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+                  >
+                    <PhoneIcon className="w-6 h-6 text-white" />
+                  </a>
+                  <a
+                    href="tel:+917090170524"
+                    className=" tel-chat-gtm
+                      hidden sm:inline-flex
+                      group no-underline relative items-center
+                      bg-white
+                      pl-3 pr-[66px] py-3
+                      rounded-xl
+                      shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+                      hover:scale-[1.02] transition-transform
+                    "
+                  >
+                    <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">
+                      +91 8867867775
+                    </span>
 
-          <span
-            className="
-              absolute right-3 top-1/2 -translate-y-1/2
-              w-11 h-11 rounded-xl
-              bg-[#3B46F6]
-              flex items-center justify-center
-              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
-            "
-          >
-            <PhoneIcon className="w-5 h-5 text-white" />
-          </span>
-        </a>
-      </motion.div>
+                    <span
+                      className="
+                        absolute right-3 top-1/2 -translate-y-1/2
+                        w-11 h-11 rounded-xl
+                        bg-[#3B46F6]
+                        flex items-center justify-center
+                        shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+                      "
+                    >
+                      <PhoneIcon className="w-5 h-5 text-white" />
+                    </span>
+                  </a>
+                </motion.div>
                 <Footer/>
         </div>
     )
