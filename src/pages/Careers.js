@@ -1,5 +1,6 @@
 // src/pages/Careers.jsx
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
@@ -73,6 +74,13 @@ export function Careers() {
 
   return (
     <div className="font-poppins">
+      <Helmet>
+        <title>Careers at SKYUP Digital Solutions | Jobs in Bengaluru</title>
+        <meta
+          name="description"
+          content="Explore career opportunities at SKYUP Digital Solutions. Join our growing team in Bengaluru and build your future with us."
+        />
+      </Helmet>
       <Header />
 
       {/* HERO */}

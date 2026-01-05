@@ -1,4 +1,5 @@
 import BlogsContainer from "../components/BlogsContainer";
+import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
@@ -43,6 +44,13 @@ const softScale = {
 export function Blogs(){
     return(
         <div className="font-poppins">
+          <Helmet>
+                  <title>Digital Marketing vs Traditional Marketing: What You Should Know</title>
+                  <meta
+                    name="description"
+                    content="Discover the difference between digital marketing and traditional marketing to enhance strategies and drive better business results."
+                  />
+                </Helmet>
             <Header/>
             <motion.div
                     initial="hidden"

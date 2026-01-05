@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import FAQSection from "../components/FAQSection";
+import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import WhatMakesUsDifferentSection from "../components/WhatMakesUsDifferentSection";
@@ -58,6 +59,14 @@ const softScale = {
 export function AboutUS() {
   return (
     <div className="font-poppins">
+      <Helmet>
+        <title>Top Digital Marketing Company in Bangalore | SkyUp</title>
+        <meta
+          name="description"
+          content="SkyUp is a results-driven Digital Marketing Company in Bangalore offering strategic marketing solutions to boost visibility, leads, and growth."
+        />
+      </Helmet>
+
       <Header />
 
       {/* HERO */}

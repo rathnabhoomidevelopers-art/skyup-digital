@@ -1,5 +1,6 @@
 // src/pages/Service.jsx
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import ServiceCardsSection from "../components/ServiceCardsSection";
 import FAQSection from "../components/FAQSection";
@@ -41,6 +42,13 @@ export function Service() {
 
   return (
     <div className="font-poppins">
+      <Helmet>
+        <title>Results-Driven Digital Marketing Services in Bangalore</title>
+        <meta
+          name="description"
+          content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
+        />
+      </Helmet>
       <Header />
 
       <motion.div
