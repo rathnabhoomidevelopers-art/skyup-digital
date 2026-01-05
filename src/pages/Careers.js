@@ -75,10 +75,10 @@ export function Careers() {
   return (
     <div className="font-poppins">
       <Helmet>
-        <title>Careers at SKYUP Digital Solutions | Jobs in Bengaluru</title>
+        <title>Explore Digital Marketing Jobs for Career Growth & Learning</title>
         <meta
           name="description"
-          content="Explore career opportunities at SKYUP Digital Solutions. Join our growing team in Bengaluru and build your future with us."
+          content="Discover exciting Digital Marketing Jobs offering structured learning, career growth, and hands-on industry experience to boost your professional journey."
         />
       </Helmet>
       <Header />
