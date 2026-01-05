@@ -7,7 +7,7 @@ import {
   MessageCircleIcon,
   PhoneIcon,
 } from "lucide-react";
-
+import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 
 import Header from "../components/Header";
@@ -222,6 +222,13 @@ export function HomePage() {
 
   return (
     <div className="w-full">
+      <Helmet>
+        <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
+        <meta
+          name="description"
+          content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
+        />
+      </Helmet>
       <Header />
       <HeroSection />
 
