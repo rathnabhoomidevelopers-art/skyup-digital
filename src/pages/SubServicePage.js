@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { SERVICES, DEFAULT_SERVICE_SLUG } from "../data/servicesData";
 import Header from "../components/Header";
@@ -10,7 +11,6 @@ import {
   MessageCircleIcon,
   PhoneIcon,
   CircleCheckBigIcon,
-  ChevronLeftIcon,
 } from "lucide-react";
 import JourneySection from "../components/JourneySection";
 import WhyTrustSkyUp from "../components/WhyTrustSection";
@@ -23,6 +23,9 @@ export default function SubServicePage() {
   const data = useMemo(() => {
     return SERVICES[slug] || SERVICES[DEFAULT_SERVICE_SLUG];
   }, [slug]);
+
+  const keywords = `${data.heroTitle}, ${data.heroDesc},${slug}`;
+  const canonicalUrl = `https://www.yourwebsite.com/services/${slug}`;
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -44,6 +47,19 @@ export default function SubServicePage() {
 
   return (
     <div>
+      <Helmet>
+        <title>{data.heroTitle}</title>
+        <meta
+          name="description"
+          content={data.heroDesc}
+        />
+        <meta
+          name="keywords"
+          content={keywords}
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
       <Header />
       <section className="w-full font-poppins">
         {/* HERO */}
