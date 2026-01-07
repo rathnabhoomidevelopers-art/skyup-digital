@@ -152,6 +152,7 @@ export default function Header() {
                     key={i}
                     href={href}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
                   >
                     <img src={Icon}  />
@@ -238,7 +239,7 @@ export default function Header() {
               key={i}
               href={href}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
             >
               <img src={Icon} alt="" />
