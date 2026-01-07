@@ -75,10 +75,10 @@ export default function WhatWeDo() {
             grid-cols-1
             gap-6 
             sm:gap-10
-            lg:gap-12                // larger gap on lg+ (1024px+)
-            xl:gap-40                // even larger on xl+ (1280px+)
-            md:grid-cols-2 
-            xl:grid-cols-4 
+            lg:gap-12
+            xl:gap-40
+            md:grid-cols-4  /* Change this line to 4 columns for medium screens */
+            xl:grid-cols-4
             justify-items-center
             mx-auto
           "
