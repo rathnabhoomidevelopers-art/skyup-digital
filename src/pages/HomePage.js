@@ -228,7 +228,10 @@ export function HomePage() {
           name="description"
           content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
         />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
       </Helmet>
+
       <Header />
       <HeroSection />
 
