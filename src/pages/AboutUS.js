@@ -65,6 +65,10 @@ export function AboutUS() {
           name="description"
           content="SkyUp is a results-driven Digital Marketing Company in Bangalore offering strategic marketing solutions to boost visibility, leads, and growth."
         />
+        <meta
+          name="keywords"
+          content="Digital Marketing Company in Bangalore."
+        />
       </Helmet>
 
       <Header />
