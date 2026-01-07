@@ -25,7 +25,7 @@ export default function SubServicePage() {
   }, [slug]);
 
   const keywords = `${data.heroTitle}, ${data.heroDesc},${slug}`;
-  const canonicalUrl = `https://www.yourwebsite.com/services/${slug}`;
+  const canonicalUrl = `https://www.skyupdigitalsolutions.com/services/${slug}`;
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
