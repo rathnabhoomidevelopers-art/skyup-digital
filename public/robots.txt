@@ -1,1 +1,5 @@
+# Host
+Host: https://www.skyupdigitalsolutions.com/
+
+# Sitemaps
 Sitemap: https://www.skyupdigitalsolutions.com/sitemap.xml
