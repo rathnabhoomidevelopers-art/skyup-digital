@@ -1,5 +1,18 @@
-# Host
+# Host directive
 Host: https://www.skyupdigitalsolutions.com/
 
-# Sitemaps
+# Sitemap location
 Sitemap: https://www.skyupdigitalsolutions.com/sitemap.xml
+
+# Allow Googlebot to crawl JavaScript and CSS files (important for SPA)
+User-agent: Googlebot
+Allow: /*.js
+Allow: /*.css
+
+# Optionally block resources like images or non-essential parts (only if needed)
+Disallow: /node_modules/
+Disallow: /build/
+
+# Allow all other bots
+User-agent: *
+Disallow:
