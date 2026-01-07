@@ -69,6 +69,7 @@ export function AboutUS() {
           name="keywords"
           content="Digital Marketing Company in Bangalore."
         />
+        <link rel="canonical" href="https://www.skyupdigitalsolutions.com/aboutus" />
       </Helmet>
 
       <Header />
