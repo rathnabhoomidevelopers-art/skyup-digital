@@ -51,7 +51,7 @@ export default function SubServicePage() {
         <title>{data.title}</title>
         <meta
           name="description"
-          content={data.heroDesc}
+          content={data.description}
         />
         <meta
           name="keywords"
