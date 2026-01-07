@@ -2,6 +2,9 @@
 export const SERVICES = {
   "social-media-marketing": {
     heroTitle: "Social Media Marketing",
+    title: "Best Social Media Marketing Company Near Me | SkyUp",
+    keyword: "Social Media Marketing Company Near Me",
+    description: "SkyUp is the best social media marketing company near you, offering expert strategies to boost your brand's online presence and drive engagement. Contact us today",
     heroDesc:
       "A results-driven social media marketing company supporting businesses with complete social media solutions for visibility, leads, and revenue growth.",
     primaryCta: "Get Started Today",
@@ -498,6 +501,9 @@ export const SERVICES = {
 
 "ui-ux-design": {
   heroTitle: "UI/UX Design Company in Bangalore",
+  title : "",
+  keyword : "",
+  description : "",
   heroDesc:
     "A professional UI/UX Design Company in Bangalore delivering clean, user-friendly designs that enhance experience and engagement across digital platforms.",
   primaryCta: "Get Started Today",

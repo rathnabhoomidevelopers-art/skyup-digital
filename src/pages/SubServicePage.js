@@ -24,7 +24,7 @@ export default function SubServicePage() {
     return SERVICES[slug] || SERVICES[DEFAULT_SERVICE_SLUG];
   }, [slug]);
 
-  const keywords = `${data.heroTitle}, ${data.heroDesc},${slug}`;
+  const keywords = `${data.keyword}`;
   const canonicalUrl = `https://www.skyupdigitalsolutions.com/services/${slug}`;
 
   const cardVariants = {
@@ -48,7 +48,7 @@ export default function SubServicePage() {
   return (
     <div>
       <Helmet>
-        <title>{data.heroTitle}</title>
+        <title>{data.title}</title>
         <meta
           name="description"
           content={data.heroDesc}
