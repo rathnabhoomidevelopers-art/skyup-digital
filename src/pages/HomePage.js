@@ -418,7 +418,7 @@ export function HomePage() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <MessageCircleIcon className="w-6 h-6 text-white" />
+          <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
@@ -448,7 +448,7 @@ export function HomePage() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <MessageCircleIcon className="w-5 h-5 text-white" />
+            <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
 
@@ -463,7 +463,7 @@ export function HomePage() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <PhoneIcon className="w-6 h-6 text-white" />
+          <img src="/images/call.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
@@ -491,7 +491,7 @@ export function HomePage() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <PhoneIcon className="w-5 h-5 text-white" />
+            <img src="/images/call.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
       </motion.div>

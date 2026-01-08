@@ -276,44 +276,92 @@ export function Careers() {
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
-          className="whatsapp-chat sm:hidden w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+          className=" whatsapp-chat
+            sm:hidden
+            w-12 h-12
+            rounded-xl
+            bg-[#25D366]
+            flex items-center justify-center
+            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
+          "
         >
-          <MessageCircleIcon className="w-6 h-6 text-white" />
+          <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
-          className="whatsapp-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[70px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform"
+          className=" whatsapp-chat-gtm
+            hidden sm:inline-flex
+            group no-underline relative items-center
+            bg-white
+            pl-3 pr-[70px] py-3
+            rounded-xl
+            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+            hover:scale-[1.02] transition-transform
+          "
         >
           <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">
             WhatsApp
           </span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <MessageCircleIcon className="w-5 h-5 text-white" />
+
+          <span
+            className="
+              absolute right-3 top-1/2 -translate-y-1/2
+              w-11 h-11 rounded-xl
+              bg-[#25D366]
+              flex items-center justify-center
+              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+            "
+          >
+            <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
 
         <a
-          href="tel:+917090170524"
-          className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+          href="tel:+918867867775"
+          className=" tel-chat
+            sm:hidden
+            w-12 h-12
+            rounded-xl
+            bg-[#3B46F6]
+            flex items-center justify-center
+            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
+          "
         >
-          <PhoneIcon className="w-6 h-6 text-white" />
+          <img src="/images/call.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
-          href="tel:+917090170524"
-          className="tel-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[66px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform"
+          href="tel:+918867867775"
+          className=" tel-chat-gtm
+            hidden sm:inline-flex
+            group no-underline relative items-center
+            bg-white
+            pl-3 pr-[66px] py-3
+            rounded-xl
+            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+            hover:scale-[1.02] transition-transform
+          "
         >
           <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">
             +91 8867867775
           </span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <PhoneIcon className="w-5 h-5 text-white" />
+
+          <span
+            className="
+              absolute right-3 top-1/2 -translate-y-1/2
+              w-11 h-11 rounded-xl
+              bg-[#3B46F6]
+              flex items-center justify-center
+              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+            "
+          >
+            <img src="/images/call.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
       </motion.div>

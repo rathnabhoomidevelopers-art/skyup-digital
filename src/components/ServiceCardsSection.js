@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const FILTERS = [
   "All",
@@ -16,7 +17,7 @@ const toSlug = (str) =>
   str
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, "-")
+    .replace(/\s+/, "-")
     .replace(/[^a-z0-9-]/g, "");
 
 const fromSlug = (slug) =>
@@ -27,6 +28,7 @@ const PAGE_SIZE = 6;
 export default function ServiceCardsSection() {
   const navigate = useNavigate();
   const { categorySlug } = useParams();
+  const location = useLocation();
 
   const [activeFilter, setActiveFilter] = useState(() =>
     categorySlug ? fromSlug(categorySlug) : "All"
@@ -140,6 +142,18 @@ export default function ServiceCardsSection() {
     }
   }, [categorySlug]);
 
+  // Canonical (absolute URL, no query/hash)
+  const origin =
+    typeof window !== "undefined" && window.location?.origin
+      ? window.location.origin
+      : "https://skyupdigitalsolutions.com";
+
+  const canonicalUrl = `${origin}${location.pathname}`;
+
+  const pageTitle = categorySlug
+    ? `Services - ${activeFilter}`
+    : "Services";
+
   // Update URL when user changes filter + don't jump to top + scroll to filters
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
@@ -207,6 +221,11 @@ export default function ServiceCardsSection() {
 
   return (
     <section className="w-full bg-[#F7F9FC] font-poppins overflow-hidden">
+      <Helmet prioritizeSeoTags>
+        <title>{pageTitle}</title>
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
         {/* FILTER BAR */}
         <div
