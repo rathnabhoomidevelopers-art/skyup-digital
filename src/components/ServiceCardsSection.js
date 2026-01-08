@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FILTERS = [
   "All",
@@ -12,17 +12,29 @@ const FILTERS = [
   "AI-Automation",
 ];
 
+const toSlug = (str) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+
+const fromSlug = (slug) =>
+  FILTERS.find((f) => toSlug(f) === slug) || "All";
+
 const PAGE_SIZE = 6;
 
 export default function ServiceCardsSection() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { categorySlug } = useParams();
 
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState(() =>
+    categorySlug ? fromSlug(categorySlug) : "All"
+  );
   const [page, setPage] = useState(1);
 
-  // ✅ scroll-to-cards refs
-  const cardsRef = useRef(null);
+  // ✅ scroll-to-filters ref
+  const filterRef = useRef(null);
   const headerOffset = 90; // adjust if your header height differs
 
   const cards = [
@@ -108,27 +120,27 @@ export default function ServiceCardsSection() {
     },
   ];
 
-  // smooth scroll to cards (with header offset)
-  const scrollToCards = () => {
-    const el = cardsRef.current;
+  // smooth scroll to filters (with header offset)
+  const scrollToFilters = () => {
+    const el = filterRef.current;
     if (!el) return;
 
     const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
-  // Read category from URL & apply filter
+  // Sync filter with URL slug
   useEffect(() => {
-    const categoryFromUrl = searchParams.get("category");
-    if (!categoryFromUrl) return;
-
-    if (FILTERS.includes(categoryFromUrl)) {
-      setActiveFilter(categoryFromUrl);
+    if (categorySlug) {
+      setActiveFilter(fromSlug(categorySlug));
+      setPage(1);
+    } else {
+      setActiveFilter("All");
       setPage(1);
     }
-  }, [searchParams]);
+  }, [categorySlug]);
 
-  // Update URL when user changes filter + don't jump to top + scroll to cards
+  // Update URL when user changes filter + don't jump to top + scroll to filters
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
     setPage(1);
@@ -136,7 +148,8 @@ export default function ServiceCardsSection() {
     if (filter === "All") {
       navigate("/service", { replace: true, preventScrollReset: true });
     } else {
-      navigate(`/service?category=${encodeURIComponent(filter)}`, {
+      const slug = toSlug(filter);
+      navigate(`/service/category/${slug}`, {
         replace: true,
         preventScrollReset: true,
       });
@@ -144,7 +157,7 @@ export default function ServiceCardsSection() {
 
     // wait for render then scroll
     requestAnimationFrame(() => {
-      requestAnimationFrame(scrollToCards);
+      requestAnimationFrame(scrollToFilters);
     });
   };
 
@@ -152,7 +165,7 @@ export default function ServiceCardsSection() {
   const filteredCards = useMemo(() => {
     if (activeFilter === "All") return cards;
     return cards.filter((c) => c.category === activeFilter);
-  }, [activeFilter]);
+  }, [activeFilter, cards]);
 
   // Pagination calculations
   const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
@@ -196,7 +209,10 @@ export default function ServiceCardsSection() {
     <section className="w-full bg-[#F7F9FC] font-poppins overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
         {/* FILTER BAR */}
-        <div className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4">
+        <div
+          ref={filterRef}
+          className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4"
+        >
           {/* Mobile: Dropdown */}
           <div className="sm:hidden">
             <label className="block text-[16px] font-semibold text-[#111827] mb-2">
@@ -252,7 +268,6 @@ export default function ServiceCardsSection() {
 
         {/* CARD GRID */}
         <motion.div
-          ref={cardsRef}
           key={`${activeFilter}-${page}`}
           variants={grid}
           initial="hidden"

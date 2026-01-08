@@ -30,12 +30,14 @@ import ScrollToTop from "./components/ScrollToTop";
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         {/* MAIN PAGES */}
         <Route path="/" element={<HomePage />} />
         <Route path="/aboutus" element={<AboutUS />} />
         <Route path="/service" element={<Service />} />
+        {/* NEW: clean URL for service category filter */}
+        <Route path="/service/category/:categorySlug" element={<Service />} />
 
         {/* BLOG ROUTES */}
         <Route path="/blogs" element={<Blogs />} />
@@ -57,18 +59,18 @@ function App() {
           path="/servicecardssection"
           element={<ServiceCardsSection />}
         />
-        <Route path="/contactctacontainer" element={<ContactCTAContainer/>}/>
-        <Route path="/careers" element={<Careers/>}/>
-        <Route path="/contactus" element={<ContactUs/>}/>
-        <Route path="/jobapplicationform" element={<JobApplicationForm/>}/>
-        <Route path="/whatwedosection" element={<WhatWeDoSection/>}/>
+        <Route path="/contactctacontainer" element={<ContactCTAContainer />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/jobapplicationform" element={<JobApplicationForm />} />
+        <Route path="/whatwedosection" element={<WhatWeDoSection />} />
         <Route path="/services/:slug" element={<SubServicePage />} />
-        <Route path="/journeysection" element={<JourneySection/>}/>
-        <Route path="/whytrustsection" element={<WhyTrustSection/>}/>
-        <Route path="/ourteamsection" element={<OurTeamSection/>}/>
-        <Route path="/testimonialssection" element={<TestimonialsSection/>}/>
-        <Route path="/termscondition" element={<TermsCondition/>}/>
-        <Route path="/privacypolicy" element={<PrivacyPolicy/>}/>
+        <Route path="/journeysection" element={<JourneySection />} />
+        <Route path="/whytrustsection" element={<WhyTrustSection />} />
+        <Route path="/ourteamsection" element={<OurTeamSection />} />
+        <Route path="/testimonialssection" element={<TestimonialsSection />} />
+        <Route path="/termscondition" element={<TermsCondition />} />
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
       </Routes>
     </BrowserRouter>
   );
