@@ -65,7 +65,8 @@ export default function OurTeamSection() {
   const [isMobile, setIsMobile] = useState(false);
   const sliderRef = useRef(null);
   const animationRef = useRef(null);
-  const [loopingCards] = useState(createLoopingCards());
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const cardWidth = 300; // Fixed card width for mobile
 
   // Detect mobile screen
@@ -80,40 +81,45 @@ export default function OurTeamSection() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-scroll animation for mobile
+  // Auto-scroll animation for mobile with smooth transition
   useEffect(() => {
-    if (!isMobile || !sliderRef.current) return;
+    if (!isMobile || !sliderRef.current || !isAutoScrolling) return;
 
     const slider = sliderRef.current;
-    const totalCards = loopingCards.length;
-    const singleLoopDistance = teamMembers.length * cardWidth;
-    let currentPosition = 0;
-    let isAnimating = false;
+    const totalCards = teamMembers.length;
+    let currentPosition = currentIndex * cardWidth;
+    let lastTime = 0;
+    const scrollInterval = 16; // ms between scroll updates (smooth scrolling)
+    const totalScrollDistance = totalCards * cardWidth;
 
-    const animateScroll = () => {
-      if (isAnimating) return;
-      isAnimating = true;
+    // 2 seconds loop duration
+    const scrollSpeed = totalScrollDistance / (2000 / scrollInterval); // Adjusting to 2 seconds
 
-      // Reset to middle section when reaching near the end
-      if (currentPosition >= singleLoopDistance * 2) {
-        currentPosition -= singleLoopDistance;
-        slider.scrollLeft = currentPosition;
+    const animateScroll = (timestamp) => {
+      if (!lastTime) lastTime = timestamp;
+      const elapsed = timestamp - lastTime;
+
+      if (elapsed > scrollInterval) {
+        if (currentPosition >= totalScrollDistance) {
+          // Smoothly reset to first card
+          currentPosition = 0;
+          slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          currentPosition += scrollSpeed;
+          slider.scrollTo({
+            left: currentPosition,
+            behavior: 'smooth'
+          });
+        }
+        
+        setCurrentIndex(Math.round(currentPosition / cardWidth) % totalCards);
+        lastTime = timestamp;
       }
 
-      currentPosition += 0.5; // Adjust speed here (lower = slower)
-
-      slider.scrollTo({
-        left: currentPosition,
-        behavior: 'auto'
-      });
-
-      isAnimating = false;
-      animationRef.current = requestAnimationFrame(animateScroll);
+      if (isAutoScrolling) {
+        animationRef.current = requestAnimationFrame(animateScroll);
+      }
     };
-
-    // Start from the middle section for seamless looping
-    currentPosition = singleLoopDistance;
-    slider.scrollLeft = currentPosition;
 
     animationRef.current = requestAnimationFrame(animateScroll);
 
@@ -122,7 +128,41 @@ export default function OurTeamSection() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isMobile, loopingCards.length]);
+  }, [isMobile, isAutoScrolling, currentIndex]);
+
+  // Manual scroll handlers
+  const scrollToIndex = (index) => {
+    if (!sliderRef.current) return;
+    
+    setIsAutoScrolling(false); // Pause auto-scroll when user interacts
+    
+    const newIndex = (index + teamMembers.length) % teamMembers.length;
+    setCurrentIndex(newIndex);
+    
+    sliderRef.current.scrollTo({
+      left: newIndex * cardWidth,
+      behavior: 'smooth'
+    });
+
+    // Resume auto-scroll after 5 seconds of inactivity
+    setTimeout(() => setIsAutoScrolling(true), 5000);
+  };
+
+  // Handle manual scroll
+  const handleManualScroll = () => {
+    if (!sliderRef.current) return;
+    
+    setIsAutoScrolling(false);
+    const scrollLeft = sliderRef.current.scrollLeft;
+    const newIndex = Math.round(scrollLeft / cardWidth);
+    setCurrentIndex(newIndex);
+
+    // Resume auto-scroll after 3 seconds of no manual interaction
+    clearTimeout(animationRef.current);
+    animationRef.current = setTimeout(() => {
+      setIsAutoScrolling(true);
+    }, 3000);
+  };
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FFF5EB] overflow-hidden">
@@ -220,18 +260,23 @@ export default function OurTeamSection() {
         </motion.div>
 
         {/* Mobile Slider */}
-        <div className="lg:hidden">
+        <div className="lg:hidden relative">
+          {/* Cards Slider */}
           <div 
             ref={sliderRef}
             className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
+              scrollBehavior: 'smooth',
             }}
+            onScroll={handleManualScroll}
+            onTouchStart={() => setIsAutoScrolling(false)}
+            onTouchEnd={() => setTimeout(() => setIsAutoScrolling(true), 3000)}
           >
-            {loopingCards.map((member, index) => (
+            {teamMembers.map((member, index) => (
               <motion.div
-                key={`${member.name}-${index}`}
+                key={member.name}
                 className="flex-shrink-0 mx-2 snap-center"
                 style={{ width: `${cardWidth}px` }}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -239,6 +284,7 @@ export default function OurTeamSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ scale: 1.02 }}
+                onClick={() => scrollToIndex(index)}
               >
                 {/* All cards same size on mobile */}
                 <div className="relative overflow-hidden rounded-2xl border-1 border-[#FA9F43] w-full h-[300px] flex flex-col items-center pt-3">
@@ -256,16 +302,6 @@ export default function OurTeamSection() {
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-          
-          {/* Scroll indicator dots */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {teamMembers.map((_, index) => (
-              <div
-                key={index}
-                className="w-2 h-2 rounded-full bg-[#FA9F43] opacity-30"
-              />
             ))}
           </div>
         </div>
