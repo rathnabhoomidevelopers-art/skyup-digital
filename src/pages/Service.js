@@ -143,7 +143,7 @@ export function Service() {
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
           className=" whatsapp-chat
@@ -155,11 +155,11 @@ export function Service() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <MessageCircleIcon className="w-6 h-6 text-white" />
+          <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
-          href="https://wa.me/917090170524"
+          href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
           className=" whatsapp-chat-gtm
@@ -185,12 +185,12 @@ export function Service() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <MessageCircleIcon className="w-5 h-5 text-white" />
+            <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
 
         <a
-          href="tel:+917090170524"
+          href="tel:+918867867775"
           className=" tel-chat
             sm:hidden
             w-12 h-12
@@ -200,11 +200,11 @@ export function Service() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <PhoneIcon className="w-6 h-6 text-white" />
+          <img src="/images/call.svg" className="w-7 h-7 text-white" />
         </a>
 
         <a
-          href="tel:+917090170524"
+          href="tel:+918867867775"
           className=" tel-chat-gtm
             hidden sm:inline-flex
             group no-underline relative items-center
@@ -228,7 +228,7 @@ export function Service() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <PhoneIcon className="w-5 h-5 text-white" />
+            <img src="/images/call.svg" className="w-7 h-7 text-white" />
           </span>
         </a>
       </motion.div>
