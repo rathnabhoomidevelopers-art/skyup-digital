@@ -43,7 +43,7 @@ export function Service() {
   return (
     <div className="font-poppins">
       <Helmet>
-        <title>Results-Driven Digital Marketing Services in Bangalore</title>
+        <title>Results-Driven Digital Marketing Services in Bangalore | SKYUP</title>
         <meta
           name="description"
           content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
