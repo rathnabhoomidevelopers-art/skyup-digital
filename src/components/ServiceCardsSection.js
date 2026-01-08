@@ -222,7 +222,6 @@ export default function ServiceCardsSection() {
   return (
     <section className="w-full bg-[#F7F9FC] font-poppins overflow-hidden">
       <Helmet prioritizeSeoTags>
-        <title>{pageTitle}</title>
         <link rel="canonical" href={canonicalUrl} />
       </Helmet>
 
