@@ -1,27 +1,18 @@
 {
   "redirects": [
     {
-      "source": "https://skyupdigitalsolutions.com/:path*",
+      "source": "/:path*",
+      "has": [
+        { "type": "host", "value": "skyupdigitalsolutions.com" }
+      ],
       "destination": "https://www.skyupdigitalsolutions.com/:path*",
       "permanent": true
     }
   ],
   "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
     { "source": "/api/(.*)", "destination": "https://skyup-backend.vercel.app/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Robots-Tag", "value": "" }
-      ]
-    },
-    {
-      "source": "/contactus",
-      "headers": [
-        { "key": "X-Robots-Tag", "value": "" }
-      ]
-    }
   ]
 }
