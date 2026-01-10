@@ -232,7 +232,6 @@ export function HomePage() {
           name="keywords"
           content="Digital Marketing Agency in Bangalore."
         />
-        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
       </Helmet>
 
