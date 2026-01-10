@@ -1,9 +1,9 @@
-// src/data/servicesData.js
 export const SERVICES = {
   "social-media-marketing": {
     heroTitle: "Social Media Marketing",
     title: "Best Social Media Marketing Company Near Me | SkyUp",
     keyword: "Social Media Marketing Company Near Me",
+    slug:"social-media-marketing",
     description: "SkyUp is the Top social media marketing company near you, offering expert strategies to boost your brand online presence and drive engagement. Contact us today",
     heroDesc:
       "A results-driven social media marketing company supporting businesses with complete social media solutions for visibility, leads, and revenue growth.",
@@ -132,6 +132,7 @@ export const SERVICES = {
     heroTitle: "Search Engine Optimization (SEO)",
     title: "Top SEO Company in Bangalore | Boost Your Online Presence",
     keyword: "seo company in bangalore",
+    slug:"seo",
     description: "Looking for the best SEO company in Bangalore. SkyUp offers expert SEO services to improve your website's ranking, drive traffic, and enhance visibility.",
     heroDesc:"Leading seo company in bangalore offering complete SEO solutions to increase search rankings, organic traffic, and ROI.",
     primaryCta: "Get Started Today",
@@ -260,6 +261,7 @@ export const SERVICES = {
     heroTitle: "Email Marketing Services",
     title: "Email Marketing Services in Bangalore | SkyUp Digital ",
     keyword: "Email Marketing Services in Bangalore",
+    slug:"email-marketing",
     description: "SkyUp offers top-notch email marketing services in Bangalore to enhance your brand's reach, engagement, and conversion. Contact us to grow your business today!",
     heroDesc:
       "Result-driven Email Marketing Services in Bangalore designed to nurture leads, boost engagement, and increase conversions.",
@@ -384,6 +386,7 @@ export const SERVICES = {
   heroTitle: "Best PPC Company In Bangalore",
   title: "Best PPC Company in Bangalore | SkyUp Digital Solutions",
   keyword: "Best PPC company in Bangalore",
+  slug:"google-ads",
   description: "SkyUp is the best PPC company in Bangalore, offering tailored paid advertising strategies to drive targeted traffic and maximize ROI for your business.",
   heroDesc:
     "Achieve faster results with expert Google Ads management. As the Best PPC Company In Bangalore, we combine smart targeting, compelling creatives, and continuous optimization for maximum performance.",
@@ -512,6 +515,7 @@ export const SERVICES = {
   heroTitle: "UI/UX Design Company in Bangalore",
   title: "UI/UX Design Company in Bangalore by SkyUp Digital Solutions",
   keyword: "UI/UX Design Company in Bangalore",
+  slug:"ui-ux-design",
   description: "SkyUp is a Top UI/UX design company in Bangalore, creating user-centric designs that elevate your brand’s experience| Get in touch for innovative design solutions",
   heroDesc:
     "A professional UI/UX Design Company in Bangalore delivering clean, user-friendly designs that enhance experience and engagement across digital platforms.",
@@ -640,6 +644,7 @@ export const SERVICES = {
   heroTitle: "Website Development Services in Bangalore",
   title: "Best Website Development Company in Bangalore | SkyUp",
   keyword: "Website Development Company in Bangalore",
+  slug:"website-development",
   description: "SkyUp is the best website development company in Bangalore, specializing in custom websites, E-Commerce solutions, & SEO services to boost your online presence.",
   heroDesc:
     "A trusted Website Development Company in Bangalore delivering fast, secure, and scalable websites tailored to business needs, user experience, and modern web standards.",
@@ -768,6 +773,7 @@ export const SERVICES = {
   heroTitle: "Graphic Design",
   title: "Creative Graphics Design Services | SkyUp Digital Solutions",
   keyword: "Creative Graphics Design",
+  slug:"graphic-design",
   description: "SkyUp offers innovative and creative graphics design services to elevate your brand's identity. Get custom designs that captivate and engage your audience!",
   heroDesc:
     "Graphics Design that brings your brand to life with visually appealing, impactful, and consistent designs across all digital and print platforms.",
@@ -895,6 +901,7 @@ export const SERVICES = {
   heroTitle: "Branding Solutions for Growing Businesses",
   title: "Top Branding Agency in Bangalore | SkyUp - Boost Your Brand",
   keyword: "Branding Agency in Bangalore",
+  slug: "branding",
   description: "SkyUp is a leading branding agency in Bangalore, offering expert solutions to elevate your brand’s identity, visibility, and growth. Get in touch today!",
   heroDesc:
     "SKYUP Digital Solutions is a Bangalore-based branding agency helping businesses build strong brand identities through strategy, design, and digital-first thinking.",
@@ -1021,6 +1028,7 @@ export const SERVICES = {
   heroTitle: "AI Automation",
   title: "Top AI Companies in Bangalore | SkyUp Digital Solutions",
   keyword: "Top Ai Companies in Bangalore",
+  slug: "ai-automation",
   description: "SkyUp is one of the top AI companies in Bangalore, delivering cutting-edge AI solutions to boost your business growth. Contact us for advanced AI services today",
   heroDesc:
     "SKYUP Intelligent AI automation for businesses, recognized among Top AI Companies in Bangalore.",
@@ -1143,6 +1151,7 @@ export const SERVICES = {
 
 "machine-learning": {
   heroTitle: "Machine Learning",
+  slug: "machine-learning",
   heroDesc:
     "SKYUP: Intelligent AI automation for businesses, recognized among Top AI Companies in Bangalore.",
   primaryCta: "Get Started Today",

@@ -8,8 +8,6 @@ import Footer from "../components/Footer";
 import { motion } from "framer-motion";
 import {
   MessageSquareDotIcon,
-  MessageCircleIcon,
-  PhoneIcon,
   CircleCheckBigIcon,
 } from "lucide-react";
 import JourneySection from "../components/JourneySection";
