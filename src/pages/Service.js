@@ -6,10 +6,8 @@ import ServiceCardsSection from "../components/ServiceCardsSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import { Link, useSearchParams } from "react-router-dom";
-import { MessageCircleIcon, PhoneIcon } from "lucide-react";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
-const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
 
 const fadeUp = {
   hidden: { opacity: 0, y: 26 },
