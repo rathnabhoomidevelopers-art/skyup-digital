@@ -6,10 +6,7 @@ import Header from "../components/Header";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import {
-  MessageSquareDotIcon,
-  CircleCheckBigIcon,
-} from "lucide-react";
+import { MessageSquareDotIcon, CircleCheckBigIcon,} from "lucide-react";
 import JourneySection from "../components/JourneySection";
 import WhyTrustSkyUp from "../components/WhyTrustSection";
 
