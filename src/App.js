@@ -36,7 +36,6 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/aboutus" element={<AboutUS />} />
         <Route path="/service" element={<Service />} />
-        {/* NEW: clean URL for service category filter */}
         <Route path="/service/category/:categorySlug" element={<Service />} />
 
         {/* BLOG ROUTES */}
