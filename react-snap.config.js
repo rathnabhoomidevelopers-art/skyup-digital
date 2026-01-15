@@ -4,6 +4,7 @@ module.exports = {
   
   "include": [
     "/",
+    "/homepage",
     "/aboutus",
     "/service",
     "/blogs",
