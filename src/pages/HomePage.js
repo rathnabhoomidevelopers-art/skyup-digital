@@ -4,8 +4,6 @@ import {
   Settings,
   CheckCircle2,
   SearchCheckIcon,
-  MessageCircleIcon,
-  PhoneIcon,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
