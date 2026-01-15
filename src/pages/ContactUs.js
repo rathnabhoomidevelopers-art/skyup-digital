@@ -96,13 +96,24 @@ export function ContactUs() {
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);
-    } catch (err) {
+      } catch (err) {
       console.error("Contact submit error:", err);
+
+      const errorMessage =
+        err &&
+        err.response &&
+        err.response.data &&
+        err.response.data.message
+          ? err.response.data.message
+          : "Failed to send message. Please try again.";
+
       setStatus({
         type: "error",
-        message: err?.response?.data?.message || "Failed to send message. Please try again.",
+        message: errorMessage,
       });
-    } finally {
+    }
+
+    finally {
       setSubmitting(false);
     }
   };

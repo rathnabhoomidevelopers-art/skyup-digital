@@ -32,18 +32,14 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        {/* MAIN PAGES */}
         <Route path="/" element={<HomePage />} />
         <Route path="/aboutus" element={<AboutUS />} />
         <Route path="/service" element={<Service />} />
         <Route path="/service/category/:categorySlug" element={<Service />} />
         <Route path="/homepage" element={<HomePage/>}/>
-        {/* BLOG ROUTES */}
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogscontainer" element={<BlogsContainer />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
-
-        {/* COMPONENT TEST ROUTES (optional / dev only) */}
         <Route path="/header" element={<Header />} />
         <Route path="/herosection" element={<HeroSection />} />
         <Route path="/carousel" element={<Carousel />} />
