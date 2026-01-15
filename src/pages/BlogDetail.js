@@ -165,7 +165,7 @@ export default function BlogDetail() {
               <span className="h-7 w-7 rounded-full border border-slate-200 flex items-center justify-center">
                 <ChevronLeft className="h-4 w-4" />
               </span>
-              Back to Blog
+              Back&nbsp;to&nbsp;Blog
             </Link>
 
             {/* category */}
