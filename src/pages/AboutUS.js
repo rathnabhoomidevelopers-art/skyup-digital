@@ -9,7 +9,6 @@ import {
   MessageCircleIcon,
   PhoneIcon,
 } from "lucide-react";
-import OurClientsSection from "../components/OurClientsSection";
 import OurTeamSection from "../components/OurTeamSection";
 
 const viewport = { once: true, amount: 0.25 };
