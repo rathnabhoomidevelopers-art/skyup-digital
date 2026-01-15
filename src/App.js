@@ -37,7 +37,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUS />} />
         <Route path="/service" element={<Service />} />
         <Route path="/service/category/:categorySlug" element={<Service />} />
-
+        <Route path="/homepage" element={<HomePage/>}/>
         {/* BLOG ROUTES */}
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogscontainer" element={<BlogsContainer />} />
