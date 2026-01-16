@@ -16,4 +16,6 @@ if (typeof window !== 'undefined') {
   };
 }
 
-export default {};
+const emptyObject = {};  // Assigning an empty object to a variable
+
+export default emptyObject;  // Exporting the variable
