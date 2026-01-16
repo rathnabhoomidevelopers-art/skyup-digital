@@ -395,7 +395,7 @@ function Card({ title, desc, badge = "Featured Service", icon, variants, onClick
       <div className="h-11 w-11 rounded-xl flex items-center justify-center">
         <img
           src={icon}
-          alt=""
+          alt="icon"
           className="h-7 w-7 sm:h-[48px] sm:w-[48px]"
           loading="lazy"
           draggable={false}

@@ -389,7 +389,7 @@ export function ContactUs() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
+          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
         </a>
 
         <a
@@ -419,7 +419,7 @@ export function ContactUs() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" className="w-7 h-7 text-white" />
+            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
           </span>
         </a>
 
@@ -434,7 +434,7 @@ export function ContactUs() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" className="w-7 h-7 text-white" />
+          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
         </a>
 
         <a
@@ -462,7 +462,7 @@ export function ContactUs() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" className="w-7 h-7 text-white" />
+            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
           </span>
         </a>
       </motion.div>

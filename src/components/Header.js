@@ -155,7 +155,7 @@ export default function Header() {
                     rel="noopener noreferrer"
                     className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
                   >
-                    <img src={Icon}  />
+                    <img src={Icon} alt="icon" />
                   </a>
                 ))}
               </div>
@@ -242,7 +242,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
             >
-              <img src={Icon} alt="" />
+              <img src={Icon} alt="icon" />
             </a>
           ))}
         </div>
