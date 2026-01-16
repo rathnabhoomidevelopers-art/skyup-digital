@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon, MessageCircleIcon, PhoneIcon} from "lucide-react";
-import React, { useMemo, useState } from "react";
+import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon} from "lucide-react";
+import { useState } from "react";
 import axios from "axios";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";

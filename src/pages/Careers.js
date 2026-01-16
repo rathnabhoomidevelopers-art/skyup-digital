@@ -1,10 +1,10 @@
-// src/pages/Careers.jsx
+
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
-import { MapPin, Clock, MessageCircleIcon, PhoneIcon } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import JobApplicationFormModal from "../components/JobApplicationForm";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
