@@ -1,5 +1,3 @@
-// src/components/JourneySection.jsx
-import React from "react";
 
 export default function JourneySection({ title, subTitle, steps }) {
   if (!steps || steps.length === 0) return null;

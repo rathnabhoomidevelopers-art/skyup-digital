@@ -4,26 +4,13 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { MessageCircleIcon, PhoneIcon} from "lucide-react";
 
 const MotionLink = motion(Link);
-const viewport = { once: true, amount: 0.25 };
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
-const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
 const fadeUp = {
   hidden: { opacity: 0, y: 26 },
   show: { opacity: 1, y: 0, transition: smoothSpring },
-};
-
-const fadeLeft = {
-  hidden: { opacity: 0, x: -26 },
-  show: { opacity: 1, x: 0, transition: smoothSpring },
-};
-
-const fadeRight = {
-  hidden: { opacity: 0, x: 26 },
-  show: { opacity: 1, x: 0, transition: smoothSpring },
 };
 
 const staggerWrap = {
@@ -36,10 +23,6 @@ const staggerWrap = {
   },
 };
 
-const softScale = {
-  hidden: { opacity: 0, scale: 0.98, y: 18 },
-  show: { opacity: 1, scale: 1, y: 0, transition: smoothSpringFast },
-};
 
 export function Blogs(){
     return(

@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Carousel() {
   const projects = [

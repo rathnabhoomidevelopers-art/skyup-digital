@@ -1,4 +1,3 @@
-// src/components/FAQSection.jsx
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";

@@ -1,4 +1,4 @@
-// src/components/ServiceCardsSection.jsx
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";

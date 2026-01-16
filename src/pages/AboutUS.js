@@ -5,10 +5,6 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import WhatMakesUsDifferentSection from "../components/WhatMakesUsDifferentSection";
 import { Link } from "react-router-dom";
-import {
-  MessageCircleIcon,
-  PhoneIcon,
-} from "lucide-react";
 import OurTeamSection from "../components/OurTeamSection";
 
 const viewport = { once: true, amount: 0.25 };
