@@ -38,7 +38,7 @@ function CardIcon({ icon }) {
     return (
       <img
         src={icon}
-        alt=""
+        alt="icon"
         className="h-10 w-10"
         loading="lazy"
         draggable={false}

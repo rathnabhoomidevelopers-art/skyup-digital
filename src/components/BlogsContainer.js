@@ -1,16 +1,8 @@
-import { ChevronLeftIcon, ChevronRightIcon, UserCircle2Icon } from "lucide-react";
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BLOGS } from "../data/blogs";
 
-const CATEGORIES = [
-  "All Posts",
-  "Digital Marketing company",
-  "Google Ads Agency",
-  "Web Design Company",
-  "SEO Agency",
-  "SEM Agency",
-];
 
 export default function BlogsContainer() {
   const [activeCategory, setActiveCategory] = useState("All Posts");
