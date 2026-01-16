@@ -93,6 +93,7 @@ export function ContactUs() {
       };
 
       const res = await axios.post(`${API_BASE}/add-contact`, payload);
+      console.log(res.data); 
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);

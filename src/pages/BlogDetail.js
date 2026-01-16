@@ -7,11 +7,8 @@ import ContactCTAContainer from "../components/ContactCTAContainer";
 import { motion } from "framer-motion";
 import {
   Facebook,
-  Twitter,
   Youtube,
   MessageCircle,
-  MessageCircleIcon,
-  PhoneIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 

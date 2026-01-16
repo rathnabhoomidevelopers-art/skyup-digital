@@ -1,4 +1,4 @@
- import { BarChart3, Palette, Code2, Bot, ChevronRightIcon } from "lucide-react";
+ import { ChevronRightIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const services = [
