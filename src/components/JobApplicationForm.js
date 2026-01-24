@@ -234,7 +234,7 @@ export default function JobApplicationFormModal({
                         value={form.firstName}
                         onChange={(e) => setField("firstName", e.target.value)}
                         error={errors.firstName}
-                        placeholder="Shashi"
+                        placeholder=""
                       />
                     </div>
 
@@ -244,7 +244,7 @@ export default function JobApplicationFormModal({
                         value={form.lastName}
                         onChange={(e) => setField("lastName", e.target.value)}
                         error={errors.lastName}
-                        placeholder="Narat"
+                        placeholder=""
                       />
                     </div>
 
@@ -254,7 +254,7 @@ export default function JobApplicationFormModal({
                         value={form.email}
                         onChange={(e) => setField("email", e.target.value)}
                         error={errors.email}
-                        placeholder="shashi@gmail.com"
+                        placeholder=""
                         type="email"
                       />
                     </div>
@@ -265,7 +265,7 @@ export default function JobApplicationFormModal({
                         value={form.phone}
                         onChange={(e) => setField("phone", e.target.value)}
                         error={errors.phone}
-                        placeholder="9876543210"
+                        placeholder=""
                         inputMode="numeric"
                       />
                     </div>
@@ -276,7 +276,7 @@ export default function JobApplicationFormModal({
                         value={form.street}
                         onChange={(e) => setField("street", e.target.value)}
                         error={errors.street}
-                        placeholder="123 Main Road,"
+                        placeholder=""
                       />
                     </div>
 
@@ -286,7 +286,7 @@ export default function JobApplicationFormModal({
                         value={form.city}
                         onChange={(e) => setField("city", e.target.value)}
                         error={errors.city}
-                        placeholder="Bangalore"
+                        placeholder=""
                       />
                     </div>
 
@@ -296,7 +296,7 @@ export default function JobApplicationFormModal({
                         value={form.state}
                         onChange={(e) => setField("state", e.target.value)}
                         error={errors.state}
-                        placeholder="Karnataka"
+                        placeholder=""
                       />
                     </div>
 
@@ -306,7 +306,7 @@ export default function JobApplicationFormModal({
                         value={form.zip}
                         onChange={(e) => setField("zip", e.target.value)}
                         error={errors.zip}
-                        placeholder="560078"
+                        placeholder=""
                         inputMode="numeric"
                       />
                     </div>
