@@ -362,7 +362,7 @@ export function ContactUs() {
             >
               <iframe
                 title="Bengaluru Map"
-                src="https://www.google.com/maps?q=Bengaluru&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.642541195306!2d77.58983727454792!3d13.05841041297016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17ef0f91329b%3A0xa40c9099ad3aab2b!2sSKYUP%20Digital%20Solutions!5e0!3m2!1sen!2sus!4v1769245633808!5m2!1sen!2sus"
                 className="w-full h-[220px] sm:h-[280px] lg:h-[320px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
