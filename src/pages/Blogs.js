@@ -23,60 +23,63 @@ const staggerWrap = {
   },
 };
 
+export function Blogs() {
+  return (
+    <div className="font-poppins">
+      <Helmet>
+        <title>
+          Digital Marketing vs Traditional Marketing: What You Should Know
+        </title>
+        <meta
+          name="description"
+          content="Discover the difference between digital marketing and traditional marketing to enhance strategies and drive better business results."
+        />
+        <meta
+          name="keywords"
+          content="Difference between digital marketing and traditional marketing"
+        />
+        <link
+          rel="canonical"
+          href="https://www.skyupdigitalsolutions.com/blogs"
+        />
+      </Helmet>
+      <Header />
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={staggerWrap}
+        style={{
+          backgroundImage: "url('/images/blogpage_banner.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="h-[221px] sm:h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center"
+      >
+        <div className="text-blue-600 font-semibold text-[18px]">Blogs Hub</div>
+        <motion.h1
+          variants={fadeUp}
+          className="text-center mt-2 lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
+        >
+          Digital Growth <span className="text-[#0037CA]">Insights</span>
+        </motion.h1>
 
-export function Blogs(){
-    return(
-        <div className="font-poppins">
-          <Helmet>
-            <title>Digital Marketing vs Traditional Marketing: What You Should Know</title>
-            <meta
-              name="description"
-              content="Discover the difference between digital marketing and traditional marketing to enhance strategies and drive better business results."
-            />
-            <meta
-              name="keywords"
-              content="Difference between digital marketing and traditional marketing"
-            />
-            <link rel="canonical" href="https://www.skyupdigitalsolutions.com/blogs" />
-          </Helmet>
-            <Header/>
-            <motion.div
-                    initial="hidden"
-                    animate="show"
-                    variants={staggerWrap}
-                    style={{
-                      backgroundImage: "url('/images/blogpage_banner.webp')",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                    className="h-[221px] sm:h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center"
-                >
-                    <div className="text-blue-600 font-semibold text-[18px]">
-                        Blogs Hub
-                    </div>
-                    <motion.h1
-                    variants={fadeUp}
-                    className="text-center mt-2 lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
-                    >
-                    Digital Growth <span className="text-[#0037CA]">Insights</span>
-                    </motion.h1>
-
-                    <motion.p
-                    variants={fadeUp}
-                    className="text-center text-[12px] px-3 sm:text-[18px] mt-2 lg:text-[18px]"
-                    >
-                    Clear guidance, practical tips, and market updates—with added strategies for the Bangalore region.
-                    </motion.p>
-                </motion.div>
-                <BlogsContainer/>
-               <div className="bg-[#FFF8F0] mt-6 py-1">
-                 <motion.section
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={fadeUp}
-                        className="
+        <motion.p
+          variants={fadeUp}
+          className="text-center text-[12px] px-3 sm:text-[18px] mt-2 lg:text-[18px]"
+        >
+          Clear guidance, practical tips, and market updates—with added
+          strategies for the Bangalore region.
+        </motion.p>
+      </motion.div>
+      <BlogsContainer />
+      <div className="bg-[#FFF8F0] mt-6 py-1">
+        <motion.section
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+          className="
                           mx-auto
                           m-[60px]
                           sm:m-[70px]
@@ -85,22 +88,23 @@ export function Blogs(){
                           px-3
                           sm:max-w-[800px]
                         "
-                      >
-                        <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
-                          Ready to Grow Faster?
-                        </h2>
-                
-                        <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-                          Serving companies of every scale. Connect with us to start the conversation.
-                        </p>
-                
-                        <div className="mt-8 flex justify-center">
-                          <MotionLink
-                            to="/contactus"
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                            className="
+        >
+          <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
+            Ready to Grow Faster?
+          </h2>
+
+          <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
+            Serving companies of every scale. Connect with us to start the
+            conversation.
+          </p>
+
+          <div className="mt-8 flex justify-center">
+            <MotionLink
+              to="/contactus"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 22 }}
+              className="
                               bg-[#0037CA] text-white
                               font-semibold text-sm sm:text-base
                               px-6 py-2.5
@@ -111,12 +115,12 @@ export function Blogs(){
                               inline-flex items-center justify-center
                               no-underline
                             "
-                          >
-                            GET STARTED
-                          </MotionLink>
-                        </div>
-                      </motion.section>
-               </div>
+            >
+              GET STARTED
+            </MotionLink>
+          </div>
+        </motion.section>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -136,7 +140,11 @@ export function Blogs(){
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -166,7 +174,11 @@ export function Blogs(){
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -181,7 +193,11 @@ export function Blogs(){
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -209,11 +225,15 @@ export function Blogs(){
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>
-                <Footer/>
-        </div>
-    )
+      <Footer />
+    </div>
+  );
 }
