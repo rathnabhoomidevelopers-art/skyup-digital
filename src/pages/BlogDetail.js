@@ -7,6 +7,7 @@ import ContactCTAContainer from "../components/ContactCTAContainer";
 import { motion } from "framer-motion";
 import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const slugify = (str = "") =>
   str
@@ -105,15 +106,20 @@ export default function BlogDetail() {
     );
   }
 
+  const canonicalUrl = `https://www.skyupdigitalsolutions.com/blogs/${slug}`;
+
   return (
     <section className="w-full bg-white font-poppins">
+      <Helmet>
+        <title>{blog.title}</title>
+        <meta name="description" content={blog.description} />
+        <meta name="keywords" content={blog.Keywords} />
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
+      
       <Header />
-
-      {/* Main scrolling region including side elements and CTA */}
       <div className="relative">
-        {/* Content row with left icons, main content, and TOC */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
-          {/* Left social media icons (desktop only) */}
           <div className="hidden lg:block w-[80px] mr-6">
             <div className="sticky top-64 flex flex-col gap-4">
               <a
