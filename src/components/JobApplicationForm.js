@@ -166,7 +166,7 @@ export default function JobApplicationFormModal({
       alert("Application submitted successfully!");
       resetForm();
       onClose?.();
-      navigate("/thank-you", { state: { name: form.firstName, phone: form.phone } });
+      navigate("/thankyou", { state: { name: form.firstName, phone: form.phone } });
     } catch (err) {
       console.error("Submit error:", err);
       alert(err?.response?.data?.message || "Submission failed. Please try again.");

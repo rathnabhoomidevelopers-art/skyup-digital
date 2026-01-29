@@ -99,7 +99,7 @@ export function ContactUs() {
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);
-      navigate("/thank-you", { state: { name: form.name, phone: form.mobile } });
+      navigate("/thankyou", { state: { name: form.name, phone: form.mobile } });
       } catch (err) {
       console.error("Contact submit error:", err);
 
