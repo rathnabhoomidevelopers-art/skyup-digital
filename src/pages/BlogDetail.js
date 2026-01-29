@@ -106,7 +106,7 @@ export default function BlogDetail() {
     );
   }
 
-  const canonicalUrl = `https://www.skyupdigitalsolutions.com/blogs/${slug}`;
+  const canonicalUrl = `https://www.skyupdigitalsolutions.com/blog/${slug}`;
 
   return (
     <section className="w-full bg-white font-poppins">
