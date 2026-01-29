@@ -26,6 +26,7 @@ import TestimonialsSection from "./components/TestimonialsSection";
 import TermsCondition from "./pages/Terms&Condition";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
+import ThankYou from "./components/ThankYou";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
         <Route path="/testimonialssection" element={<TestimonialsSection />} />
         <Route path="/termscondition" element={<TermsCondition />} />
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/thankyou" element={<ThankYou/>}/>
       </Routes>
     </BrowserRouter>
   );

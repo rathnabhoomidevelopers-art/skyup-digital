@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
 
@@ -45,6 +46,7 @@ export default function JobApplicationFormModal({
   onClose,
   selectedJob = "",
 }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState(initial);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -164,6 +166,7 @@ export default function JobApplicationFormModal({
       alert("Application submitted successfully!");
       resetForm();
       onClose?.();
+      navigate("/thank-you", { state: { name: form.firstName, phone: form.phone } });
     } catch (err) {
       console.error("Submit error:", err);
       alert(err?.response?.data?.message || "Submission failed. Please try again.");

@@ -5,11 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactCTAContainer from "../components/ContactCTAContainer";
 import { motion } from "framer-motion";
-import {
-  Facebook,
-  Youtube,
-  MessageCircle,
-} from "lucide-react";
+import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const slugify = (str = "") =>
@@ -27,7 +23,12 @@ export default function BlogDetail() {
 
   const sections = blog?.sections?.length
     ? blog.sections
-    : [{ type: "p", text: "Content not added yet. Add sections in src/data/blogs.js" }];
+    : [
+        {
+          type: "p",
+          text: "Content not added yet. Add sections in src/data/blogs.js",
+        },
+      ];
 
   // Build TOC from h3 headings
   const toc = useMemo(() => {
@@ -64,7 +65,9 @@ export default function BlogDetail() {
       (entries) => {
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0))[0];
+          .sort(
+            (a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0),
+          )[0];
 
         if (visible?.target?.id) setActiveId(visible.target.id);
       },
@@ -72,7 +75,7 @@ export default function BlogDetail() {
         root: null,
         rootMargin: "-25% 0px -65% 0px",
         threshold: [0.1, 0.25, 0.5, 0.75, 1],
-      }
+      },
     );
 
     headingEls.forEach((el) => io.observe(el));
@@ -110,7 +113,6 @@ export default function BlogDetail() {
       <div className="relative">
         {/* Content row with left icons, main content, and TOC */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
-
           {/* Left social media icons (desktop only) */}
           <div className="hidden lg:block w-[80px] mr-6">
             <div className="sticky top-64 flex flex-col gap-4">
@@ -173,9 +175,9 @@ export default function BlogDetail() {
             </div>
 
             {/* title */}
-            <div className="mt-3 h1 text-[22px] sm:text-[28px] fw-bold text-[#111827] leading-tight">
+            <h1 className="mt-3 h1 text-[22px] sm:text-[28px] fw-bold text-[#111827] leading-tight">
               {blog.title}
-            </div>
+            </h1>
 
             {/* meta */}
             <div className="mt-2 text-[12px] text-slate-500 flex items-center gap-3">
@@ -249,6 +251,41 @@ export default function BlogDetail() {
                     );
                   }
 
+                  if (s.type === "p_with_link") {
+                    return (
+                      <p
+                        key={i}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+                      >
+                        {s.textBefore}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.textAfter}
+                      </p>
+                    );
+                  }
+
+                  if (s.type === "ul") {
+                    return (
+                      <ul
+                        key={i}
+                        className="list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800"
+                      >
+                        {s.text.map((item, idx) => (
+                          <li key={idx} className="leading-relaxed">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  }
+
                   return (
                     <p
                       key={i}
@@ -309,7 +346,6 @@ export default function BlogDetail() {
           }
           subtitle="Our team can implement every strategy discussed here and help your business scale—fast and effectively."
         />
-
       </div>
 
       <motion.div
@@ -331,7 +367,11 @@ export default function BlogDetail() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -361,7 +401,11 @@ export default function BlogDetail() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -376,7 +420,11 @@ export default function BlogDetail() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -404,7 +452,11 @@ export default function BlogDetail() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>

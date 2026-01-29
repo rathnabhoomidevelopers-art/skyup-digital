@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon} from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
 
@@ -50,6 +51,7 @@ const initialForm = {
 };
 
 export function ContactUs() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -97,6 +99,7 @@ export function ContactUs() {
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);
+      navigate("/thank-you", { state: { name: form.name, phone: form.mobile } });
       } catch (err) {
       console.error("Contact submit error:", err);
 
