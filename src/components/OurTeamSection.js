@@ -10,7 +10,7 @@ const teamMembers = [
   },
   {
     name: "Md Ahmed",
-    role: "Digital Marketing Lead",
+    role: "SEO Specialist",
     image: "/images/Ahmed.webp"
   },
   {
