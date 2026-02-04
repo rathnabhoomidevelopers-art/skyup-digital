@@ -519,10 +519,12 @@ export const BLOGS = [
       { type: "h3", text: "3. Review Their Portfolio and Case Studies" },
        { type: "h3", text: "Key Insights" },
       {
-        type: "ul",
-        text: ["SkyUp Digital Solutions boasts a robust portfolio showcasing successful campaigns for businesses both large and small, from local startups to global enterprises."],
+        type: "p_with_link",
+        textBefore:
+          "SkyUp Digital Solutions boasts a robust portfolio showcasing successful campaigns for businesses both large and small, from local startups to ",
+        linkText: "global enterprises.",
+        href: "https://en.wikipedia.org/wiki/Special:Search?search=global+enterprises.&go=Go&ns0=1",
       },
-
       { type: "h3", text: "Choosing the Right Digital Marketing Agency: Key Criteria" },
      
       { type: "h3", text: "4. Check for Transparency and Clear Communication" },
@@ -582,10 +584,14 @@ export const BLOGS = [
         text: "Conclusion",
       },
       {
-        type: "p",
-        text: "As a reputable digital marketing agency in Bangalore, SkyUp Digital Solutions is dedicated to providing excellent digital strategies for companies of all sizes in 2026. It takes careful consideration, open communication, and a common goal for success to select the best digital marketing agency. You will be well-equipped to make an informed choice that benefits your company if you adhere to the advice in this guide.",
+        type: "p_with_link",
+        textBefore:
+          "As a reputable digital marketing agency in Bangalore, ",
+        linkText: "SkyUp Digital Solutions",
+        href: "https://www.skyupdigitalsolutions.com/",
+        textAfter: " is dedicated to providing excellent digital strategies for companies of all sizes in 2026. It takes careful consideration, open communication, and a common goal for success to select the best digital marketing agency. You will be well-equipped to make an informed choice that benefits your company if you adhere to the advice in this guide.",
       },
-            {
+      {
         type: "p",
         text: "To guarantee a successful collaboration, take the time to consider your objectives, examine portfolios, and assess the agency's experience. The right agency is the first step toward your company's digital success, so don't accept anything less.",
       },
