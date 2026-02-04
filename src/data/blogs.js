@@ -436,9 +436,9 @@ export const BLOGS = [
     Keywords: "Digital Marketing Agency in Bangalore",
     description:"Unlock your business potential with expert digital marketing services in Bangalore. Drive traffic, generate leads, and grow your brand with proven strategies.",
     author: "SKYUP Digital",
-    image: "/images/blog_2.webp",
-    heroImage: "/images/blog_2.webp",
-    coverImage: "/images/blog_2.webp",
+    image: "/images/blog2.webp",
+    heroImage: "/images/blog2.webp",
+    coverImage: "/images/blog2.webp",
     tags: [
       "Digital Marketing Agency",
       "Bangalore",
