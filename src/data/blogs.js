@@ -456,7 +456,7 @@ export const BLOGS = [
       {
         type: "p_with_link",
         textBefore: "In the year 2026, SkyUp Digital Solutions, one of the",
-        linkText: "best Digital Marketing Agencies in Bangalore,",
+        linkText: " best Digital Marketing Agencies in Bangalore,",
         href: "https://www.skyupdigitalsolutions.com/",
         textAfter: " is at the forefront of the revolution in the way businesses are grown online. Selecting the right digital marketing agency is imperative for achieving success in the rapidly growing competitive market. However, with the presence of numerous digital marketing agencies that provide similar services, the question is how to select the one that meets your specific business requirements. In this extensive guide, we will walk you through the crucial points that need to be considered while choosing the best Digital Marketing Agency Near Me.",
       },
