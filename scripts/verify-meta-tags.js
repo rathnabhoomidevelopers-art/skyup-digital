@@ -1,67 +1,50 @@
 const fs = require('fs');
 const path = require('path');
 
-const buildDir = path.join(__dirname, '../build');
+console.log('🔍 Verifying meta tags in build/index.html...\n');
 
-// Pages to check
-const pages = [
-  'index.html',
-  'aboutus/index.html',
-  'service/index.html',
-  'blogs/index.html',
-  'contactus/index.html'
-];
+const indexPath = path.join(__dirname, '../build/index.html');
 
-console.log('🔍 Verifying meta tags in pre-rendered HTML...\n');
+if (!fs.existsSync(indexPath)) {
+  console.log('❌ build/index.html not found');
+  process.exit(1);
+}
 
-let allValid = true;
+const html = fs.readFileSync(indexPath, 'utf-8');
 
-pages.forEach(page => {
-  const filePath = path.join(buildDir, page);
-  
-  if (!fs.existsSync(filePath)) {
-    console.log(`❌ ${page} - File not found`);
-    allValid = false;
-    return;
+const checks = {
+  'Title tag': /<title>.*?<\/title>/,
+  'Meta description': /<meta\s+name="description"/,
+  'Canonical URL': /<link\s+rel="canonical"/,
+  'OG Title': /<meta\s+property="og:title"/,
+  'OG Description': /<meta\s+property="og:description"/,
+  'OG Image': /<meta\s+property="og:image"/
+};
+
+let allPassed = true;
+
+console.log('📄 index.html');
+Object.entries(checks).forEach(([name, regex]) => {
+  if (regex.test(html)) {
+    console.log(`   ✅ ${name}`);
+  } else {
+    console.log(`   ❌ ${name}`);
+    allPassed = false;
   }
-
-  const html = fs.readFileSync(filePath, 'utf8');
-  
-  // Check for essential meta tags
-  const checks = {
-    'Title tag': /<title>.*<\/title>/.test(html),
-    'Meta description': /<meta name="description"/.test(html),
-    'Canonical URL': /<link rel="canonical"/.test(html),
-    'OG Title': /<meta property="og:title"/.test(html),
-    'OG Description': /<meta property="og:description"/.test(html),
-    'OG Image': /<meta property="og:image"/.test(html),
-  };
-
-  console.log(`📄 ${page}`);
-  
-  let pageValid = true;
-  Object.entries(checks).forEach(([name, passed]) => {
-    const status = passed ? '✅' : '❌';
-    console.log(`   ${status} ${name}`);
-    if (!passed) {
-      pageValid = false;
-      allValid = false;
-    }
-  });
-  
-  // Extract and show title
-  const titleMatch = html.match(/<title>(.*?)<\/title>/);
-  if (titleMatch) {
-    console.log(`   📝 Title: "${titleMatch[1]}"`);
-  }
-  
-  console.log('');
 });
 
-if (allValid) {
-  console.log('✅ All pages have valid meta tags!\n');
+// Extract and display title
+const titleMatch = html.match(/<title>(.*?)<\/title>/);
+if (titleMatch) {
+  console.log(`   📝 Title: "${titleMatch[1]}"`);
+}
+
+console.log('');
+
+if (allPassed) {
+  console.log('✅ All meta tags verified successfully!');
   process.exit(0);
 } else {
-  console.log('❌ Some pages are missing meta tags\n');
+  console.log('❌ Some meta tags are missing');
   process.exit(1);
 }
