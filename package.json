@@ -1,4 +1,7 @@
 {
+  "overrides": {
+  "puppeteer": "npm:puppeteer-core@22.0.0"
+},
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -34,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "prebuild": "node scripts/generate-sitemap.js || echo 'Sitemap generation skipped'",
-    "build": "react-scripts build",
+    "build": "react-scripts build && react-snap",
     "postbuild": "echo 'Build completed successfully!'",
     "build:no-snap": "react-scripts build",
     "verify-meta": "node scripts/verify-meta-tags.js",
