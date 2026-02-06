@@ -27,6 +27,7 @@ import TermsCondition from "./pages/Terms&Condition";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
 import ThankYou from "./components/ThankYou";
+import DynamicBlog from "./pages/DynamicBlog";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="/termscondition" element={<TermsCondition />} />
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
         <Route path="/thankyou" element={<ThankYou/>}/>
+        <Route path="/dynamicblog" element={<DynamicBlog/>}/>
       </Routes>
     </BrowserRouter>
   );

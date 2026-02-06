@@ -1,4 +1,3 @@
-
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
@@ -9,7 +8,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import './setupPreRender';
 
 const rootElement = document.getElementById('root');
-
 // Check if HTML was pre-rendered by react-snap
 if (rootElement.hasChildNodes()) {
   // Hydrate the pre-rendered HTML - this is the React 18 way
