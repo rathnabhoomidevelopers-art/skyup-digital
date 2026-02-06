@@ -128,7 +128,7 @@ export const SERVICES = {
     ],
   },
 
-  "seo": {
+  "seo-company-in-bangalore": {
     heroTitle: "Search Engine Optimization (SEO)",
     title: "Top SEO Company in Bangalore | Boost Your Online Presence",
     keyword: "seo company in bangalore",
@@ -257,7 +257,7 @@ export const SERVICES = {
   },
 
 
-  "email-marketing": {
+  "email-marketing-company-in-bangalore": {
     heroTitle: "Email Marketing Services",
     title: "Email Marketing Services in Bangalore | SkyUp Digital ",
     keyword: "Email Marketing Services in Bangalore",
@@ -382,7 +382,7 @@ export const SERVICES = {
     ],
   },
 
-  "google-ads": {
+  "ppc-company-in-bangalore": {
   heroTitle: "Best PPC Company In Bangalore",
   title: "Best PPC Company in Bangalore | SkyUp Digital Solutions",
   keyword: "Best PPC company in Bangalore",
@@ -511,7 +511,7 @@ export const SERVICES = {
   ],
 },
 
-"ui-ux-design": {
+"ui-ux-design-company-in-bangalore": {
   heroTitle: "UI/UX Design Company in Bangalore",
   title: "UI/UX Design Company in Bangalore by SkyUp Digital Solutions",
   keyword: "UI/UX Design Company in Bangalore",
@@ -640,7 +640,7 @@ export const SERVICES = {
   ],
 },
 
-"website-development": {
+"website-development-company-in-bangalore": {
   heroTitle: "Website Development Services in Bangalore",
   title: "Best Website Development Company in Bangalore | SkyUp",
   keyword: "Website Development Company in Bangalore",
@@ -769,7 +769,7 @@ export const SERVICES = {
   ],
 },
 
-"graphic-design": {
+"creative-graphic-design": {
   heroTitle: "Graphic Design",
   title: "Creative Graphics Design Services | SkyUp Digital Solutions",
   keyword: "Creative Graphics Design",
@@ -897,7 +897,7 @@ export const SERVICES = {
   ],
 },
 
-"branding": {
+"branding-agency-in-bangalore": {
   heroTitle: "Branding Solutions for Growing Businesses",
   title: "Top Branding Agency in Bangalore | SkyUp - Boost Your Brand",
   keyword: "Branding Agency in Bangalore",
@@ -1024,7 +1024,7 @@ export const SERVICES = {
     },
   ],
  },
-  "ai-automation": {
+  "ai-company-in-bangalore": {
   heroTitle: "AI Automation",
   title: "Top AI Companies in Bangalore | SkyUp Digital Solutions",
   keyword: "Top Ai Companies in Bangalore",
