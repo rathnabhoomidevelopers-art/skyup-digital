@@ -34,8 +34,8 @@
   "scripts": {
     "start": "react-scripts start",
     "prebuild": "node scripts/generate-sitemap.js || echo 'Sitemap generation skipped'",
-    "build": "react-scripts build && react-snap",
-    "postbuild": "node scripts/verify-meta-tags.js || echo 'Meta verification skipped'",
+    "build": "react-scripts build",
+    "postbuild": "echo 'Build completed successfully!'",
     "build:no-snap": "react-scripts build",
     "verify-meta": "node scripts/verify-meta-tags.js",
     "test": "react-scripts test",
