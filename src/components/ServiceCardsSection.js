@@ -50,7 +50,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_5.svg",
-      slug: "graphic-design",
+      slug: "creative-graphic-design",
       title: "Graphic Design",
       desc: "Eye-catching designs for social media, ads, and marketing materials.",
       category: "Design & Branding",
@@ -58,7 +58,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_6.svg",
-      slug: "ui-ux-design",
+      slug: "ui-ux-design-company-in-bangalore",
       title: "UI UX Design",
       desc: "User-friendly designs that improve experience and increase conversions.",
       category: "Web Development",
@@ -66,7 +66,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_8.svg",
-      slug: "ai-automation",
+      slug: "ai-company-in-bangalore",
       title: "Automation",
       desc: "Automate repetitive tasks to save time, reduce errors, and improve efficiency.",
       category: "AI-Automation",
@@ -74,7 +74,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_7.svg",
-      slug: "website-development",
+      slug: "website-development-company-in-bangalore",
       title: "Website Development",
       desc: "Interactive websites that update content in real-time for a personalized user experience",
       category: "Web Development",
@@ -82,7 +82,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_2.svg",
-      slug: "seo",
+      slug: "seo-company-in-bangalore",
       title: "SEO",
       desc: "Helps your website rank higher on search engines, attract the right traffic, and turn visitors...",
       category: "Digital Marketing",
@@ -90,7 +90,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_3.svg",
-      slug: "email-marketing",
+      slug: "email-marketing-company-in-bangalore",
       title: "Email Marketing",
       desc: "Connect with your audience through direct messages that build trust and drive action.",
       category: "Digital Marketing",
@@ -98,7 +98,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_4.svg",
-      slug: "branding",
+      slug: "branding-agency-in-bangalore",
       title: "Branding",
       desc: "We create logos, colors, and visual styles that reflect your brand and make it instantly recognizable.",
       category: "Design & Branding",
@@ -114,7 +114,7 @@ export default function ServiceCardsSection() {
     },
     {
       Icon: "/images/service_icon_10.svg",
-      slug: "google-ads",
+      slug: "ppc-company-in-bangalore",
       title: "Google Ads",
       desc: "Reach the right audience instantly and drive leads with targeted Google Ads campaigns.",
       category: "Digital Marketing",
