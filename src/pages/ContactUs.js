@@ -2,15 +2,27 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { MapPin,Phone,Mail,SendIcon, MessageSquareDotIcon} from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  SendIcon,
+  MessageSquareDotIcon,
+} from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
-const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
+const smoothSpringFast = {
+  type: "spring",
+  stiffness: 120,
+  damping: 20,
+  mass: 0.8,
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 26 },
@@ -67,7 +79,8 @@ export function ContactUs() {
     const e = {};
     if (!form.name.trim()) e.name = "Name is required";
     if (!form.email.trim()) e.email = "Email is required";
-    if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Enter a valid email";
+    if (form.email && !/^\S+@\S+\.\S+$/.test(form.email))
+      e.email = "Enter a valid email";
     if (!form.mobile.trim()) e.mobile = "Phone is required";
     if (form.mobile && !/^\d{10}$/.test(form.mobile.replace(/\D/g, ""))) {
       e.mobile = "Enter a valid 10-digit phone number";
@@ -95,19 +108,16 @@ export function ContactUs() {
       };
 
       const res = await axios.post(`${API_BASE}/add-contact`, payload);
-      console.log(res.data); 
+      console.log(res.data);
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);
       navigate("/thankyou", { state: { name: form.name, phone: form.mobile } });
-      } catch (err) {
+    } catch (err) {
       console.error("Contact submit error:", err);
 
       const errorMessage =
-        err &&
-        err.response &&
-        err.response.data &&
-        err.response.data.message
+        err && err.response && err.response.data && err.response.data.message
           ? err.response.data.message
           : "Failed to send message. Please try again.";
 
@@ -115,9 +125,7 @@ export function ContactUs() {
         type: "error",
         message: errorMessage,
       });
-    }
-
-    finally {
+    } finally {
       setSubmitting(false);
     }
   };
@@ -130,11 +138,11 @@ export function ContactUs() {
           name="description"
           content="Have questions or ready to start? Contact us at SKYUP Digital Solutions to grow your business with expert digital marketing and web solutions."
         />
-        <meta
-          name="keywords"
-          content="Contact us"
+        <meta name="keywords" content="Contact us" />
+        <link
+          rel="canonical"
+          href="https://www.skyupdigitalsolutions.com/contactus"
         />
-        <link rel="canonical" href="https://www.skyupdigitalsolutions.com/contactus" />
       </Helmet>
       <Header />
       <motion.div
@@ -182,19 +190,18 @@ export function ContactUs() {
           Let’s Talk with
         </motion.h2>
 
-        <motion.h1
-          variants={fadeUp}
-          className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
-        >
-          <span className="text-[#0037CA]">SKYUP Digital Solutions</span>
-        </motion.h1>
+        <motion.div variants={fadeUp}>
+          <h1 className="text-[#0037CA] text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
+            SKYUP Digital Solutions
+          </h1>
+        </motion.div>
 
         <motion.p
           variants={fadeUp}
           className="text-center sm:px-0 lg:px-0 px-4 text-[12px] sm:text-[14px] mt-3 lg:text-[18px]"
         >
-          Have a vision you want to build? Share it with us. Together, we’ll create
-          solutions that drive real growth.
+          Have a vision you want to build? Share it with us. Together, we’ll
+          create solutions that drive real growth.
         </motion.p>
       </motion.div>
 
@@ -272,7 +279,9 @@ export function ContactUs() {
                     ].join(" ")}
                   />
                   {errors.message && (
-                    <p className="mt-1 text-[12px] text-red-500">{errors.message}</p>
+                    <p className="mt-1 text-[12px] text-red-500">
+                      {errors.message}
+                    </p>
                   )}
                 </div>
 
@@ -393,7 +402,11 @@ export function ContactUs() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -423,7 +436,11 @@ export function ContactUs() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -438,7 +455,11 @@ export function ContactUs() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -466,7 +487,11 @@ export function ContactUs() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>

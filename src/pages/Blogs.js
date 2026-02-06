@@ -57,12 +57,11 @@ export function Blogs() {
         className="h-[221px] sm:h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center"
       >
         <div className="text-blue-600 font-semibold text-[18px]">Blogs Hub</div>
-        <motion.h1
-          variants={fadeUp}
-          className="text-center mt-2 lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
-        >
-          Digital Growth <span className="text-[#0037CA]">Insights</span>
-        </motion.h1>
+        <motion.div variants={fadeUp}>
+          <h1 className="text-center mt-2 lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
+            Digital Growth <span className="text-[#0037CA]">Insights</span>
+          </h1>
+        </motion.div>
 
         <motion.p
           variants={fadeUp}

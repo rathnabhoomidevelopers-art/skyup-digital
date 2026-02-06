@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
@@ -8,7 +7,12 @@ import { MapPin, Clock } from "lucide-react";
 import JobApplicationFormModal from "../components/JobApplicationForm";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
-const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
+const smoothSpringFast = {
+  type: "spring",
+  stiffness: 120,
+  damping: 20,
+  mass: 0.8,
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 26 },
@@ -75,16 +79,18 @@ export function Careers() {
   return (
     <div className="font-poppins">
       <Helmet>
-        <title>Explore Digital Marketing Jobs for Career Growth & Learning</title>
+        <title>
+          Explore Digital Marketing Jobs for Career Growth & Learning
+        </title>
         <meta
           name="description"
           content="Discover exciting Digital Marketing Jobs offering structured learning, career growth, and hands-on industry experience to boost your professional journey."
         />
-        <meta
-          name="keywords"
-          content="Digital marketing Jobs"
+        <meta name="keywords" content="Digital marketing Jobs" />
+        <link
+          rel="canonical"
+          href="https://www.skyupdigitalsolutions.com/careers"
         />
-        <link rel="canonical" href="https://www.skyupdigitalsolutions.com/careers" />
       </Helmet>
       <Header />
 
@@ -101,18 +107,19 @@ export function Careers() {
         }}
         className="h-[221px] px-2 lg:h-[332px] flex flex-col items-center bg-[#EEF1FC] justify-center"
       >
-        <motion.h1
-          variants={fadeUp}
-          className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
-        >
-          <span className="text-[#0037CA]">Join Our Team</span>
-        </motion.h1>
+        <motion.div variants={fadeUp}>
+          <h1 className="text-[#0037CA] text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
+            Join Our Team
+          </h1>
+        </motion.div>
 
         <motion.p
           variants={fadeUp}
           className="text-center text-[12px] sm:w-[824px] sm:text-[14px] mt-3 lg:text-[18px]"
         >
-          We’re always looking for curious minds and driven professionals. Join our team to grow your skills, work on exciting projects, and build a career where your ideas truly matter.
+          We’re always looking for curious minds and driven professionals. Join
+          our team to grow your skills, work on exciting projects, and build a
+          career where your ideas truly matter.
         </motion.p>
       </motion.div>
 
@@ -135,8 +142,9 @@ export function Careers() {
               "
             >
               Recruiting the People
-              <br className="hidden lg:block" />&nbsp;
-              Who Drive <span className="text-[#0037CA]">Our Growth</span>
+              <br className="hidden lg:block" />
+              &nbsp; Who Drive{" "}
+              <span className="text-[#0037CA]">Our Growth</span>
             </motion.h2>
 
             <motion.p
@@ -288,7 +296,11 @@ export function Careers() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -318,7 +330,11 @@ export function Careers() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -333,7 +349,11 @@ export function Careers() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -361,7 +381,11 @@ export function Careers() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>

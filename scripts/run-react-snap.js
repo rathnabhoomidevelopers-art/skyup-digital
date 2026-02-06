@@ -31,6 +31,25 @@ if (!chromePath) {
 // Set the executable path for puppeteer-core
 process.env.PUPPETEER_EXECUTABLE_PATH = chromePath;
 
+// Patch react-snap to use our executable path
+const Module = require('module');
+const originalRequire = Module.prototype.require;
+
+Module.prototype.require = function(id) {
+  const module = originalRequire.apply(this, arguments);
+  
+  if (id === 'puppeteer' || id === 'puppeteer-core') {
+    const originalLaunch = module.launch;
+    module.launch = function(options = {}) {
+      options.executablePath = chromePath;
+      options.headless = 'new'; // Use new headless mode to avoid deprecation warning
+      return originalLaunch.call(this, options);
+    };
+  }
+  
+  return module;
+};
+
 async function runReactSnap() {
   try {
     console.log('🚀 Starting react-snap for pre-rendering...');
