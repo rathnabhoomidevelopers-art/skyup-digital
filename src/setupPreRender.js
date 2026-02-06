@@ -5,17 +5,39 @@
 
 if (typeof window !== 'undefined') {
   // Function called by react-snap before saving the HTML
-  // This gives React time to finish rendering and Helmet time to update meta tags
   window.snapSaveState = () => {
     return new Promise((resolve) => {
-      // Wait for any async operations like Helmet updates
-      setTimeout(() => {
-        resolve();
-      }, 200);
+      // Wait for:
+      // 1. React 18 rendering to complete
+      // 2. React Helmet Async to update meta tags
+      // 3. Any lazy-loaded components
+      // 4. Framer Motion animations to settle
+      
+      // Use requestIdleCallback if available, otherwise setTimeout
+      const callback = () => {
+        // Additional wait to ensure Helmet meta tags are in DOM
+        setTimeout(() => {
+          resolve();
+        }, 1000); // Increased to 1000ms for better reliability
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(callback, { timeout: 2000 });
+      } else {
+        setTimeout(callback, 100);
+      }
     });
   };
+
+  // Mark when rendering starts (for debugging)
+  window.snapStartTime = Date.now();
+  
+  // Detect if running in react-snap
+  if (navigator.userAgent === 'ReactSnap') {
+    console.log('[REACT-SNAP] Pre-rendering in progress...');
+  }
 }
 
-const emptyObject = {};  // Assigning an empty object to a variable
-
-export default emptyObject;  // Exporting the variable
+// Fix for ESLint warning: export as a named constant
+const setupPreRender = {};
+export default setupPreRender;

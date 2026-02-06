@@ -16,7 +16,7 @@ export const BLOGS = [
       "Service-Based Business",
       "Lead Generation",
       "SEO",
-      "Google Ads",
+      "Google Ads", 
       "Conversion Optimization",
     ],
     sections: [

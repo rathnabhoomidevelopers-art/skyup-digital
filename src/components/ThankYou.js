@@ -30,7 +30,7 @@ export default function ThankYou() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full ">
+    <div className="min-h-screen font-poppins w-full ">
       {/* Top brand bar - Mobile optimized */}
       <div className="w-full bg-[#F9ECDE]">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
@@ -79,9 +79,7 @@ export default function ThankYou() {
                 </h1>
 
                 <p className="mt-3 text-sm leading-6 text-slate-700 font-poppins sm:text-base sm:leading-7 md:text-[18px] md:max-w-xl">
-                  Your enquiry has been received. Our team will connect with you
-                  shortly to share pricing, and site visit details for{" "}
-                  <span className="font-bold">Ecovara</span>.
+                  We have received your enquiry. Our team will contact you shortly with details regarding Digital Marketing services.
                 </p>
               </div>
             </div>
@@ -106,7 +104,7 @@ export default function ThankYou() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col lg:flex-row gap-2">
               <InfoPill title="Response time" value="Within 30–60 mins" />
               <InfoPill title="Location" value="Sahakara Nagar, Bengaluru" />
               <InfoPill title="Working hours" value="Mon–Sun 9:30–6:30" />
@@ -133,7 +131,7 @@ export default function ThankYou() {
 
                 <Link
                   to="/service"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E0B24A] px-2 no-underline py-3.5 text-sm font-semibold text-[#2b2b2b] hover:brightness-95 sm:px-6 sm:py-3"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FA9F43] px-4 no-underline py-3.5 text-sm font-semibold text-white hover:brightness-95 sm:px-2 sm:py-3"
                 >
                   Explore Services
                 </Link>
@@ -157,7 +155,11 @@ export default function ThankYou() {
                 </li>
                 <li className="flex gap-2.5">
                   <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#0037CA]" />
-                  We schedule a private site visit as per your availability.
+                  We analyze your business needs.
+                </li>
+                <li className="flex gap-2.5">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#0037CA]" />
+                  We suggest the right digital marketing strategy.
                 </li>
               </ul>
             </div>
@@ -195,7 +197,7 @@ export default function ThankYou() {
           </div>
 
           <div className="mt-5 rounded-2xl bg-white p-4 sm:mt-6 sm:rounded-3xl sm:p-5">
-            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-600 sm:text-sm">
+            <div className="text-xs font-bold uppercase tracking-[0.05em] text-slate-600 sm:text-sm">
               Address
             </div>
             <p className="mt-2 text-sm leading-5 text-slate-700 sm:text-base sm:leading-6">
