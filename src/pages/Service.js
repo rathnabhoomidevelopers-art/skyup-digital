@@ -15,11 +15,26 @@ const fadeUp = {
 };
 
 const serviceFaqs = [
-  { q: "How can I get started?", a: "Simply contact us, share your requirements, and our team will guide you through the next steps." },
-  { q: "Do you work with startups as well as established businesses?", a: "Absolutely! We work with both startups and established businesses, tailoring our digital marketing strategies to fit your unique goals and growth stage." },
-  { q: "What makes your digital marketing approach different?", a: "Our digital marketing approach is data-driven, customized, and results-focused. We combine creativity with analytics to craft strategies that engage your audience, boost conversions, and maximize ROI." },
-  { q: "Do you offer branding and creative design services?", a: "Yes! We offer comprehensive branding and creative design services as part of our digital marketing solutions, helping your business stand out and connect with your audience effectively." },
-  { q: "How does AI automation help my business?", a: "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results." },
+  {
+    q: "How can I get started?",
+    a: "Simply contact us, share your requirements, and our team will guide you through the next steps.",
+  },
+  {
+    q: "Do you work with startups as well as established businesses?",
+    a: "Absolutely! We work with both startups and established businesses, tailoring our digital marketing strategies to fit your unique goals and growth stage.",
+  },
+  {
+    q: "What makes your digital marketing approach different?",
+    a: "Our digital marketing approach is data-driven, customized, and results-focused. We combine creativity with analytics to craft strategies that engage your audience, boost conversions, and maximize ROI.",
+  },
+  {
+    q: "Do you offer branding and creative design services?",
+    a: "Yes! We offer comprehensive branding and creative design services as part of our digital marketing solutions, helping your business stand out and connect with your audience effectively.",
+  },
+  {
+    q: "How does AI automation help my business?",
+    a: "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results.",
+  },
 ];
 
 const staggerWrap = {
@@ -41,7 +56,9 @@ export function Service() {
   return (
     <div className="font-poppins">
       <Helmet>
-        <title>Results-Driven Digital Marketing Services in Bangalore | SKYUP</title>
+        <title>
+          Results-Driven Digital Marketing Services in Bangalore | SKYUP
+        </title>
         <meta
           name="description"
           content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
@@ -50,7 +67,10 @@ export function Service() {
           name="keywords"
           content="Digital Marketing Services in Bangalore"
         />
-        <link rel="canonical" href="https://www.skyupdigitalsolutions.com/service" />
+        <link
+          rel="canonical"
+          href="https://www.skyupdigitalsolutions.com/service"
+        />
       </Helmet>
       <Header />
 
@@ -66,13 +86,12 @@ export function Service() {
         }}
         className="h-[221px] lg:h-[332px] flex flex-col items-center bg-[#EEF1FC] justify-center"
       >
-        <motion.h1
-          variants={fadeUp}
-          className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold"
-        >
-          Our Experts <span className="text-[#0037CA]">Services</span>
-        </motion.h1>
-
+        <motion.div variants={fadeUp}>
+          <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
+            Our Experts <span className="text-[#0037CA]">Services</span>
+          </h1>
+        </motion.div>
+        
         <motion.p
           variants={fadeUp}
           className="text-center text-[12px] px-3 sm:text-[18px] mt-2 lg:text-[18px]"
@@ -85,7 +104,7 @@ export function Service() {
       {/* Pass the filter to ServiceCardsSection */}
       <ServiceCardsSection initialCategory={categoryFromUrl} />
 
-      <FAQSection faqs={serviceFaqs}/>
+      <FAQSection faqs={serviceFaqs} />
 
       <motion.section
         initial="hidden"
@@ -107,7 +126,8 @@ export function Service() {
         </h2>
 
         <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-          Serving companies of every scale. Connect with us to start the conversation.
+          Serving companies of every scale. Connect with us to start the
+          conversation.
         </p>
 
         <div className="mt-8 flex justify-center">
@@ -153,7 +173,11 @@ export function Service() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -183,7 +207,11 @@ export function Service() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -198,7 +226,11 @@ export function Service() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -226,7 +258,11 @@ export function Service() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>

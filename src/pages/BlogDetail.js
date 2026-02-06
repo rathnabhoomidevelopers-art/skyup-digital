@@ -181,7 +181,7 @@ export default function BlogDetail() {
             </div>
 
             {/* title */}
-            <h1 className="mt-3 h1 text-[22px] sm:text-[28px] fw-bold text-[#111827] leading-tight">
+            <h1 className="mt-3 text-[22px] sm:text-[28px] lg:text-[38px] fw-bold text-[#111827] leading-tight">
               {blog.title}
             </h1>
 

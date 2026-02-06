@@ -11,7 +11,12 @@ const viewport = { once: true, amount: 0.25 };
 
 // Smooth springs (premium feel)
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
-const smoothSpringFast = { type: "spring", stiffness: 120, damping: 20, mass: 0.8 };
+const smoothSpringFast = {
+  type: "spring",
+  stiffness: 120,
+  damping: 20,
+  mass: 0.8,
+};
 
 // Reusable variants
 const fadeUp = {
@@ -40,32 +45,47 @@ const staggerWrap = {
 };
 
 const serviceFaqs = [
-  { q: "How do you measure success?", a: "We track key performance indicators (KPIs) such as website traffic, leads, conversions, engagement rates, and overall ROI to ensure campaigns deliver real results." },
-  { q: "Do you provide ongoing support?", a: "Yes. We continuously monitor campaigns, optimize strategies, and provide regular reports to ensure consistent growth and long-term success." },
-  { q: "How do I get started?", a: "Simply contact us through our website or email, and our team will guide you through a consultation to understand your needs and recommend a strategy." },
-  { q: "Which platforms do you focus on?", a: "We manage major platforms including Google, Facebook, Instagram, LinkedIn, YouTube, and more, depending on your audience and goals." },
- ];
+  {
+    q: "How do you measure success?",
+    a: "We track key performance indicators (KPIs) such as website traffic, leads, conversions, engagement rates, and overall ROI to ensure campaigns deliver real results.",
+  },
+  {
+    q: "Do you provide ongoing support?",
+    a: "Yes. We continuously monitor campaigns, optimize strategies, and provide regular reports to ensure consistent growth and long-term success.",
+  },
+  {
+    q: "How do I get started?",
+    a: "Simply contact us through our website or email, and our team will guide you through a consultation to understand your needs and recommend a strategy.",
+  },
+  {
+    q: "Which platforms do you focus on?",
+    a: "We manage major platforms including Google, Facebook, Instagram, LinkedIn, YouTube, and more, depending on your audience and goals.",
+  },
+];
 
 const softScale = {
   hidden: { opacity: 0, scale: 0.98, y: 18 },
   show: { opacity: 1, scale: 1, y: 0, transition: smoothSpringFast },
 };
- const MotionLink = motion(Link);
+const MotionLink = motion(Link);
 export function AboutUS() {
   return (
     <div className="font-poppins">
-        <Helmet>
-          <title>Top Digital Marketing Company in Bangalore | SKYUP</title>
-          <meta
-            name="description"
-            content="SkyUp is a results-driven Digital Marketing Company in Bangalore offering strategic marketing solutions to boost visibility, leads, and growth."
-          />
-          <meta
-            name="keywords"
-            content="Digital Marketing Company in Bangalore."
-          />
-          <link rel="canonical" href="https://www.skyupdigitalsolutions.com/aboutus" />
-        </Helmet>
+      <Helmet>
+        <title>Top Digital Marketing Company in Bangalore | SKYUP</title>
+        <meta
+          name="description"
+          content="SkyUp is a results-driven Digital Marketing Company in Bangalore offering strategic marketing solutions to boost visibility, leads, and growth."
+        />
+        <meta
+          name="keywords"
+          content="Digital Marketing Company in Bangalore."
+        />
+        <link
+          rel="canonical"
+          href="https://www.skyupdigitalsolutions.com/aboutus"
+        />
+      </Helmet>
 
       <Header />
 
@@ -82,27 +102,24 @@ export function AboutUS() {
         }}
         className="h-[221px] px-2 lg:h-[332px] flex flex-col items-center justify-center relative"
       >
-
-
-        <motion.h1
-          variants={fadeUp}
-          className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold"
-        >
-          We Create
-          <span className="text-[#0037CA]">&nbsp;Brands&nbsp;</span>
-          That&nbsp;
-          <br className="block sm:hidden" />
-          Stand Out
-        </motion.h1>
+        <motion.div variants={fadeUp}>
+          <h1 className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold">
+            We Create
+            <span className="text-[#0037CA]">&nbsp;Brands&nbsp;</span>
+            That&nbsp;
+            <br className="block sm:hidden" />
+            Stand Out
+          </h1>
+        </motion.div>
 
         <motion.p
           variants={fadeUp}
           className="relative z-10 text-center text-[#2B2B2B] text-[12px] sm:w-[901px] sm:text-[14px] mt-2 lg:text-[18px]"
         >
-          As a leading Digital Marketing Company in Bangalore, we create brands that stand out with impactful strategies and creative solutions.
+          As a leading Digital Marketing Company in Bangalore, we create brands
+          that stand out with impactful strategies and creative solutions.
         </motion.p>
       </motion.div>
-
 
       {/* WHO WE ARE */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-[100px] py-[90px]">
@@ -146,22 +163,29 @@ export function AboutUS() {
               className="text-[14px] sm:text-[16px] lg:text-[18px] pt-3 text-[#2B2B2B] leading-relaxed"
             >
               SKYUP Digital Solutions is a modern digital marketing, design, and
-              technology agency that helps businesses cut through the noise and scale
-              with confidence. For us, digital isn’t just about ads or websites it's
-              about building meaningful growth engines that work every day.
+              technology agency that helps businesses cut through the noise and
+              scale with confidence. For us, digital isn’t just about ads or
+              websites it's about building meaningful growth engines that work
+              every day.
             </motion.p>
 
             <motion.p
               variants={fadeUp}
               className="text-[14px] sm:text-[16px] lg:text-[18px] text-[#2B2B2B] leading-relaxed lg:mt-2"
             >
-              We partner with brands of every size to create campaigns that are smart,
-              creative, and result-driven.
+              We partner with brands of every size to create campaigns that are
+              smart, creative, and result-driven.
             </motion.p>
 
             {/* Stats (staggered) */}
-            <motion.div variants={staggerWrap} className="pt-6 grid grid-cols-3 gap-6">
-              <motion.div variants={softScale} className="flex flex-col lg:flex-row lg:gap-2  items-start">
+            <motion.div
+              variants={staggerWrap}
+              className="pt-6 grid grid-cols-3 gap-6"
+            >
+              <motion.div
+                variants={softScale}
+                className="flex flex-col lg:flex-row lg:gap-2  items-start"
+              >
                 <span className="text-[24px] sm:text-[32px] lg:text-[44px] text-[#0037CA] font-bold leading-none">
                   5+
                 </span>
@@ -170,7 +194,10 @@ export function AboutUS() {
                 </span>
               </motion.div>
 
-              <motion.div variants={softScale} className="flex flex-col lg:flex-row lg:gap-2 items-start">
+              <motion.div
+                variants={softScale}
+                className="flex flex-col lg:flex-row lg:gap-2 items-start"
+              >
                 <span className="text-[24px] sm:text-[32px] lg:text-[44px] text-[#0037CA] font-bold leading-none">
                   1K+
                 </span>
@@ -179,7 +206,10 @@ export function AboutUS() {
                 </span>
               </motion.div>
 
-              <motion.div variants={softScale} className="flex flex-col lg:flex-row lg:gap-2 items-start">
+              <motion.div
+                variants={softScale}
+                className="flex flex-col lg:flex-row lg:gap-2 items-start"
+              >
                 <span className="text-[24px] sm:text-[32px] lg:text-[44px] text-[#0037CA] font-bold leading-none">
                   95%
                 </span>
@@ -216,8 +246,8 @@ export function AboutUS() {
 
               <p className="mt-3 text-[#2B2B2B] text-[14px] sm:text-[18px] sm:w-[450px] leading-relaxed">
                 To empower businesses to rise and grow by transforming digital
-                complexity into clarity and measurable success and to be a trusted
-                partner in their growth journey.
+                complexity into clarity and measurable success and to be a
+                trusted partner in their growth journey.
               </p>
 
               <h4 className="mt-5 text-[#FF7A00] font-semibold text-[18px] sm:text-[24px] tracking-wide">
@@ -268,9 +298,8 @@ export function AboutUS() {
         initial="hidden"
         whileInView="show"
         viewport={viewport}
-      >
-      </motion.div>
-      <OurTeamSection/>
+      ></motion.div>
+      <OurTeamSection />
       <FAQSection faqs={serviceFaqs} />
       {/* CTA */}
       <motion.section
@@ -293,7 +322,8 @@ export function AboutUS() {
         </h2>
 
         <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-          Serving companies of every scale. Connect with us to start the conversation.
+          Serving companies of every scale. Connect with us to start the
+          conversation.
         </p>
 
         <div className="mt-8 flex justify-center">
@@ -337,7 +367,11 @@ export function AboutUS() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -367,7 +401,11 @@ export function AboutUS() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -382,7 +420,11 @@ export function AboutUS() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -410,7 +452,11 @@ export function AboutUS() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call"  className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>
