@@ -37,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "prebuild": "node scripts/generate-sitemap.js || echo 'Sitemap generation skipped'",
-    "build": "react-scripts build && react-snap",
+    "build": "react-scripts build && PUPPETEER_EXECUTABLE_PATH=$(node scripts/puppeteer-exec-path.js) react-snap",
     "postbuild": "echo 'Build completed successfully!'",
     "build:no-snap": "react-scripts build",
     "verify-meta": "node scripts/verify-meta-tags.js",
