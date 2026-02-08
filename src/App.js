@@ -28,6 +28,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ScrollToTop from "./components/ScrollToTop";
 import ThankYou from "./components/ThankYou";
 import DynamicBlog from "./pages/DynamicBlog";
+import { Receipt } from "./pages/Receipt";
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
         <Route path="/thankyou" element={<ThankYou/>}/>
         <Route path="/dynamicblog" element={<DynamicBlog/>}/>
+        <Route path="/receipt" element={<Receipt/>}/>
       </Routes>
     </BrowserRouter>
   );
