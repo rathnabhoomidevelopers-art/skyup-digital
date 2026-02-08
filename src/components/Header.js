@@ -33,7 +33,7 @@ export default function Header() {
     },
     { 
       Icon: "/images/Twitter.svg", 
-      href: "https://www.linkedin.com/in/pooja-s-2480893a0/",
+      href: "https://www.linkedin.com/company/110886969/admin/",
       bg: "bg-blue-400",
       hoverBg: "hover:bg-blue-800",
       text: "text-white"
