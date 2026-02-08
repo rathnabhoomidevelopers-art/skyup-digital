@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import ReceiptTemplate from './ReceiptTemplate';
 import { generatePDF } from './utils/pdfGenerator';
-
+import API_URL from '../config/api';
 
 export function Receipt (){
   const [showPreview, setShowPreview] = useState(false);
@@ -32,7 +32,7 @@ export function Receipt (){
 
   const fetchLastInvoiceNumber = async () => {
     try {
-      const response = await fetch('/api/last-invoice');
+      const response = await fetch(`${API_URL}/api/last-invoice`);
       const data = await response.json();
       if (data.lastSerial) {
         setNextInvoiceSerial(data.lastSerial + 1);
@@ -184,7 +184,7 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         await generatePDF(receiptRef.current, invoiceNumber);
         
         // Then submit to backend
-        const response = await fetch('/receipt', {
+        const response = await fetch(`${API_URL}/receipt`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
