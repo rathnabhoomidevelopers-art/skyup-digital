@@ -224,7 +224,7 @@ export function HomePage() {
   <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
   <meta
     name="description"
-    content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
+    content="SkyUp Digital is a results-driven Digital Marketing Agency in Bangalore helping brands grow with SEO, PPC, and performance marketing."
   />
   <meta
     name="keywords"
