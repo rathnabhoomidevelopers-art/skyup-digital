@@ -1,7 +1,3 @@
-// ============================================
-// FRONTEND: src/context/AuthContext.jsx
-// ============================================
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import API_URL from '../config/api';
 
@@ -59,7 +55,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }), // No token here for login
       });
 
       const data = await response.json();
@@ -68,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store token
+      // Store token after successful login
       localStorage.setItem('adminToken', data.token);
       setToken(data.token);
       setUser(data.user);
