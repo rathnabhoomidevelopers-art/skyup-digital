@@ -56,22 +56,65 @@ export function Service() {
   return (
     <div className="font-poppins">
       <Helmet>
-        <title>
-          Results-Driven Digital Marketing Services in Bangalore | SKYUP
-        </title>
-        <meta
-          name="description"
-          content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
-        />
-        <meta
-          name="keywords"
-          content="Digital Marketing Services in Bangalore"
-        />
-        <link
-          rel="canonical"
-          href="https://www.skyupdigitalsolutions.com/service"
-        />
-      </Helmet>
+  <title>
+    Results-Driven Digital Marketing Services in Bangalore | SKYUP
+  </title>
+  <meta
+    name="description"
+    content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
+  />
+  <meta
+    name="keywords"
+    content="Digital Marketing Services in Bangalore"
+  />
+  <link
+    rel="canonical"
+    href="https://www.skyupdigitalsolutions.com/service"
+  />
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://www.skyupdigitalsolutions.com/digital-marketing-services/#service",
+      "name": "Digital Marketing Services in Bangalore",
+      "description": "Skyup Digital Solutions provides professional digital marketing services in Bangalore including SEO, social media marketing, Google Ads management, and website development for businesses.",
+      "provider": {
+        "@type": "MarketingAgency",
+        "@id": "https://www.skyupdigitalsolutions.com/#marketingagency",
+        "name": "Skyup Digital Solutions",
+        "url": "https://www.skyupdigitalsolutions.com/",
+        "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
+        "telephone": "+91-8867867775",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "2nd Floor, No 23, 14A, Dasarahalli Main Rd, E Block, Sahakar Nagar, Byatarayanapura",
+          "addressLocality": "Bengaluru",
+          "addressRegion": "Karnataka",
+          "postalCode": "560092",
+          "addressCountry": "IN"
+        }
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Bengaluru"
+      },
+      "serviceType": [
+        "Digital Marketing Services",
+        "Search Engine Optimization",
+        "Social Media Marketing",
+        "Google Ads Management",
+        "Website Development"
+      ],
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceLocation": {
+          "@type": "Place",
+          "name": "Online and Onsite"
+        }
+      }
+    })}
+  </script>
+</Helmet>
       <Header />
 
       <motion.div
