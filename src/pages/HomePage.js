@@ -236,7 +236,7 @@ export function HomePage() {
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "MarketingAgency",
-      "@id": "https://www.skyupdigitalsolutions.com/#marketingagency",
+      "@id": "https://www.skyupdigitalsolutions.com",
       "name": "Skyup Digital Solutions",
       "url": "https://www.skyupdigitalsolutions.com/",
       "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
