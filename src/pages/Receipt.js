@@ -39,7 +39,7 @@ export function Receipt() {
     try {
       const response = await fetch(`${API_URL}/api/last-invoice`, {
         headers: {
-          Authorization: `Bearer ${token}`, // ✅ Add this
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
@@ -100,6 +100,9 @@ export function Receipt() {
     cgst_percentage: Yup.number().min(0).max(100),
     sgst_percentage: Yup.number().min(0).max(100),
     igst_percentage: Yup.number().min(0).max(100),
+    cgst_manual: Yup.number().min(0),
+    sgst_manual: Yup.number().min(0),
+    igst_manual: Yup.number().min(0),
   });
 
   // Auto-calculate GST based on percentage
@@ -195,6 +198,10 @@ export function Receipt() {
     cgstPercentage,
     sgstPercentage,
     igstPercentage,
+    useManualGst,
+    cgstManual,
+    sgstManual,
+    igstManual,
   ) => {
     // Safety check: return zeros if items is undefined or not an array
     if (!items || !Array.isArray(items)) {
@@ -206,15 +213,25 @@ export function Receipt() {
       return sum + itemAmount;
     }, 0);
 
-    const cgst = cgstPercentage
-      ? autoCalculateGST(subtotal, cgstPercentage)
-      : 0;
-    const sgst = sgstPercentage
-      ? autoCalculateGST(subtotal, sgstPercentage)
-      : 0;
-    const igst = igstPercentage
-      ? autoCalculateGST(subtotal, igstPercentage)
-      : 0;
+    let cgst, sgst, igst;
+
+    if (useManualGst) {
+      // Use manually entered values
+      cgst = parseFloat(cgstManual) || 0;
+      sgst = parseFloat(sgstManual) || 0;
+      igst = parseFloat(igstManual) || 0;
+    } else {
+      // Auto-calculate from percentages
+      cgst = cgstPercentage
+        ? autoCalculateGST(subtotal, cgstPercentage)
+        : 0;
+      sgst = sgstPercentage
+        ? autoCalculateGST(subtotal, sgstPercentage)
+        : 0;
+      igst = igstPercentage
+        ? autoCalculateGST(subtotal, igstPercentage)
+        : 0;
+    }
 
     const total = subtotal + cgst + sgst + igst;
 
@@ -228,6 +245,10 @@ export function Receipt() {
       values.cgst_percentage,
       values.sgst_percentage,
       values.igst_percentage,
+      values.use_manual_gst,
+      values.cgst_manual,
+      values.sgst_manual,
+      values.igst_manual,
     );
 
     const invoiceNumber = generateInvoiceNumber(nextInvoiceSerial);
@@ -249,9 +270,9 @@ export function Receipt() {
       cgst: cgst,
       sgst: sgst,
       igst: igst,
-      cgst_percentage: values.cgst_percentage || 0,
-      sgst_percentage: values.sgst_percentage || 0,
-      igst_percentage: values.igst_percentage || 0,
+      cgst_percentage: values.use_manual_gst ? 0 : (values.cgst_percentage || 0),
+      sgst_percentage: values.use_manual_gst ? 0 : (values.sgst_percentage || 0),
+      igst_percentage: values.use_manual_gst ? 0 : (values.igst_percentage || 0),
       total: total,
       amount_in_words: numberToWords(total),
     };
@@ -259,9 +280,9 @@ export function Receipt() {
     try {
       const receiptFullData = {
         ...formData,
-        cgstLabel: cgst > 0 ? `CGST @ ${values.cgst_percentage || 9}%` : "",
-        sgstLabel: sgst > 0 ? `SGST @ ${values.sgst_percentage || 9}%` : "",
-        igstLabel: igst > 0 ? `IGST @ ${values.igst_percentage || 18}%` : "",
+        cgstLabel: cgst > 0 ? (values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage || 9}%`) : "",
+        sgstLabel: sgst > 0 ? (values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage || 9}%`) : "",
+        igstLabel: igst > 0 ? (values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage || 18}%`) : "",
         ...companyDetails,
       };
 
@@ -271,12 +292,11 @@ export function Receipt() {
       setTimeout(async () => {
         await generatePDF(receiptRef.current, invoiceNumber);
 
-        // ✅ Add Authorization header here
         const response = await fetch(`${API_URL}/receipt`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ Add this
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(formData),
         });
@@ -375,6 +395,10 @@ export function Receipt() {
                 cgst_percentage: 9,
                 sgst_percentage: 9,
                 igst_percentage: 18,
+                cgst_manual: "",
+                sgst_manual: "",
+                igst_manual: "",
+                use_manual_gst: false,
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
@@ -386,6 +410,10 @@ export function Receipt() {
                   values.cgst_percentage,
                   values.sgst_percentage,
                   values.igst_percentage,
+                  values.use_manual_gst,
+                  values.cgst_manual,
+                  values.sgst_manual,
+                  values.igst_manual,
                 );
 
                 return (
@@ -657,60 +685,135 @@ export function Receipt() {
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         GST Details
                       </h3>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Choose either <strong>CGST + SGST</strong> (for
-                        intra-state) or <strong>IGST</strong> (for inter-state)
-                      </p>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* CGST */}
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            CGST Percentage
-                          </label>
+                      
+                      {/* Toggle between percentage and manual */}
+                      <div className="mb-6">
+                        <label className="flex items-center gap-3 cursor-pointer">
                           <Field
-                            type="number"
-                            name="cgst_percentage"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            placeholder="e.g., 9"
+                            type="checkbox"
+                            name="use_manual_gst"
+                            className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                           />
-                        </div>
-
-                        {/* SGST */}
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            SGST Percentage
-                          </label>
-                          <Field
-                            type="number"
-                            name="sgst_percentage"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            placeholder="e.g., 9"
-                          />
-                        </div>
-
-                        {/* IGST */}
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            IGST Percentage
-                          </label>
-                          <Field
-                            type="number"
-                            name="igst_percentage"
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            placeholder="e.g., 18"
-                          />
-                        </div>
+                          <span className="text-sm font-medium text-gray-700">
+                            Enter GST amounts manually
+                          </span>
+                        </label>
+                        <p className="text-xs text-gray-500 mt-1 ml-8">
+                          Check this to enter exact GST amounts instead of percentages
+                        </p>
                       </div>
+
+                      {!values.use_manual_gst ? (
+                        <>
+                          <p className="text-sm text-gray-600 mb-4">
+                            Choose either <strong>CGST + SGST</strong> (for
+                            intra-state) or <strong>IGST</strong> (for inter-state)
+                          </p>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* CGST */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                CGST Percentage
+                              </label>
+                              <Field
+                                type="number"
+                                name="cgst_percentage"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="e.g., 9"
+                              />
+                            </div>
+
+                            {/* SGST */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                SGST Percentage
+                              </label>
+                              <Field
+                                type="number"
+                                name="sgst_percentage"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="e.g., 9"
+                              />
+                            </div>
+
+                            {/* IGST */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                IGST Percentage
+                              </label>
+                              <Field
+                                type="number"
+                                name="igst_percentage"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="e.g., 18"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm text-gray-600 mb-4">
+                            Enter exact GST amounts in rupees
+                          </p>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* CGST Manual */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                CGST Amount (₹)
+                              </label>
+                              <Field
+                                type="number"
+                                name="cgst_manual"
+                                min="0"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="0"
+                              />
+                            </div>
+
+                            {/* SGST Manual */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                SGST Amount (₹)
+                              </label>
+                              <Field
+                                type="number"
+                                name="sgst_manual"
+                                min="0"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="0"
+                              />
+                            </div>
+
+                            {/* IGST Manual */}
+                            <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                IGST Amount (₹)
+                              </label>
+                              <Field
+                                type="number"
+                                name="igst_manual"
+                                min="0"
+                                step="0.01"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                placeholder="0"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {/* Calculation Summary */}
@@ -729,7 +832,7 @@ export function Receipt() {
                           {cgst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                CGST @ {values.cgst_percentage}%
+                                {values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{cgst.toLocaleString("en-IN")}
@@ -739,7 +842,7 @@ export function Receipt() {
                           {sgst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                SGST @ {values.sgst_percentage}%
+                                {values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{sgst.toLocaleString("en-IN")}
@@ -749,7 +852,7 @@ export function Receipt() {
                           {igst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                IGST @ {values.igst_percentage}%
+                                {values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{igst.toLocaleString("en-IN")}
