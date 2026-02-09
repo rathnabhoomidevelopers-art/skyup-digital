@@ -75,12 +75,12 @@ export function Service() {
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://www.skyupdigitalsolutions.com/digital-marketing-services/#service",
+      "@id": "https://www.skyupdigitalsolutions.com/service",
       "name": "Digital Marketing Services in Bangalore",
       "description": "Skyup Digital Solutions provides professional digital marketing services in Bangalore including SEO, social media marketing, Google Ads management, and website development for businesses.",
       "provider": {
         "@type": "MarketingAgency",
-        "@id": "https://www.skyupdigitalsolutions.com/#marketingagency",
+        "@id": "https://www.skyupdigitalsolutions.com/service",
         "name": "Skyup Digital Solutions",
         "url": "https://www.skyupdigitalsolutions.com/",
         "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
