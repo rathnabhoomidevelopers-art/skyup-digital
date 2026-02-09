@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import ReceiptTemplate from './ReceiptTemplate';
 import { generatePDF } from './utils/pdfGenerator';
@@ -72,24 +72,21 @@ export function Receipt (){
   // Validation schema
   const validationSchema = Yup.object({
     to: Yup.string().required('Client name/address is required'),
+    client_gst: Yup.string(),
     date: Yup.date().required('Invoice date is required'),
     invoice_due: Yup.date().nullable(),
     hsn_no: Yup.string(),
-    description: Yup.string().required('Description is required'),
-    qty: Yup.number().positive('Quantity must be positive').required('Quantity is required'),
-    rate: Yup.number().positive('Rate must be positive').required('Rate is required'),
-    cgst: Yup.number().min(0, 'CGST cannot be negative').required('CGST is required'),
-    sgst: Yup.number().min(0, 'SGST cannot be negative').required('SGST is required'),
+    items: Yup.array().of(
+      Yup.object({
+        description: Yup.string().required('Description is required'),
+        qty: Yup.number().positive('Quantity must be positive').required('Quantity is required'),
+        rate: Yup.number().positive('Rate must be positive').required('Rate is required'),
+      })
+    ).min(1, 'At least one item is required'),
     cgst_percentage: Yup.number().min(0).max(100),
     sgst_percentage: Yup.number().min(0).max(100),
+    igst_percentage: Yup.number().min(0).max(100),
   });
-
-  // Calculate amount and total
-  const calculateValues = (qty, rate, cgst, sgst) => {
-    const amount = qty * rate;
-    const total = amount + cgst + sgst;
-    return { amount, total };
-  };
 
   // Auto-calculate GST based on percentage
   const autoCalculateGST = (amount, percentage) => {
@@ -141,38 +138,69 @@ export function Receipt (){
     return (word.trim().charAt(0).toUpperCase() + word.trim().slice(1) + ' rupees only').replace(/\s+/g, ' ');
   };
 
-  // Handle form submission
-const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-  const cgst = Number(values.cgst);
-  const sgst = Number(values.sgst);
-  const { amount, total } = calculateValues(values.qty, values.rate, cgst, sgst);
+  // Calculate totals from items
+  const calculateTotals = (items, cgstPercentage, sgstPercentage, igstPercentage) => {
+    // Safety check: return zeros if items is undefined or not an array
+    if (!items || !Array.isArray(items)) {
+      return { subtotal: 0, cgst: 0, sgst: 0, igst: 0, total: 0 };
+    }
 
-  const invoiceNumber = generateInvoiceNumber(nextInvoiceSerial); // Auto-generated invoice number
+    const subtotal = items.reduce((sum, item) => {
+      const itemAmount = (item.qty || 0) * (item.rate || 0);
+      return sum + itemAmount;
+    }, 0);
 
-  const formData = {
-    to: values.to,
-    invoice_no: invoiceNumber, // Pass the auto-generated invoice number
-    date: values.date,
-    invoice_due: values.invoice_due || null,
-    hsn_no: values.hsn_no || '',
-    description: values.description,
-    qty: parseInt(values.qty),
-    rate: parseInt(values.rate),
-    amount: amount,
-    cgst: cgst,
-    sgst: sgst,
-    cgst_percentage: values.cgst_percentage || 9,
-    sgst_percentage: values.sgst_percentage || 9,
-    total: total,
-    amount_in_words: numberToWords(total),
+    const cgst = cgstPercentage ? autoCalculateGST(subtotal, cgstPercentage) : 0;
+    const sgst = sgstPercentage ? autoCalculateGST(subtotal, sgstPercentage) : 0;
+    const igst = igstPercentage ? autoCalculateGST(subtotal, igstPercentage) : 0;
+    
+    const total = subtotal + cgst + sgst + igst;
+
+    return { subtotal, cgst, sgst, igst, total };
   };
+
+  // Handle form submission
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const { subtotal, cgst, sgst, igst, total } = calculateTotals(
+      values.items,
+      values.cgst_percentage,
+      values.sgst_percentage,
+      values.igst_percentage
+    );
+
+    const invoiceNumber = generateInvoiceNumber(nextInvoiceSerial);
+
+    const formData = {
+      to: values.to,
+      client_gst: values.client_gst || 'URD',
+      invoice_no: invoiceNumber,
+      date: values.date,
+      invoice_due: values.invoice_due || null,
+      hsn_no: values.hsn_no || '',
+      items: values.items.map(item => ({
+        description: item.description,
+        qty: parseInt(item.qty),
+        rate: parseInt(item.rate),
+        amount: parseInt(item.qty) * parseInt(item.rate)
+      })),
+      subtotal: subtotal,
+      cgst: cgst,
+      sgst: sgst,
+      igst: igst,
+      cgst_percentage: values.cgst_percentage || 0,
+      sgst_percentage: values.sgst_percentage || 0,
+      igst_percentage: values.igst_percentage || 0,
+      total: total,
+      amount_in_words: numberToWords(total),
+    };
 
     try {
       // First, generate and download PDF
       const receiptFullData = {
         ...formData,
-        cgstLabel: `CGST @ ${values.cgst_percentage || 9}%`,
-        sgstLabel: `SGST @ ${values.sgst_percentage || 9}%`,
+        cgstLabel: cgst > 0 ? `CGST @ ${values.cgst_percentage || 9}%` : '',
+        sgstLabel: sgst > 0 ? `SGST @ ${values.sgst_percentage || 9}%` : '',
+        igstLabel: igst > 0 ? `IGST @ ${values.igst_percentage || 18}%` : '',
         ...companyDetails
       };
       
@@ -189,12 +217,7 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            ...formData,
-            // Keep backward compatibility with existing API
-            gst9: cgst,
-            Gst9: sgst,
-          }),
+          body: JSON.stringify(formData),
         });
 
         const result = await response.json();
@@ -272,69 +295,32 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
             <Formik
               initialValues={{
                 to: '',
+                client_gst: '',
                 date: new Date().toISOString().split('T')[0],
                 invoice_due: '',
                 hsn_no: '',
-                description: '',
-                qty: '',
-                rate: '',
-                cgst: '',
-                sgst: '',
+                items: [
+                  {
+                    description: '',
+                    qty: '',
+                    rate: '',
+                  }
+                ],
                 cgst_percentage: 9,
                 sgst_percentage: 9,
+                igst_percentage: 18,
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
               {({ values, errors, touched, isSubmitting, setFieldValue }) => {
-                // Calculate amount
-                const amount = values.qty && values.rate ? values.qty * values.rate : 0;
-                
-                // Auto-calculate CGST when amount or percentage changes
-                const handleCGSTPercentageChange = (e) => {
-                  const percentage = parseFloat(e.target.value) || 0;
-                  setFieldValue('cgst_percentage', percentage);
-                  if (amount > 0) {
-                    const calculatedCGST = autoCalculateGST(amount, percentage);
-                    setFieldValue('cgst', calculatedCGST);
-                  }
-                };
-
-                // Auto-calculate SGST when amount or percentage changes
-                const handleSGSTPercentageChange = (e) => {
-                  const percentage = parseFloat(e.target.value) || 0;
-                  setFieldValue('sgst_percentage', percentage);
-                  if (amount > 0) {
-                    const calculatedSGST = autoCalculateGST(amount, percentage);
-                    setFieldValue('sgst', calculatedSGST);
-                  }
-                };
-
-                // Auto-update GST when qty or rate changes
-                const handleQtyRateChange = (fieldName, value) => {
-                  setFieldValue(fieldName, value);
-                  
-                  // Calculate new amount
-                  const newQty = fieldName === 'qty' ? value : values.qty;
-                  const newRate = fieldName === 'rate' ? value : values.rate;
-                  const newAmount = newQty && newRate ? newQty * newRate : 0;
-                  
-                  // Update CGST if percentage is set
-                  if (newAmount > 0 && values.cgst_percentage) {
-                    const calculatedCGST = autoCalculateGST(newAmount, values.cgst_percentage);
-                    setFieldValue('cgst', calculatedCGST);
-                  }
-                  
-                  // Update SGST if percentage is set
-                  if (newAmount > 0 && values.sgst_percentage) {
-                    const calculatedSGST = autoCalculateGST(newAmount, values.sgst_percentage);
-                    setFieldValue('sgst', calculatedSGST);
-                  }
-                };
-
-                const cgst = Number(values.cgst) || 0;
-                const sgst = Number(values.sgst) || 0;
-                const total = amount + cgst + sgst;
+                // Safely calculate totals with fallback to empty array
+                const { subtotal, cgst, sgst, igst, total } = calculateTotals(
+                  values.items || [],
+                  values.cgst_percentage,
+                  values.sgst_percentage,
+                  values.igst_percentage
+                );
 
                 return (
                   <Form className="space-y-6">
@@ -363,6 +349,25 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
                           <span>⚠</span> {errors.to}
                         </div>
                       )}
+                    </div>
+
+                    {/* Client GST Number */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Client GST Number <span className="text-gray-400 text-xs">(Optional - Defaults to URD)</span>
+                      </label>
+                      <Field
+                        type="text"
+                        name="client_gst"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        placeholder="Enter client GST number or leave blank for URD"
+                      />
+                      {errors.client_gst && touched.client_gst && (
+                        <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                          <span>⚠</span> {errors.client_gst}
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">Enter any GST format or leave blank for "URD" (Unregistered Dealer)</p>
                     </div>
 
                     {/* Date Fields */}
@@ -398,7 +403,7 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
                     {/* HSN Number */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        HSN/SAC Number <span className="text-gray-400 text-xs">(Optional)</span>
+                        HSN/SAC Number <span className="text-gray-400 text-xs">(Optional - Applies to all items)</span>
                       </label>
                       <Field
                         type="text"
@@ -408,111 +413,147 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
                       />
                     </div>
 
-                    {/* Description */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Description <span className="text-red-500">*</span>
-                      </label>
-                      <Field
-                        as="textarea"
-                        name="description"
-                        rows="3"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
-                        placeholder="Enter service or product description"
-                      />
-                      {errors.description && touched.description && (
-                        <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                          <span>⚠</span> {errors.description}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Quantity and Rate */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Quantity <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          name="qty"
-                          min="1"
-                          value={values.qty}
-                          onChange={(e) => handleQtyRateChange('qty', e.target.value)}
-                          onBlur={() => {}}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                          placeholder="Enter quantity"
-                        />
-                        {errors.qty && touched.qty && (
-                          <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                            <span>⚠</span> {errors.qty}
-                          </div>
-                        )}
+                    {/* Items Section */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-semibold text-gray-800">Line Items</h3>
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Rate (₹) <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          name="rate"
-                          min="0"
-                          step="0.01"
-                          value={values.rate}
-                          onChange={(e) => handleQtyRateChange('rate', e.target.value)}
-                          onBlur={() => {}}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                          placeholder="Enter rate per unit"
-                        />
-                        {errors.rate && touched.rate && (
-                          <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                            <span>⚠</span> {errors.rate}
+                      <FieldArray name="items">
+                        {({ push, remove }) => (
+                          <div className="space-y-6">
+                            {values.items.map((item, index) => (
+                              <div key={index} className="bg-white border border-gray-300 rounded-lg p-6 relative">
+                                {/* Remove button */}
+                                {values.items.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => remove(index)}
+                                    className="absolute top-4 right-4 text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-full transition"
+                                    title="Remove item"
+                                  >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                  </button>
+                                )}
+
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                      Item {index + 1}
+                                    </span>
+                                  </div>
+
+                                  {/* Description */}
+                                  <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                      Description <span className="text-red-500">*</span>
+                                    </label>
+                                    <Field
+                                      as="textarea"
+                                      name={`items.${index}.description`}
+                                      rows="3"
+                                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
+                                      placeholder="Enter service or product description"
+                                    />
+                                    {errors.items?.[index]?.description && touched.items?.[index]?.description && (
+                                      <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                                        <span>⚠</span> {errors.items[index].description}
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Quantity and Rate */}
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Quantity <span className="text-red-500">*</span>
+                                      </label>
+                                      <Field
+                                        type="number"
+                                        name={`items.${index}.qty`}
+                                        min="1"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                        placeholder="Qty"
+                                      />
+                                      {errors.items?.[index]?.qty && touched.items?.[index]?.qty && (
+                                        <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                                          <span>⚠</span> {errors.items[index].qty}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div>
+                                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Rate (₹) <span className="text-red-500">*</span>
+                                      </label>
+                                      <Field
+                                        type="number"
+                                        name={`items.${index}.rate`}
+                                        min="0"
+                                        step="0.01"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                        placeholder="Rate"
+                                      />
+                                      {errors.items?.[index]?.rate && touched.items?.[index]?.rate && (
+                                        <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
+                                          <span>⚠</span> {errors.items[index].rate}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div>
+                                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Amount (₹)
+                                      </label>
+                                      <div className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-100 text-gray-700 font-semibold">
+                                        ₹{((item.qty || 0) * (item.rate || 0)).toLocaleString('en-IN')}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+
+                            {/* Add Item Button */}
+                            <button
+                              type="button"
+                              onClick={() => push({ description: '', qty: '', rate: '' })}
+                              className="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold py-3 px-6 rounded-lg transition duration-200 border-2 border-dashed border-blue-300 flex items-center justify-center gap-2"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                              Add Another Item
+                            </button>
                           </div>
                         )}
-                      </div>
+                      </FieldArray>
                     </div>
 
-                    {/* CGST and SGST Fields */}
+                    {/* GST Details */}
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">GST Details</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Choose either <strong>CGST + SGST</strong> (for intra-state) or <strong>IGST</strong> (for inter-state)
+                      </p>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* CGST */}
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
                             CGST Percentage
                           </label>
-                          <input
+                          <Field
                             type="number"
                             name="cgst_percentage"
                             min="0"
                             max="100"
                             step="0.01"
-                            value={values.cgst_percentage}
-                            onChange={handleCGSTPercentageChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                             placeholder="e.g., 9"
                           />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            CGST Amount (₹) <span className="text-red-500">*</span>
-                          </label>
-                          <Field
-                            type="number"
-                            name="cgst"
-                            min="0"
-                            step="0.01"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            placeholder="Auto-calculated or enter manually"
-                          />
-                          {errors.cgst && touched.cgst && (
-                            <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                              <span>⚠</span> {errors.cgst}
-                            </div>
-                          )}
                         </div>
 
                         {/* SGST */}
@@ -520,57 +561,62 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
                             SGST Percentage
                           </label>
-                          <input
+                          <Field
                             type="number"
                             name="sgst_percentage"
                             min="0"
                             max="100"
                             step="0.01"
-                            value={values.sgst_percentage}
-                            onChange={handleSGSTPercentageChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                             placeholder="e.g., 9"
                           />
                         </div>
 
+                        {/* IGST */}
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            SGST Amount (₹) <span className="text-red-500">*</span>
+                            IGST Percentage
                           </label>
                           <Field
                             type="number"
-                            name="sgst"
+                            name="igst_percentage"
                             min="0"
+                            max="100"
                             step="0.01"
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                            placeholder="Auto-calculated or enter manually"
+                            placeholder="e.g., 18"
                           />
-                          {errors.sgst && touched.sgst && (
-                            <div className="text-red-600 text-sm mt-1 flex items-center gap-1">
-                              <span>⚠</span> {errors.sgst}
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Calculation Summary */}
-                    {values.qty && values.rate && (
+                    {subtotal > 0 && (
                       <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Calculation Summary</h3>
                         <div className="space-y-3">
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Amount</span>
-                            <span className="font-semibold text-gray-800">₹{amount.toLocaleString('en-IN')}</span>
+                            <span className="text-gray-600">Subtotal</span>
+                            <span className="font-semibold text-gray-800">₹{subtotal.toLocaleString('en-IN')}</span>
                           </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">CGST @ {values.cgst_percentage}%</span>
-                            <span className="font-semibold text-gray-800">₹{cgst.toLocaleString('en-IN')}</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">SGST @ {values.sgst_percentage}%</span>
-                            <span className="font-semibold text-gray-800">₹{sgst.toLocaleString('en-IN')}</span>
-                          </div>
+                          {cgst > 0 && (
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">CGST @ {values.cgst_percentage}%</span>
+                              <span className="font-semibold text-gray-800">₹{cgst.toLocaleString('en-IN')}</span>
+                            </div>
+                          )}
+                          {sgst > 0 && (
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">SGST @ {values.sgst_percentage}%</span>
+                              <span className="font-semibold text-gray-800">₹{sgst.toLocaleString('en-IN')}</span>
+                            </div>
+                          )}
+                          {igst > 0 && (
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">IGST @ {values.igst_percentage}%</span>
+                              <span className="font-semibold text-gray-800">₹{igst.toLocaleString('en-IN')}</span>
+                            </div>
+                          )}
                           <div className="border-t pt-3 mt-3 flex justify-between items-center">
                             <span className="text-lg font-bold text-gray-800">Total Amount</span>
                             <span className="text-2xl font-bold text-blue-600">₹{total.toLocaleString('en-IN')}</span>
@@ -587,7 +633,7 @@ const handleSubmit = async (values, { setSubmitting, resetForm }) => {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
                       >
                         {isSubmitting ? (
                           <span className="flex items-center justify-center gap-2">
