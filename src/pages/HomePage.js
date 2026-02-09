@@ -230,10 +230,7 @@ export function HomePage() {
     name="keywords"
     content="Digital Marketing Agency in Bangalore."
   />
-  <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
-  
-   
- 	
+  <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />	
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -243,7 +240,7 @@ export function HomePage() {
   "url": "https://www.skyupdigitalsolutions.com",
   "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
   "description": "Skyup Digital Solutions is a professional digital marketing agency in Bengaluru offering SEO, social media marketing, Google Ads, and website development services.",
-  "telephone": "+91 8867867775",
+  "telephone": "+91-8867867775",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "2nd Floor, No 23, 14A, Dasarahalli Main Rd, E Block, Sahakar Nagar, Byatarayanapura",
@@ -265,7 +262,7 @@ export function HomePage() {
       "Wednesday",
       "Thursday",
       "Friday",
-      "Saturday",    
+      "Saturday"
     ],
     "opens": "09:00",
     "closes": "19:00"
