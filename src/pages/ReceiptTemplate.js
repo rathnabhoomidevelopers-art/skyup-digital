@@ -13,25 +13,27 @@ export default function ReceiptTemplate({ data }) {
 
   return (
     <div
-      className="font-poppins"
+      className="font-poppins bg-white"
       style={{
-        backgroundColor: "white",
-        width: "210mm", // A4 width
-        minHeight: "297mm", // A4 height
+        backgroundImage: "url('/images/watermark.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        width: "210mm",
+        minHeight: "297mm",
         fontFamily: "Arial, sans-serif",
         boxSizing: "border-box",
-        padding: 0, // Remove padding
-        margin: 0, // Remove margin
-        display: "block", // Ensures the element behaves as block to prevent inline content issues
+        padding: 0,
+        margin: 0,
+        display: "block",
       }}
     >
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 pt-16 pb-10 px-[60px]">
+      <div className="flex justify-between items-center mb-6 pt-4 pb-3 px-[60px]">
         <div>
           <h1 className="text-5xl font-extrabold text-black mb-4">INVOICE</h1>
         </div>
         <div className="text-right">
-          {/* Logo */}
           <img src="/images/rbd-logo.webp" className="h-16" alt="Logo" />
         </div>
       </div>
@@ -58,6 +60,10 @@ export default function ReceiptTemplate({ data }) {
           <div className="text-sm whitespace-pre-line">
             {data.to.split("\n").slice(1).join("\n")}
           </div>
+          <div className="text-sm">
+            <span className="font-bold text-sm mb-2">GST No: </span>
+            {data.client_gst}
+          </div>
         </div>
         <div className="rounded-lg text-right min-w-[250px]">
           <div className="text-sm mb-2">
@@ -78,98 +84,84 @@ export default function ReceiptTemplate({ data }) {
         </div>
       </div>
 
-      {/* Single Table with Items and Totals */}
-      <div className="mb-6 px-4 sm:px-6 lg:px-8">
-        <table className="w-full overflow-hidde2 rounded-lg ">
+      {/* New Table Layout with Borders */}
+      <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center">
+        <table className="min-w-full table-fixed border-[#2b2b2b] table-bordered text-center align-middle">
           <thead>
-            <tr className="bg-[#fcd5ad] border-24 ">
-              {/* TOP-LEFT radius */}
-              <th className="rounded-tl-lg border-r-2 border-[#ffc890] px-4 py-3 text-left text-md font-semibold text-dark">
-                S.No.
-              </th>
-              <th className="border-r-2 border-[#ffc890] px-4 py-3 text-left text-md font-semibold text-dark">
-                Description
-              </th>
-              <th className="border-r-2 border-[#ffc890] px-4 py-3 text-center text-md font-semibold text-dark">
-                Tax Rate
-              </th>
-              <th className="border-r-2 border-[#ffc890] px-4 py-3 text-center text-md font-semibold text-dark">
-                Qty
-              </th>
-              <th className="border-r-2 border-[#ffc890] px-4 py-3 text-right text-md font-semibold text-dark">
-                Rate
-              </th>
-              <th className="px-4 py-3 text-right text-md font-semibold text-dark">
-                Amount
-              </th>
+            <tr style={{ backgroundColor: "#fed7aa" }}>
+              <th className="px-2 pb-3 w-[8%]">SL.No.</th>
+              <th className="px-2 pb-3 w-[40%]">Description</th>
+              <th className="px-2 pb-3 w-[12%]">Tax Rate</th>
+              <th className="px-2 pb-3 w-[10%]">Qty</th>
+              <th className="px-2 pb-3 w-[15%]">Rate</th>
+              <th className="px-2 pb-3 w-[15%]">Amount</th>
             </tr>
           </thead>
           <tbody>
-            {/* Item Row */}
-            <tr className="hover:bg-gray-50">
-              <td className="border-r-2 border-gray-300 px-4 py-3 text-sm align-top">
-                01
+            {/* Dynamic Items Rows */}
+            {data.items &&
+              data.items.map((item, index) => (
+                <tr key={index}>
+                  <td className="px-4 pb-3">{index + 1}</td>
+                  <td className="px-4 pb-3 whitespace-pre-wrap break-words">
+                    {item.description}
+                  </td>
+                  <td className="px-4 pb-3">18%</td>
+                  <td className="px-4 pb-3">{item.qty}</td>
+                  <td className="px-4 pb-3">{item.rate}</td>
+                  <td className="px-4 pb-3">{item.amount}</td>
+                </tr>
+              ))}
+
+            {/* Subtotal Row */}
+            <tr>
+              <td colSpan="4" className="no-border px-2 pb-3 text-sm"></td>
+              <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                Total
               </td>
-              <td className="border-r-2 border-gray-300 px-4 py-3 text-sm align-top">
-                {data.description}
-              </td>
-              <td className="border-r-2 border-gray-300 px-4 py-3 text-sm text-center align-top">
-                18.00%
-              </td>
-              <td className="border-r-2 border-gray-300 px-4 py-3 text-sm text-center align-top">
-                {data.qty}
-              </td>
-              <td className="border-r-2 border-gray-300 px-4 py-3 text-sm text-right align-top">
-                {data.rate}
-              </td>
-              <td className="px-4 py-3 text-sm text-right align-top">
-                {data.amount}
+              <td className="px-2 pb-3 text-sm text-gray-700">
+                {data.subtotal}
               </td>
             </tr>
 
-            {/* Totals within the same table */}
-            <tr className="border-t-2 border-gray-300">
-              <td colSpan="4" className="px-4 py-2"></td>
-              <td className="border-r-2 border-gray-300 px-4 py-2 text-sm font-medium text-right text-gray-700">
-                Total
+            {/* Tax Rows (CGST, SGST, IGST) - only show if amount > 0 */}
+            {data.cgst > 0 && (
+              <tr>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.cgstLabel || "CGST @ 9%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.cgst}</td>
+              </tr>
+            )}
+
+            {data.sgst > 0 && (
+              <tr>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.sgstLabel || "SGST @ 9%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.sgst}</td>
+              </tr>
+            )}
+
+            {data.igst > 0 && (
+              <tr>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.igstLabel || "IGST @ 18%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.igst}</td>
+              </tr>
+            )}
+
+            {/* Total Amount In Words */}
+            <tr style={{ backgroundColor: "#2563eb" }}>
+              <td colSpan="4" className="text-sm px-2 pb-3 text-white">
+                {data.amount_in_words}
               </td>
-              <td className="px-4 py-2 text-sm text-right text-gray-700">
-                {data.amount}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="4" className="px-4 py-2"></td>
-              <td className="border-r-2 border-gray-300 px-4 py-2 text-sm font-medium text-right text-gray-700">
-                {data.cgstLabel || "CGST @ 9%"}
-              </td>
-              <td className="px-4 py-2 text-sm text-right text-gray-700">
-                {data.cgst}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="4" className="px-4 py-2"></td>
-              <td className="border-r-2 border-gray-300 px-4 py-2 text-sm font-medium text-right text-gray-700">
-                {data.sgstLabel || "SGST @ 9%"}
-              </td>
-              <td className="px-4 py-2 text-sm text-right text-gray-700">
-                {data.sgst}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="4" className="px-4 py-2"></td>
-              <td className="border-r-2 border-gray-300 px-4 py-2 text-sm font-medium text-right text-gray-700">
-                Round off
-              </td>
-              <td className="px-4 py-2 text-sm text-right text-gray-700">
-                0.00
-              </td>
-            </tr>
-            <tr className="bg-blue-600 text-white">
-              <td colSpan="4" className="px-4 py-3"></td>
-              <td className="border-r-2 border-blue-700 px-4 py-3 text-sm font-bold text-right">
-                TOTAL
-              </td>
-              <td className="px-4 py-3 text-sm font-bold text-right">
+              <td className="px-2 pb-3 text-sm font-bold text-white">TOTAL</td>
+              <td className="px-2 pb-3 text-sm font-bold text-white">
                 {data.total}
               </td>
             </tr>
@@ -178,10 +170,13 @@ export default function ReceiptTemplate({ data }) {
       </div>
 
       {/* Bank Details and Thank You Section */}
-      <div className="flex justify-between items-end relative ">
-        <div className="flex-1 py-10 px-[60px]">
-          <div className="font-bold text-sm mb-3">BANK DETAILS</div>
-          <div className="text-sm space-y-1">
+      <div className="flex justify-between">
+        {/* Bank Details */}
+        <div className="flex-1 py-2 px-[60px]">
+          {" "}
+          {/* Added mt-4 to push it up */}
+          <div className="font-bold text-sm mb-1">BANK DETAILS</div>
+          <div className="text-sm">
             <div>
               <span className="font-bold">{data.bankDetails.bankName}</span>
             </div>
@@ -201,14 +196,18 @@ export default function ReceiptTemplate({ data }) {
               <span className="font-semibold">Branch:</span>{" "}
               {data.bankDetails.branch}
             </div>
+            <div className="text-[13px]">
+              <span className="font-semibold text-sm">Note:</span> Payment
+              Beyond 30 Days Will Attract 18% Interest
+            </div>
           </div>
         </div>
 
         {/* Thank You with Geometric Design */}
-        <div>
+        <div className="pt-6">
           <img
-            src="/images/thankyou_1.webp"
-            className="w-[310px]"
+            src="/images/signature.webp"
+            className="w-[325px]"
             alt="Thank You"
           />
         </div>
