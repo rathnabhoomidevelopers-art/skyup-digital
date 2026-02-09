@@ -236,9 +236,9 @@ export function HomePage() {
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "MarketingAgency",
-      "@id": "https://www.skyupdigitalsolutions.com",
+      "@id": "https://www.skyupdigitalsolutions.com/#organization",
       "name": "Skyup Digital Solutions",
-      "url": "https://www.skyupdigitalsolutions.com/",
+      "url": "https://www.skyupdigitalsolutions.com",
       "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
       "description": "Skyup Digital Solutions is a professional digital marketing agency in Bengaluru offering SEO, social media marketing, Google Ads, and website development services.",
       "telephone": "+91-8867867775",
