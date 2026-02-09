@@ -220,18 +220,62 @@ export function HomePage() {
 
   return (
     <div className="w-full">
-      <Helmet>
-        <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
-        <meta
-          name="description"
-          content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
-        />
-        <meta
-          name="keywords"
-          content="Digital Marketing Agency in Bangalore."
-        />
-        <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
-      </Helmet>
+     <Helmet>
+  <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
+  <meta
+    name="description"
+    content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
+  />
+  <meta
+    name="keywords"
+    content="Digital Marketing Agency in Bangalore."
+  />
+  <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
+  
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "MarketingAgency",
+      "@id": "https://www.skyupdigitalsolutions.com/#marketingagency",
+      "name": "Skyup Digital Solutions",
+      "url": "https://www.skyupdigitalsolutions.com/",
+      "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
+      "description": "Skyup Digital Solutions is a professional digital marketing agency in Bengaluru offering SEO, social media marketing, Google Ads, and website development services.",
+      "telephone": "+91-8867867775",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2nd Floor, No 23, 14A, Dasarahalli Main Rd, E Block, Sahakar Nagar, Byatarayanapura",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "postalCode": "560092",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 13.0629,
+        "longitude": 77.5871
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/110886969/",
+        "https://www.facebook.com/profile.php?id=61584820941998",
+        "https://www.instagram.com/skyupdigitalsolutions/"
+      ]
+    })}
+  </script>
+</Helmet>
 
       <Header />
       <HeroSection />
