@@ -53,14 +53,25 @@ export default function ReceiptTemplate({ data }) {
       </div>
 
       {/* To and Invoice Details Section */}
-      <div className="flex justify-between mb-10 px-[60px]">
+      <div className="flex justify-between mb-10 h-[110px] px-[60px]">
         <div className="flex-1">
           <div className="font-bold text-sm mb-2">TO:</div>
-          <div className="font-bold text-sm">{data.to.split("\n")[0]}</div>
-          <div className="text-sm whitespace-pre-line">
-            {data.to.split("\n").slice(1).join("\n")}
-          </div>
-          <div className="text-sm">
+          {(() => {
+            const lines = data.to.split("\n").filter((line) => line.trim());
+            return (
+              <>
+                {lines.length > 0 && (
+                  <div className="font-bold text-sm">{lines[0]}</div>
+                )}
+                {lines.length > 1 && (
+                  <div className="text-sm whitespace-pre-line">
+                    {lines.slice(1).join("\n")}
+                  </div>
+                )}
+              </>
+            );
+          })()}
+          <div className="text-sm mt-2">
             <span className="font-bold text-sm mb-2">GST No: </span>
             {data.client_gst}
           </div>
