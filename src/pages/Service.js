@@ -131,8 +131,8 @@ export function Service() {
         className="h-[221px] lg:h-[332px] flex flex-col items-center bg-[#EEF1FC] justify-center"
       >
         <motion.div variants={fadeUp}>
-          <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
-            Expert Digital Marketing Services in Bangalore
+          <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold lg:w-[1100px]">
+            Expert Digital Marketing <span className="text-[#0037CA]">Services</span> in Bangalore
           </h1>
         </motion.div>
         
