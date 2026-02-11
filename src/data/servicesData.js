@@ -479,11 +479,11 @@ export const SERVICES = {
       a:"We optimize Google Ads campaigns by refining keyword targeting, adding negative keywords, improving ad copy, enhancing quality score, and testing landing pages. Continuous monitoring ensures improved conversion rates and reduced ad costs.",
     },
     {
-      q:"Do you provide remarketing and display advertising services?"
+      q:"Do you provide remarketing and display advertising services?",
       a:"Yes, we run advanced remarketing campaigns and display ads to re-engage previous visitors and increase conversions. This helps businesses stay visible to potential customers and improve overall campaign performance.",
     },
     {
-      q:"Is PPC better than SEO for quick results?"
+      q:"Is PPC better than SEO for quick results?",
       a:"PPC advertising delivers immediate traffic and leads, while SEO provides long-term organic growth. Many businesses combine Google Ads management and SEO services for maximum digital marketing impact.",
     },{
       q:"How much budget is required for PPC services in Bangalore?",
