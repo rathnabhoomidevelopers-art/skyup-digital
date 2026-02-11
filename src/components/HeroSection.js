@@ -176,7 +176,7 @@ const HeroSection = () => {
                 ref={titleRef}
                 className="hero-title animated-gradient-text text-balance font-poppins font-bold text-[24px] sm:text-[64px] md:text-5xl lg:text-6xl lg:leading-tight"
               >
-                Digital Growth Designed to Create Real Impact
+                Result-Driven Digital Marketing Agency in Bangalore
               </h1>
 
               <p
