@@ -22,7 +22,7 @@ export default function Footer() {
   const socialLinks = [
     { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61584820941998", label: "Facebook" },
     { Icon: Instagram, href: "https://www.instagram.com/skyupdigitalsolutions/", label: "Instagram" },
-    { Icon: Linkedin, href: "https://www.linkedin.com/in/pooja-s-2480893a0/", label: "LinkedIn" },
+    { Icon: Linkedin, href: "https://www.linkedin.com/company/110886969/admin/", label: "LinkedIn" },
     { Icon: Youtube, href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru", label: "YouTube" },
   ];
 
