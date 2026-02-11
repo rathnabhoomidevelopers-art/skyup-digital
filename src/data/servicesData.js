@@ -170,25 +170,52 @@ export const SERVICES = {
     //FAQsections
     faq:[
       {
-        q:"What is SEO and why is it important for businesses?",
-        a: "SEO (Search Engine Optimization) improves website visibility on search engines, helping businesses attract organic traffic, leads, and long-term growth.", 
+        q:"Why are SEO services important for business growth?",
+        a:"SEO services are essential for increasing online visibility, improving search engine rankings, and driving qualified organic traffic. A professional SEO company in Bangalore helps businesses optimize their website structure, content, and backlinks to generate consistent leads and long-term digital growth.", 
       },
       {
-        q:"How long does SEO take to show results??",
-        a: "SEO is a long-term strategy. Visible improvements usually begin within 3–6 months, depending on competition, website condition, and keyword difficulty.", 
+        q:"How does an SEO company in Bangalore improve website rankings?",
+        a: "An experienced SEO company in Bangalore improves rankings through keyword research, on-page SEO, technical SEO, and high-quality link building. By optimizing website performance and targeting high-intent keywords, businesses can achieve better Google rankings and increased organic traffic.", 
       },
       {
-        q:"What services are included in SEO?",
-        a:"SEO includes website audits, keyword research, on-page SEO, technical SEO, content optimization, link building, local SEO, and performance reporting.",
+        q:"What is included in professional SEO services?",
+        a:"Professional SEO services include website audit, on-page SEO optimization, technical SEO improvements, content marketing, off-page SEO strategies, and monthly performance reporting. A best SEO agency ensures your website follows Google guidelines for sustainable results.",
       },
       {
-        q:"Why choose an SEO company in Bangalore?",
-        a:"An SEO company in Bangalore understands local search behavior, competition, and market trends, helping businesses rank better in regional and national searches.",
+        q:"What is the difference between on-page SEO and off-page SEO?",
+        a:"On-page SEO focuses on optimizing website elements like meta titles, headings, content, and internal links. Off-page SEO involves building backlinks, brand mentions, and domain authority. Both are important for improving search engine rankings and online credibility.",
       },
       {
-        q:"Is SEO better than paid advertising?",
-        a:"SEO provides long-term, cost-effective results, while paid ads deliver immediate visibility. Combining both often delivers the best digital marketing performance.",
+        q:"How long does it take to see results from SEO services?",
+        a:"SEO is a long-term strategy. Most businesses start seeing measurable improvements in organic traffic and keyword rankings within 3–6 months, depending on competition, industry, and website condition.",
       },
+      {
+        q:"Do you offer local SEO services for small businesses?",
+        a:"Yes, we provide Local SEO services designed for small businesses and startups. This includes Google Business Profile optimization, local keyword targeting, citation building, and location-based SEO strategies to increase visibility in local search results.",
+      },
+
+      {
+        q:"What makes your SEO agency different from others?",
+        a:"As a leading SEO agency in Bangalore, we focus on data-driven strategies, transparent reporting, ethical SEO practices, and ROI-based optimization. Our customized approach ensures measurable growth and long-term success.",
+      },
+      {
+        q:"Can SEO help generate quality leads?",
+        a:"Yes, SEO targets users actively searching for your products or services. By improving search engine rankings and optimizing landing pages, businesses can attract high-intent visitors and increase lead conversions.",
+      },
+      {
+        q:"What are technical SEO services and why are they important?",
+        a:"Technical SEO services improve website speed, mobile-friendliness, crawlability, indexing, and structured data implementation. Strong technical SEO ensures search engines can properly understand and rank your website.",
+      },
+      {
+        q:"How do you measure SEO success?",
+        a:"SEO success is measured using tools like Google Analytics and Google Search Console. Metrics include organic traffic growth, keyword rankings, click-through rate (CTR), bounce rate, domain authority, and conversions.",
+      },
+      {
+        q:"Is SEO a one-time process?",
+        a:"No, SEO is an ongoing process. Continuous content updates, technical improvements, and backlink building are required to maintain and improve search engine rankings over time.",
+      },
+
+      
     ],
     // 🆕 Trust section for performance marketing
     trustTitle: "Why Businesses Trust",
