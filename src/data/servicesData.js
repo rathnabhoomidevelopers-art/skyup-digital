@@ -130,7 +130,7 @@ export const SERVICES = {
 
   "seo-company-in-bangalore": {
     heroTitle: "Search Engine Optimization (SEO)",
-    title: "Top SEO Company in Bangalore | Boost Your Online Presence",
+    title: "Expert SEO Company in Bangalore ",
     keyword: "seo company in bangalore",
     slug:"seo-company-in-bangalore",
     description: "Looking for the best SEO company in Bangalore. SkyUp offers expert SEO services to improve your website's ranking, drive traffic, and enhance visibility.",
@@ -170,25 +170,52 @@ export const SERVICES = {
     //FAQsections
     faq:[
       {
-        q:"What is SEO and why is it important for businesses?",
-        a: "SEO (Search Engine Optimization) improves website visibility on search engines, helping businesses attract organic traffic, leads, and long-term growth.", 
+        q:"Why are SEO services important for business growth?",
+        a:"SEO services are essential for increasing online visibility, improving search engine rankings, and driving qualified organic traffic. A professional SEO company in Bangalore helps businesses optimize their website structure, content, and backlinks to generate consistent leads and long-term digital growth.", 
       },
       {
-        q:"How long does SEO take to show results??",
-        a: "SEO is a long-term strategy. Visible improvements usually begin within 3–6 months, depending on competition, website condition, and keyword difficulty.", 
+        q:"How does an SEO company in Bangalore improve website rankings?",
+        a: "An experienced SEO company in Bangalore improves rankings through keyword research, on-page SEO, technical SEO, and high-quality link building. By optimizing website performance and targeting high-intent keywords, businesses can achieve better Google rankings and increased organic traffic.", 
       },
       {
-        q:"What services are included in SEO?",
-        a:"SEO includes website audits, keyword research, on-page SEO, technical SEO, content optimization, link building, local SEO, and performance reporting.",
+        q:"What is included in professional SEO services?",
+        a:"Professional SEO services include website audit, on-page SEO optimization, technical SEO improvements, content marketing, off-page SEO strategies, and monthly performance reporting. A best SEO agency ensures your website follows Google guidelines for sustainable results.",
       },
       {
-        q:"Why choose an SEO company in Bangalore?",
-        a:"An SEO company in Bangalore understands local search behavior, competition, and market trends, helping businesses rank better in regional and national searches.",
+        q:"What is the difference between on-page SEO and off-page SEO?",
+        a:"On-page SEO focuses on optimizing website elements like meta titles, headings, content, and internal links. Off-page SEO involves building backlinks, brand mentions, and domain authority. Both are important for improving search engine rankings and online credibility.",
       },
       {
-        q:"Is SEO better than paid advertising?",
-        a:"SEO provides long-term, cost-effective results, while paid ads deliver immediate visibility. Combining both often delivers the best digital marketing performance.",
+        q:"How long does it take to see results from SEO services?",
+        a:"SEO is a long-term strategy. Most businesses start seeing measurable improvements in organic traffic and keyword rankings within 3–6 months, depending on competition, industry, and website condition.",
       },
+      {
+        q:"Do you offer local SEO services for small businesses?",
+        a:"Yes, we provide Local SEO services designed for small businesses and startups. This includes Google Business Profile optimization, local keyword targeting, citation building, and location-based SEO strategies to increase visibility in local search results.",
+      },
+
+      {
+        q:"What makes your SEO agency different from others?",
+        a:"As a leading SEO agency in Bangalore, we focus on data-driven strategies, transparent reporting, ethical SEO practices, and ROI-based optimization. Our customized approach ensures measurable growth and long-term success.",
+      },
+      {
+        q:"Can SEO help generate quality leads?",
+        a:"Yes, SEO targets users actively searching for your products or services. By improving search engine rankings and optimizing landing pages, businesses can attract high-intent visitors and increase lead conversions.",
+      },
+      {
+        q:"What are technical SEO services and why are they important?",
+        a:"Technical SEO services improve website speed, mobile-friendliness, crawlability, indexing, and structured data implementation. Strong technical SEO ensures search engines can properly understand and rank your website.",
+      },
+      {
+        q:"How do you measure SEO success?",
+        a:"SEO success is measured using tools like Google Analytics and Google Search Console. Metrics include organic traffic growth, keyword rankings, click-through rate (CTR), bounce rate, domain authority, and conversions.",
+      },
+      {
+        q:"Is SEO a one-time process?",
+        a:"No, SEO is an ongoing process. Continuous content updates, technical improvements, and backlink building are required to maintain and improve search engine rankings over time.",
+      },
+
+      
     ],
     // 🆕 Trust section for performance marketing
     trustTitle: "Why Businesses Trust",
@@ -259,7 +286,7 @@ export const SERVICES = {
 
   "email-marketing-company-in-bangalore": {
     heroTitle: "Email Marketing Services",
-    title: "Email Marketing Services in Bangalore | SkyUp Digital ",
+    title: "ROI-Focused Email Marketing Services Bangalore ",
     keyword: "Email Marketing Services in Bangalore",
     slug:"email-marketing-company-in-bangalore",
     description: "SkyUp offers top-notch email marketing services in Bangalore to enhance your brand's reach, engagement, and conversion. Contact us to grow your business today!",
@@ -425,25 +452,48 @@ export const SERVICES = {
   //FAQsections
   faq:[
     {
-      q:"What is PPC advertising?",
-      a: "PPC is a digital advertising model where businesses pay only when users click on their ads, ensuring cost-effective marketing.", 
+      q:"Why should I choose your PPC services in Bangalore?",
+      a: "Our PPC services in Bangalore focus on ROI-driven strategies, advanced targeting, and continuous campaign optimization. As a results-oriented performance marketing agency, we create customized pay per click advertising campaigns designed to generate high-quality leads and maximize return on ad spend (ROAS).", 
     },
     {
-      q:"How does Google Ads work?",
-      a: "Google Ads displays ads based on keywords, audience targeting, and bidding, helping businesses reach users actively searching for their services.", 
+      q:"What makes you a leading PPC company in Bangalore?",
+      a: "As a trusted PPC company in Bangalore, we focus on data-driven optimization, detailed reporting, A/B testing, and transparent communication. Our approach ensures measurable growth, improved click-through rates (CTR), and lower cost per acquisition (CPA).", 
     },
     {
-      q:"How soon can PPC generate results?",
-      a:"PPC can start driving traffic and leads within days of campaign launch, unlike organic marketing which takes longer.",
+      q:"Do you offer complete Google Ads management services?",
+      a:"Yes, we provide end-to-end Google Ads management services, including keyword research, competitor analysis, ad copy creation, landing page optimization, conversion tracking setup, and ongoing performance monitoring.",
+    },
+    {
+      q:"How do you measure the success of PPC campaigns?",
+      a:"We measure PPC campaign performance using key metrics such as cost per click (CPC), cost per lead (CPL), conversion rate, return on ad spend (ROAS), and overall lead quality. Advanced analytics tools help us continuously improve campaign performance.",
+    },{
+      q:"Can you help small businesses with PPC advertising?",
+    a:"Absolutely. We offer PPC services for small businesses with budget-friendly strategies that focus on local targeting, high-intent keywords, and lead generation campaigns to maximize ROI without overspending.",
+    },
+    {
+      q:"What industries do you provide PPC services for?",
+      a:"Our pay per click advertising services cater to industries such as real estate, healthcare, eCommerce, education, IT companies, startups, and local service providers. We customize PPC strategies based on industry trends and competition.",
+    },
+    {
+      q:"How do you optimize PPC campaigns for better ROI?",
+      a:"We optimize Google Ads campaigns by refining keyword targeting, adding negative keywords, improving ad copy, enhancing quality score, and testing landing pages. Continuous monitoring ensures improved conversion rates and reduced ad costs.",
+    },
+    {
+      q:"Do you provide remarketing and display advertising services?
+      a:"Yes, we run advanced remarketing campaigns and display ads to re-engage previous visitors and increase conversions. This helps businesses stay visible to potential customers and improve overall campaign performance.",
+    },
+    {
+      q:"Is PPC better than SEO for quick results?
+      a:"PPC advertising delivers immediate traffic and leads, while SEO provides long-term organic growth. Many businesses combine Google Ads management and SEO services for maximum digital marketing impact.",
+    },{
+      q:"How much budget is required for PPC services in Bangalore?",
+      a:"The required budget for PPC services in Bangalore depends on industry competition, keyword cost, and campaign goals. We create customized advertising strategies to ensure efficient budget utilization and measurable ROI.",
     },
     {
       q:"How much budget is required for PPC campaigns?",
       a:"Budgets depend on industry competition, keywords, and goals, but campaigns can start with controlled daily spending.",
     },
-    {
-      q:"Can PPC help with local business visibility?",
-      a:"Yes, location-based targeting makes PPC highly effective for reaching nearby customers.",
-    },
+   
   ],
   // 🆕 Trust section content for this slug
   trustTitle: "Why Choose",
@@ -771,7 +821,7 @@ export const SERVICES = {
 
 "creative-graphic-design": {
   heroTitle: "Graphic Design",
-  title: "Creative Graphics Design Services | SkyUp Digital Solutions",
+  title: "Professional Creative Graphics Design ",
   keyword: "Creative Graphics Design",
   slug:"creative-graphic-design",
   description: "SkyUp offers innovative and creative graphics design services to elevate your brand's identity. Get custom designs that captivate and engage your audience!",
@@ -899,7 +949,7 @@ export const SERVICES = {
 
 "branding-agency-in-bangalore": {
   heroTitle: "Branding Solutions for Growing Businesses",
-  title: "Top Branding Agency in Bangalore | SkyUp - Boost Your Brand",
+  title: "Creative Branding Agency in Bangalore ",
   keyword: "Branding Agency in Bangalore",
   slug: "branding-agency-in-bangalore",
   description: "SkyUp is a leading branding agency in Bangalore, offering expert solutions to elevate your brand’s identity, visibility, and growth. Get in touch today!",
@@ -1026,7 +1076,7 @@ export const SERVICES = {
  },
   "ai-company-in-bangalore": {
   heroTitle: "AI Automation",
-  title: "Top AI Companies in Bangalore | SkyUp Digital Solutions",
+  title: "Top AI Companies in Bangalore Delivering ROI ",
   keyword: "Top Ai Companies in Bangalore",
   slug: "ai-company-in-bangalore",
   description: "SkyUp is one of the top AI companies in Bangalore, delivering cutting-edge AI solutions to boost your business growth. Contact us for advanced AI services today",
