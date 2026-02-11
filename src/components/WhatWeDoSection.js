@@ -60,7 +60,7 @@ export default function WhatWeDo() {
             WHAT WE DO
           </p>
           <h2 className="mt-2 text-[24px] sm:text-[44px] font-bold text-[#111827]">
-            Digital Solutions That Work
+           Digital Agency Solutions That Work
           </h2>
           <p className="mt-4 mx-auto text-[14px] sm:text-[18px] text-[#2B2B2B]">
             We deliver deeply integrated digital solutions built to solve complex
