@@ -3,7 +3,7 @@ export const BLOGS = [
     id: 1,
     slug: "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
     category: "Digital Marketing Strategy",
-    title: "Digital Marketing Agency in Bangalore for Business Growth",
+    title: "Digital Marketing Insights in Bangalore ",
     description: "Grow your business with a trusted digital marketing agency in Bangalore offering SEO, PPC, social media, and lead generation solutions.",
     date: "2026",
     Keywords: "Digital Marketing Agency in Bangalore",
