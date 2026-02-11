@@ -452,25 +452,48 @@ export const SERVICES = {
   //FAQsections
   faq:[
     {
-      q:"What is PPC advertising?",
-      a: "PPC is a digital advertising model where businesses pay only when users click on their ads, ensuring cost-effective marketing.", 
+      q:"Why should I choose your PPC services in Bangalore?",
+      a: "Our PPC services in Bangalore focus on ROI-driven strategies, advanced targeting, and continuous campaign optimization. As a results-oriented performance marketing agency, we create customized pay per click advertising campaigns designed to generate high-quality leads and maximize return on ad spend (ROAS).", 
     },
     {
-      q:"How does Google Ads work?",
-      a: "Google Ads displays ads based on keywords, audience targeting, and bidding, helping businesses reach users actively searching for their services.", 
+      q:"What makes you a leading PPC company in Bangalore?",
+      a: "As a trusted PPC company in Bangalore, we focus on data-driven optimization, detailed reporting, A/B testing, and transparent communication. Our approach ensures measurable growth, improved click-through rates (CTR), and lower cost per acquisition (CPA).", 
     },
     {
-      q:"How soon can PPC generate results?",
-      a:"PPC can start driving traffic and leads within days of campaign launch, unlike organic marketing which takes longer.",
+      q:"Do you offer complete Google Ads management services?",
+      a:"Yes, we provide end-to-end Google Ads management services, including keyword research, competitor analysis, ad copy creation, landing page optimization, conversion tracking setup, and ongoing performance monitoring.",
+    },
+    {
+      q:"How do you measure the success of PPC campaigns?",
+      a:"We measure PPC campaign performance using key metrics such as cost per click (CPC), cost per lead (CPL), conversion rate, return on ad spend (ROAS), and overall lead quality. Advanced analytics tools help us continuously improve campaign performance.",
+    },{
+      q:"Can you help small businesses with PPC advertising?",
+    a:"Absolutely. We offer PPC services for small businesses with budget-friendly strategies that focus on local targeting, high-intent keywords, and lead generation campaigns to maximize ROI without overspending.",
+    },
+    {
+      q:"What industries do you provide PPC services for?",
+      a:"Our pay per click advertising services cater to industries such as real estate, healthcare, eCommerce, education, IT companies, startups, and local service providers. We customize PPC strategies based on industry trends and competition.",
+    },
+    {
+      q:"How do you optimize PPC campaigns for better ROI?",
+      a:"We optimize Google Ads campaigns by refining keyword targeting, adding negative keywords, improving ad copy, enhancing quality score, and testing landing pages. Continuous monitoring ensures improved conversion rates and reduced ad costs.",
+    },
+    {
+      q:"Do you provide remarketing and display advertising services?
+      a:"Yes, we run advanced remarketing campaigns and display ads to re-engage previous visitors and increase conversions. This helps businesses stay visible to potential customers and improve overall campaign performance.",
+    },
+    {
+      q:"Is PPC better than SEO for quick results?
+      a:"PPC advertising delivers immediate traffic and leads, while SEO provides long-term organic growth. Many businesses combine Google Ads management and SEO services for maximum digital marketing impact.",
+    },{
+      q:"How much budget is required for PPC services in Bangalore?",
+      a:"The required budget for PPC services in Bangalore depends on industry competition, keyword cost, and campaign goals. We create customized advertising strategies to ensure efficient budget utilization and measurable ROI.",
     },
     {
       q:"How much budget is required for PPC campaigns?",
       a:"Budgets depend on industry competition, keywords, and goals, but campaigns can start with controlled daily spending.",
     },
-    {
-      q:"Can PPC help with local business visibility?",
-      a:"Yes, location-based targeting makes PPC highly effective for reaching nearby customers.",
-    },
+   
   ],
   // 🆕 Trust section content for this slug
   trustTitle: "Why Choose",
