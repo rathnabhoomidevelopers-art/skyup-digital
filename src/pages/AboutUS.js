@@ -46,20 +46,36 @@ const staggerWrap = {
 
 const serviceFaqs = [
   {
-    q: "How do you measure success?",
-    a: "We track key performance indicators (KPIs) such as website traffic, leads, conversions, engagement rates, and overall ROI to ensure campaigns deliver real results.",
+    q: "Who is Skyup?",
+    a: "Skyup is a Digital Marketing Agency in Bangalore focused on delivering result-driven SEO services, PPC services, and performance marketing strategies. We help businesses increase online visibility, generate quality leads, and achieve measurable digital growth.",
   },
   {
-    q: "Do you provide ongoing support?",
-    a: "Yes. We continuously monitor campaigns, optimize strategies, and provide regular reports to ensure consistent growth and long-term success.",
+    q: "What makes Skyup different from other digital marketing agencies?",
+    a: "Skyup stands out as a performance-focused digital marketing agency because we prioritize ROI, data-driven strategies, and transparent reporting. Unlike traditional agencies, we align SEO, Google Ads, and online marketing services directly with your business goals.",
   },
   {
-    q: "How do I get started?",
-    a: "Simply contact us through our website or email, and our team will guide you through a consultation to understand your needs and recommend a strategy.",
+    q: "What services does Skyup offer?",
+    a: "Skyup offers complete digital marketing services, including SEO services, PPC services, Google Ads management, social media marketing, performance marketing, and website design & development. Our strategies are customized for startups, small businesses, and enterprises.,
   },
   {
-    q: "Which platforms do you focus on?",
-    a: "We manage major platforms including Google, Facebook, Instagram, LinkedIn, YouTube, and more, depending on your audience and goals.",
+    q: "What industries does Skyup work with?",
+    a: "Skyup provides digital marketing services in Bangalore for industries such as real estate, healthcare, education, eCommerce, IT companies, startups, and local service businesses. Our marketing approach is tailored to each industry’s needs.",
+  },
+  {
+    q: "How does Skyup ensure measurable results?",
+    a: "As a performance marketing agency, Skyup tracks campaign performance using tools like Google Analytics and Search Console. We measure success through organic traffic growth, lead generation, keyword rankings, and conversion rates.",
+  },
+  {
+    q: "Does Skyup work with small businesses and startups?",
+    a: "Yes, Skyup offers affordable digital marketing services designed specifically for small businesses and startups. Our scalable strategies ensure consistent online visibility and lead generation within budget.",
+  },
+  {
+    q: "What is Skyup’s approach to digital marketing?",
+    a: "Skyup follows a structured approach: website audit, keyword research, SEO optimization, paid advertising strategy, continuous monitoring, and performance improvement. Our focus is long-term growth through ethical and sustainable marketing techniques.",
+  },
+  {
+    q: "Why should I choose Skyup as my digital marketing partner?,
+    a: "Choosing Skyup Digital Marketing Agency in Bangalore means partnering with a team that values transparency, innovation, and measurable growth. We focus on delivering real business impact, not just rankings or clicks.",
   },
 ];
 
