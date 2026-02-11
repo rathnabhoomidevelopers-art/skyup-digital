@@ -116,8 +116,7 @@ export function AboutUS() {
           variants={fadeUp}
           className="relative z-10 text-center text-[#2B2B2B] text-[12px] sm:w-[901px] sm:text-[14px] mt-2 lg:text-[18px]"
         >
-          As a leading Digital Marketing Company in Bangalore, we create brands
-          that stand out with impactful strategies and creative solutions.
+          As a leading Digital Marketing Company in Bangalore, Trusted Digital Marketing Company in Bangalore with impactful strategies and creative solutions.
         </motion.p>
       </motion.div>
 

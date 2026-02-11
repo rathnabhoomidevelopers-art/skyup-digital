@@ -35,6 +35,7 @@ const serviceFaqs = [
     q: "How does AI automation help my business?",
     a: "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results.",
   },
+  
 ];
 
 const staggerWrap = {
@@ -131,7 +132,7 @@ export function Service() {
       >
         <motion.div variants={fadeUp}>
           <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
-            Our Experts <span className="text-[#0037CA]">Services</span>
+            Expert Digital Marketing Services in Bangalore
           </h1>
         </motion.div>
         

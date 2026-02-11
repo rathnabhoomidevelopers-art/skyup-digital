@@ -1,7 +1,7 @@
 export const SERVICES = {
   "social-media-marketing": {
     heroTitle: "Social Media Marketing",
-    title: "Best Social Media Marketing Company Near Me | SkyUp",
+    title: "Result-Driven Social Media Marketing Company",
     keyword: "Social Media Marketing Company Near Me",
     slug:"social-media-marketing",
     description: "SkyUp is the Top social media marketing company near you, offering expert strategies to boost your brand online presence and drive engagement. Contact us today",
