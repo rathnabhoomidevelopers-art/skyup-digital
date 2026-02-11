@@ -55,7 +55,7 @@ const serviceFaqs = [
   },
   {
     q: "What services does Skyup offer?",
-    a: "Skyup offers complete digital marketing services, including SEO services, PPC services, Google Ads management, social media marketing, performance marketing, and website design & development. Our strategies are customized for startups, small businesses, and enterprises.,
+    a: "Skyup offers complete digital marketing services, including SEO services, PPC services, Google Ads management, social media marketing, performance marketing, and website design & development. Our strategies are customized for startups, small businesses, and enterprises.",
   },
   {
     q: "What industries does Skyup work with?",
@@ -74,7 +74,7 @@ const serviceFaqs = [
     a: "Skyup follows a structured approach: website audit, keyword research, SEO optimization, paid advertising strategy, continuous monitoring, and performance improvement. Our focus is long-term growth through ethical and sustainable marketing techniques.",
   },
   {
-    q: "Why should I choose Skyup as my digital marketing partner?,
+    q: "Why should I choose Skyup as my digital marketing partner?",
     a: "Choosing Skyup Digital Marketing Agency in Bangalore means partnering with a team that values transparency, innovation, and measurable growth. We focus on delivering real business impact, not just rankings or clicks.",
   },
 ];
