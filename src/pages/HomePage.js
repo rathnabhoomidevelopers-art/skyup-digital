@@ -367,7 +367,8 @@ export function HomePage() {
       ]
     })
   }}
-/>
+>
+  </script>
             
       </Helmet>
 
