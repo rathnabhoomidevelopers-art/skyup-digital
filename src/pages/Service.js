@@ -35,6 +35,47 @@ const serviceFaqs = [
     q: "How does AI automation help my business?",
     a: "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results.",
   },
+  {
+    q: "Why should you hire a performance marketing agency for your business?",
+    a: "By hiring a performance marketing agency in Bangalore, your business can focus on measurable results such as leads, sales, and ROI. It differs from traditional marketing in that performance marketing lets you pay only for accomplished actions, be it a click, conversion, or a sale. A professional agency uses data-driven strategies, advanced analytics, and optimized ad campaigns to scale growth efficiently.",
+  },
+  {
+    q: "What are the key KPIs of performance marketing services?",
+    a: "The major KPIs of performance marketing services include Cost Per Lead (CPL), Cost Per Acquisition (CPA), Click-Through Rate, Conversion Rate, Return on Ad Spend, and Customer Lifetime Value. These KPIs assist businesses in effectively evaluating the performance of marketing campaigns in relation to the marketing budget.",
+  },
+   {
+    q: " How does performance marketing differ from search engine marketing?",
+    a: "Where performance marketing covers a range of paid channels from social ads to display ads, affiliate marketing, and influencer marketing, performance is determined by conversions alone. SEM, on the other hand, focuses more on paid search ads including Google Ads, to raise traffic via keywords. Performance marketing is broader in scope with ROI as its key objective, while SEM is solely search-intent focused.",
+  },
+    {
+    q: "How do performance marketing agencies measure campaign success?",
+    a: "A performance marketing agency uses real-time tracking tools such as Google Analytics, conversion tracking, heatmaps, and CRMs to measure performance. Success is measured by the response to a campaign, conversion, revenue growth, returns on ad spend, and business impact.",
+  },
+    {
+    q: " How does our performance marketing agency differ from other digital marketing agencies?",
+    a: "Our performance marketing company in Bangalore differs from the rest by providing ROI-based marketing strategies, transparent reporting mechanisms, constant optimization of the marketing campaigns, and creating customized marketing campaigns. We differ from other generic marketing agencies by directly linking marketing goals with business objectives.",
+  },
+    {
+    q: " What services does a digital marketing agency in Bangalore offer?",
+    a: "A digital marketing agency in Bangalore offers services such as SEO, performance marketing, Google Ads, social media marketing, content marketing, email marketing, website optimization, and conversion rate optimization to help businesses grow online.",
+  },
+  {
+    q: " Why is SEO important for digital marketing success?",
+    a: "SEO is important for digital marketing success because it improves website visibility, drives organic traffic, builds brand credibility, and reduces long-term dependency on paid advertising.",
+  },
+  {
+    q: " How important is local SEO for Bangalore-based businesses?",
+    a: "Local SEO in Bangalore is crucial for businesses targeting nearby customers. It improves Google Maps visibility, local search rankings, and helps attract location-specific, ready-to-convert customers.",
+  },
+  {
+    q: "Is digital marketing better than traditional marketing?",
+    a: "Digital marketing is more cost-effective, measurable, scalable, and targeted compared to traditional marketing, making it a better choice for modern businesses aiming for sustainable growth.",
+  },
+  {
+    q: "What tools do digital marketing agencies use?",
+    a: "Digital marketing agencies use tools like Google Analytics, Google Search Console, SEMrush, Ahrefs, Meta Ads Manager, Google Ads, and CRM tools to track, analyze, and optimize campaign performance.",
+  },
+  
 ];
 
 const staggerWrap = {
