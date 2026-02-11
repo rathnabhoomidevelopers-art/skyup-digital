@@ -132,7 +132,7 @@ export function Service() {
       >
         <motion.div variants={fadeUp}>
           <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold">
-            Our Experts <span className="text-[#0037CA]">Services</span>
+            Expert Digital Marketing Services in Bangalore
           </h1>
         </motion.div>
         
