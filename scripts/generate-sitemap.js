@@ -14,7 +14,7 @@ const servicesSlugs = [
 const blogSlugs = [
   'digital-marketing-vs-traditional-marketing',
   // Add all your blog slugs here
-];
+];  
 
 const baseUrl = 'https://www.skyupdigitalsolutions.com';
 const today = new Date().toISOString().split('T')[0];
