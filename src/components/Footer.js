@@ -84,6 +84,7 @@ export default function Footer() {
           <div className="mt-6">
             <h3 className="text-2xl font-semibold">Contact Us</h3>
             <div className="mt-3 space-y-2 text-white/85">
+            <a href="https://share.google/mOS54S7HnQWJEGTsg" target="_blank" className="text-white/85 no-underline">Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka</a>
               <div>
                 Email:{" "}
                 <a
@@ -178,6 +179,7 @@ export default function Footer() {
           <div className="pt-[6px]">
             <h3 className="text-2xl font-semibold">Contact Us</h3>
             <div className="mt-3 space-y-2 text-white/85">
+            <a href="https://share.google/mOS54S7HnQWJEGTsg" target="_blank" className="text-white/85 no-underline">Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka</a>
               <div className="flex">
                 Email:&nbsp;{" "}
                 <a

@@ -15,6 +15,50 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import WhatWeDoSection from "../components/WhatWeDoSection";
 import TestimonialsSection from "../components/TestimonialsSection";
+import FAQSection from "../components/FAQSection";
+
+const HomeFaqs = [
+  {
+    q: "Why should you hire a performance marketing agency for your business?",
+    a: "By hiring a performance marketing agency in Bangalore, your business can focus on measurable results such as leads, sales, and ROI. It differs from traditional marketing in that performance marketing lets you pay only for accomplished actions, be it a click, conversion, or a sale. A professional agency uses data-driven strategies, advanced analytics, and optimized ad campaigns to scale growth efficiently.",
+  },
+  {
+    q: "What are the key KPIs of performance marketing services?",
+    a: "The major KPIs of performance marketing services include Cost Per Lead (CPL), Cost Per Acquisition (CPA), Click-Through Rate, Conversion Rate, Return on Ad Spend, and Customer Lifetime Value. These KPIs assist businesses in effectively evaluating the performance of marketing campaigns in relation to the marketing budget.",
+  },
+  {
+    q: " How does performance marketing differ from search engine marketing?",
+    a: "Where performance marketing covers a range of paid channels from social ads to display ads, affiliate marketing, and influencer marketing, performance is determined by conversions alone. SEM, on the other hand, focuses more on paid search ads including Google Ads, to raise traffic via keywords. Performance marketing is broader in scope with ROI as its key objective, while SEM is solely search-intent focused.",
+  },
+  {
+    q: "How do performance marketing agencies measure campaign success?",
+    a: "A performance marketing agency uses real-time tracking tools such as Google Analytics, conversion tracking, heatmaps, and CRMs to measure performance. Success is measured by the response to a campaign, conversion, revenue growth, returns on ad spend, and business impact.",
+  },
+  {
+    q: " How does our performance marketing agency differ from other digital marketing agencies?",
+    a: "Our performance marketing company in Bangalore differs from the rest by providing ROI-based marketing strategies, transparent reporting mechanisms, constant optimization of the marketing campaigns, and creating customized marketing campaigns. We differ from other generic marketing agencies by directly linking marketing goals with business objectives.",
+  },
+  {
+    q: " What services does a digital marketing agency in Bangalore offer?",
+    a: "A digital marketing agency in Bangalore offers services such as SEO, performance marketing, Google Ads, social media marketing, content marketing, email marketing, website optimization, and conversion rate optimization to help businesses grow online.",
+  },
+  {
+    q: " Why is SEO important for digital marketing success?",
+    a: "SEO is important for digital marketing success because it improves website visibility, drives organic traffic, builds brand credibility, and reduces long-term dependency on paid advertising.",
+  },
+  {
+    q: " How important is local SEO for Bangalore-based businesses?",
+    a: "Local SEO in Bangalore is crucial for businesses targeting nearby customers. It improves Google Maps visibility, local search rankings, and helps attract location-specific, ready-to-convert customers.",
+  },
+  {
+    q: "Is digital marketing better than traditional marketing?",
+    a: "Digital marketing is more cost-effective, measurable, scalable, and targeted compared to traditional marketing, making it a better choice for modern businesses aiming for sustainable growth.",
+  },
+  {
+    q: "What tools do digital marketing agencies use?",
+    a: "Digital marketing agencies use tools like Google Analytics, Google Search Console, SEMrush, Ahrefs, Meta Ads Manager, Google Ads, and CRM tools to track, analyze, and optimize campaign performance.",
+  },
+];
 
 function HowDoWeWorkSection() {
   const steps = [
@@ -56,7 +100,7 @@ function HowDoWeWorkSection() {
     },
   };
 
-  const pop = { 
+  const pop = {
     hidden: { opacity: 0, y: 18, scale: 0.985 },
     show: {
       opacity: 1,
@@ -90,7 +134,9 @@ function HowDoWeWorkSection() {
             variants={fadeUp}
             className="text-[#2B2B2B] text-base sm:text-lg leading-relaxed max-w-xl lg:pt-2"
           >
-            We build a unified digital strategy, integrating Facebook, Instagram, LinkedIn, SEO, and more to connect your brand with the right audience.
+            We build a unified digital strategy, integrating Facebook,
+            Instagram, LinkedIn, SEO, and more to connect your brand with the
+            right audience.
           </motion.p>
         </motion.div>
 
@@ -220,40 +266,38 @@ export function HomePage() {
 
   return (
     <div className="w-full">
-    <Helmet>
-  <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
-  <meta
-    name="description"
-    content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
-  />
-  <meta
-    name="keywords"
-    content="Digital Marketing Agency in Bangalore."
-  />
-  <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
-  
-</Helmet>
+      <Helmet>
+        <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
+        <meta
+          name="description"
+          content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
+        />
+        <meta
+          name="keywords"
+          content="Digital Marketing Agency in Bangalore."
+        />
+        <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
+      </Helmet>
 
       <Header />
       <HeroSection />
 
       <motion.section
-          initial="hidden"
-          whileInView="show"
-          viewport={viewport}
-          variants={fadeUp}
-          className="hidden md:block font-poppins"
-        >
-          {/* Outer navy strip */}
-          <div className="w-full h-[238px] bg-[#00164F] py-10">
-            <div className="mx-auto max-w-7xl px-6 lg:px-10">
-              
-              {/* Cards row – GRID (no scroll) */}
-              <div className="grid grid-cols-5 gap-8 lg:gap-10">
-                {stats.map((s, idx) => (
-                  <div
-                    key={idx}
-                    className="
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+        variants={fadeUp}
+        className="hidden md:block font-poppins"
+      >
+        {/* Outer navy strip */}
+        <div className="w-full h-[238px] bg-[#00164F] py-10">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10">
+            {/* Cards row – GRID (no scroll) */}
+            <div className="grid grid-cols-5 gap-8 lg:gap-10">
+              {stats.map((s, idx) => (
+                <div
+                  key={idx}
+                  className="
                       h-[138px] w-[222px]
                       rounded-[18px]
                       bg-gradient-to-b from-[#00164F] to-[#0032B5]
@@ -261,22 +305,22 @@ export function HomePage() {
                       flex flex-col items-center justify-center
                       text-center
                     "
-                  >
-                    <div className="text-white text-[14px] sm:text-[16px] whitespace-pre-line">
-                      {s.label}
-                    </div>
-
-                    <div className="mt-2 text-[#FA9F43] text-[30px] sm:text-[35px] font-bold leading-none">
-                      {s.value}
-                    </div>
+                >
+                  <div className="text-white text-[14px] sm:text-[16px] whitespace-pre-line">
+                    {s.label}
                   </div>
-                ))}
-              </div>
+
+                  <div className="mt-2 text-[#FA9F43] text-[30px] sm:text-[35px] font-bold leading-none">
+                    {s.value}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </motion.section>
+        </div>
+      </motion.section>
 
-        <WhatWeDoSection/>
+      <WhatWeDoSection />
 
       {/* GROW BUSINESS BLOCK */}
       <motion.div
@@ -297,7 +341,8 @@ export function HomePage() {
             </div>
 
             <div className="text-[#2B2B2B] mt-4 text-[14px] md:text-[16px] lg:text-[18px]">
-              Leverage our trained and qualified team to make smarter decisions, optimize performance, and stay ahead of your market
+              Leverage our trained and qualified team to make smarter decisions,
+              optimize performance, and stay ahead of your market
             </div>
 
             <div className="mt-4 -ms-2 sm:-ms-4 md:-ms-6 lg:-ms-9">
@@ -336,11 +381,12 @@ export function HomePage() {
         </div>
       </motion.div>
 
-      <Carousel/>
+      <Carousel />
 
-      <HowDoWeWorkSection/>
-      
-      <TestimonialsSection/>
+      <HowDoWeWorkSection />
+
+      <TestimonialsSection />
+      <FAQSection faqs={HomeFaqs} />
 
       {/* OUR CLIENTS */}
       <motion.div
@@ -348,8 +394,7 @@ export function HomePage() {
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUp}
-      >
-      </motion.div>
+      ></motion.div>
       {/* CTA */}
       <div className="bg-[#FFF8F0]">
         <motion.section
@@ -370,7 +415,8 @@ export function HomePage() {
           </h2>
 
           <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-            Serving companies of every scale. Connect with us to start the conversation.
+            Serving companies of every scale. Connect with us to start the
+            conversation.
           </p>
 
           <div className="mt-8 flex justify-center">
@@ -416,7 +462,11 @@ export function HomePage() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -446,7 +496,11 @@ export function HomePage() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
@@ -461,7 +515,11 @@ export function HomePage() {
             shadow-[0_12px_30px_rgba(0,0,0,0.25)]
           "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
@@ -489,7 +547,11 @@ export function HomePage() {
               shadow-[0_6px_16px_rgba(0,0,0,0.12)]
             "
           >
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>
