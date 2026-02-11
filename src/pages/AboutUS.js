@@ -55,7 +55,7 @@ const serviceFaqs = [
   },
   {
     q: "What services does Skyup offer?",
-    a: "Skyup offers complete digital marketing services, including SEO services, PPC services, Google Ads management, social media marketing, performance marketing, and website design & development. Our strategies are customized for startups, small businesses, and enterprises.,
+    a: "Skyup offers complete digital marketing services, including SEO services, PPC services, Google Ads management, social media marketing, performance marketing, and website design & development. Our strategies are customized for startups, small businesses, and enterprises.",
   },
   {
     q: "What industries does Skyup work with?",
