@@ -779,6 +779,7 @@ export const SERVICES = {
   ],
 },
 
+
 "website-development-company-in-bangalore": {
   heroTitle: "Website Development Services in Bangalore",
   title: "Best Website Development Company in Bangalore | SkyUp",
@@ -842,6 +843,103 @@ export const SERVICES = {
       a:"Yes, maintenance and support services are available after launch.",
     },
   ],
+
+  // FAQ Schema for SEO
+  faqSchema: {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What factors affect the cost of web design services?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The cost of web design services depends on project complexity, number of pages, custom website design requirements, UI/UX design, eCommerce functionality, and integrations. A professional website development company in Bangalore also considers responsive design, SEO optimization, and maintenance requirements when pricing a project."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you provide website redesign services?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we offer complete website redesign services to improve user experience, modernize design, enhance performance, and make your website SEO-friendly. A redesigned website can improve conversions, loading speed, and mobile responsiveness."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you create a responsive web design for all devices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. Our responsive web design services ensure your website works seamlessly on desktops, tablets, and smartphones. Mobile-friendly websites are essential for better search engine rankings and improved user experience."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you design SEO-friendly websites?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we build SEO-friendly websites with optimized structure, fast loading speed, proper heading hierarchy, clean URLs, and mobile responsiveness. This helps your website rank better on search engines and attract organic traffic."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you develop eCommerce websites?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We specialize in eCommerce website development, including product catalogs, secure payment gateway integration, shopping cart functionality, and user-friendly checkout systems. Our eCommerce websites are optimized for conversions and performance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I update my website content myself?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we develop websites using user-friendly CMS platforms like WordPress website design, allowing you to easily update content, images, and blogs without technical knowledge."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer website maintenance services?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we provide ongoing website maintenance services including updates, security monitoring, performance optimization, and technical support to ensure your website runs smoothly after launch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to complete a custom website design project?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The timeline for a custom website design project depends on complexity and features. A standard business website may take 2–4 weeks, while an advanced eCommerce or custom development project may take 6–8 weeks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why should I choose a web design company in Bangalore?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A professional web design company in Bangalore offers expertise in UI/UX design, responsive web development, and SEO optimization. Local agencies understand market trends and deliver affordable web design solutions tailored to your business goals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will my website be optimized for speed and performance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, performance optimization is part of our website development services. We ensure fast loading speed, optimized images, clean coding, and improved Core Web Vitals to enhance user experience and search engine rankings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is included in your website development process?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our website development process includes requirement analysis, UI/UX planning, wireframing, custom website design, development, testing, SEO optimization, and final launch with maintenance support."
+        }
+      }
+    ]
+  },
+
   // 🆕 Trust section content for this slug
   trustTitle: "Why Choose",
   trustHighlight: { blue: "SKYUP", black: "Digital Solutions for Website Development Company In Bangalore" },
@@ -907,7 +1005,6 @@ export const SERVICES = {
     },
   ],
 },
-
 "creative-graphic-design": {
   heroTitle: "Professional Creative Graphics Design ",
   title: "Creative Graphic Design Service | SKYUP Digital Solutions",
