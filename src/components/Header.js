@@ -17,33 +17,33 @@ export default function Header() {
 
   // Social media with brand colors
   const socialLinks = [
-    { 
-      Icon: "/images/FB.svg", 
+    {
+      Icon: "/images/FB.svg",
       href: "https://www.facebook.com/profile.php?id=61584820941998",
       bg: "bg-blue-400",
       hoverBg: "hover:bg-blue-800",
-      text: "text-white"
+      text: "text-white",
     },
-    { 
-      Icon: "/images/Insta.svg", 
+    {
+      Icon: "/images/Insta.svg",
       href: "https://www.instagram.com/skyupdigitalsolutions/",
       bg: "bg-gradient-to-r from-pink-400 to-purple-400",
       hoverBg: "hover:from-pink-600 hover:to-purple-600",
-      text: "text-white"
+      text: "text-white",
     },
-    { 
-      Icon: "/images/Twitter.svg", 
+    {
+      Icon: "/images/Twitter.svg",
       href: "https://www.linkedin.com/company/110886969/admin/",
       bg: "bg-blue-400",
       hoverBg: "hover:bg-blue-800",
-      text: "text-white"
+      text: "text-white",
     },
-    { 
-      Icon: "/images/YT.svg", 
+    {
+      Icon: "/images/YT.svg",
       href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
       bg: "bg-red-400",
       hoverBg: "hover:bg-red-700",
-      text: "text-white"
+      text: "text-white",
     },
   ];
 
@@ -62,11 +62,10 @@ export default function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
-  if (mobileOpen) document.body.style.overflow = "hidden";
-  else document.body.style.overflow = "";
-  return () => (document.body.style.overflow = "");
-}, [mobileOpen]);
-
+    if (mobileOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => (document.body.style.overflow = "");
+  }, [mobileOpen]);
 
   return (
     <>
@@ -117,7 +116,7 @@ export default function Header() {
                           baseClasses,
                           isActive
                             ? "border border-blue-600 text-[#1F6BFF] shadow-[0_0_0_1px_rgba(31,107,255,0.15)] bg-white"
-                            : "text-[#2B2B2B] hover:text-[#1F6BFF]"
+                            : "text-[#2B2B2B] hover:text-[#1F6BFF]",
                         ].join(" ")}
                       >
                         {l.label}
@@ -134,7 +133,7 @@ export default function Header() {
                         "!no-underline",
                         isActive
                           ? "border border-[#1F6BFF] text-[#1F6BFF] shadow-[0_0_0_1px_rgba(31,107,255,0.15)] bg-white"
-                          : "text-[#2B2B2B] hover:text-[#1F6BFF]"
+                          : "text-[#2B2B2B] hover:text-[#1F6BFF]",
                       ].join(" ")}
                     >
                       {l.label}
@@ -181,7 +180,11 @@ export default function Header() {
                 onClick={toggleMobileMenu}
                 aria-label="Toggle main menu"
               >
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
@@ -189,76 +192,79 @@ export default function Header() {
       </motion.header>
 
       <AnimatePresence>
-  {mobileOpen && (
-    <motion.div
-      key="mobile-menu"
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="md:hidden fixed left-0 right-0 top-20 bg-[#F9ECDE] z-[9999] shadow-lg"
-    >
-      <nav className="flex flex-col px-4 pb-4 pt-3 space-y-2">
-        {links.map((l) => {
-          const isActive = getIsActive(l.to);
+        {mobileOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="md:hidden fixed left-0 right-0 top-20 bg-[#F9ECDE] z-[9999] shadow-lg"
+          >
+            <nav className="flex flex-col px-4 pb-4 pt-3 space-y-2">
+              {links.map((l) => {
+                const isActive = getIsActive(l.to);
 
-          if (l.to === "#") {
-            return (
-              <button
-                key={l.label}
-                type="button"
+                if (l.to === "#") {
+                  return (
+                    <button
+                      key={l.label}
+                      type="button"
+                      onClick={() => setMobileOpen(false)}
+                      className={[
+                        "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
+                        isActive
+                          ? "bg-white text-[#1F6BFF]"
+                          : "text-gray-900 hover:bg-white/60",
+                      ].join(" ")}
+                    >
+                      {l.label}
+                    </button>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={l.label}
+                    to={l.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={[
+                      "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
+                      isActive
+                        ? "bg-white text-[#1F6BFF]"
+                        : "text-gray-900 hover:bg-white/60",
+                    ].join(" ")}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
+
+              <div className="flex items-center gap-3 pt-2">
+                {socialLinks.map(({ Icon, href, bg, hoverBg, text }, i) => (
+                  <a
+                    key={i}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
+                  >
+                    <img src={Icon} alt="icon" />
+                  </a>
+                ))}
+              </div>
+
+              <Link
+                to="/contactus"
                 onClick={() => setMobileOpen(false)}
-                className={[
-                  "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
-                  isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
-                ].join(" ")}
+                className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
               >
-                {l.label}
-              </button>
-            );
-          }
-
-          return (
-            <Link
-              key={l.label}
-              to={l.to}
-              onClick={() => setMobileOpen(false)}
-              className={[
-                "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
-                isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
-              ].join(" ")}
-            >
-              {l.label}
-            </Link>
-          );
-        })}
-
-        <div className="flex items-center gap-3 pt-2">
-          {socialLinks.map(({ Icon, href, bg, hoverBg, text }, i) => (
-            <a
-              key={i}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
-            >
-              <img src={Icon} alt="icon" />
-            </a>
-          ))}
-        </div>
-
-        <Link
-          to="/contactus"
-          onClick={() => setMobileOpen(false)}
-          className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
-        >
-          Contact US
-        </Link>
-      </nav>
-    </motion.div>
-  )}
-</AnimatePresence>
-
+                Contact US
+              </Link>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

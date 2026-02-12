@@ -4,7 +4,10 @@ import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 export default function Footer() {
   const services = [
     { label: "Digital Marketing", to: "/service?category=Digital%20Marketing" },
-    { label: "Branding & Design", to: "/service?category=Design%20%26%20Branding" },
+    {
+      label: "Branding & Design",
+      to: "/service?category=Design%20%26%20Branding",
+    },
     { label: "Web Development", to: "/service?category=Web%20Development" },
     { label: "Lead Automation", to: "/service?category=AI-Automation" },
     { label: "UI UX", to: "/services/ui-ux-design" },
@@ -20,16 +23,31 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61584820941998", label: "Facebook" },
-    { Icon: Instagram, href: "https://www.instagram.com/skyupdigitalsolutions/", label: "Instagram" },
-    { Icon: Linkedin, href: "https://www.linkedin.com/company/110886969/admin/", label: "LinkedIn" },
-    { Icon: Youtube, href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru", label: "YouTube" },
+    {
+      Icon: Facebook,
+      href: "https://www.facebook.com/profile.php?id=61584820941998",
+      label: "Facebook",
+    },
+    {
+      Icon: Instagram,
+      href: "https://www.instagram.com/skyupdigitalsolutions/",
+      label: "Instagram",
+    },
+    {
+      Icon: Linkedin,
+      href: "https://www.linkedin.com/company/110886969/admin/",
+      label: "LinkedIn",
+    },
+    {
+      Icon: Youtube,
+      href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
+      label: "YouTube",
+    },
   ];
 
   return (
     <footer className="w-full bg-gradient-to-b from-[#00164F] to-[#0032B5] text-white font-poppins">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 py-8">
-
         {/* ================= MOBILE ================= */}
         <div className="sm:hidden">
           <img
@@ -39,9 +57,10 @@ export default function Footer() {
           />
 
           <p className="mt-4 text-white/80 leading-relaxed max-w-sm">
-            <strong className="text-lg">SkyUp Digital Solutions LLP</strong> empowers brands with
-            result-oriented digital marketing, creative branding, and smart automation turning
-            visibility into real business growth.
+            <strong className="text-lg">SkyUp Digital Solutions LLP</strong>{" "}
+            empowers brands with result-oriented digital marketing, creative
+            branding, and smart automation turning visibility into real business
+            growth.
           </p>
 
           <div className="mt-8 grid grid-cols-2 gap-10">
@@ -84,7 +103,13 @@ export default function Footer() {
           <div className="mt-6">
             <h3 className="text-2xl font-semibold">Contact Us</h3>
             <div className="mt-3 space-y-2 text-white/85">
-            <a href="https://share.google/mOS54S7HnQWJEGTsg" target="_blank" className="text-white/85 no-underline">Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka</a>
+              <a
+                href="https://share.google/mOS54S7HnQWJEGTsg"
+                target="_blank"
+                className="text-white/85 no-underline"
+              >
+                Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka
+              </a>
               <div>
                 Email:{" "}
                 <a
@@ -135,9 +160,10 @@ export default function Footer() {
               className="w-[170px] h-auto mt-2"
             />
             <p className="mt-4 text-white/80 leading-relaxed max-w-sm">
-              <strong className="text-lg">SKYUP Digital Solutions LLP</strong> empowers brands with
-              result-oriented digital marketing, creative branding, and smart automation turning
-              visibility into real business growth.
+              <strong className="text-lg">SKYUP Digital Solutions LLP</strong>{" "}
+              empowers brands with result-oriented digital marketing, creative
+              branding, and smart automation turning visibility into real
+              business growth.
             </p>
           </div>
 
@@ -179,7 +205,13 @@ export default function Footer() {
           <div className="pt-[6px]">
             <h3 className="text-2xl font-semibold">Contact Us</h3>
             <div className="mt-3 space-y-2 text-white/85">
-            <a href="https://share.google/mOS54S7HnQWJEGTsg" target="_blank" className="text-white/85 no-underline">Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka</a>
+              <a
+                href="https://share.google/mOS54S7HnQWJEGTsg"
+                target="_blank"
+                className="text-white/85 no-underline"
+              >
+                Sahakar Nagar, Byatarayanapura, Bengaluru, Karnataka
+              </a>
               <div className="flex">
                 Email:&nbsp;{" "}
                 <a
