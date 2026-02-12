@@ -1,7 +1,7 @@
 export const SERVICES = {
   "social-media-marketing": {
-    heroTitle: "Social Media Marketing",
-    title: "Result-Driven Social Media Marketing Company",
+    heroTitle: "Result-Driven Social Media Marketing Company",
+    title: "Best Social Medaia Marketing Company Near Me | SKYUP",
     keyword: "Social Media Marketing Company Near Me",
     slug:"social-media-marketing",
     description: "SkyUp is the Top social media marketing company near you, offering expert strategies to boost your brand online presence and drive engagement. Contact us today",
@@ -129,8 +129,8 @@ export const SERVICES = {
   },
 
   "seo-company-in-bangalore": {
-    heroTitle: "Search Engine Optimization (SEO)",
-    title: "Expert SEO Company in Bangalore ",
+    heroTitle: "Expert SEO Company in Bangalore",
+    title: "Top SEO Company in Bangalore | Boost Your Online Presence",
     keyword: "seo company in bangalore",
     slug:"seo-company-in-bangalore",
     description: "Looking for the best SEO company in Bangalore. SkyUp offers expert SEO services to improve your website's ranking, drive traffic, and enhance visibility.",
@@ -285,8 +285,8 @@ export const SERVICES = {
 
 
   "email-marketing-company-in-bangalore": {
-    heroTitle: "Email Marketing Services",
-    title: "ROI-Focused Email Marketing Services Bangalore ",
+    heroTitle: "ROI-Focused Email Marketing Services Bangalore",
+    title: "Email Marketing Services In Bangalore | SKYUP Digital",
     keyword: "Email Marketing Services in Bangalore",
     slug:"email-marketing-company-in-bangalore",
     description: "SkyUp offers top-notch email marketing services in Bangalore to enhance your brand's reach, engagement, and conversion. Contact us to grow your business today!",
@@ -820,8 +820,8 @@ export const SERVICES = {
 },
 
 "creative-graphic-design": {
-  heroTitle: "Graphic Design",
-  title: "Professional Creative Graphics Design ",
+  heroTitle: "Professional Creative Graphics Design ",
+  title: "Creative Graphic Design Service | SKYUP Digital Solutions",
   keyword: "Creative Graphics Design",
   slug:"creative-graphic-design",
   description: "SkyUp offers innovative and creative graphics design services to elevate your brand's identity. Get custom designs that captivate and engage your audience!",
@@ -948,8 +948,8 @@ export const SERVICES = {
 },
 
 "branding-agency-in-bangalore": {
-  heroTitle: "Branding Solutions for Growing Businesses",
-  title: "Creative Branding Agency in Bangalore ",
+  heroTitle: "Creative Branding Agency in Bangalore",
+  title: "Top Branding Agency in Bangalore | SKYUP - Boost Your Brand",
   keyword: "Branding Agency in Bangalore",
   slug: "branding-agency-in-bangalore",
   description: "SkyUp is a leading branding agency in Bangalore, offering expert solutions to elevate your brand’s identity, visibility, and growth. Get in touch today!",
@@ -1075,8 +1075,8 @@ export const SERVICES = {
   ],
  },
   "ai-company-in-bangalore": {
-  heroTitle: "AI Automation",
-  title: "Top AI Companies in Bangalore Delivering ROI ",
+  heroTitle: "Top AI Companies in Bangalore Delivering ROI",
+  title: "Top AI Companies in Bangalore | SKYUP Digital Solutions",
   keyword: "Top Ai Companies in Bangalore",
   slug: "ai-company-in-bangalore",
   description: "SkyUp is one of the top AI companies in Bangalore, delivering cutting-edge AI solutions to boost your business growth. Contact us for advanced AI services today",

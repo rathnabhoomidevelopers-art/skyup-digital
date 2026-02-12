@@ -120,11 +120,11 @@ export function AboutUS() {
       >
         <motion.div variants={fadeUp}>
           <h1 className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold">
-            We Create
-            <span className="text-[#0037CA]">&nbsp;Brands&nbsp;</span>
-            That&nbsp;
+            Trusted
+            <span className="text-[#0037CA]">&nbsp;Digital Marketing&nbsp;</span>
+            Company&nbsp;
             <br className="block sm:hidden" />
-            Stand Out
+            In Bangalore
           </h1>
         </motion.div>
 
