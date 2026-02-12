@@ -87,7 +87,7 @@ export default function SubServicePage() {
         >
         <div className="max-w-[721px] sm:h-[361px] sm:mt-2">
           <h1 className="text-[24px] text-start font-bold leading-tight text-[#2B2B2B]
-                        sm:w-[730px] sm:text-[56px] lg:text-[60px]">
+                        sm:w-[950px] sm:text-[56px] lg:text-[60px]">
             {data.heroTitle}
           </h1>
           <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-start
