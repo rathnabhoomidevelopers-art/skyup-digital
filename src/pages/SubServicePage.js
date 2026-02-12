@@ -54,7 +54,16 @@ export default function SubServicePage() {
         />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href={canonicalUrl} />
+        
+        {/* 👇 DYNAMICALLY ADD FAQ SCHEMA IF IT EXISTS 👇 */}
+        {data.faqSchema && (
+          <script type="application/ld+json">
+            {JSON.stringify(data.faqSchema)}
+          </script>
+        )}
+        {/* 👆 DYNAMIC FAQ SCHEMA ENDS HERE 👆 */}
       </Helmet>
+      
       <Header />
       <section className="w-full font-poppins">
         {/* HERO */}
