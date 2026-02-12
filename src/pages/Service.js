@@ -73,48 +73,54 @@ export function Service() {
     href="https://www.skyupdigitalsolutions.com/service"
   />
   <script type="application/ld+json">
-    {JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://www.skyupdigitalsolutions.com/service",
-      "name": "Digital Marketing Services in Bangalore",
-      "description": "Skyup Digital Solutions provides professional digital marketing services in Bangalore including SEO, social media marketing, Google Ads management, and website development for businesses.",
-      "provider": {
-        "@type": "MarketingAgency",
-        "@id": "https://www.skyupdigitalsolutions.com/service",
-        "name": "Skyup Digital Solutions",
-        "url": "https://www.skyupdigitalsolutions.com/",
-        "logo": "https://www.skyupdigitalsolutions.com/images/rbd-logo.webp",
-        "telephone": "+91-8867867775",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "2nd Floor, No 23, 14A, Dasarahalli Main Rd, E Block, Sahakar Nagar, Byatarayanapura",
-          "addressLocality": "Bengaluru",
-          "addressRegion": "Karnataka",
-          "postalCode": "560092",
-          "addressCountry": "IN"
-        }
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Bengaluru"
-      },
-      "serviceType": [
-        "Digital Marketing Services",
-        "Search Engine Optimization",
-        "Social Media Marketing",
-        "Google Ads Management",
-        "Website Development"
-      ],
-      "availableChannel": {
-        "@type": "ServiceChannel",
-        "serviceLocation": {
-          "@type": "Place",
-          "name": "Online and Onsite"
-        }
-      }
-    })}
-  </script>
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "How can Skyup’s digital marketing services help my business grow?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Our digital marketing services focus on increasing organic traffic, improving search engine rankings, and generating high-converting leads. By combining SEO, performance marketing, and paid advertising strategies, Skyup ensures measurable growth and sustainable online success."
+    }
+  },{
+    "@type": "Question",
+    "name": "How can I get started?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Simply contact us, share your requirements, and our team will guide you through the next steps."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do you work with startups as well as established businesses?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Absolutely! We work with both startups and established businesses, tailoring our digital marketing strategies to fit your unique goals and growth stage."
+    }
+  },{
+    "@type": ""Question",
+    "name": "What makes your digital marketing approach different?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Our digital marketing approach is data-driven, customized, and results-focused. We combine creativity with analytics to craft strategies that engage your audience, boost conversions, and maximize ROI."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do you offer branding and creative design services?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes! We offer comprehensive branding and creative design services as part of our digital marketing solutions, helping your business stand out and connect with your audience effectively."
+    }
+  },{
+    "@type": "Question",
+    "name": "How does AI automation help my business?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results."
+    }
+  }]
+}
+</script>
 </Helmet>
       <Header />
 
