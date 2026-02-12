@@ -78,7 +78,7 @@ export function Service() {
   "@type": "FAQPage",
   "mainEntity": [{
     "@type": "Question",
-    "name": "How can Skyup’s digital marketing services help my business grow?",
+    "name": "How can Skyup's digital marketing services help my business grow?",
     "acceptedAnswer": {
       "@type": "Answer",
       "text": "Our digital marketing services focus on increasing organic traffic, improving search engine rankings, and generating high-converting leads. By combining SEO, performance marketing, and paid advertising strategies, Skyup ensures measurable growth and sustainable online success."
@@ -98,7 +98,7 @@ export function Service() {
       "text": "Absolutely! We work with both startups and established businesses, tailoring our digital marketing strategies to fit your unique goals and growth stage."
     }
   },{
-    "@type": ""Question",
+    "@type": "Question",
     "name": "What makes your digital marketing approach different?",
     "acceptedAnswer": {
       "@type": "Answer",
