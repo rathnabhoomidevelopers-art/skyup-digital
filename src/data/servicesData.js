@@ -128,161 +128,250 @@ export const SERVICES = {
     ],
   },
 
-  "seo-company-in-bangalore": {
-    heroTitle: "Expert SEO Company in Bangalore",
-    title: "Top SEO Company in Bangalore | Boost Your Online Presence",
-    keyword: "seo company in bangalore",
-    slug:"seo-company-in-bangalore",
-    description: "Looking for the best SEO company in Bangalore. SkyUp offers expert SEO services to improve your website's ranking, drive traffic, and enhance visibility.",
-    heroDesc:"Leading seo company in bangalore offering complete SEO solutions to increase search rankings, organic traffic, and ROI.",
-    primaryCta: "Get Started Today",
-    secondaryCta: "WhatsApp",
-    heroImage: "/images/seo_banner.webp",
-    heroImageAlt: "Search Engine Optimization (SEO)",
-    whyTitle: "Search engine Optimization Services",
-    features: [
-      {
-        title: "SEO Audit",
-        desc: "Complete analysis of website performance, structure, and SEO gaps.",
-      },
-      {
-        title: "Content SEO",
-        desc: "creating SEO-friendly content to drive traffic and build authority.",
-      },
-      {
-        title: "On-Page SEO",
-        desc: "Optimizing titles, meta tags, content, URLs, and internal linking.",
-      },
-      {
-        title: "Technical SEO",
-        desc: "Improving site speed, mobile friendliness, indexing, and crawlability.",
-      },
-      {
-        title: "Local SEO",
-        desc: "Optimizing Google Business Profile and local searches for visibility.",
-      },
-      {
-        title: "Off-Page SEO",
-        desc: "Building high-quality backlinks to improve authority and trust.",
-      },
-    ],
+"seo-company-in-bangalore": {
+  heroTitle: "Expert SEO Company in Bangalore",
+  title: "Top SEO Company in Bangalore | Boost Your Online Presence",
+  keyword: "seo company in bangalore",
+  slug:"seo-company-in-bangalore",
+  description: "Looking for the best SEO company in Bangalore. SkyUp offers expert SEO services to improve your website's ranking, drive traffic, and enhance visibility.",
+  heroDesc:"Leading seo company in bangalore offering complete SEO solutions to increase search rankings, organic traffic, and ROI.",
+  primaryCta: "Get Started Today",
+  secondaryCta: "WhatsApp",
+  heroImage: "/images/seo_banner.webp",
+  heroImageAlt: "Search Engine Optimization (SEO)",
+  whyTitle: "Search engine Optimization Services",
+  features: [
+    {
+      title: "SEO Audit",
+      desc: "Complete analysis of website performance, structure, and SEO gaps.",
+    },
+    {
+      title: "Content SEO",
+      desc: "creating SEO-friendly content to drive traffic and build authority.",
+    },
+    {
+      title: "On-Page SEO",
+      desc: "Optimizing titles, meta tags, content, URLs, and internal linking.",
+    },
+    {
+      title: "Technical SEO",
+      desc: "Improving site speed, mobile friendliness, indexing, and crawlability.",
+    },
+    {
+      title: "Local SEO",
+      desc: "Optimizing Google Business Profile and local searches for visibility.",
+    },
+    {
+      title: "Off-Page SEO",
+      desc: "Building high-quality backlinks to improve authority and trust.",
+    },
+  ],
 
-    //FAQsections
-    faq:[
-      {
-        q:"Why are SEO services important for business growth?",
-        a:"SEO services are essential for increasing online visibility, improving search engine rankings, and driving qualified organic traffic. A professional SEO company in Bangalore helps businesses optimize their website structure, content, and backlinks to generate consistent leads and long-term digital growth.", 
-      },
-      {
-        q:"How does an SEO company in Bangalore improve website rankings?",
-        a: "An experienced SEO company in Bangalore improves rankings through keyword research, on-page SEO, technical SEO, and high-quality link building. By optimizing website performance and targeting high-intent keywords, businesses can achieve better Google rankings and increased organic traffic.", 
-      },
-      {
-        q:"What is included in professional SEO services?",
-        a:"Professional SEO services include website audit, on-page SEO optimization, technical SEO improvements, content marketing, off-page SEO strategies, and monthly performance reporting. A best SEO agency ensures your website follows Google guidelines for sustainable results.",
-      },
-      {
-        q:"What is the difference between on-page SEO and off-page SEO?",
-        a:"On-page SEO focuses on optimizing website elements like meta titles, headings, content, and internal links. Off-page SEO involves building backlinks, brand mentions, and domain authority. Both are important for improving search engine rankings and online credibility.",
-      },
-      {
-        q:"How long does it take to see results from SEO services?",
-        a:"SEO is a long-term strategy. Most businesses start seeing measurable improvements in organic traffic and keyword rankings within 3–6 months, depending on competition, industry, and website condition.",
-      },
-      {
-        q:"Do you offer local SEO services for small businesses?",
-        a:"Yes, we provide Local SEO services designed for small businesses and startups. This includes Google Business Profile optimization, local keyword targeting, citation building, and location-based SEO strategies to increase visibility in local search results.",
-      },
+  //FAQsections
+  faq:[
+    {
+      q:"Why are SEO services important for business growth?",
+      a:"SEO services are essential for increasing online visibility, improving search engine rankings, and driving qualified organic traffic. A professional SEO company in Bangalore helps businesses optimize their website structure, content, and backlinks to generate consistent leads and long-term digital growth.", 
+    },
+    {
+      q:"How does an SEO company in Bangalore improve website rankings?",
+      a: "An experienced SEO company in Bangalore improves rankings through keyword research, on-page SEO, technical SEO, and high-quality link building. By optimizing website performance and targeting high-intent keywords, businesses can achieve better Google rankings and increased organic traffic.", 
+    },
+    {
+      q:"What is included in professional SEO services?",
+      a:"Professional SEO services include website audit, on-page SEO optimization, technical SEO improvements, content marketing, off-page SEO strategies, and monthly performance reporting. A best SEO agency ensures your website follows Google guidelines for sustainable results.",
+    },
+    {
+      q:"What is the difference between on-page SEO and off-page SEO?",
+      a:"On-page SEO focuses on optimizing website elements like meta titles, headings, content, and internal links. Off-page SEO involves building backlinks, brand mentions, and domain authority. Both are important for improving search engine rankings and online credibility.",
+    },
+    {
+      q:"How long does it take to see results from SEO services?",
+      a:"SEO is a long-term strategy. Most businesses start seeing measurable improvements in organic traffic and keyword rankings within 3–6 months, depending on competition, industry, and website condition.",
+    },
+    {
+      q:"Do you offer local SEO services for small businesses?",
+      a:"Yes, we provide Local SEO services designed for small businesses and startups. This includes Google Business Profile optimization, local keyword targeting, citation building, and location-based SEO strategies to increase visibility in local search results.",
+    },
+    {
+      q:"What makes your SEO agency different from others?",
+      a:"As a leading SEO agency in Bangalore, we focus on data-driven strategies, transparent reporting, ethical SEO practices, and ROI-based optimization. Our customized approach ensures measurable growth and long-term success.",
+    },
+    {
+      q:"Can SEO help generate quality leads?",
+      a:"Yes, SEO targets users actively searching for your products or services. By improving search engine rankings and optimizing landing pages, businesses can attract high-intent visitors and increase lead conversions.",
+    },
+    {
+      q:"What are technical SEO services and why are they important?",
+      a:"Technical SEO services improve website speed, mobile-friendliness, crawlability, indexing, and structured data implementation. Strong technical SEO ensures search engines can properly understand and rank your website.",
+    },
+    {
+      q:"How do you measure SEO success?",
+      a:"SEO success is measured using tools like Google Analytics and Google Search Console. Metrics include organic traffic growth, keyword rankings, click-through rate (CTR), bounce rate, domain authority, and conversions.",
+    },
+    {
+      q:"Is SEO a one-time process?",
+      a:"No, SEO is an ongoing process. Continuous content updates, technical improvements, and backlink building are required to maintain and improve search engine rankings over time.",
+    },
+  ],
 
+  // FAQ Schema for SEO
+  faqSchema: {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
       {
-        q:"What makes your SEO agency different from others?",
-        a:"As a leading SEO agency in Bangalore, we focus on data-driven strategies, transparent reporting, ethical SEO practices, and ROI-based optimization. Our customized approach ensures measurable growth and long-term success.",
+        "@type": "Question",
+        "name": "Why are SEO services important for business growth?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SEO services are essential for increasing online visibility, improving search engine rankings, and driving qualified organic traffic. A professional SEO company in Bangalore helps businesses optimize their website structure, content, and backlinks to generate consistent leads and long-term digital growth."
+        }
       },
       {
-        q:"Can SEO help generate quality leads?",
-        a:"Yes, SEO targets users actively searching for your products or services. By improving search engine rankings and optimizing landing pages, businesses can attract high-intent visitors and increase lead conversions.",
+        "@type": "Question",
+        "name": "How does an SEO company in Bangalore improve website rankings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An experienced SEO company in Bangalore improves rankings through keyword research, on-page SEO, technical SEO, and high-quality link building. By optimizing website performance and targeting high-intent keywords, businesses can achieve better Google rankings and increased organic traffic."
+        }
       },
       {
-        q:"What are technical SEO services and why are they important?",
-        a:"Technical SEO services improve website speed, mobile-friendliness, crawlability, indexing, and structured data implementation. Strong technical SEO ensures search engines can properly understand and rank your website.",
+        "@type": "Question",
+        "name": "What is included in professional SEO services?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Professional SEO services include website audit, on-page SEO optimization, technical SEO improvements, content marketing, off-page SEO strategies, and monthly performance reporting. A best SEO agency ensures your website follows Google guidelines for sustainable results."
+        }
       },
       {
-        q:"How do you measure SEO success?",
-        a:"SEO success is measured using tools like Google Analytics and Google Search Console. Metrics include organic traffic growth, keyword rankings, click-through rate (CTR), bounce rate, domain authority, and conversions.",
+        "@type": "Question",
+        "name": "What is the difference between on-page SEO and off-page SEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "On-page SEO focuses on optimizing website elements like meta titles, headings, content, and internal links. Off-page SEO involves building backlinks, brand mentions, and domain authority. Both are important for improving search engine rankings and online credibility."
+        }
       },
       {
-        q:"Is SEO a one-time process?",
-        a:"No, SEO is an ongoing process. Continuous content updates, technical improvements, and backlink building are required to maintain and improve search engine rankings over time.",
-      },
-
-      
-    ],
-    // 🆕 Trust section for performance marketing
-    trustTitle: "Why Businesses Trust",
-    trustHighlight: { blue: "SKYUP", black: "Digital Solutions for SEO" },
-    trustCards: [
-      {
-        icon: "/images/service_orange_1.svg",
-        title: "Proven SEO Expertise",
-        desc: "Experienced team delivering data-driven SEO growth across search engines.",
+        "@type": "Question",
+        "name": "How long does it take to see results from SEO services?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SEO is a long-term strategy. Most businesses start seeing measurable improvements in organic traffic and keyword rankings within 3–6 months, depending on competition, industry, and website condition."
+        }
       },
       {
-        icon: "/images/service_orange_2.svg",
-        title: "Result-Oriented SEO Strategy",
-        desc: "Custom SEO plans focused on rankings, traffic, and lead generation.",
+        "@type": "Question",
+        "name": "Do you offer local SEO services for small businesses?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we provide Local SEO services designed for small businesses and startups. This includes Google Business Profile optimization, local keyword targeting, citation building, and location-based SEO strategies to increase visibility in local search results."
+        }
       },
       {
-        icon: "/images/service_orange_3.svg",
-        title: "End-to-End SEO Services",
-        desc: "Technical SEO, on-page optimization, content, and link building all covered.",
+        "@type": "Question",
+        "name": "What makes your SEO agency different from others?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "As a leading SEO agency in Bangalore, we focus on data-driven strategies, transparent reporting, ethical SEO practices, and ROI-based optimization. Our customized approach ensures measurable growth and long-term success."
+        }
       },
       {
-        icon: "/images/service_orange_4.svg",
-        title: "Performance Reporting",
-        desc: "Clear reports showing rankings, traffic, leads, and growth insights.",
+        "@type": "Question",
+        "name": "Can SEO help generate quality leads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, SEO targets users actively searching for your products or services. By improving search engine rankings and optimizing landing pages, businesses can attract high-intent visitors and increase lead conversions."
+        }
       },
       {
-        icon: "/images/service_orange_5.svg",
-        title: "24/7 Reliable Support",
-        desc: "Responsive team ensuring smooth communication and quick assistance.",
+        "@type": "Question",
+        "name": "What are technical SEO services and why are they important?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Technical SEO services improve website speed, mobile-friendliness, crawlability, indexing, and structured data implementation. Strong technical SEO ensures search engines can properly understand and rank your website."
+        }
       },
       {
-        icon: "/images/service_orange_6.svg",
-        title: "On-Time Delivery",
-        desc: "SEO tasks, optimizations, and reports delivered as scheduled.",
-      },
-    ],
-
-    journeyTitle: "The Journey We Follow",
-    journeySub: "We analyze your website, competitors, and current SEO performance to identify growth opportunities.",
-    steps: [
-      {
-        no: 1,
-        title: "Audit",
-        desc:
-          "Analyze technical health, site issues, and current keyword rankings.",
+        "@type": "Question",
+        "name": "How do you measure SEO success?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SEO success is measured using tools like Google Analytics and Google Search Console. Metrics include organic traffic growth, keyword rankings, click-through rate (CTR), bounce rate, domain authority, and conversions."
+        }
       },
       {
-        no: 2,
-        title: "Strategy",
-        desc:
-          "Perform keyword research and build a clear content roadmap.",
-      },
-      {
-        no: 3,
-        title: "Optimization",
-        desc:
-          "Implement on-page improvements, technical fixes, and content updates.",
-      },
-      {
-        no: 4,
-        title: "Authority",
-        desc:
-          "Build quality backlinks and strengthen online credibility.",
-      },
-    ],
+        "@type": "Question",
+        "name": "Is SEO a one-time process?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, SEO is an ongoing process. Continuous content updates, technical improvements, and backlink building are required to maintain and improve search engine rankings over time."
+        }
+      }
+    ]
   },
+  
+  // 🆕 Trust section for performance marketing
+  trustTitle: "Why Businesses Trust",
+  trustHighlight: { blue: "SKYUP", black: "Digital Solutions for SEO" },
+  trustCards: [
+    {
+      icon: "/images/service_orange_1.svg",
+      title: "Proven SEO Expertise",
+      desc: "Experienced team delivering data-driven SEO growth across search engines.",
+    },
+    {
+      icon: "/images/service_orange_2.svg",
+      title: "Result-Oriented SEO Strategy",
+      desc: "Custom SEO plans focused on rankings, traffic, and lead generation.",
+    },
+    {
+      icon: "/images/service_orange_3.svg",
+      title: "End-to-End SEO Services",
+      desc: "Technical SEO, on-page optimization, content, and link building all covered.",
+    },
+    {
+      icon: "/images/service_orange_4.svg",
+      title: "Performance Reporting",
+      desc: "Clear reports showing rankings, traffic, leads, and growth insights.",
+    },
+    {
+      icon: "/images/service_orange_5.svg",
+      title: "24/7 Reliable Support",
+      desc: "Responsive team ensuring smooth communication and quick assistance.",
+    },
+    {
+      icon: "/images/service_orange_6.svg",
+      title: "On-Time Delivery",
+      desc: "SEO tasks, optimizations, and reports delivered as scheduled.",
+    },
+  ],
 
+  journeyTitle: "The Journey We Follow",
+  journeySub: "We analyze your website, competitors, and current SEO performance to identify growth opportunities.",
+  steps: [
+    {
+      no: 1,
+      title: "Audit",
+      desc: "Analyze technical health, site issues, and current keyword rankings.",
+    },
+    {
+      no: 2,
+      title: "Strategy",
+      desc: "Perform keyword research and build a clear content roadmap.",
+    },
+    {
+      no: 3,
+      title: "Optimization",
+      desc: "Implement on-page improvements, technical fixes, and content updates.",
+    },
+    {
+      no: 4,
+      title: "Authority",
+      desc: "Build quality backlinks and strengthen online credibility.",
+    },
+  ],
+},
 
   "email-marketing-company-in-bangalore": {
     heroTitle: "ROI-Focused Email Marketing Services Bangalore",
