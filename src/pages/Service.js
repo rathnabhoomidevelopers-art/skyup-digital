@@ -72,8 +72,8 @@ export function Service() {
     rel="canonical"
     href="https://www.skyupdigitalsolutions.com/service"
   />
-  <script type="application/ld+json">
-{
+<script type="application/ld+json">
+    {`{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [{
@@ -119,8 +119,8 @@ export function Service() {
       "text": "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results."
     }
   }]
-}
-</script>
+}`}
+  </script>
 </Helmet>
       <Header />
 
