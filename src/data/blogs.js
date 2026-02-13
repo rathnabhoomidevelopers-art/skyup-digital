@@ -923,37 +923,39 @@ export const BLOGS = [
       type: "p",
       text: "Data-driven improvements create sustainable growth.",
     },
-    { type: "h3", text: "Frequently Asked Questions (FAQs)" },
-    {
-      type: "faq",
-      items: [
-        {
-          q: "Q1: How long does SEO take to generate real estate leads?",
-          a: "Typically 3-6 months for consistent results. However, long-term ROI is significantly higher than paid ads.",
-        },
-        {
-          q: "Q2: Is SEO better than Google Ads for builders?",
-          a: "SEO provides sustainable traffic, while ads provide immediate visibility. Ideally, combine both for maximum impact.",
-        },
-        {
-          q: "Q3: How much should a builder invest in SEO in 2026?",
-          a: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
-        },
-        {
-          q: "Q4: Why hire an SEO Agency near me instead of handling it internally?",
-          a: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
-        },
-        {
-          q: "Q5: What makes real estate SEO different?",
-          a: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
-        },
-      ],
-    },
-    { type: "h3", text: "Why Builders Should Partner with an Expert SEO Agency" },
+{ type: "h3", text: "Frequently Asked Questions (FAQs)" },
+
+      {
+        type: "h3",
+        text: "Q1: How long does SEO take to generate real estate leads?",
+      },
+      {
+        type: "p",
+        text: "Typically 3-6 months for consistent results. However, long-term ROI is significantly higher than paid ads.",
+      },
+    
+    { type: "h3", text: "Q2: Is SEO better than Google Ads for builders?" },
     {
       type: "p",
       text: "Real estate SEO is competitive. DIY strategies often fail due to:",
     },
+    { type: "h3", text: "Q3: How much should a builder invest in SEO in 2026?"},
+    {
+      type: "p",
+      text: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
+    },
+    { type: "h3", text: "Q4: Why hire an SEO Agency near me instead of handling it internally?"},
+    {
+      type: "p",
+      text: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
+    },
+    { type: "h3", text: "Q5: What makes real estate SEO different?" },
+    {
+      type: "p",
+      text: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
+    },
+
+    
     {
       type: "ul",
       text: [
@@ -1043,7 +1045,7 @@ export const BLOGS = [
       type: "p_with_link",
       linkText: "SkyUp Digital Solutions",
       href: "https://www.skyupdigitalsolutions.com/",
-      textAfter: "believes that real estate marketing in 2026 will no longer rely on hoardings, newspaper ads, or broker networks alone. Buyers now begin their property search online, compare projects digitally, and expect immersive experiences before even visiting a site.",
+      textAfter: " believes that real estate marketing in 2026 will no longer rely on hoardings, newspaper ads, or broker networks alone. Buyers now begin their property search online, compare projects digitally, and expect immersive experiences before even visiting a site.",
     },
       {
         type: "p",
@@ -1305,32 +1307,34 @@ export const BLOGS = [
         type: "p",
         text: "Sales teams focus on high-quality prospects, increasing closing ratios.",
       },
-      
- {
-      type: "faq",
-      items: [
-        {
-          q: "Q1. Why should real estate companies invest in digital marketing in 2026?",
-          a: "Because buyers research online before purchasing, digital presence directly impacts sales success.",
-        },
-        {
-          q: "Q2. How does SEO help property developers?",
-          a: "SEO ensures projects appear when buyers search online, generating organic inquiries without heavy ad spend.",
-        },
-        {
-          q: "Q3. Which digital marketing channel works best?",
-          a: "A mix of SEO, social media, video marketing, and paid advertising delivers the best results.",
-        },
-        {
-          q: "Q4. Is social media effective for property sales?",
-          a: "Yes. Platforms build brand trust and generate inquiries through engaging visuals and videos.",
-        },
-        {
-          q: "Q5. How soon can digital marketing show results?",
-          a: "Paid campaigns show results within weeks, while SEO builds strong long-term visibility over 3–6 months.",
-        },
-      ],
+      { type: "h3", text: "Frequently Asked Questions (FAQs)" },
+
+      { type: "h3", text:"Q1. Why should real estate companies invest in digital marketing in 2026?"},
+    {
+      type: "p",
+      text: "Because buyers research online before purchasing, digital presence directly impacts sales success.",
     },
+       { type: "h3", text:"Q2. How does SEO help property developers?"},
+    {
+      type: "p",
+      text:  "SEO ensures projects appear when buyers search online, generating organic inquiries without heavy ad spend.",
+    },
+    { type: "h3", text:"Q3. Which digital marketing channel works best?"},
+    {
+      type: "p",
+      text:  "A mix of SEO, social media, video marketing, and paid advertising delivers the best results.",
+    },
+       { type: "h3", text:"Q4. Is social media effective for property sales?"},
+    {
+      type: "p",
+      text:  "Yes. Platforms build brand trust and generate inquiries through engaging visuals and videos.",
+    },
+       { type: "h3", text:"Q5. How soon can digital marketing show results?"},
+    {
+      type: "p",
+      text:  "Paid campaigns show results within weeks, while SEO builds strong long-term visibility over 3–6 months.",
+    },
+  
 
       {
         type: "h3",
