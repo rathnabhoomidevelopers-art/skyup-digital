@@ -617,7 +617,7 @@ export const BLOGS = [
     "Bangalore Real Estate",
   ],
   sections: [
-    {type:"h1",text:"How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore"},    { type: "h3", text: "Introduction" },
+    {type:"h1",text:"How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore"},    { type: "h2", text: "Introduction" },
     {
       type: "p",
       text: "One unavoidable reality facing real estate developers in 2026 is that traditional marketing by itself no longer generates high-quality leads, as recognized by Bangalore's top SEO firm, Skyup Digital Solutions. Before contacting a builder, buyers do a lot of online research because they are more intelligent and tech-savvy.",
@@ -656,7 +656,7 @@ export const BLOGS = [
       text: "Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
     },
     { type: "h3", text: "12 Proven SEO Strategies for Real Estate Builders in 2026" },
-    { type: "h4", text: "1. Dominate Local SEO (The #1 Lead Generator)" },
+    { type: "h3", text: "1. Dominate Local SEO (The #1 Lead Generator)" },
     {
       type: "p",
       text: "Local SEO is the foundation of real estate lead generation. Optimize your Google Business Profile with accurate information, high-quality images, and regular updates. Ensure NAP (Name, Address, Phone) consistency across all directories. Target location-specific keywords and create content that highlights neighborhood benefits, proximity to amenities, and local market insights.",
