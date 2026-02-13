@@ -601,7 +601,7 @@ export const BLOGS = [
   id: 3,
   slug: "real-estate-builders-generate-quality-leads-using-seo-2026",
   category: "Real Estate SEO",
-  title: "How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore",
+  title: "Quality Leads with SEO Company in Bangalore",
   description: "Learn how real estate builders can attract ready buyers in 2026 with expert strategies from a trusted SEO company in Bangalore.",
   date: "2026",
   author: "SKYUP Digital",
@@ -617,7 +617,7 @@ export const BLOGS = [
     "Bangalore Real Estate",
   ],
   sections: [
-    { type: "h3", text: "Introduction" },
+    {type:"h1",text:"How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore"},    { type: "h3", text: "Introduction" },
     {
       type: "p",
       text: "One unavoidable reality facing real estate developers in 2026 is that traditional marketing by itself no longer generates high-quality leads, as recognized by Bangalore's top SEO firm, Skyup Digital Solutions. Before contacting a builder, buyers do a lot of online research because they are more intelligent and tech-savvy.",
