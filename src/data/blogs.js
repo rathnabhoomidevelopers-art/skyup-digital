@@ -1014,7 +1014,7 @@ export const BLOGS = [
       text: "The question is are you visible?",
     },
   ],
-}
+},
   {
     id: 4,
     slug: "top-digital-marketing-trends-for-real-estate-2026",
