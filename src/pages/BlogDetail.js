@@ -37,7 +37,7 @@ export default function BlogDetail() {
     const items = [];
 
     sections.forEach((s) => {
-      if (s.type !== "h3" || !s.text) return;
+      if ((s.type !== "h2" && s.type !== "h3") || !s.text) return;
 
       const base = slugify(s.text);
       const count = (used.get(base) || 0) + 1;
