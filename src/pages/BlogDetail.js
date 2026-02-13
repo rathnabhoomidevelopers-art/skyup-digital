@@ -237,7 +237,7 @@ export default function BlogDetail() {
                         <p key={i} className="mb-4 text-slate-700">
                           {s.textBefore}{" "}
                           
-                            href={s.link}
+                            <a href={s.link}
                             className="text-blue-600 underline hover:text-blue-800"
                           >
                             {s.linkText}
