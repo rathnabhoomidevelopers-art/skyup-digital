@@ -660,7 +660,27 @@ export const BLOGS = [
     { type: "h3", text: "1. Dominate Local SEO (The #1 Lead Generator)" },
     {
       type: "p",
-      text: "Local SEO is the foundation of real estate lead generation. Optimize your Google Business Profile with accurate information, high-quality images, and regular updates. Ensure NAP (Name, Address, Phone) consistency across all directories. Target location-specific keywords and create content that highlights neighborhood benefits, proximity to amenities, and local market insights.",
+      text: "The real estate market has changed significantly. Now, buyers:",
+    },
+    {
+      type: "p",
+      text:"Online project comparison",
+    },
+    {
+      type: "p",
+      text:"Use hyper-local keywords when searching.",
+    },
+    {
+      type: "p",
+      text:"Anticipate mobile experiences that load quickly.",
+    },
+    {
+      type:"p",
+      text:"Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
+    },
+    {
+      type:"p",
+      text:"Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
     },
     { type: "h3", text: "2. Target High-Intent Long-Tail Keywords" },
     {
@@ -671,6 +691,7 @@ export const BLOGS = [
       type: "p",
       text: "Instead of generic keywords, target:",
     },
+    
     {
       type: "ul",
       text: [
@@ -780,6 +801,37 @@ export const BLOGS = [
       text: "Educational content attracts serious buyers.",
     },
     { type: "h3", text: "6. Use Data-Driven Blog SEO" },
+    { type: "h3", text: "Frequently Asked Questions (FAQs)" },
+
+      {
+        type: "h3",
+        text: "Q1: How long does SEO take to generate real estate leads?",
+      },
+      {
+        type: "p",
+        text: "Typically 3-6 months for consistent results. However, long-term ROI is significantly higher than paid ads.",
+      },
+    
+    { type: "h3", text: "Q2: Is SEO better than Google Ads for builders?" },
+    {
+      type: "p",
+      text: "Real estate SEO is competitive. DIY strategies often fail due to:",
+    },
+    { type: "h3", text: "Q3: How much should a builder invest in SEO in 2026?"},
+    {
+      type: "p",
+      text: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
+    },
+    { type: "h3", text: "Q4: Why hire an SEO Agency near me instead of handling it internally?"},
+    {
+      type: "p",
+      text: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
+    },
+    { type: "h3", text: "Q5: What makes real estate SEO different?" },
+    {
+      type: "p",
+      text: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
+    },
     {
       type: "p",
       text: "Answer what buyers are already searching. Use keyword research tools to identify trending questions and pain points. Create comprehensive blog posts that address buyer concerns, market trends, investment tips, and neighborhood guides. Update content regularly with current data and statistics to maintain relevance and authority.",
@@ -923,38 +975,11 @@ export const BLOGS = [
       type: "p",
       text: "Data-driven improvements create sustainable growth.",
     },
-{ type: "h3", text: "Frequently Asked Questions (FAQs)" },
-
-      {
-        type: "h3",
-        text: "Q1: How long does SEO take to generate real estate leads?",
-      },
-      {
-        type: "p",
-        text: "Typically 3-6 months for consistent results. However, long-term ROI is significantly higher than paid ads.",
-      },
-    
-    { type: "h3", text: "Q2: Is SEO better than Google Ads for builders?" },
+    { type: "h3", text: "Why Builders Should Partner with an Expert SEO Agency"},  
     {
       type: "p",
       text: "Real estate SEO is competitive. DIY strategies often fail due to:",
     },
-    { type: "h3", text: "Q3: How much should a builder invest in SEO in 2026?"},
-    {
-      type: "p",
-      text: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
-    },
-    { type: "h3", text: "Q4: Why hire an SEO Agency near me instead of handling it internally?"},
-    {
-      type: "p",
-      text: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
-    },
-    { type: "h3", text: "Q5: What makes real estate SEO different?" },
-    {
-      type: "p",
-      text: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
-    },
-
     
     {
       type: "ul",
