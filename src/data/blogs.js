@@ -649,7 +649,7 @@ export const BLOGS = [
     },
     {
       type: "p",
-      text: "Your competitor will win that customer if your website doesn't come up when someone searches for "luxury apartments in Bangalore" or "villa projects near me.",
+      text: "Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
     },
     {
       type: "p",
@@ -996,7 +996,7 @@ export const BLOGS = [
       textBefore: "Skyup Digital Solutions, a trusted",
       linkText: " SEO company in Bangalore",
       href: "https://en.wikipedia.org/wiki/Special:Search?search=SEO+company+in+Bangalore&go=Go&ns0=1",
-      textAfter: ", empowers builders with proven SEO frameworks designed specifically for real estate success. From local SEO to technical optimization and content-driven lead generation, the right strategy transforms websites into powerful lead engines.",
+      textAfter: "empowers builders with proven SEO frameworks designed specifically for real estate success. From local SEO to technical optimization and content-driven lead generation, the right strategy transforms websites into powerful lead engines.",
     },
     {
       type: "p_with_link",
