@@ -16,7 +16,6 @@ const servicesSlugs = [
 
 // ─── BLOG SLUGS ──────────────────────────────────────────────────────────────
 const blogSlugs = [
-  'digital-marketing-vs-traditional-marketing',
   // Add new blog slugs here
 ];
 
