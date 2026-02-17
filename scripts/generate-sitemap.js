@@ -1,44 +1,50 @@
 const fs = require('fs');
 const path = require('path');
 
-// Your service slugs
+// ─── SERVICE SLUGS ───────────────────────────────────────────────────────────
 const servicesSlugs = [
-  'seo-services-bangalore',
+  'seo-company-in-bangalore',
+  'email-marketing-company-in-bangalore',
+  'creative-graphic-design',
+  'branding-agency-in-bangalore',
+  'ui-ux-design-company-in-bangalore',
   'social-media-marketing',
-  'ppc-advertising',
-  'content-marketing',
-  // Add all your service slugs here
+  'website-development-company-in-bangalore',
+  'ai-company-in-bangalore',
+  'ppc-company-in-bangalore',
 ];
 
-// Your blog slugs
+// ─── BLOG SLUGS ──────────────────────────────────────────────────────────────
 const blogSlugs = [
   'digital-marketing-vs-traditional-marketing',
-  // Add all your blog slugs here
-];  
+  // Add new blog slugs here
+];
 
 const baseUrl = 'https://www.skyupdigitalsolutions.com';
 const today = new Date().toISOString().split('T')[0];
 
+// ─── STATIC PAGES ────────────────────────────────────────────────────────────
 const staticPages = [
-  { url: '', priority: '1.0', changefreq: 'daily' },
-  { url: '/aboutus', priority: '0.8', changefreq: 'monthly' },
-  { url: '/service', priority: '0.8', changefreq: 'weekly' },
-  { url: '/blogs', priority: '0.7', changefreq: 'daily' },
-  { url: '/contactus', priority: '0.9', changefreq: 'monthly' },
-  { url: '/privacypolicy', priority: '0.3', changefreq: 'yearly' },
-  { url: '/termscondition', priority: '0.3', changefreq: 'yearly' },
+  { url: '',                priority: '1.0', changefreq: 'daily'   },
+  { url: '/aboutus',        priority: '0.8', changefreq: 'monthly' },
+  { url: '/service',        priority: '0.8', changefreq: 'weekly'  },
+  { url: '/blogs',          priority: '0.7', changefreq: 'daily'   },
+  { url: '/contactus',      priority: '0.9', changefreq: 'monthly' },
+  { url: '/careers',        priority: '0.9', changefreq: 'monthly' },
+  { url: '/privacypolicy',  priority: '0.3', changefreq: 'yearly'  },
+  { url: '/termscondition', priority: '0.3', changefreq: 'yearly'  },
 ];
 
 const servicePages = servicesSlugs.map(slug => ({
   url: `/services/${slug}`,
   priority: '0.8',
-  changefreq: 'weekly'
+  changefreq: 'weekly',
 }));
 
 const blogPages = blogSlugs.map(slug => ({
   url: `/blog/${slug}`,
   priority: '0.6',
-  changefreq: 'monthly'
+  changefreq: 'monthly',
 }));
 
 const allPages = [...staticPages, ...servicePages, ...blogPages];
