@@ -8,13 +8,34 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://skyup-backend.vercel.app/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "https://skyup-backend-3k9s.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(Googlebot|Bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|facebot|facebookexternalhit|ia_archiver|LinkedInBot|Twitterbot|WhatsApp|Applebot|AhrefsBot|SemrushBot|MJ12bot|DotBot|rogerbot|PetalBot|screaming.frog|prerender).*"
+        }
+      ],
+      "destination": "https://dYiDtbFkfrq75DmM8NcA@service.prerender.io/https://www.skyupdigitalsolutions.com/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/sitemap.xml",
       "headers": [{ "key": "Content-Type", "value": "application/xml" }]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [{ "key": "X-Prerender-Token", "value": "dYiDtbFkfrq75DmM8NcA" }]
     }
   ]
 }
