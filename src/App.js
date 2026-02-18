@@ -35,67 +35,54 @@ import { Login } from "./components/Login";
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider> {/* WRAP EVERYTHING WITH AuthProvider */}
-        <ScrollToTop />
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/aboutus" element={<AboutUS />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/service/category/:categorySlug" element={<Service />} />
-          <Route path="/homepage" element={<HomePage/>}/>
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogscontainer" element={<BlogsContainer />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />
-          <Route path="/header" element={<Header />} />
-          <Route path="/herosection" element={<HeroSection />} />
-          <Route path="/carousel" element={<Carousel />} />
-          <Route path="/ourclientsection" element={<OurClientsSection />} />
-          <Route path="/footer" element={<Footer />} />
-          <Route
-            path="/whatmakesusdifferentsection"
-            element={<WhatMakesUsDifferentSection />}
-          />
-          <Route path="/faqsection" element={<FAQSection />} />
-          <Route
-            path="/servicecardssection"
-            element={<ServiceCardsSection />}
-          />
-          <Route path="/contactctacontainer" element={<ContactCTAContainer />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/jobapplicationform" element={<JobApplicationForm />} />
-          <Route path="/whatwedosection" element={<WhatWeDoSection />} />
-          <Route path="/services/:slug" element={<SubServicePage />} />
-          <Route path="/journeysection" element={<JourneySection />} />
-          <Route path="/whytrustsection" element={<WhyTrustSection />} />
-          <Route path="/ourteamsection" element={<OurTeamSection />} />
-          <Route path="/testimonialssection" element={<TestimonialsSection />} />
-          <Route path="/termscondition" element={<TermsCondition />} />
-          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-          <Route path="/thankyou" element={<ThankYou/>}/>
-          <Route path="/dynamicblog" element={<DynamicBlog/>}/>
-          
-          {/* Admin Login Route (Public) */}
-          <Route path="/admin/login" element={<Login/>}/>
-          
-          {/* Protected Admin Routes */}
-          <Route 
-            path="/admin/receipt" 
-            element={
-              <ProtectedRoute>
-                <Receipt/>
-              </ProtectedRoute>
-            }
-          />
-          
-          {/* Keep old /receipt route for backward compatibility but redirect to admin */}
-          <Route path="/receipt" element={<Navigate to="/admin/receipt" replace />}/>
-          <Route path="/login" element={<Navigate to="/admin/login" replace />}/>
-        </Routes>
-      </AuthProvider> {/* CLOSE AuthProvider */}
-    </BrowserRouter>
+    <AuthProvider>
+      {" "}
+      {/* WRAP EVERYTHING WITH AuthProvider */}
+      <ScrollToTop />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/aboutus" element={<AboutUS />} />
+        <Route path="/service" element={<Service />} />
+        <Route path="/service/category/:categorySlug" element={<Service />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogscontainer" element={<BlogsContainer />} />
+        <Route path="/blog/:slug" element={<BlogDetail />} />
+        <Route path="/header" element={<Header />} />
+        <Route path="/herosection" element={<HeroSection />} />
+        <Route path="/carousel" element={<Carousel />} />
+        <Route path="/ourclientsection" element={<OurClientsSection />} />
+        <Route path="/footer" element={<Footer />} />
+        <Route
+          path="/whatmakesusdifferentsection"
+          element={<WhatMakesUsDifferentSection />}
+        />
+        <Route path="/faqsection" element={<FAQSection />} />
+        <Route path="/servicecardssection" element={<ServiceCardsSection />} />
+        <Route path="/contactctacontainer" element={<ContactCTAContainer />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/jobapplicationform" element={<JobApplicationForm />} />
+        <Route path="/whatwedosection" element={<WhatWeDoSection />} />
+        <Route path="/services/:slug" element={<SubServicePage />} />
+        <Route path="/journeysection" element={<JourneySection />} />
+        <Route path="/whytrustsection" element={<WhyTrustSection />} />
+        <Route path="/ourteamsection" element={<OurTeamSection />} />
+        <Route path="/testimonialssection" element={<TestimonialsSection />} />
+        <Route path="/termscondition" element={<TermsCondition />} />
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/thankyou" element={<ThankYou />} />
+        <Route path="/dynamicblog" element={<DynamicBlog />} />
+        {/* Admin Login Route (Public) */}
+        <Route path="/admin/login" element={<Login />} />
+        {/* Protected Admin Routes */}
+        <Route path="/admin/receipt" element={ <ProtectedRoute> <Receipt /> </ProtectedRoute> } />
+        {/* Keep old /receipt route for backward compatibility but redirect to admin */}
+        <Route path="/receipt" element={<Navigate to="/admin/receipt" replace />} />
+        <Route path="/login" element={<Navigate to="/admin/login" replace />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

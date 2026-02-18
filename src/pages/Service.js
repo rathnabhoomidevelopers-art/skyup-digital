@@ -1,11 +1,11 @@
 // src/pages/Service.jsx
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import ServiceCardsSection from "../components/ServiceCardsSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { usePageContext } from "vike-react/usePageContext";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 
@@ -35,7 +35,6 @@ const serviceFaqs = [
     q: "How does AI automation help my business?",
     a: "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results.",
   },
-  
 ];
 
 const staggerWrap = {
@@ -51,77 +50,23 @@ const staggerWrap = {
 const MotionLink = motion(Link);
 
 export function Service() {
-  const [searchParams] = useSearchParams();
-  const categoryFromUrl = searchParams.get("category") || "";
+  // ✅ Safe usePageContext with fallback for React Router / catch-all context
+  let categoryFromUrl = "";
+  try {
+    const pageContext = usePageContext();
+    categoryFromUrl =
+      new URLSearchParams(pageContext?.urlParsed?.search ?? "").get("category") || "";
+  } catch {
+    // Fallback when rendered outside Vike context (e.g. via @catch-all BrowserRouter)
+    if (typeof window !== "undefined") {
+      categoryFromUrl =
+        new URLSearchParams(window.location.search).get("category") || "";
+    }
+  }
 
+  // ✅ <Helmet> fully removed — meta tags live in pages/Service/+Page.jsx
   return (
     <div className="font-poppins">
-      <Helmet>
-  <title>
-    Results-Driven Digital Marketing Services in Bangalore | SKYUP
-  </title>
-  <meta
-    name="description"
-    content="End-to-end Digital Marketing Services in Bangalore to boost visibility, generate quality leads, and achieve sustainable business growth."
-  />
-  <meta
-    name="keywords"
-    content="Digital Marketing Services in Bangalore"
-  />
-  <link
-    rel="canonical"
-    href="https://www.skyupdigitalsolutions.com/service"
-  />
-<script type="application/ld+json">
-    {`{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "How can Skyup's digital marketing services help my business grow?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Our digital marketing services focus on increasing organic traffic, improving search engine rankings, and generating high-converting leads. By combining SEO, performance marketing, and paid advertising strategies, Skyup ensures measurable growth and sustainable online success."
-    }
-  },{
-    "@type": "Question",
-    "name": "How can I get started?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Simply contact us, share your requirements, and our team will guide you through the next steps."
-    }
-  },{
-    "@type": "Question",
-    "name": "Do you work with startups as well as established businesses?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Absolutely! We work with both startups and established businesses, tailoring our digital marketing strategies to fit your unique goals and growth stage."
-    }
-  },{
-    "@type": "Question",
-    "name": "What makes your digital marketing approach different?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Our digital marketing approach is data-driven, customized, and results-focused. We combine creativity with analytics to craft strategies that engage your audience, boost conversions, and maximize ROI."
-    }
-  },{
-    "@type": "Question",
-    "name": "Do you offer branding and creative design services?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Yes! We offer comprehensive branding and creative design services as part of our digital marketing solutions, helping your business stand out and connect with your audience effectively."
-    }
-  },{
-    "@type": "Question",
-    "name": "How does AI automation help my business?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "AI automation streamlines your marketing efforts by analyzing data, optimizing campaigns, and personalizing customer interactions, helping your business save time, increase efficiency, and drive better results."
-    }
-  }]
-}`}
-  </script>
-</Helmet>
       <Header />
 
       <motion.div
@@ -138,10 +83,11 @@ export function Service() {
       >
         <motion.div variants={fadeUp}>
           <h1 className="text-center lg:text-[64px] sm:text-[32px] text-[24px] fw-bold lg:w-[1100px]">
-            Expert Digital Marketing <span className="text-[#0037CA]">Services</span> in Bangalore
+            Expert Digital Marketing{" "}
+            <span className="text-[#0037CA]">Services</span> in Bangalore
           </h1>
         </motion.div>
-        
+
         <motion.p
           variants={fadeUp}
           className="text-center text-[12px] px-3 sm:text-[18px] mt-2 lg:text-[18px]"
@@ -151,7 +97,6 @@ export function Service() {
         </motion.p>
       </motion.div>
 
-      {/* Pass the filter to ServiceCardsSection */}
       <ServiceCardsSection initialCategory={categoryFromUrl} />
 
       <FAQSection faqs={serviceFaqs} />
@@ -161,23 +106,14 @@ export function Service() {
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUp}
-        className="
-          mx-auto
-          m-[60px]
-          sm:m-[70px]
-          text-center
-          font-poppins
-          px-3
-          sm:max-w-[800px]
-        "
+        className="mx-auto m-[60px] sm:m-[70px] text-center font-poppins px-3 sm:max-w-[800px]"
       >
         <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
           Ready to Grow Faster?
         </h2>
 
         <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-          Serving companies of every scale. Connect with us to start the
-          conversation.
+          Serving companies of every scale. Connect with us to start the conversation.
         </p>
 
         <div className="mt-8 flex justify-center">
@@ -186,17 +122,7 @@ export function Service() {
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="
-              bg-[#0037CA] text-white
-              font-semibold text-sm sm:text-base
-              px-6 py-2.5
-              rounded-full
-              shadow-[0_10px_24px_rgba(0,0,0,0.18)]
-              hover:scale-[1.03] active:scale-[0.99]
-              transition-transform
-              inline-flex items-center justify-center
-              no-underline
-            "
+            className="bg-[#0037CA] text-white font-semibold text-sm sm:text-base px-6 py-2.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)] hover:scale-[1.03] active:scale-[0.99] transition-transform inline-flex items-center justify-center no-underline"
           >
             GET STARTED
           </MotionLink>
@@ -210,109 +136,29 @@ export function Service() {
         transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
-        <a
-          href="https://wa.me/918867867775"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" whatsapp-chat
-            sm:hidden
-            w-12 h-12
-            rounded-xl
-            bg-[#25D366]
-            flex items-center justify-center
-            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
-          "
-        >
-          <img
-            src="/images/whatsapp.svg"
-            alt="whatsapp"
-            className="w-7 h-7 text-white"
-          />
+        <a href="https://wa.me/918867867775" target="_blank" rel="noopener noreferrer"
+          className="whatsapp-chat sm:hidden w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
+          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
         </a>
 
-        <a
-          href="https://wa.me/918867867775"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" whatsapp-chat-gtm
-            hidden sm:inline-flex
-            group no-underline relative items-center
-            bg-white
-            pl-3 pr-[70px] py-3
-            rounded-xl
-            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-            hover:scale-[1.02] transition-transform
-          "
-        >
-          <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">
-            WhatsApp
-          </span>
-
-          <span
-            className="
-              absolute right-3 top-1/2 -translate-y-1/2
-              w-11 h-11 rounded-xl
-              bg-[#25D366]
-              flex items-center justify-center
-              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
-            "
-          >
-            <img
-              src="/images/whatsapp.svg"
-              alt="whatsapp"
-              className="w-7 h-7 text-white"
-            />
+        <a href="https://wa.me/918867867775" target="_blank" rel="noopener noreferrer"
+          className="whatsapp-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[70px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform">
+          <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">WhatsApp</span>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
+            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
           </span>
         </a>
 
-        <a
-          href="tel:+918867867775"
-          className=" tel-chat
-            sm:hidden
-            w-12 h-12
-            rounded-xl
-            bg-[#3B46F6]
-            flex items-center justify-center
-            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
-          "
-        >
-          <img
-            src="/images/call.svg"
-            alt="call"
-            className="w-7 h-7 text-white"
-          />
+        <a href="tel:+918867867775"
+          className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
+          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
         </a>
 
-        <a
-          href="tel:+918867867775"
-          className=" tel-chat-gtm
-            hidden sm:inline-flex
-            group no-underline relative items-center
-            bg-white
-            pl-3 pr-[66px] py-3
-            rounded-xl
-            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-            hover:scale-[1.02] transition-transform
-          "
-        >
-          <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">
-            +91 8867867775
-          </span>
-
-          <span
-            className="
-              absolute right-3 top-1/2 -translate-y-1/2
-              w-11 h-11 rounded-xl
-              bg-[#3B46F6]
-              flex items-center justify-center
-              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
-            "
-          >
-            <img
-              src="/images/call.svg"
-              alt="call"
-              className="w-7 h-7 text-white"
-            />
+        <a href="tel:+918867867775"
+          className="tel-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[66px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform">
+          <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">+91 8867867775</span>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
+            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
           </span>
         </a>
       </motion.div>

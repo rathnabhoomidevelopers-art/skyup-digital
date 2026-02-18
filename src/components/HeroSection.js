@@ -53,7 +53,7 @@ const HeroSection = () => {
     return Object.keys(next).length === 0;
   };
 
-  const API_BASE = process.env.REACT_APP_API_BASE_URL || "https://skyup-backend.vercel.app"; 
+ const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
 
   const onSubmit = async (e) => {
   e.preventDefault();
@@ -170,7 +170,7 @@ const HeroSection = () => {
         <div className="pointer-events-none absolute inset-0 bg-black/80" />
 
         <div className="relative flex min-h-[60vh] md:min-h-[65vh] lg:min-h-[80vh] w-full items-center">
-          <div className="mx-auto w-full max-w-7xl px-4 py-10 md:py-8 lg:py-16 sm:px-6 lg:px-16">
+          <div className="mx-auto w-full max-w-6xl px-4 py-10 md:py-8 lg:py-16 sm:px-6 lg:px-16">
             <div className="space-y-6 text-center flex flex-col items-center">
               <h1
                 ref={titleRef}

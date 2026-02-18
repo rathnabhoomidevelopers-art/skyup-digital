@@ -1,22 +1,22 @@
-// ============================================
-// FRONTEND: src/context/AuthContext.jsx
-// ============================================
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import API_URL from '../config/api';
 
 const AuthContext = createContext(null);
 
+const getStoredToken = () => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('adminToken');
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('adminToken'));
+  const [token, setToken] = useState(getStoredToken);
   const [loading, setLoading] = useState(true);
 
-  // Check if user is authenticated on mount
   useEffect(() => {
     const verifyToken = async () => {
-      const storedToken = localStorage.getItem('adminToken');
-      
+      const storedToken = getStoredToken();
+
       if (!storedToken) {
         setLoading(false);
         return;
@@ -34,14 +34,13 @@ export const AuthProvider = ({ children }) => {
           setUser(data.user);
           setToken(storedToken);
         } else {
-          // Token is invalid
-          localStorage.removeItem('adminToken');
+          if (typeof window !== 'undefined') localStorage.removeItem('adminToken');
           setToken(null);
           setUser(null);
         }
       } catch (error) {
         console.error('Token verification failed:', error);
-        localStorage.removeItem('adminToken');
+        if (typeof window !== 'undefined') localStorage.removeItem('adminToken');
         setToken(null);
         setUser(null);
       } finally {
@@ -68,23 +67,22 @@ export const AuthProvider = ({ children }) => {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store token
-      localStorage.setItem('adminToken', data.token);
+      if (typeof window !== 'undefined') localStorage.setItem('adminToken', data.token);
       setToken(data.token);
       setUser(data.user);
 
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return { 
-        success: false, 
-        message: error.message 
+      return {
+        success: false,
+        message: error.message
       };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('adminToken');
+    if (typeof window !== 'undefined') localStorage.removeItem('adminToken');
     setToken(null);
     setUser(null);
   };
