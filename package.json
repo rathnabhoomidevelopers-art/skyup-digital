@@ -13,8 +13,8 @@
     "@mui/material": "^7.3.6",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "bootstrap": "^5.3.8",
@@ -29,25 +29,26 @@
     "lucide-react": "^0.555.0",
     "pdfmake": "^0.3.3",
     "puppeteer-core": "^19.11.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.30.2",
-    "react-scripts": "5.0.1",
     "react-to-print": "^3.2.0",
     "swiper": "^12.0.3",
+    "vike": "^0.4.253",
+    "vike-react": "^0.6.20",
     "web-vitals": "^2.1.4",
     "yup": "^1.7.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "prebuild": "node scripts/generate-sitemap.js || echo 'Sitemap generation skipped'",
-    "build": "react-scripts build && node scripts/run-react-snap.js",
-    "postbuild": "echo 'Build completed successfully!'",
-    "build:no-snap": "react-scripts build",
+    "start": "vite",
+    "prebuild": "node scripts/generate-sitemap.js || echo Sitemap generation skipped",
+    "build": "vite build && node scripts/run-react-snap.js",
+    "postbuild": "echo Build completed successfully!",
+    "build:no-snap": "vite build",
     "verify-meta": "node scripts/verify-meta-tags.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "vitest",
+    "preview": "vite preview"
   },
   "reactSnap": {
     "include": [
@@ -107,9 +108,11 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.4",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
     "react-snap": "^1.23.0",
-    "tailwindcss": "^3.4.18"
+    "tailwindcss": "^3.4.18",
+    "vite": "^7.3.1"
   }
 }

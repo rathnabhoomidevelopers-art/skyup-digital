@@ -1,9 +1,8 @@
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { usePageContext } from "vike-react/usePageContext";
+import { navigate } from "vike/client/router";
 
 const FILTERS = [
   "All",
@@ -25,19 +24,42 @@ const fromSlug = (slug) =>
 
 const PAGE_SIZE = 6;
 
-export default function ServiceCardsSection() {
-  const navigate = useNavigate();
-  const { categorySlug } = useParams();
-  const location = useLocation();
+// ✅ Uses Vike's SPA router — no full page reload, no FOUC
+const vikeNavigate = (path) => {
+  try {
+    navigate(path);
+  } catch {
+    // Fallback for React Router / non-Vike contexts
+    window.location.href = path;
+  }
+};
 
-  const [activeFilter, setActiveFilter] = useState(() =>
-    categorySlug ? fromSlug(categorySlug) : "All"
-  );
+export default function ServiceCardsSection({ initialCategory }) {
+  let currentPath = "/service";
+  let categorySlug = null;
+
+  try {
+    const pageContext = usePageContext();
+    currentPath = pageContext?.urlPathname || "/service";
+    const match = currentPath.match(/\/service\/category\/([^/]+)/);
+    if (match) categorySlug = match[1];
+  } catch {
+    if (typeof window !== "undefined") {
+      currentPath = window.location.pathname;
+      const match = currentPath.match(/\/service\/category\/([^/]+)/);
+      if (match) categorySlug = match[1];
+    }
+  }
+
+  const [activeFilter, setActiveFilter] = useState(() => {
+    if (initialCategory) return fromSlug(toSlug(initialCategory));
+    if (categorySlug) return fromSlug(categorySlug);
+    return "All";
+  });
   const [page, setPage] = useState(1);
 
-  // ✅ scroll-to-filters ref
   const filterRef = useRef(null);
-  const headerOffset = 90; // adjust if your header height differs
+  const headerOffset = 90;
 
   const cards = [
     {
@@ -122,66 +144,34 @@ export default function ServiceCardsSection() {
     },
   ];
 
-  // smooth scroll to filters (with header offset)
   const scrollToFilters = () => {
     const el = filterRef.current;
     if (!el) return;
-
     const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
-  // Sync filter with URL slug
-  useEffect(() => {
-    if (categorySlug) {
-      setActiveFilter(fromSlug(categorySlug));
-      setPage(1);
-    } else {
-      setActiveFilter("All");
-      setPage(1);
-    }
-  }, [categorySlug]);
-
-  // Canonical (absolute URL, no query/hash)
-  const origin =
-    typeof window !== "undefined" && window.location?.origin
-      ? window.location.origin
-      : "https://skyupdigitalsolutions.com";
-
-  const canonicalUrl = `${origin}${location.pathname}`;
-
-  const pageTitle = categorySlug
-    ? `Services - ${activeFilter}`
-    : "Services";
-
-  // Update URL when user changes filter + don't jump to top + scroll to filters
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
     setPage(1);
 
     if (filter === "All") {
-      navigate("/service", { replace: true, preventScrollReset: true });
+      window.history.replaceState(null, "", "/service");
     } else {
       const slug = toSlug(filter);
-      navigate(`/service/category/${slug}`, {
-        replace: true,
-        preventScrollReset: true,
-      });
+      window.history.replaceState(null, "", `/service/category/${slug}`);
     }
 
-    // wait for render then scroll
     requestAnimationFrame(() => {
       requestAnimationFrame(scrollToFilters);
     });
   };
 
-  // Filtered cards
   const filteredCards = useMemo(() => {
     if (activeFilter === "All") return cards;
     return cards.filter((c) => c.category === activeFilter);
-  }, [activeFilter, cards]);
+  }, [activeFilter]);
 
-  // Pagination calculations
   const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
 
   useEffect(() => {
@@ -193,7 +183,6 @@ export default function ServiceCardsSection() {
     return filteredCards.slice(start, start + PAGE_SIZE);
   }, [filteredCards, page]);
 
-  // Animations
   const grid = {
     hidden: {},
     show: { transition: { staggerChildren: 0.08, delayChildren: 0.02 } },
@@ -221,10 +210,6 @@ export default function ServiceCardsSection() {
 
   return (
     <section className="w-full bg-[#F7F9FC] font-poppins overflow-hidden">
-      <Helmet prioritizeSeoTags>
-        <link rel="canonical" href={canonicalUrl} />
-      </Helmet>
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
         {/* FILTER BAR */}
         <div
@@ -236,32 +221,21 @@ export default function ServiceCardsSection() {
             <label className="block text-[16px] font-semibold text-[#111827] mb-2">
               Filter by category
             </label>
-
             <div className="relative">
               <select
                 value={activeFilter}
                 onChange={(e) => handleFilterChange(e.target.value)}
-                className="
-                  w-full appearance-none
-                  rounded-xl bg-white
-                  border border-[#E7E9F5]
-                  px-4 py-3 pr-10
-                  text-[13px] font-semibold text-[#111827]
-                  focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30
-                "
+                className="w-full appearance-none rounded-xl bg-white border border-[#E7E9F5] px-4 py-3 pr-10 text-[13px] font-semibold text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30"
               >
                 {FILTERS.map((f) => (
-                  <option key={f} value={f}>
-                    {f}
-                  </option>
+                  <option key={f} value={f}>{f}</option>
                 ))}
               </select>
-
               <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#111827]/60 rotate-90" />
             </div>
           </div>
 
-          {/* ✅ Desktop/Tablet: Pills */}
+          {/* Desktop/Tablet: Pills */}
           <div className="hidden sm:flex flex-wrap gap-2 sm:gap-3">
             {FILTERS.map((filter) => {
               const isActive = filter === activeFilter;
@@ -301,7 +275,8 @@ export default function ServiceCardsSection() {
                 badge={c.badge}
                 icon={c.Icon}
                 variants={cardAnim}
-                onClick={() => navigate(`/services/${c.slug}`)}
+                // ✅ Vike SPA navigation — instant, no reload, no FOUC
+                onClick={() => vikeNavigate(`/services/${c.slug}`)}
               />
             ))}
           </AnimatePresence>
@@ -382,15 +357,7 @@ function Card({ title, desc, badge = "Featured Service", icon, variants, onClick
         boxShadow: "0_22px_60px_rgba(15,23,42,0.10)",
       }}
       transition={{ type: "spring", stiffness: 220, damping: 20 }}
-      className="
-        text-left
-        rounded-2xl bg-white
-        border border-[#E9EEF6]
-        shadow-[0_14px_40px_rgba(15,23,42,0.06)]
-        p-6 sm:p-7 lg:p-8
-        min-h-[210px] sm:min-h-[240px]
-        w-full
-      "
+      className="text-left rounded-2xl bg-white border border-[#E9EEF6] shadow-[0_14px_40px_rgba(15,23,42,0.06)] p-6 sm:p-7 lg:p-8 min-h-[210px] sm:min-h-[240px] w-full"
     >
       <div className="h-11 w-11 rounded-xl flex items-center justify-center">
         <img

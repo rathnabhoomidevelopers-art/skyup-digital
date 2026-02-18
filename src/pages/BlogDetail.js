@@ -13,13 +13,16 @@ const slugify = (str = "") =>
   str
     .toLowerCase()
     .trim()
-    .replace(/[“”‘’"'`]/g, "")
+    .replace(/[""''"'`]/g, "")
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-export default function BlogDetail() {
-  const { slug } = useParams();
+export default function BlogDetail({ vikeSlug }) {
+  // ✅ Use vikeSlug if provided (Vike SSR context), fallback to useParams (React Router context)
+  const params = useParams();
+  const slug = vikeSlug || params?.slug;
+
   const blog = BLOGS.find((b) => b.slug === slug);
 
   const sections = blog?.sections?.length

@@ -13,8 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE =
-  process.env.REACT_APP_API_BASE || "https://skyup-backend.vercel.app";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const smoothSpringFast = {

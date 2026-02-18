@@ -2,9 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-.marquee {
-  overflow: hidden;
+/* Force Poppins globally */
+html, body, * {
+  font-family: 'Poppins', sans-serif !important;
 }
+
+/* Fix Tailwind Preflight adding borders to buttons/links */
+button, a {
+  border: none;
+  outline: none;
+}
+
+/* Fix link underlines */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Restore Bootstrap fw-bold compatibility */
+.fw-bold { font-weight: 700 !important; }
+.fw-semibold { font-weight: 600 !important; }
+.fw-medium { font-weight: 500 !important; }
+
+/* Restore heading weights */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+.marquee { overflow: hidden; }
 
 .marquee-track {
   display: flex;
@@ -13,15 +38,17 @@
   animation: marquee 24s linear infinite;
   will-change: transform;
 }
+button {
+  background-color: transparent;
+  background: none;
+}
 
 @keyframes marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.marquee-track:hover {
-  animation-play-state: paused;
-}
+
+.marquee-track:hover,
 .marquee-track.paused {
   animation-play-state: paused;
 }
-  
