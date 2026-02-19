@@ -4,7 +4,7 @@ import vike from 'vike/plugin'
 
 export default defineConfig({
   plugins: [
-    vike(),
+    vike({ prerender: true }),  // ← add prerender here too
     react(),
   ],
   server: {
@@ -12,14 +12,11 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
-    cssCodeSplit: false,    // ✅ Extract ALL CSS into one file loaded in <head> before JS
+    cssCodeSplit: false,
     cssMinify: true,
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-  },
-  ssr: {
-    noExternal: ['react-helmet-async', 'react-router-dom', 'react-router'],
   },
   esbuild: {
     loader: 'jsx',
