@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
 import { usePageContext } from "vike-react/usePageContext";
+import { navigate } from "vike/client/router";
 import { SERVICES, DEFAULT_SERVICE_SLUG } from "../data/servicesData";
 import Header from "../components/Header";
 import FAQSection from "../components/FAQSection";
@@ -20,34 +20,22 @@ export default function SubServicePage({ vikeSlug }) {
     // not in Vike context
   }
 
-  // ✅ Step 2: Fall back to React Router useParams (when accessed via @catch-all)
+  // ✅ Step 2: Fall back to window location slug parsing (when accessed via @catch-all)
   let paramsSlug;
-  try {
-    const params = useParams();
-    paramsSlug = params?.slug;
-  } catch {
-    // not in React Router context
-  }
-
-  // ✅ Final slug — Vike wins, then React Router, then default
-  const slug = slugFromVike || paramsSlug || DEFAULT_SERVICE_SLUG;
-
-  // ✅ useNavigate safe wrapper
-  let navigateFn = null;
-  try {
-    navigateFn = useNavigate();
-  } catch {
-    // not in React Router context
-  }
-  const handleNavigate = (path) => {
-    if (navigateFn) {
-      navigateFn(path);
-    } else {
-      window.location.href = path;
+  if (typeof window !== "undefined") {
+    try {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      // Expects path like /services/:slug
+      if (parts[0] === "services" && parts[1]) {
+        paramsSlug = parts[1];
+      }
+    } catch {
+      // ignore
     }
-  };
+  }
 
-  const MotionLink = motion(Link);
+  // ✅ Final slug — Vike wins, then window path, then default
+  const slug = slugFromVike || paramsSlug || DEFAULT_SERVICE_SLUG;
 
   // ✅ Look up service data using resolved slug
   const data = useMemo(() => {
@@ -72,7 +60,6 @@ export default function SubServicePage({ vikeSlug }) {
     },
   };
 
-  // ✅ <Helmet> removed — meta tags handled in pages/services/@slug/+Page.jsx
   return (
     <div>
       <Header />
@@ -114,7 +101,7 @@ export default function SubServicePage({ vikeSlug }) {
                 <button
                   type="button"
                   className="rounded-full bg-[#0B3BFF] w-[220px] h-[44px] text-[14px] sm:w-[246px] sm:h-[66px] sm:text-[18px] px-4 font-semibold text-white hover:bg-[#0832DB] transition"
-                  onClick={() => handleNavigate('/contactus')}
+                  onClick={() => navigate('/contactus')}
                 >
                   {data.primaryCta}
                 </button>
@@ -197,15 +184,19 @@ export default function SubServicePage({ vikeSlug }) {
           Reach more customers, maximize ROI, and grow smarter every day.
         </p>
         <div className="mt-8 flex justify-center">
-          <MotionLink
-            to="/contactus"
+          <motion.a
+            href="/contactus"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/contactus");
+            }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
             className="bg-[#0037CA] text-white font-semibold text-sm sm:text-base px-6 py-2.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)] hover:scale-[1.03] active:scale-[0.99] transition-transform inline-flex items-center justify-center no-underline"
           >
             GET STARTED
-          </MotionLink>
+          </motion.a>
         </div>
       </motion.section>
 

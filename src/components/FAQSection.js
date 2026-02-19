@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Link } from "react-router-dom";
 
-const MotionLink = motion(Link);
-
+// Remove MotionLink, use motion.a instead
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: {
@@ -48,8 +46,8 @@ export default function FAQSection({
               {subtitle}
             </p>
 
-            <MotionLink
-              to="/contactus"
+            <motion.a
+              href="/contactus"
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -66,7 +64,7 @@ export default function FAQSection({
               "
             >
               Contact Support
-            </MotionLink>
+            </motion.a>
           </motion.div>
 
           {/* RIGHT ACCORDION */}

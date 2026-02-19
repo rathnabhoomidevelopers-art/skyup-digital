@@ -3,7 +3,6 @@ import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import WhatMakesUsDifferentSection from "../components/WhatMakesUsDifferentSection";
-import { Link } from "react-router-dom";
 import OurTeamSection from "../components/OurTeamSection";
 import { Head } from 'vike-react/Head';
 
@@ -59,7 +58,7 @@ const serviceFaqs = [
   },
   {
     q: "What industries does Skyup work with?",
-    a: "Skyup provides digital marketing services in Bangalore for industries such as real estate, healthcare, education, eCommerce, IT companies, startups, and local service businesses. Our marketing approach is tailored to each industry’s needs.",
+    a: "Skyup provides digital marketing services in Bangalore for industries such as real estate, healthcare, education, eCommerce, IT companies, startups, and local service businesses. Our marketing approach is tailored to each industry's needs.",
   },
   {
     q: "How does Skyup ensure measurable results?",
@@ -70,7 +69,7 @@ const serviceFaqs = [
     a: "Yes, Skyup offers affordable digital marketing services designed specifically for small businesses and startups. Our scalable strategies ensure consistent online visibility and lead generation within budget.",
   },
   {
-    q: "What is Skyup’s approach to digital marketing?",
+    q: "What is Skyup's approach to digital marketing?",
     a: "Skyup follows a structured approach: website audit, keyword research, SEO optimization, paid advertising strategy, continuous monitoring, and performance improvement. Our focus is long-term growth through ethical and sustainable marketing techniques.",
   },
   {
@@ -83,12 +82,14 @@ const softScale = {
   hidden: { opacity: 0, scale: 0.98, y: 18 },
   show: { opacity: 1, scale: 1, y: 0, transition: smoothSpringFast },
 };
-const MotionLink = motion(Link);
+
+// MotionLink replaced with motion.a using href
+const MotionA = motion.a;
+
 export function AboutUS() {
   return (
     <div className="font-poppins">
       <Head>
-
         <title>Top Digital Marketing Company in Bangalore | SKYUP</title>
         <meta
           name="description"
@@ -244,7 +245,7 @@ export function AboutUS() {
             >
               SKYUP Digital Solutions is a modern digital marketing, design, and
               technology agency that helps businesses cut through the noise and
-              scale with confidence. For us, digital isn’t just about ads or
+              scale with confidence. For us, digital isn't just about ads or
               websites it's about building meaningful growth engines that work
               every day.
             </motion.p>
@@ -381,6 +382,7 @@ export function AboutUS() {
       ></motion.div>
       <OurTeamSection />
       <FAQSection faqs={serviceFaqs} />
+
       {/* CTA */}
       <motion.section
         initial="hidden"
@@ -407,8 +409,8 @@ export function AboutUS() {
         </p>
 
         <div className="mt-8 flex justify-center">
-          <MotionLink
-            to="/contactus"
+          <MotionA
+            href="/contactus"
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -425,9 +427,11 @@ export function AboutUS() {
             "
           >
             GET STARTED
-          </MotionLink>
+          </MotionA>
         </div>
       </motion.section>
+
+      {/* FLOATING CONTACT BUTTONS */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -540,6 +544,7 @@ export function AboutUS() {
           </span>
         </a>
       </motion.div>
+
       <Footer />
     </div>
   );
