@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   SearchCheckIcon,
 } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 
 import Header from "../components/Header";
@@ -16,6 +15,7 @@ import { Link } from "react-router-dom";
 import WhatWeDoSection from "../components/WhatWeDoSection";
 import TestimonialsSection from "../components/TestimonialsSection";
 import FAQSection from "../components/FAQSection";
+import { Head } from "vike-react/Head";
 
 const HomeFaqs = [
   {
@@ -278,7 +278,7 @@ export function HomePage() {
 
   return (
     <div className="w-full">
-      <Helmet>
+      <Head>
         <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
         <meta
           name="description"
@@ -378,7 +378,7 @@ export function HomePage() {
             ],
           })}
         </script>
-      </Helmet>
+      </Head>
 
       <Header />
       <HeroSection />

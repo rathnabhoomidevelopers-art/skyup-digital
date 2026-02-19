@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Trash2, Plus, Move, Edit3, Image as ImageIcon, Link as LinkIcon, Type, Layout, List, Sparkles, Settings } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Head } from 'vike-react/Head';
 
 const DynamicBlog = () => {
   const [elements, setElements] = useState([]);
@@ -344,12 +344,12 @@ const DynamicBlog = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" style={{ fontFamily: "'Courier Prime', monospace" }}>
-      <Helmet>
+      <Head>
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         {metaTags.keywords && <meta name="keywords" content={metaTags.keywords} />}
         {metaTags.canonical && <link rel="canonical" href={metaTags.canonical} />}
-      </Helmet>
+      </Head>
       <Header/>
       
       <style>{`
