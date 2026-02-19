@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import FAQSection from "../components/FAQSection";
-import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import WhatMakesUsDifferentSection from "../components/WhatMakesUsDifferentSection";
 import { Link } from "react-router-dom";
 import OurTeamSection from "../components/OurTeamSection";
+import { Head } from 'vike-react/Head';
 
 const viewport = { once: true, amount: 0.25 };
 
@@ -87,7 +87,8 @@ const MotionLink = motion(Link);
 export function AboutUS() {
   return (
     <div className="font-poppins">
-      <Helmet>
+      <Head>
+
         <title>Top Digital Marketing Company in Bangalore | SKYUP</title>
         <meta
           name="description"
@@ -165,7 +166,7 @@ export function AboutUS() {
   }]
 }`}
 </script>
-      </Helmet>
+      </Head>
 
       <Header />
 

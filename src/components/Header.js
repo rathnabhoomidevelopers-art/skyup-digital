@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { usePageContext } from "vike-react/usePageContext";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+  const pageContext = usePageContext();
+  const pathname = pageContext.urlPathname;
 
   const links = [
     { to: "/", label: "Home" },
@@ -15,7 +16,6 @@ export default function Header() {
     { to: "/careers", label: "Careers" },
   ];
 
-  // Social media with brand colors
   const socialLinks = [
     {
       Icon: "/images/FB.svg",
@@ -47,19 +47,17 @@ export default function Header() {
     },
   ];
 
-  // Active link based on current route
   const getIsActive = (to) => {
     if (to === "#") return false;
-    if (to === "/") return location.pathname === "/";
-    return location.pathname.startsWith(to);
+    if (to === "/") return pathname === "/";
+    return pathname.startsWith(to);
   };
 
   const toggleMobileMenu = () => setMobileOpen((prev) => !prev);
 
-  // Close mobile menu on route change (extra safety)
   useEffect(() => {
     setMobileOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     if (mobileOpen) document.body.style.overflow = "hidden";
@@ -78,23 +76,17 @@ export default function Header() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="h-20 flex items-center justify-between gap-3">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 !no-underline">
+            <a href="/" className="flex items-center gap-2 !no-underline">
               <img
                 src="/images/rbd-logo.webp"
                 alt="RBD Logo"
                 className="h-10 w-auto sm:h-12 md:h-10 lg:h-12"
               />
-            </Link>
+            </a>
 
             {/* Nav */}
             <nav className="hidden md:flex flex-1 justify-center">
-              <div
-                className="
-                  inline-flex items-center bg-white rounded-full shadow-sm
-                  px-3 py-2 lg:px-4
-                  gap-4 lg:gap-8
-                "
-              >
+              <div className="inline-flex items-center bg-white rounded-full shadow-sm px-3 py-2 lg:px-4 gap-4 lg:gap-8">
                 {links.map((l) => {
                   const isActive = getIsActive(l.to);
 
@@ -125,9 +117,9 @@ export default function Header() {
                   }
 
                   return (
-                    <Link
+                    <a
                       key={l.label}
-                      to={l.to}
+                      href={l.to}
                       className={[
                         baseClasses,
                         "!no-underline",
@@ -137,7 +129,7 @@ export default function Header() {
                       ].join(" ")}
                     >
                       {l.label}
-                    </Link>
+                    </a>
                   );
                 })}
               </div>
@@ -160,18 +152,12 @@ export default function Header() {
               </div>
 
               {/* CTA */}
-              <Link
-                to="/contactus"
-                className="
-                  hidden md:inline-flex items-center justify-center rounded-full bg-[#0037CA]
-                  px-3 py-2 text-[13px]
-                  lg:px-4 lg:py-2.5 lg:text-base
-                  font-semibold text-white shadow-sm hover:bg-[#0452da]
-                  transition-colors whitespace-nowrap !no-underline
-                "
+              <a
+                href="/contactus"
+                className="hidden md:inline-flex items-center justify-center rounded-full bg-[#0037CA] px-3 py-2 text-[13px] lg:px-4 lg:py-2.5 lg:text-base font-semibold text-white shadow-sm hover:bg-[#0452da] transition-colors whitespace-nowrap !no-underline"
               >
                 Contact US
-              </Link>
+              </a>
 
               {/* Mobile menu button */}
               <button
@@ -180,11 +166,7 @@ export default function Header() {
                 onClick={toggleMobileMenu}
                 aria-label="Toggle main menu"
               >
-                {mobileOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
@@ -213,9 +195,7 @@ export default function Header() {
                       onClick={() => setMobileOpen(false)}
                       className={[
                         "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
-                        isActive
-                          ? "bg-white text-[#1F6BFF]"
-                          : "text-gray-900 hover:bg-white/60",
+                        isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
                       ].join(" ")}
                     >
                       {l.label}
@@ -224,19 +204,17 @@ export default function Header() {
                 }
 
                 return (
-                  <Link
+                  <a
                     key={l.label}
-                    to={l.to}
+                    href={l.to}
                     onClick={() => setMobileOpen(false)}
                     className={[
                       "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
-                      isActive
-                        ? "bg-white text-[#1F6BFF]"
-                        : "text-gray-900 hover:bg-white/60",
+                      isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
                     ].join(" ")}
                   >
                     {l.label}
-                  </Link>
+                  </a>
                 );
               })}
 
@@ -254,13 +232,13 @@ export default function Header() {
                 ))}
               </div>
 
-              <Link
-                to="/contactus"
+              <a
+                href="/contactus"
                 onClick={() => setMobileOpen(false)}
                 className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
               >
                 Contact US
-              </Link>
+              </a>
             </nav>
           </motion.div>
         )}

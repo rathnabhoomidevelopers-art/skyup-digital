@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
 import { MapPin, Clock } from "lucide-react";
 import JobApplicationFormModal from "../components/JobApplicationForm";
+import { Head } from "vike-react/Head";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const smoothSpringFast = {
@@ -78,7 +78,7 @@ export function Careers() {
 
   return (
     <div className="font-poppins">
-      <Helmet>
+      <Head>
         <title>
           Explore Digital Marketing Jobs for Career Growth & Learning
         </title>
@@ -91,7 +91,7 @@ export function Careers() {
           rel="canonical"
           href="https://www.skyupdigitalsolutions.com/careers"
         />
-      </Helmet>
+      </Head>
       <Header />
 
       {/* HERO */}

@@ -1,5 +1,5 @@
+import { Head } from "vike-react/Head";
 import BlogsContainer from "../components/BlogsContainer";
-import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
@@ -26,7 +26,7 @@ const staggerWrap = {
 export function Blogs() {
   return (
     <div className="font-poppins">
-      <Helmet>
+      <Head>
         <title>
           Digital Marketing vs Traditional Marketing: What You Should Know
         </title>
@@ -42,7 +42,7 @@ export function Blogs() {
           rel="canonical"
           href="https://www.skyupdigitalsolutions.com/blogs"
         />
-      </Helmet>
+      </Head>
       <Header />
       <motion.div
         initial="hidden"

@@ -7,7 +7,7 @@ import ContactCTAContainer from "../components/ContactCTAContainer";
 import { motion } from "framer-motion";
 import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { Head } from "vike-react/Head";
 
 const slugify = (str = "") =>
   str
@@ -113,12 +113,12 @@ export default function BlogDetail({ vikeSlug }) {
 
   return (
     <section className="w-full bg-white font-poppins">
-      <Helmet>
+      <Head>
         <title>{blog.title}</title>
         <meta name="description" content={blog.description} />
         <meta name="keywords" content={blog.Keywords} />
         <link rel="canonical" href={canonicalUrl} />
-      </Helmet>
+      </Head>
       
       <Header />
       <div className="relative">

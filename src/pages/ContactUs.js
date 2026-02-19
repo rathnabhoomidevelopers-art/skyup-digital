@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
@@ -12,6 +11,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Head } from "vike-react/Head";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
 
@@ -131,7 +131,7 @@ export function ContactUs() {
 
   return (
     <div className="font-poppins">
-      <Helmet>
+      <Head>
         <title>Contact Us | SKYUP Digital Solutions</title>
         <meta
           name="description"
@@ -142,7 +142,7 @@ export function ContactUs() {
           rel="canonical"
           href="https://www.skyupdigitalsolutions.com/contactus"
         />
-      </Helmet>
+      </Head>
       <Header />
       <motion.div
         initial="hidden"
