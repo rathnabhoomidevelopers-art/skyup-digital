@@ -1,14 +1,8 @@
-// ============================================
-// FRONTEND: src/components/ProtectedRoute.jsx
-// ============================================
-
-import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
-  // Show loading spinner while checking authentication
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -23,11 +17,12 @@ export function ProtectedRoute({ children }) {
     );
   }
 
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+    if (typeof window !== 'undefined') {
+      window.location.href = '/admin/login';
+    }
+    return null;
   }
 
-  // Render protected content
   return children;
 }

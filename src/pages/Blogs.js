@@ -3,9 +3,8 @@ import BlogsContainer from "../components/BlogsContainer";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
-const MotionLink = motion(Link);
+const MotionA = motion.a;
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const fadeUp = {
@@ -79,14 +78,14 @@ export function Blogs() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
           className="
-                          mx-auto
-                          m-[60px]
-                          sm:m-[70px]
-                          text-center
-                          font-poppins
-                          px-3
-                          sm:max-w-[800px]
-                        "
+            mx-auto
+            m-[60px]
+            sm:m-[70px]
+            text-center
+            font-poppins
+            px-3
+            sm:max-w-[800px]
+          "
         >
           <h2 className="text-[#0037CA] font-bold text-[24px] sm:text-[64px] leading-tight">
             Ready to Grow Faster?
@@ -98,25 +97,25 @@ export function Blogs() {
           </p>
 
           <div className="mt-8 flex justify-center">
-            <MotionLink
-              to="/contactus"
+            <MotionA
+              href="/contactus"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
               className="
-                              bg-[#0037CA] text-white
-                              font-semibold text-sm sm:text-base
-                              px-6 py-2.5
-                              rounded-full
-                              shadow-[0_10px_24px_rgba(0,0,0,0.18)]
-                              hover:scale-[1.03] active:scale-[0.99]
-                              transition-transform
-                              inline-flex items-center justify-center
-                              no-underline
-                            "
+                bg-[#0037CA] text-white
+                font-semibold text-sm sm:text-base
+                px-6 py-2.5
+                rounded-full
+                shadow-[0_10px_24px_rgba(0,0,0,0.18)]
+                hover:scale-[1.03] active:scale-[0.99]
+                transition-transform
+                inline-flex items-center justify-center
+                no-underline
+              "
             >
               GET STARTED
-            </MotionLink>
+            </MotionA>
           </div>
         </motion.section>
       </div>

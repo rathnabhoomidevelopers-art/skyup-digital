@@ -1,5 +1,4 @@
 import { ChevronLeft, Linkedin } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
 import { BLOGS } from "../data/blogs";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,6 +7,7 @@ import { motion } from "framer-motion";
 import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Head } from "vike-react/Head";
+import { usePageContext } from "vike-react/usePageContext";
 
 const slugify = (str = "") =>
   str
@@ -18,10 +18,10 @@ const slugify = (str = "") =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-export default function BlogDetail({ vikeSlug }) {
-  // ✅ Use vikeSlug if provided (Vike SSR context), fallback to useParams (React Router context)
-  const params = useParams();
-  const slug = vikeSlug || params?.slug;
+export default function BlogDetail() {
+  // Get slug from Vike route params
+  const { routeParams } = usePageContext();
+  const slug = routeParams?.slug;
 
   const blog = BLOGS.find((b) => b.slug === slug);
 
@@ -98,12 +98,12 @@ export default function BlogDetail({ vikeSlug }) {
       <section className="w-full font-poppins">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 py-10">
           <p className="text-slate-700">Blog not found.</p>
-          <Link
-            to="/blogs"
+          <a
+            href="/blogs"
             className="text-[#0B3BFF] no-underline font-semibold"
           >
             Go back
-          </Link>
+          </a>
         </div>
       </section>
     );
@@ -119,7 +119,7 @@ export default function BlogDetail({ vikeSlug }) {
         <meta name="keywords" content={blog.Keywords} />
         <link rel="canonical" href={canonicalUrl} />
       </Head>
-      
+
       <Header />
       <div className="relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
@@ -166,15 +166,15 @@ export default function BlogDetail({ vikeSlug }) {
           {/* Blog content */}
           <div className="flex-1 max-w-6xl">
             {/* back */}
-            <Link
-              to="/blogs"
+            <a
+              href="/blogs"
               className="inline-flex no-underline items-center gap-2 text-[12px] font-semibold text-slate-700 hover:text-[#0B3BFF] transition"
             >
               <span className="h-7 w-7 rounded-full border border-slate-200 flex items-center justify-center">
                 <ChevronLeft className="h-4 w-4" />
               </span>
               Back&nbsp;to&nbsp;Blog
-            </Link>
+            </a>
 
             {/* category */}
             <div className="mt-4">

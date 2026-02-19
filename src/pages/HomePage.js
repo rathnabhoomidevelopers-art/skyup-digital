@@ -11,11 +11,12 @@ import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
 import WhatWeDoSection from "../components/WhatWeDoSection";
 import TestimonialsSection from "../components/TestimonialsSection";
 import FAQSection from "../components/FAQSection";
 import { Head } from "vike-react/Head";
+
+const MotionA = motion.a;
 
 const HomeFaqs = [
   {
@@ -240,8 +241,6 @@ function HowDoWeWorkSection() {
 }
 
 export function HomePage() {
-  const MotionLink = motion(Link);
-
   const stats = [
     { value: "120+", label: "Brands\nTransformed" },
     { value: "3.2Cr+", label: "Ad Budget\nManaged" },
@@ -258,16 +257,6 @@ export function HomePage() {
       opacity: 1,
       y: 0,
       transition: { type: "spring", stiffness: 85, damping: 18, mass: 0.9 },
-    },
-  };
-
-  const fadeUpSoft = {
-    hidden: { opacity: 0, y: 18, scale: 0.99 },
-    show: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { type: "spring", stiffness: 90, damping: 18, mass: 0.9 },
     },
   };
 
@@ -399,13 +388,13 @@ export function HomePage() {
                 <div
                   key={idx}
                   className="
-                      h-[138px] w-[222px]
-                      rounded-[18px]
-                      bg-gradient-to-b from-[#00164F] to-[#0032B5]
-                      shadow-[0_14px_34px_rgba(0,0,0,0.35)]
-                      flex flex-col items-center justify-center
-                      text-center
-                    "
+                    h-[138px] w-[222px]
+                    rounded-[18px]
+                    bg-gradient-to-b from-[#00164F] to-[#0032B5]
+                    shadow-[0_14px_34px_rgba(0,0,0,0.35)]
+                    flex flex-col items-center justify-center
+                    text-center
+                  "
                 >
                   <div className="text-white text-[14px] sm:text-[16px] whitespace-pre-line">
                     {s.label}
@@ -496,6 +485,7 @@ export function HomePage() {
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUp}
       ></motion.div>
+
       {/* CTA */}
       <div className="bg-[#FFF8F0]">
         <motion.section
@@ -521,8 +511,8 @@ export function HomePage() {
           </p>
 
           <div className="mt-8 flex justify-center">
-            <MotionLink
-              to="/contactus"
+            <MotionA
+              href="/contactus"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -539,10 +529,11 @@ export function HomePage() {
               "
             >
               GET STARTED
-            </MotionLink>
+            </MotionA>
           </div>
         </motion.section>
       </div>
+
       {/* FLOATING CONTACT BUTTONS */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}

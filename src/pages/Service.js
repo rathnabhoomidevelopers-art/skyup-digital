@@ -4,8 +4,8 @@ import Header from "../components/Header";
 import ServiceCardsSection from "../components/ServiceCardsSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
 import { usePageContext } from "vike-react/usePageContext";
+import { navigate } from "vike/client/router";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 
@@ -47,24 +47,19 @@ const staggerWrap = {
   },
 };
 
-const MotionLink = motion(Link);
-
 export function Service() {
-  // ✅ Safe usePageContext with fallback for React Router / catch-all context
   let categoryFromUrl = "";
   try {
     const pageContext = usePageContext();
     categoryFromUrl =
       new URLSearchParams(pageContext?.urlParsed?.search ?? "").get("category") || "";
   } catch {
-    // Fallback when rendered outside Vike context (e.g. via @catch-all BrowserRouter)
     if (typeof window !== "undefined") {
       categoryFromUrl =
         new URLSearchParams(window.location.search).get("category") || "";
     }
   }
 
-  // ✅ <Helmet> fully removed — meta tags live in pages/Service/+Page.jsx
   return (
     <div className="font-poppins">
       <Header />
@@ -117,15 +112,19 @@ export function Service() {
         </p>
 
         <div className="mt-8 flex justify-center">
-          <MotionLink
-            to="/contactus"
+          <motion.a
+            href="/contactus"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/contactus");
+            }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 22 }}
             className="bg-[#0037CA] text-white font-semibold text-sm sm:text-base px-6 py-2.5 rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)] hover:scale-[1.03] active:scale-[0.99] transition-transform inline-flex items-center justify-center no-underline"
           >
             GET STARTED
-          </MotionLink>
+          </motion.a>
         </div>
       </motion.section>
 

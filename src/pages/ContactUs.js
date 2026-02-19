@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { navigate } from "vike/client/router";
 import { Head } from "vike-react/Head";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
@@ -62,7 +62,6 @@ const initialForm = {
 };
 
 export function ContactUs() {
-  const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -111,7 +110,8 @@ export function ContactUs() {
 
       setStatus({ type: "success", message: "Message sent successfully!" });
       setForm(initialForm);
-      navigate("/thankyou", { state: { name: form.name, phone: form.mobile } });
+      // Navigate to thank you page using Vike router
+      navigate(`/thankyou?name=${encodeURIComponent(form.name)}&phone=${encodeURIComponent(form.mobile)}`);
     } catch (err) {
       console.error("Contact submit error:", err);
 
@@ -186,7 +186,7 @@ export function ContactUs() {
           variants={fadeUp}
           className="text-center lg:text-[44px] sm:text-[44px] text-[24px] fw-bold"
         >
-          Let’s Talk with
+          Let's Talk with
         </motion.h2>
 
         <motion.div variants={fadeUp}>
@@ -199,7 +199,7 @@ export function ContactUs() {
           variants={fadeUp}
           className="text-center sm:px-0 lg:px-0 px-4 text-[12px] sm:text-[14px] mt-3 lg:text-[18px]"
         >
-          Have a vision you want to build? Share it with us. Together, we’ll
+          Have a vision you want to build? Share it with us. Together, we'll
           create solutions that drive real growth.
         </motion.p>
       </motion.div>
