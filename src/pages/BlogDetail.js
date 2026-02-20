@@ -109,15 +109,12 @@ export default function BlogDetail() {
     );
   }
 
-  const canonicalUrl = `https://www.skyupdigitalsolutions.com/blog/${slug}`;
-
   return (
     <section className="w-full bg-white font-poppins">
       <Head>
         <title>{blog.title}</title>
         <meta name="description" content={blog.description} />
         <meta name="keywords" content={blog.Keywords} />
-        <link rel="canonical" href={canonicalUrl} />
       </Head>
 
       <Header />
