@@ -1,1 +1,1 @@
-export const route = '/services/@slug'
+export default '/services/@slug'
