@@ -1,13 +1,17 @@
 import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 
 export default function Footer() {
-  const services = [
-    { label: "Digital Marketing", to: "/service?category=Digital%20Marketing" },
-    { label: "Branding & Design", to: "/service?category=Design%20%26%20Branding" },
-    { label: "Web Development", to: "/service?category=Web%20Development" },
-    { label: "Lead Automation", to: "/service?category=AI-Automation" },
-    { label: "UI UX", to: "/services/ui-ux-design" },
-  ];
+const services = [
+  { label: "Social Media Marketing", to: "/services/social-media-marketing" },
+  { label: "SEO", to: "/services/seo-company-in-bangalore" },
+  { label: "Google Ads", to: "/services/ppc-company-in-bangalore" },
+  { label: "Email Marketing", to: "/services/email-marketing-company-in-bangalore" },
+  { label: "Branding", to: "/services/branding-agency-in-bangalore" },
+  { label: "Web Development", to: "/services/website-development-company-in-bangalore" },
+  { label: "UI UX Design", to: "/services/ui-ux-design-company-in-bangalore" },
+  { label: "Graphic Design", to: "/services/creative-graphic-design" },
+  { label: "AI Automation", to: "/services/ai-company-in-bangalore" },
+];
 
   const resources = [
     { label: "About Us", to: "/aboutus" },
