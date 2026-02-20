@@ -14,6 +14,7 @@ export default function Page() {
       <Head>
         <title>{blog?.title || "Blog | SkyUp Digital"}</title>
         <meta name="description" content={blog?.description || ""} />
+        <meta name="keywords" content={blog?.Keywords || ""} />
         {slug && (
           <link
             rel="canonical"
