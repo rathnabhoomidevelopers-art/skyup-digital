@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import { motion } from "framer-motion";
 import { MapPin, Clock } from "lucide-react";
 import JobApplicationFormModal from "../components/JobApplicationForm";
-import { Head } from "vike-react/Head";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const smoothSpringFast = {
@@ -78,20 +77,6 @@ export function Careers() {
 
   return (
     <div className="font-poppins">
-      <Head>
-        <title>
-          Explore Digital Marketing Jobs for Career Growth & Learning
-        </title>
-        <meta
-          name="description"
-          content="Discover exciting Digital Marketing Jobs offering structured learning, career growth, and hands-on industry experience to boost your professional journey."
-        />
-        <meta name="keywords" content="Digital marketing Jobs" />
-        <link
-          rel="canonical"
-          href="https://www.skyupdigitalsolutions.com/careers"
-        />
-      </Head>
       <Header />
 
       {/* HERO */}

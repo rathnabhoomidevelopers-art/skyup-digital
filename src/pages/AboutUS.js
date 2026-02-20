@@ -4,7 +4,6 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import WhatMakesUsDifferentSection from "../components/WhatMakesUsDifferentSection";
 import OurTeamSection from "../components/OurTeamSection";
-import { Head } from 'vike-react/Head';
 
 const viewport = { once: true, amount: 0.25 };
 
