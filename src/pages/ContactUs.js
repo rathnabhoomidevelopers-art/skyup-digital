@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { navigate } from "vike/client/router";
-import { Head } from "vike-react/Head";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
 
@@ -131,18 +130,6 @@ export function ContactUs() {
 
   return (
     <div className="font-poppins">
-      <Head>
-        <title>Contact Us | SKYUP Digital Solutions</title>
-        <meta
-          name="description"
-          content="Have questions or ready to start? Contact us at SKYUP Digital Solutions to grow your business with expert digital marketing and web solutions."
-        />
-        <meta name="keywords" content="Contact us" />
-        <link
-          rel="canonical"
-          href="https://www.skyupdigitalsolutions.com/contactus"
-        />
-      </Head>
       <Header />
       <motion.div
         initial="hidden"
