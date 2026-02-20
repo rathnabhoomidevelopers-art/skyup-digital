@@ -8,14 +8,11 @@ export default function Head() {
 
   return (
     <>
-      <title>{blog?.title || "Blog | SkyUp Digital"}</title>
-      <meta name="description" content={blog?.description || ""} />
+      <title>{pageContext.title || blog?.title || 'Blog | SkyUp Digital'}</title>
+      <meta name="description" content={pageContext.description || blog?.description || ''} />
       <meta name="keywords" content={blog?.Keywords || ""} />
       {slug && (
-        <link
-          rel="canonical"
-          href={`https://www.skyupdigitalsolutions.com/blog/${slug}`}
-        />
+        <link rel="canonical" href={`https://www.skyupdigitalsolutions.com/blog/${slug}`} />
       )}
     </>
   );

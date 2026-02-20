@@ -19,14 +19,9 @@ const faqSchema = {
 
   return (
     <>
-      <title>Digital Marketing Agency in Bangalore | SkyUp Digital</title>
-      <meta
-        name="description"
-        content="Your trusted Digital Marketing Agency in Bangalore, delivering smart strategies, measurable results, and sustainable growth for your brand."
-      />
       <meta name="keywords" content="Digital Marketing Agency in Bangalore." />
       <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
-      <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </>
   );
 }
