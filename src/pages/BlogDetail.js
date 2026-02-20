@@ -6,7 +6,6 @@ import ContactCTAContainer from "../components/ContactCTAContainer";
 import { motion } from "framer-motion";
 import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Head } from "vike-react/Head";
 import { usePageContext } from "vike-react/usePageContext";
 
 const slugify = (str = "") =>
@@ -111,11 +110,6 @@ export default function BlogDetail() {
 
   return (
     <section className="w-full bg-white font-poppins">
-      <Head>
-        <title>{blog.title}</title>
-        <meta name="description" content={blog.description} />
-        <meta name="keywords" content={blog.Keywords} />
-      </Head>
 
       <Header />
       <div className="relative">
