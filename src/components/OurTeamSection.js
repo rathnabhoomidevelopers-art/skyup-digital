@@ -193,7 +193,7 @@ export default function OurTeamSection() {
         >
           {/* LEFT: Big Pooja card (full height) */}
           <motion.div
-            className="w-full lg:w-[432px] h-[614px] relative overflow-hidden rounded-2xl border-1 border-[#FA9F43] flex justify-center items-start"
+            className="w-full lg:w-[432px] h-[614px] relative overflow-hidden rounded-2xl border border-[#FA9F43] flex justify-center items-start"
             variants={itemVariants}
           >
             <img
@@ -216,7 +216,7 @@ export default function OurTeamSection() {
               {teamMembers.slice(1, 4).map((member) => (
                 <motion.div
                   key={member.name}
-                  className="relative overflow-hidden rounded-2xl border-1 border-[#FA9F43] w-full h-[291px] flex justify-center items-start"
+                  className="relative overflow-hidden rounded-2xl border border-[#FA9F43] w-full h-[291px] flex justify-center items-start"
                   variants={itemVariants}
                   whileHover={{ scale: 1.02 }}
                 >
@@ -239,7 +239,7 @@ export default function OurTeamSection() {
               {teamMembers.slice(4, 6).map((member) => (
                 <motion.div
                   key={member.name}
-                  className="relative overflow-hidden rounded-2xl border-1 border-[#FA9F43] w-full h-[291px] flex justify-center items-start"
+                  className="relative overflow-hidden rounded-2xl border border-[#FA9F43] w-full h-[291px] flex justify-center items-start"
                   variants={itemVariants}
                   whileHover={{ scale: 1.02 }}
                 >
@@ -287,7 +287,7 @@ export default function OurTeamSection() {
                 onClick={() => scrollToIndex(index)}
               >
                 {/* All cards same size on mobile */}
-                <div className="relative overflow-hidden rounded-2xl border-1 border-[#FA9F43] w-full h-[300px] flex flex-col items-center pt-3">
+                <div className="relative overflow-hidden rounded-2xl border border-[#FA9F43] w-full h-[300px] flex flex-col items-center pt-3">
                   <div className="w-[260px] h-[220px] flex justify-center">
                     <img
                       src={member.image}
