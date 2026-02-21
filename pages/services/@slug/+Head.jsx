@@ -7,11 +7,16 @@ export default function Head() {
   const data = SERVICES[slug] || SERVICES[DEFAULT_SERVICE_SLUG]
   const canonicalUrl = `https://www.skyupdigitalsolutions.com/services/${slug}`
 
+  // Read directly from data — don't rely on pageContext.description
+  const title = data?.title || 'Digital Marketing Services | SkyUp'
+  const description = data?.description || ''
+  const keywords = data?.keyword || ''
+
   return (
     <>
-      <title>{pageContext.title || data?.title || 'Digital Marketing Services | SkyUp'}</title>
-      <meta name="description" content={pageContext.description || data?.description || ''} />
-      <meta name="keywords" content={pageContext.keywords || data?.keyword || ''} />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href={canonicalUrl} />
       {data?.faqSchema && (
