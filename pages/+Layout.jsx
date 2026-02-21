@@ -10,7 +10,8 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     let title = config?.title
-    let description = config?.description
+    // ── Use metaDescription for static pages (avoids Vike native duplicate)
+    let description = config?.metaDescription
     let keywords = config?.keywords
 
     // ── Service slug pages ────────────────────────────────────
@@ -19,7 +20,7 @@ export default function Layout({ children }) {
       const slug = serviceMatch[1]
       const data = SERVICES[slug] || SERVICES[DEFAULT_SERVICE_SLUG]
       title = data?.title
-      description = data?.description
+      description = data?.description  // data file still uses .description
       keywords = data?.keyword
     }
 
@@ -29,7 +30,7 @@ export default function Layout({ children }) {
       const slug = blogMatch[1]
       const blog = BLOGS.find((b) => b.slug === slug)
       title = blog?.title
-      description = blog?.description
+      description = blog?.description  // data file still uses .description
       keywords = blog?.Keywords
     }
 
