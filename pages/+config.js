@@ -5,12 +5,12 @@ export default {
   extends: vikeReact,
   prerender: true,
   clientRouting: true,
-  passToClient: ['urlPathname'],
 
   meta: {
-    // ❌ Remove description — declaring it here makes Vike render it natively
-    // which duplicates what +Head.jsx already renders
     keywords: {
+      env: { server: true, client: true }
+    },
+    metaDescription: {
       env: { server: true, client: true }
     }
   }
