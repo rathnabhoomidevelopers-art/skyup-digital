@@ -19,7 +19,6 @@ const faqSchema = {
 
   return (
     <>
-      <meta name="keywords" content="Digital Marketing Agency in Bangalore." />
       <link rel="canonical" href="https://www.skyupdigitalsolutions.com" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </>

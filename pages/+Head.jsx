@@ -2,21 +2,13 @@
 import { usePageContext } from 'vike-react/usePageContext'
 
 export default function Head() {
-  const { config, urlPathname } = usePageContext()
+  const { urlPathname } = usePageContext()
 
   return (
     <>
-      {/* SSR-rendered meta tags — picked up by crawlers and initial page load */}
-      {config?.description && (
-        <meta name="description" content={config.description} />
-      )}
-      {config?.keywords && (
-        <meta name="keywords" content={config.keywords} />
-      )}
-      <link
-        rel="canonical"
-        href={`https://www.skyupdigitalsolutions.com${urlPathname === '/' ? '' : urlPathname}`}
-      />
+      {/* ❌ Removed description — Vike renders it automatically from +config.js */}
+      {/* ❌ Removed keywords — Layout.jsx useEffect handles it */}
+      {/* ❌ Removed canonical — each page's +Head.jsx has its own canonical */}
 
       {/* Fonts */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
