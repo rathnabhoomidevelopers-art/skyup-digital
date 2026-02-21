@@ -1,3 +1,1 @@
-export default {
-  passToClient: ['title', 'description', 'keywords']
-}
+export default {}
