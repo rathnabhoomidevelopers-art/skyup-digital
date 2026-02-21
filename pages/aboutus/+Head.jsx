@@ -63,7 +63,6 @@ export default function Head() {
 }
   return (
     <>
-      <meta name="keywords" content="Digital Marketing Company in Bangalore" />
       <link rel="canonical" href="https://www.skyupdigitalsolutions.com/aboutus" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </>
