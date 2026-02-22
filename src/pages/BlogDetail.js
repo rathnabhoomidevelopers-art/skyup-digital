@@ -110,7 +110,6 @@ export default function BlogDetail() {
 
   return (
     <section className="w-full bg-white font-poppins">
-
       <Header />
       <div className="relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
@@ -176,7 +175,7 @@ export default function BlogDetail() {
 
             {/* title */}
             <h1 className="mt-3 text-[22px] sm:text-[28px] lg:text-[38px] fw-bold text-[#111827] leading-tight">
-              {blog.title}
+              {blog.headline}
             </h1>
 
             {/* meta */}
@@ -201,12 +200,27 @@ export default function BlogDetail() {
                 const used = new Map();
 
                 return sections.map((s, i) => {
+                  if (s.type === "h2") {
+                    const base = slugify(s.text || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h2
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827]"
+                      >
+                        {s.text}
+                      </h2>
+                    );
+                  }
+
                   if (s.type === "h3") {
                     const base = slugify(s.text || "");
                     const count = (used.get(base) || 0) + 1;
                     used.set(base, count);
                     const id = count === 1 ? base : `${base}-${count}`;
-
                     return (
                       <h3
                         key={i}
@@ -267,6 +281,70 @@ export default function BlogDetail() {
                           {s.linkText}
                         </a>
                         {s.textAfter}
+                      </p>
+                    );
+                  }
+
+                  if (s.type === "p_with_bold") {
+                    return (
+                      <p
+                        key={i}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+                      >
+                        {s.parts.map((part, idx) =>
+                          part.bold ? (
+                            <strong
+                              key={idx}
+                              className="font-semibold text-[#111827]"
+                            >
+                              {part.text}
+                            </strong>
+                          ) : (
+                            <span key={idx}>{part.text}</span>
+                          ),
+                        )}
+                      </p>
+                    );
+                  }
+
+                  if (s.type === "p_with_link_bold") {
+                    return (
+                      <p
+                        key={i}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+                      >
+                        {s.partsBefore?.map((part, idx) =>
+                          part.bold ? (
+                            <strong
+                              key={idx}
+                              className="font-semibold text-[#111827]"
+                            >
+                              {part.text}
+                            </strong>
+                          ) : (
+                            <span key={idx}>{part.text}</span>
+                          ),
+                        )}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.partsAfter?.map((part, idx) =>
+                          part.bold ? (
+                            <strong
+                              key={idx}
+                              className="font-semibold text-[#111827]"
+                            >
+                              {part.text}
+                            </strong>
+                          ) : (
+                            <span key={idx}>{part.text}</span>
+                          ),
+                        )}
                       </p>
                     );
                   }

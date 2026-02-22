@@ -1,26 +1,34 @@
+import { Bold } from "lucide-react";
+
 export const BLOGS = [
   {
     id: 1,
     slug: "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
     category: "Digital Marketing Strategy",
-    title: "Digital Marketing Insights in Bangalore ",
-    description: "Grow your business with a trusted digital marketing agency in Bangalore offering SEO, PPC, social media, and lead generation solutions.",
+    title: " Digital Marketing Agency in Bangalore for Business Growth",
+    headline:
+      "Digital Marketing Agency in Bangalore | The Complete Business Guide to Explosive Growth in 2026",
+    description:
+      "Grow your business with a trusted digital marketing agency in Bangalore offering SEO, PPC, social media, and lead generation solutions.",
     date: "2026",
     Keywords: "Digital Marketing Agency in Bangalore",
     author: "SKYUP Digital",
-    image: "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
-    heroImage: "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
-    coverImage: "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+    image:
+      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+    heroImage:
+      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+    coverImage:
+      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
     tags: [
       "Digital Marketing",
       "Service-Based Business",
       "Lead Generation",
       "SEO",
-      "Google Ads", 
+      "Google Ads",
       "Conversion Optimization",
     ],
     sections: [
-      { type: "h3", text: "Introduction" },
+      { type: "h2", text: "Introduction" },
       {
         type: "p",
         text: "Having a website or social media page is no longer sufficient in the fiercely competitive digital economy of today. Every day, businesses have to fight for consumers' attention, trust, and conversions. This is the point at which a Bangalore digital marketing agency becomes your most important growth partner.",
@@ -431,10 +439,14 @@ export const BLOGS = [
     id: 2,
     slug: "how-to-choose-the-right-digital-marketing-agency-in-bangalore-2026-guide",
     category: "Digital Marketing Agency",
-    title: "How to Choose the Right Digital Marketing Agency in Bangalore (2026 Guide)",
+    title:
+      "Maximize Your Business Potential with Digital Marketing in Bangalore",
+    headline:
+      "How to Choose the Right Digital Marketing Agency in Bangalore: 2026 Guide",
     date: "2026",
     Keywords: "Digital Marketing Agency in Bangalore",
-    description:"Unlock your business potential with expert digital marketing services in Bangalore. Drive traffic, generate leads, and grow your brand with proven strategies.",
+    description:
+      "Unlock your business potential with expert digital marketing services in Bangalore. Drive traffic, generate leads, and grow your brand with proven strategies.",
     author: "SKYUP Digital",
     image: "/images/blog2.webp",
     heroImage: "/images/blog2.webp",
@@ -449,7 +461,7 @@ export const BLOGS = [
     ],
     sections: [
       {
-        type: "h3",
+        type: "h2",
         text: "Introduction",
       },
 
@@ -458,9 +470,10 @@ export const BLOGS = [
         textBefore: "In the year 2026, SkyUp Digital Solutions, one of the",
         linkText: " best Digital Marketing Agencies in Bangalore,",
         href: "https://www.skyupdigitalsolutions.com/",
-        textAfter: " is at the forefront of the revolution in the way businesses are grown online. Selecting the right digital marketing agency is imperative for achieving success in the rapidly growing competitive market. However, with the presence of numerous digital marketing agencies that provide similar services, the question is how to select the one that meets your specific business requirements. In this extensive guide, we will walk you through the crucial points that need to be considered while choosing the best Digital Marketing Agency Near Me.",
+        textAfter:
+          " is at the forefront of the revolution in the way businesses are grown online. Selecting the right digital marketing agency is imperative for achieving success in the rapidly growing competitive market. However, with the presence of numerous digital marketing agencies that provide similar services, the question is how to select the one that meets your specific business requirements. In this extensive guide, we will walk you through the crucial points that need to be considered while choosing the best Digital Marketing Agency Near Me.",
       },
-     
+
       {
         type: "h3",
         text: "Why Choosing the Right Digital Marketing Agency is Crucial",
@@ -476,14 +489,18 @@ export const BLOGS = [
       },
       {
         type: "ul",
-        text: ["Expertise and Experience: Digital marketing is a complex domain that demands specific knowledge in areas such as SEO, PPC, content marketing, and more. An experienced digital marketing agency will be able to offer a comprehensive solution, ensuring that all strategies are in sync with your business objectives.","Access to Latest Tools and Technologies: A reputable digital marketing agency in Bangalore, such as SkyUp Digital Solutions, will have access to the latest tools and analytics platforms that can offer valuable insights and automate processes, saving your team time and effort.","Increased ROI: By concentrating on effective strategies, the right digital marketing agency will be able to help you maximize your return on investment, ensuring that every rupee spent on marketing yields measurable results."],
+        text: [
+          "Expertise and Experience: Digital marketing is a complex domain that demands specific knowledge in areas such as SEO, PPC, content marketing, and more. An experienced digital marketing agency will be able to offer a comprehensive solution, ensuring that all strategies are in sync with your business objectives.",
+          "Access to Latest Tools and Technologies: A reputable digital marketing agency in Bangalore, such as SkyUp Digital Solutions, will have access to the latest tools and analytics platforms that can offer valuable insights and automate processes, saving your team time and effort.",
+          "Increased ROI: By concentrating on effective strategies, the right digital marketing agency will be able to help you maximize your return on investment, ensuring that every rupee spent on marketing yields measurable results.",
+        ],
       },
 
       {
         type: "h3",
         text: "How to Choose the Right Digital Marketing Agency in Bangalore",
       },
-      
+
       {
         type: "p",
         text: "Selecting the best agency is about creating a partnership that will help you succeed in the long run, not just about hiring an expert. Here are some things to think about.",
@@ -501,7 +518,9 @@ export const BLOGS = [
       },
       {
         type: "ul",
-        text: ["A: If you're looking to increase your website's organic visibility over time, SEO is your best bet. PPC, on the other hand, is a great solution for immediate results."]
+        text: [
+          "A: If you're looking to increase your website's organic visibility over time, SEO is your best bet. PPC, on the other hand, is a great solution for immediate results.",
+        ],
       },
 
       { type: "h3", text: "2. Look for Industry Expertise and Specialization" },
@@ -513,11 +532,13 @@ export const BLOGS = [
       { type: "h3", text: "Key Insights" },
       {
         type: "ul",
-        text: ["SkyUp Digital Solutions has years of experience in various industries, from real estate to digital transformation, offering highly effective campaigns tailored to each sector."],
+        text: [
+          "SkyUp Digital Solutions has years of experience in various industries, from real estate to digital transformation, offering highly effective campaigns tailored to each sector.",
+        ],
       },
 
       { type: "h3", text: "3. Review Their Portfolio and Case Studies" },
-       { type: "h3", text: "Key Insights" },
+      { type: "h3", text: "Key Insights" },
       {
         type: "p_with_link",
         textBefore:
@@ -525,8 +546,11 @@ export const BLOGS = [
         linkText: "global enterprises.",
         href: "https://en.wikipedia.org/wiki/Special:Search?search=global+enterprises.&go=Go&ns0=1",
       },
-      { type: "h3", text: "Choosing the Right Digital Marketing Agency: Key Criteria" },
-     
+      {
+        type: "h3",
+        text: "Choosing the Right Digital Marketing Agency: Key Criteria",
+      },
+
       { type: "h3", text: "4. Check for Transparency and Clear Communication" },
       {
         type: "p",
@@ -540,7 +564,14 @@ export const BLOGS = [
       },
       {
         type: "ul",
-        text: ["SEO (Search Engine Optimization)","PPC (Pay-Per-Click Advertising)","Content Marketing (blogs, articles, social posts)","Social Media Marketing (Facebook, Instagram, LinkedIn)","Email Marketing","Website Design and Development",]
+        text: [
+          "SEO (Search Engine Optimization)",
+          "PPC (Pay-Per-Click Advertising)",
+          "Content Marketing (blogs, articles, social posts)",
+          "Social Media Marketing (Facebook, Instagram, LinkedIn)",
+          "Email Marketing",
+          "Website Design and Development",
+        ],
       },
 
       {
@@ -554,7 +585,10 @@ export const BLOGS = [
         text: "Online testimonials and reviews can reveal information about the agency's standing and client satisfaction. Consult third-party websites for reviews or get recommendations from previous clients of the agency.",
       },
 
-      { type: "h3", text: "What to Avoid When Choosing a Digital Marketing Agency" },
+      {
+        type: "h3",
+        text: "What to Avoid When Choosing a Digital Marketing Agency",
+      },
       {
         type: "h3",
         text: "7. Avoid Agencies that Promise Quick Fixes",
@@ -569,7 +603,9 @@ export const BLOGS = [
       },
       {
         type: "ul",
-        text: ["Agencies that promise quick fixes might be using black-hat SEO techniques or offering shortcuts that could hurt your long-term success."]
+        text: [
+          "Agencies that promise quick fixes might be using black-hat SEO techniques or offering shortcuts that could hurt your long-term success.",
+        ],
       },
       {
         type: "h3",
@@ -585,11 +621,11 @@ export const BLOGS = [
       },
       {
         type: "p_with_link",
-        textBefore:
-          "As a reputable digital marketing agency in Bangalore, ",
+        textBefore: "As a reputable digital marketing agency in Bangalore, ",
         linkText: "SkyUp Digital Solutions",
         href: "https://www.skyupdigitalsolutions.com/",
-        textAfter: " is dedicated to providing excellent digital strategies for companies of all sizes in 2026. It takes careful consideration, open communication, and a common goal for success to select the best digital marketing agency. You will be well-equipped to make an informed choice that benefits your company if you adhere to the advice in this guide.",
+        textAfter:
+          " is dedicated to providing excellent digital strategies for companies of all sizes in 2026. It takes careful consideration, open communication, and a common goal for success to select the best digital marketing agency. You will be well-equipped to make an informed choice that benefits your company if you adhere to the advice in this guide.",
       },
       {
         type: "p",
@@ -597,211 +633,216 @@ export const BLOGS = [
       },
     ],
   },
- {
-  id: 3,
-  slug: "real-estate-builders-generate-quality-leads-using-seo-2026",
-  category: "Real Estate SEO",
-  title: "Quality Leads with SEO Company in Bangalore",
-  description: "Learn how real estate builders can attract ready buyers in 2026 with expert strategies from a trusted SEO company in Bangalore.",
-  date: "2026",
-  author: "SKYUP Digital",
-  image: "/images/blog_3.webp",
-  heroImage: "/images/blog_3.webp",
-  coverImage: "/images/blog_3.webp",
-  tags: [
-    "Real Estate SEO",
-    "SEO",
-    "Lead Generation",
-    "Builders",
-    "Local SEO",
-    "Bangalore Real Estate",
-  ],
-  sections: [
-    {type:"h1",text:"How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore"},    
-    { type: "h3", text: "Introduction" },
-    {
-      type: "p",
-      text: "One unavoidable reality facing real estate developers in 2026 is that traditional marketing by itself no longer generates high-quality leads, as recognized by Bangalore's top SEO firm, Skyup Digital Solutions. Before contacting a builder, buyers do a lot of online research because they are more intelligent and tech-savvy.",
-    },
-    {
-      type: "p",
-      text: "More than 70% of homebuyers never go past the first page of Google results, and over 90% of them start their property search online these days. This implies that you are invisible if your project isn't ranking.",
-    },
-    { type: "h3", text: "Why SEO Is Non-Negotiable for Real Estate Builders in 2026" },
-    {
-      type: "p",
-      text: "The real estate market has changed significantly. Now, buyers:",
-    },
-    {
-      type: "p",
-      text: "Online project comparison.",
-    },
-    {
-      type: "p",
-      text: "Before visiting websites, read reviews.",
-    },
-    {
-      type: "p",
-      text: "Use hyper-local keywords when searching.",
-    },
-    {
-      type: "p",
-      text: "Anticipate mobile experiences that load quickly.",
-    },
-    {
-      type: "p",
-      text: "Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
-    },
-    {
-      type: "p",
-      text: "Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
-    },
-    { type: "h3", text: "12 Proven SEO Strategies for Real Estate Builders in 2026" },
-    { type: "h3", text: "1. Dominate Local SEO (The #1 Lead Generator)" },
-    {
-      type: "p",
-      text: "The real estate market has changed significantly. Now, buyers:",
-    },
-    {
-      type: "p",
-      text:"Online project comparison",
-    },
-    {
-      type: "p",
-      text:"Use hyper-local keywords when searching.",
-    },
-    {
-      type: "p",
-      text:"Anticipate mobile experiences that load quickly.",
-    },
-    {
-      type:"p",
-      text:"Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
-    },
-    {
-      type:"p",
-      text:"Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
-    },
-    { type: "h3", text: "2. Target High-Intent Long-Tail Keywords" },
-    {
-      type: "p",
-      text: "Not all traffic converts.",
-    },
-    {
-      type: "p",
-      text: "Instead of generic keywords, target:",
-    },
-    
-    {
-      type: "ul",
-      text: [
-        "Ready to move 3 BHK apartments in Bangalore",
-        "Luxury gated community villas near Electronic City",
-        "Best real estate builder in North Bangalore",
-      ],
-    },
-    {
-      type: "p",
-      text: "Long-tail keywords have:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Lower competition",
-        "Higher conversion rates",
-        "Better ROI",
-      ],
-    },
-    {
-      type: "p",
-      text: "In 2026, intent matters more than traffic volume.",
-    },
-    { type: "h3", text: "3. Optimize for Voice Search" },
-    {
-      type: "p",
-      text: "Voice search continues to grow. Buyers now ask:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Which is the best builder near me?",
-        "Affordable apartments in Bangalore under 1 crore",
-      ],
-    },
-    {
-      type: "p",
-      text: "To optimize:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Use conversational language",
-        "Add FAQ sections",
-        "Structure content clearly",
-        "Use schema markup",
-      ],
-    },
-    {
-      type: "p",
-      text: "This is where partnering with an experienced SEO Agency in Bangalore makes a significant difference.",
-    },
-    { type: "h3", text: "4. Create Project-Specific Landing Pages" },
-    {
-      type: "p",
-      text: "Each project deserves its own SEO-optimized page.",
-    },
-    {
-      type: "p",
-      text: "Include:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Unique descriptions",
-        "Location advantages",
-        "Floor plans",
-        "Amenities",
-        "Nearby infrastructure",
-        "Strong CTAs",
-      ],
-    },
-    {
-      type: "p",
-      text: "Avoid duplicate content. Google penalizes copied descriptions.",
-    },
-    { type: "h3", text: "5. Leverage High-Quality Content Marketing" },
-    {
-      type: "p",
-      text: "Content builds trust.",
-    },
-    {
-      type: "p",
-      text: "Builders can publish:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Investment guides",
-        "Area growth reports",
-        "Real estate trends",
-        "Tax benefits of buying property",
-        "Home loan guidance",
-      ],
-    },
-    {
-      type: "p",
-      text: "For example:",
-    },
-    {
-      type: "p",
-      text: "Why North Bangalore Is the Fastest Growing Investment Hub in 2026",
-    },
-    {
-      type: "p",
-      text: "Educational content attracts serious buyers.",
-    },
-    { type: "h3", text: "6. Use Data-Driven Blog SEO" },
-    { type: "h3", text: "Frequently Asked Questions (FAQs)" },
+  {
+    id: 3,
+    slug: "real-estate-builders-generate-quality-leads-using-seo-2026",
+    category: "Real Estate SEO",
+    title: "Quality Leads with SEO Company in Bangalore",
+    headline:
+      "How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore",
+    description:
+      "Learn how real estate builders can attract ready buyers in 2026 with expert strategies from a trusted SEO company in Bangalore.",
+    date: "2026",
+    author: "SKYUP Digital",
+    image: "/images/blog_3.webp",
+    heroImage: "/images/blog_3.webp",
+    coverImage: "/images/blog_3.webp",
+    tags: [
+      "Real Estate SEO",
+      "SEO",
+      "Lead Generation",
+      "Builders",
+      "Local SEO",
+      "Bangalore Real Estate",
+    ],
+    sections: [
+      // {type:"h2",text:"How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore"},
+      { type: "h2", text: "Introduction" },
+      {
+        type: "p",
+        text: "One unavoidable reality facing real estate developers in 2026 is that traditional marketing by itself no longer generates high-quality leads, as recognized by Bangalore's top SEO firm, Skyup Digital Solutions. Before contacting a builder, buyers do a lot of online research because they are more intelligent and tech-savvy.",
+      },
+      {
+        type: "p",
+        text: "More than 70% of homebuyers never go past the first page of Google results, and over 90% of them start their property search online these days. This implies that you are invisible if your project isn't ranking.",
+      },
+      {
+        type: "h3",
+        text: "Why SEO Is Non-Negotiable for Real Estate Builders in 2026",
+      },
+      {
+        type: "p",
+        text: "The real estate market has changed significantly. Now, buyers:",
+      },
+      {
+        type: "p",
+        text: "Online project comparison.",
+      },
+      {
+        type: "p",
+        text: "Before visiting websites, read reviews.",
+      },
+      {
+        type: "p",
+        text: "Use hyper-local keywords when searching.",
+      },
+      {
+        type: "p",
+        text: "Anticipate mobile experiences that load quickly.",
+      },
+      {
+        type: "p",
+        text: "Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
+      },
+      {
+        type: "p",
+        text: "Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
+      },
+      {
+        type: "h3",
+        text: "12 Proven SEO Strategies for Real Estate Builders in 2026",
+      },
+      { type: "h3", text: "1. Dominate Local SEO (The #1 Lead Generator)" },
+      {
+        type: "p",
+        text: "The real estate market has changed significantly. Now, buyers:",
+      },
+      {
+        type: "p",
+        text: "Online project comparison",
+      },
+      {
+        type: "p",
+        text: "Use hyper-local keywords when searching.",
+      },
+      {
+        type: "p",
+        text: "Anticipate mobile experiences that load quickly.",
+      },
+      {
+        type: "p",
+        text: "Your competitor will win that customer if your website doesn't come up when someone searches for 'luxury apartments in Bangalore' or 'villa projects near me.'",
+      },
+      {
+        type: "p",
+        text: "Builders can place their projects precisely where buyers are searching with the assistance of a knowledgeable SEO agency in my area.",
+      },
+      { type: "h3", text: "2. Target High-Intent Long-Tail Keywords" },
+      {
+        type: "p",
+        text: "Not all traffic converts.",
+      },
+      {
+        type: "p",
+        text: "Instead of generic keywords, target:",
+      },
+
+      {
+        type: "ul",
+        text: [
+          "Ready to move 3 BHK apartments in Bangalore",
+          "Luxury gated community villas near Electronic City",
+          "Best real estate builder in North Bangalore",
+        ],
+      },
+      {
+        type: "p",
+        text: "Long-tail keywords have:",
+      },
+      {
+        type: "ul",
+        text: ["Lower competition", "Higher conversion rates", "Better ROI"],
+      },
+      {
+        type: "p",
+        text: "In 2026, intent matters more than traffic volume.",
+      },
+      { type: "h3", text: "3. Optimize for Voice Search" },
+      {
+        type: "p",
+        text: "Voice search continues to grow. Buyers now ask:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Which is the best builder near me?",
+          "Affordable apartments in Bangalore under 1 crore",
+        ],
+      },
+      {
+        type: "p",
+        text: "To optimize:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Use conversational language",
+          "Add FAQ sections",
+          "Structure content clearly",
+          "Use schema markup",
+        ],
+      },
+      {
+        type: "p",
+        text: "This is where partnering with an experienced SEO Agency in Bangalore makes a significant difference.",
+      },
+      { type: "h3", text: "4. Create Project-Specific Landing Pages" },
+      {
+        type: "p",
+        text: "Each project deserves its own SEO-optimized page.",
+      },
+      {
+        type: "p",
+        text: "Include:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Unique descriptions",
+          "Location advantages",
+          "Floor plans",
+          "Amenities",
+          "Nearby infrastructure",
+          "Strong CTAs",
+        ],
+      },
+      {
+        type: "p",
+        text: "Avoid duplicate content. Google penalizes copied descriptions.",
+      },
+      { type: "h3", text: "5. Leverage High-Quality Content Marketing" },
+      {
+        type: "p",
+        text: "Content builds trust.",
+      },
+      {
+        type: "p",
+        text: "Builders can publish:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Investment guides",
+          "Area growth reports",
+          "Real estate trends",
+          "Tax benefits of buying property",
+          "Home loan guidance",
+        ],
+      },
+      {
+        type: "p",
+        text: "For example:",
+      },
+      {
+        type: "p",
+        text: "Why North Bangalore Is the Fastest Growing Investment Hub in 2026",
+      },
+      {
+        type: "p",
+        text: "Educational content attracts serious buyers.",
+      },
+      { type: "h3", text: "6. Use Data-Driven Blog SEO" },
+      { type: "h3", text: "Frequently Asked Questions (FAQs)" },
 
       {
         type: "h3",
@@ -811,244 +852,259 @@ export const BLOGS = [
         type: "p",
         text: "Typically 3-6 months for consistent results. However, long-term ROI is significantly higher than paid ads.",
       },
-    
-    { type: "h3", text: "Q2: Is SEO better than Google Ads for builders?" },
-    {
-      type: "p",
-      text: "Real estate SEO is competitive. DIY strategies often fail due to:",
-    },
-    { type: "h3", text: "Q3: How much should a builder invest in SEO in 2026?"},
-    {
-      type: "p",
-      text: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
-    },
-    { type: "h3", text: "Q4: Why hire an SEO Agency near me instead of handling it internally?"},
-    {
-      type: "p",
-      text: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
-    },
-    { type: "h3", text: "Q5: What makes real estate SEO different?" },
-    {
-      type: "p",
-      text: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
-    },
-    {
-      type: "p",
-      text: "Answer what buyers are already searching. Use keyword research tools to identify trending questions and pain points. Create comprehensive blog posts that address buyer concerns, market trends, investment tips, and neighborhood guides. Update content regularly with current data and statistics to maintain relevance and authority.",
-    },
-    { type: "h3", text: "7. Technical SEO Is Critical" },
-    {
-      type: "p",
-      text: "Google prioritizes:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Fast loading websites (under 3 seconds)",
-        "Mobile-first design",
-        "Secure HTTPS",
-        "Structured data",
-        "Clean URLs",
-      ],
-    },
-    {
-      type: "p",
-      text: "In 2026, Core Web Vitals remain crucial ranking factors.",
-    },
-    {
-      type: "p",
-      text: "An experienced SEO company in Bangalore ensures your website passes all technical benchmarks.",
-    },
-    { type: "h3", text: "8. Optimize Visual Content" },
-    {
-      type: "p",
-      text: "Real estate is visual.",
-    },
-    {
-      type: "p",
-      text: "Optimize:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Image alt text",
-        "Compressed images",
-        "Virtual tours",
-        "Video descriptions",
-      ],
-    },
-    {
-      type: "p",
-      text: "YouTube SEO is particularly powerful. Property walkthrough videos can rank on both Google and YouTube.",
-    },
-    { type: "h3", text: "9. Build Authority Through Backlinks" },
-    {
-      type: "p",
-      text: "Google values credibility.",
-    },
-    {
-      type: "p",
-      text: "Earn backlinks from:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Real estate portals",
-        "Business directories",
-        "News publications",
-        "Local blogs",
-      ],
-    },
-    {
-      type: "p",
-      text: "Quality matters more than quantity.",
-    },
-    { type: "h3", text: "10. Use Conversion-Focused SEO" },
-    {
-      type: "p",
-      text: "Traffic alone is useless without conversions.",
-    },
-    {
-      type: "p",
-      text: "Include:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Clear call-to-action buttons",
-        "Easy inquiry forms",
-        "Click-to-call options",
-        "WhatsApp integration",
-        "Exit-intent popups",
-      ],
-    },
-    {
-      type: "p",
-      text: "SEO + CRO = Maximum lead generation.",
-    },
-    { type: "h3", text: "11. Leverage Hyper-Local Content Clusters" },
-    {
-      type: "p",
-      text: "Create pillar pages like:",
-    },
-    {
-      type: "p",
-      text: "Complete Guide to Buying Property in Bangalore in 2026",
-    },
-    {
-      type: "p",
-      text: "Then build supporting articles:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Best Areas to Invest",
-        "Price Trends",
-        "Rental Yield Data",
-        "Upcoming Infrastructure Projects",
-      ],
-    },
-    {
-      type: "p",
-      text: "Internal linking improves rankings and user experience.",
-    },
-    { type: "h3", text: "12. Track, Analyze, and Optimize" },
-    {
-      type: "p",
-      text: "SEO is not one-time work.",
-    },
-    {
-      type: "p",
-      text: "Monitor:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Organic traffic",
-        "Keyword rankings",
-        "Bounce rate",
-        "Lead conversion rate",
-        "User behavior",
-      ],
-    },
-    {
-      type: "p",
-      text: "Data-driven improvements create sustainable growth.",
-    },
-    { type: "h3", text: "Why Builders Should Partner with an Expert SEO Agency"},  
-    {
-      type: "p",
-      text: "Real estate SEO is competitive. DIY strategies often fail due to:",
-    },
-    
-    {
-      type: "ul",
-      text: [
-        "Poor keyword targeting",
-        "Weak technical optimization",
-        "Thin content",
-        "Lack of strategy",
-      ],
-    },
-    {
-      type: "p",
-      text: "Partnering with a trusted SEO Agency in Bangalore ensures:",
-    },
-    {
-      type: "ul",
-      text: [
-        "Structured growth",
-        "Local expertise",
-        "Competitive analysis",
-        "Lead-focused strategy",
-        "Transparent reporting",
-      ],
-    },
-    {
-      type: "p",
-      text: "For builders seeking measurable ROI, working with professionals like Skyup Digital Solutions provides a significant competitive edge.",
-    },
-    {
-      type: "p_with_link",
-      textBefore: "Learn more here:",
-      linkText: " https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
-      href: "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
-    },
-    { type: "h3", text: "Conclusion" },
-    {
-      type: "p",
-      text: "In 2026, real estate builders who fail to invest in SEO will struggle for visibility, credibility, and quality leads. However, those who implement structured, intent-driven strategies will dominate local search results and attract high-converting prospects consistently.",
-    },
-    {
-      type: "p_with_link",
-      textBefore: "Skyup Digital Solutions, a trusted",
-      linkText: " SEO company in Bangalore",
-      href: "https://en.wikipedia.org/wiki/Special:Search?search=SEO+company+in+Bangalore&go=Go&ns0=1",
-      textAfter: "empowers builders with proven SEO frameworks designed specifically for real estate success. From local SEO to technical optimization and content-driven lead generation, the right strategy transforms websites into powerful lead engines.",
-    },
-    {
-      type: "p_with_link",
-      textBefore: "If you're searching for a reliable SEO Agency near me that understands real estate marketing inside-out, partnering with an experienced",
-      linkText: " SEO Agency in Bangalore ",
-      href: "https://en.wikipedia.org/wiki/Special:Search?search=SEO+company+in+Bangalore&go=Go&ns0=1",
-      textAfter: "could be your smartest business move this year.",
-    },
-    {
-      type: "p",
-      text: "The market is competitive. The buyers are online.",
-    },
-    {
-      type: "p",
-      text: "The question is are you visible?",
-    },
-  ],
-},
+
+      { type: "h3", text: "Q2: Is SEO better than Google Ads for builders?" },
+      {
+        type: "p",
+        text: "Real estate SEO is competitive. DIY strategies often fail due to:",
+      },
+      {
+        type: "h3",
+        text: "Q3: How much should a builder invest in SEO in 2026?",
+      },
+      {
+        type: "p",
+        text: "Mid-sized builders should allocate at least 8–12% of their marketing budget toward digital, including SEO.",
+      },
+      {
+        type: "h3",
+        text: "Q4: Why hire an SEO Agency near me instead of handling it internally?",
+      },
+      {
+        type: "p",
+        text: "SEO requires technical expertise, tools, keyword research, analytics, and consistent optimization. A professional agency delivers faster and measurable results.",
+      },
+      { type: "h3", text: "Q5: What makes real estate SEO different?" },
+      {
+        type: "p",
+        text: "It requires local targeting, visual optimization, trust signals, and intent-based content.",
+      },
+      {
+        type: "p",
+        text: "Answer what buyers are already searching. Use keyword research tools to identify trending questions and pain points. Create comprehensive blog posts that address buyer concerns, market trends, investment tips, and neighborhood guides. Update content regularly with current data and statistics to maintain relevance and authority.",
+      },
+      { type: "h3", text: "7. Technical SEO Is Critical" },
+      {
+        type: "p",
+        text: "Google prioritizes:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Fast loading websites (under 3 seconds)",
+          "Mobile-first design",
+          "Secure HTTPS",
+          "Structured data",
+          "Clean URLs",
+        ],
+      },
+      {
+        type: "p",
+        text: "In 2026, Core Web Vitals remain crucial ranking factors.",
+      },
+      {
+        type: "p",
+        text: "An experienced SEO company in Bangalore ensures your website passes all technical benchmarks.",
+      },
+      { type: "h3", text: "8. Optimize Visual Content" },
+      {
+        type: "p",
+        text: "Real estate is visual.",
+      },
+      {
+        type: "p",
+        text: "Optimize:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Image alt text",
+          "Compressed images",
+          "Virtual tours",
+          "Video descriptions",
+        ],
+      },
+      {
+        type: "p",
+        text: "YouTube SEO is particularly powerful. Property walkthrough videos can rank on both Google and YouTube.",
+      },
+      { type: "h3", text: "9. Build Authority Through Backlinks" },
+      {
+        type: "p",
+        text: "Google values credibility.",
+      },
+      {
+        type: "p",
+        text: "Earn backlinks from:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Real estate portals",
+          "Business directories",
+          "News publications",
+          "Local blogs",
+        ],
+      },
+      {
+        type: "p",
+        text: "Quality matters more than quantity.",
+      },
+      { type: "h3", text: "10. Use Conversion-Focused SEO" },
+      {
+        type: "p",
+        text: "Traffic alone is useless without conversions.",
+      },
+      {
+        type: "p",
+        text: "Include:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Clear call-to-action buttons",
+          "Easy inquiry forms",
+          "Click-to-call options",
+          "WhatsApp integration",
+          "Exit-intent popups",
+        ],
+      },
+      {
+        type: "p",
+        text: "SEO + CRO = Maximum lead generation.",
+      },
+      { type: "h3", text: "11. Leverage Hyper-Local Content Clusters" },
+      {
+        type: "p",
+        text: "Create pillar pages like:",
+      },
+      {
+        type: "p",
+        text: "Complete Guide to Buying Property in Bangalore in 2026",
+      },
+      {
+        type: "p",
+        text: "Then build supporting articles:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Best Areas to Invest",
+          "Price Trends",
+          "Rental Yield Data",
+          "Upcoming Infrastructure Projects",
+        ],
+      },
+      {
+        type: "p",
+        text: "Internal linking improves rankings and user experience.",
+      },
+      { type: "h3", text: "12. Track, Analyze, and Optimize" },
+      {
+        type: "p",
+        text: "SEO is not one-time work.",
+      },
+      {
+        type: "p",
+        text: "Monitor:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Organic traffic",
+          "Keyword rankings",
+          "Bounce rate",
+          "Lead conversion rate",
+          "User behavior",
+        ],
+      },
+      {
+        type: "p",
+        text: "Data-driven improvements create sustainable growth.",
+      },
+      {
+        type: "h3",
+        text: "Why Builders Should Partner with an Expert SEO Agency",
+      },
+      {
+        type: "p",
+        text: "Real estate SEO is competitive. DIY strategies often fail due to:",
+      },
+
+      {
+        type: "ul",
+        text: [
+          "Poor keyword targeting",
+          "Weak technical optimization",
+          "Thin content",
+          "Lack of strategy",
+        ],
+      },
+      {
+        type: "p",
+        text: "Partnering with a trusted SEO Agency in Bangalore ensures:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Structured growth",
+          "Local expertise",
+          "Competitive analysis",
+          "Lead-focused strategy",
+          "Transparent reporting",
+        ],
+      },
+      {
+        type: "p",
+        text: "For builders seeking measurable ROI, working with professionals like Skyup Digital Solutions provides a significant competitive edge.",
+      },
+      {
+        type: "p_with_link",
+        textBefore: "Learn more here:",
+        linkText:
+          " https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        href: "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+      },
+      { type: "h3", text: "Conclusion" },
+      {
+        type: "p",
+        text: "In 2026, real estate builders who fail to invest in SEO will struggle for visibility, credibility, and quality leads. However, those who implement structured, intent-driven strategies will dominate local search results and attract high-converting prospects consistently.",
+      },
+      {
+        type: "p_with_link",
+        textBefore: "Skyup Digital Solutions, a trusted",
+        linkText: " SEO company in Bangalore",
+        href: "https://en.wikipedia.org/wiki/Special:Search?search=SEO+company+in+Bangalore&go=Go&ns0=1",
+        textAfter:
+          "empowers builders with proven SEO frameworks designed specifically for real estate success. From local SEO to technical optimization and content-driven lead generation, the right strategy transforms websites into powerful lead engines.",
+      },
+      {
+        type: "p_with_link",
+        textBefore:
+          "If you're searching for a reliable SEO Agency near me that understands real estate marketing inside-out, partnering with an experienced",
+        linkText: " SEO Agency in Bangalore ",
+        href: "https://en.wikipedia.org/wiki/Special:Search?search=SEO+company+in+Bangalore&go=Go&ns0=1",
+        textAfter: "could be your smartest business move this year.",
+      },
+      {
+        type: "p",
+        text: "The market is competitive. The buyers are online.",
+      },
+      {
+        type: "p",
+        text: "The question is are you visible?",
+      },
+    ],
+  },
   {
     id: 4,
     slug: "top-digital-marketing-trends-for-real-estate-2026",
     category: "Real Estate Digital Marketing",
     title: "SEO Company in Bangalore: Real Estate Marketing Trends 2026",
-    description: "Discover 2026 real estate digital marketing trends with a leading SEO Company in Bangalore to boost property leads, visibility, and faster sales.",
+    headline:
+      "11 Powerful Digital Marketing Trends for Real Estate in 2026 That Every Developer Must Use to Win More Buyers",
+    description:
+      "Discover 2026 real estate digital marketing trends with a leading SEO Company in Bangalore to boost property leads, visibility, and faster sales.",
     date: "2026",
     author: "SKYUP Digital",
     image: "/images/blog_4.webp",
@@ -1063,81 +1119,82 @@ export const BLOGS = [
       "Performance Marketing",
     ],
     sections: [
-    {type:"h1",text:"11 Powerful Digital Marketing Trends for Real Estate in 2026 That Every Developer Must Use to Win More Buyers"},    
-    { type: "h3", text: "Introduction" },
+      // {type:"h1",text:"11 Powerful Digital Marketing Trends for Real Estate in 2026 That Every Developer Must Use to Win More Buyers"},
+      { type: "h2", text: "Introduction" },
 
       {
-      type: "p_with_link",
-      linkText: "SkyUp Digital Solutions",
-      href: "https://www.skyupdigitalsolutions.com/",
-      textAfter: " believes that real estate marketing in 2026 will no longer rely on hoardings, newspaper ads, or broker networks alone. Buyers now begin their property search online, compare projects digitally, and expect immersive experiences before even visiting a site.",
-    },
+        type: "p_with_link",
+        linkText: "SkyUp Digital Solutions",
+        href: "https://www.skyupdigitalsolutions.com/",
+        textAfter:
+          " believes that real estate marketing in 2026 will no longer rely on hoardings, newspaper ads, or broker networks alone. Buyers now begin their property search online, compare projects digitally, and expect immersive experiences before even visiting a site.",
+      },
       {
         type: "p",
         text: "For developers and builders, this shift creates both a challenge and a massive opportunity. Partnering with the right seo company in Bangalore can help real estate brands dominate search results, attract serious buyers, and close deals faster.",
       },
       {
-      type: "ul",
-      text: [
-        "92% of property buyers start their search online",
-        "78% compare multiple projects digitally before contacting sales",
-        "Listings with virtual tours receive 40% more inquiries",
-        "Video-based property promotions generate 3x more engagement",
-      ],
-    },
-   
-      {
-        type: "p",
-        text: "Clearly, digital visibility is no longer optional it is essential."
+        type: "ul",
+        text: [
+          "92% of property buyers start their search online",
+          "78% compare multiple projects digitally before contacting sales",
+          "Listings with virtual tours receive 40% more inquiries",
+          "Video-based property promotions generate 3x more engagement",
+        ],
       },
 
-      { type: "h3", text: "Top Digital Marketing Trends for Real Estate in 2026" },
-      {type:"h3",text:"1. AI-Powered Property Search Experience" },
+      {
+        type: "p",
+        text: "Clearly, digital visibility is no longer optional it is essential.",
+      },
+
+      {
+        type: "h3",
+        text: "Top Digital Marketing Trends for Real Estate in 2026",
+      },
+      { type: "h3", text: "1. AI-Powered Property Search Experience" },
       {
         type: "p",
         text: "AI-driven search tools now recommend properties based on buyer behavior, budget, and preferences.",
       },
-      
+
       {
         type: "p",
         text: "Benefits include:",
       },
       {
-      type: "ul",
-      text: [
-        "Personalized listings",
-        "Higher lead conversion",
-        "Faster decision-making",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Personalized listings",
+          "Higher lead conversion",
+          "Faster decision-making",
+        ],
+      },
       {
         type: "p",
         text: "Developers using AI see up to 30% more qualified leads.",
       },
 
-      {type:"h3",text:"2. Hyperlocal SEO & Voice Search Optimization"},
+      { type: "h3", text: "2. Hyperlocal SEO & Voice Search Optimization" },
       {
         type: "p",
         text: "Buyers now search using voice queries like:",
       },
-      
-      
+
       {
-      type: "ul",
-      text: [
-        "Best apartments near me",
-        "3 BHK flats in Bangalore under 1 crore",
-        "Top builders near Whitefield",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Best apartments near me",
+          "3 BHK flats in Bangalore under 1 crore",
+          "Top builders near Whitefield",
+        ],
+      },
       {
         type: "p",
         text: "Ranking locally through a trusted seo company in bangalore ensures your projects appear when buyers search nearby.",
       },
 
-
-
-      {type:"h3",text:"3. Immersive Virtual Property Tours"},
+      { type: "h3", text: "3. Immersive Virtual Property Tours" },
       {
         type: "p",
         text: "Buyers prefer virtual experiences before visiting sites.",
@@ -1146,22 +1203,22 @@ export const BLOGS = [
         type: "p",
         text: "Trending tools include:",
       },
-      
+
       {
-      type: "ul",
-      text: [
-        "360° walkthrough tours",
-        "Drone project views",
-        "Interactive layout visualization",
-        "AR/VR property tours",
-      ],
-    },
+        type: "ul",
+        text: [
+          "360° walkthrough tours",
+          "Drone project views",
+          "Interactive layout visualization",
+          "AR/VR property tours",
+        ],
+      },
       {
         type: "p",
         text: "This reduces site visits and increases serious inquiries.",
       },
 
-      {type:"h3",text:"4. Short-Form Video Marketing Dominance"},
+      { type: "h3", text: "4. Short-Form Video Marketing Dominance" },
       {
         type: "p",
         text: "Short videos now outperform static property ads.",
@@ -1170,21 +1227,20 @@ export const BLOGS = [
         type: "p",
         text: "Effective video ideas:",
       },
-      
+
       {
-      type: "ul",
-      text: [
-        "Flat walkthroughs",
-        "Construction updates",
-        "Buyer testimonials",
-        "Project lifestyle videos",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Flat walkthroughs",
+          "Construction updates",
+          "Buyer testimonials",
+          "Project lifestyle videos",
+        ],
+      },
       {
         type: "p",
         text: "Video ads increase inquiry rates by up to 60%.",
       },
-      
 
       { type: "h3", text: "5. Influencer & Community Marketing" },
       {
@@ -1196,14 +1252,14 @@ export const BLOGS = [
         text: "Real estate brands collaborate with:",
       },
       {
-      type: "ul",
-      text: [
-        "City lifestyle influencers",
-        "Investment advisors",
-        "Home decor creators",
-      ],
-    },
-       {
+        type: "ul",
+        text: [
+          "City lifestyle influencers",
+          "Investment advisors",
+          "Home decor creators",
+        ],
+      },
+      {
         type: "p",
         text: "Authentic recommendations build trust faster.",
       },
@@ -1218,21 +1274,20 @@ export const BLOGS = [
         text: "AI chatbots now:",
       },
       {
-      type: "ul",
-      text: [
-        "Handle inquiries instantly",
-        "Schedule site visits",
-        "Share brochures automatically",
-        "Capture leads 24/7",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Handle inquiries instantly",
+          "Schedule site visits",
+          "Share brochures automatically",
+          "Capture leads 24/7",
+        ],
+      },
       {
         type: "p",
         text: "Companies responding within 5 minutes convert leads 9x more effectively.",
       },
 
-
-     { type: "h3", text: "7. Data-Driven Advertising" },
+      { type: "h3", text: "7. Data-Driven Advertising" },
       {
         type: "p",
         text: "Instead of mass ads, marketers now use data-driven targeting.",
@@ -1242,21 +1297,20 @@ export const BLOGS = [
         text: "Ads target:",
       },
       {
-      type: "ul",
-      text: [
-        "Investors",
-        "NRI buyers",
-        "First-time homebuyers",
-        "Luxury property seekers",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Investors",
+          "NRI buyers",
+          "First-time homebuyers",
+          "Luxury property seekers",
+        ],
+      },
       {
         type: "p",
         text: "This reduces ad spend waste and boosts ROI.",
       },
 
-
-       { type: "h3", text: "8. Content Marketing Builds Authority" },
+      { type: "h3", text: "8. Content Marketing Builds Authority" },
       {
         type: "p",
         text: "Educated buyers trust knowledgeable developers.",
@@ -1266,20 +1320,20 @@ export const BLOGS = [
         text: "High-performing content topics:",
       },
       {
-      type: "ul",
-      text: [
-        "Home buying guides",
-        "Investment tips",
-        "Area growth insights",
-        "Loan & tax benefits",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Home buying guides",
+          "Investment tips",
+          "Area growth insights",
+          "Loan & tax benefits",
+        ],
+      },
       {
         type: "p",
         text: "Strong content helps projects rank organically.",
       },
 
-        { type: "h3", text: "9. Social Proof & Review Marketing" },
+      { type: "h3", text: "9. Social Proof & Review Marketing" },
       {
         type: "p",
         text: "Buyers trust reviews more than advertisements.",
@@ -1289,14 +1343,14 @@ export const BLOGS = [
         text: "Important strategies include:",
       },
       {
-      type: "ul",
-      text: [
-        "Google reviews",
-        "Video testimonials",
-        "Resident experiences",
-        "Community feedback",
-      ],
-    },
+        type: "ul",
+        text: [
+          "Google reviews",
+          "Video testimonials",
+          "Resident experiences",
+          "Community feedback",
+        ],
+      },
       {
         type: "p",
         text: "Projects with strong reviews attract faster bookings.",
@@ -1312,16 +1366,14 @@ export const BLOGS = [
         text: "Key requirements:",
       },
       {
-      type: "ul",
-      text: [
-        "Fast-loading mobile websites",
-        "Easy brochure downloads",
-        "Click-to-call features",
-        "Mobile booking options",
-      ],
-    },
-      
-     
+        type: "ul",
+        text: [
+          "Fast-loading mobile websites",
+          "Easy brochure downloads",
+          "Click-to-call features",
+          "Mobile booking options",
+        ],
+      },
 
       { type: "h3", text: "11. Predictive Marketing & Lead Scoring" },
       {
@@ -1334,32 +1386,34 @@ export const BLOGS = [
       },
       { type: "h3", text: "Frequently Asked Questions (FAQs)" },
 
-      { type: "h3", text:"Q1. Why should real estate companies invest in digital marketing in 2026?"},
-    {
-      type: "p",
-      text: "Because buyers research online before purchasing, digital presence directly impacts sales success.",
-    },
-       { type: "h3", text:"Q2. How does SEO help property developers?"},
-    {
-      type: "p",
-      text:  "SEO ensures projects appear when buyers search online, generating organic inquiries without heavy ad spend.",
-    },
-    { type: "h3", text:"Q3. Which digital marketing channel works best?"},
-    {
-      type: "p",
-      text:  "A mix of SEO, social media, video marketing, and paid advertising delivers the best results.",
-    },
-       { type: "h3", text:"Q4. Is social media effective for property sales?"},
-    {
-      type: "p",
-      text:  "Yes. Platforms build brand trust and generate inquiries through engaging visuals and videos.",
-    },
-       { type: "h3", text:"Q5. How soon can digital marketing show results?"},
-    {
-      type: "p",
-      text:  "Paid campaigns show results within weeks, while SEO builds strong long-term visibility over 3–6 months.",
-    },
-  
+      {
+        type: "h3",
+        text: "Q1. Why should real estate companies invest in digital marketing in 2026?",
+      },
+      {
+        type: "p",
+        text: "Because buyers research online before purchasing, digital presence directly impacts sales success.",
+      },
+      { type: "h3", text: "Q2. How does SEO help property developers?" },
+      {
+        type: "p",
+        text: "SEO ensures projects appear when buyers search online, generating organic inquiries without heavy ad spend.",
+      },
+      { type: "h3", text: "Q3. Which digital marketing channel works best?" },
+      {
+        type: "p",
+        text: "A mix of SEO, social media, video marketing, and paid advertising delivers the best results.",
+      },
+      { type: "h3", text: "Q4. Is social media effective for property sales?" },
+      {
+        type: "p",
+        text: "Yes. Platforms build brand trust and generate inquiries through engaging visuals and videos.",
+      },
+      { type: "h3", text: "Q5. How soon can digital marketing show results?" },
+      {
+        type: "p",
+        text: "Paid campaigns show results within weeks, while SEO builds strong long-term visibility over 3–6 months.",
+      },
 
       {
         type: "h3",
@@ -1369,43 +1423,47 @@ export const BLOGS = [
         type: "p",
         text: "To succeed in 2026:",
       },
-       {
-      type: "ul",
-      text: [
-        "Invest in SEO & local search ranking",
-        "Create engaging video content",
-        "Optimize mobile website performance",
-        "Build trust through reviews & testimonials",
-        "Use AI tools for lead nurturing",
-      ],
-    },
+      {
+        type: "ul",
+        text: [
+          "Invest in SEO & local search ranking",
+          "Create engaging video content",
+          "Optimize mobile website performance",
+          "Build trust through reviews & testimonials",
+          "Use AI tools for lead nurturing",
+        ],
+      },
       { type: "h3", text: "Conclusion" },
-    {
-      type: "p_with_link",
-      linkText: " SkyUp Digital Solutions ",
-      href: "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
-      textAfter: "understands that real estate marketing success in 2026 depends on innovation, visibility, and trust. Developers who adopt modern digital strategies today will dominate tomorrow’s property market.",
-    },
-    {
-      type: "p_with_link",
-      textBefore: "Working with a reliable",
-      linkText: " SEO Agency in Bangalore ",
-      href: "https://en.wikipedia.org/wiki/Special:Search?search=seo+company+in+bangalore&go=Go&ns0=1",
-      textAfter: "ensures your projects reach the right audience, generate quality leads, and achieve sustainable sales growth in an increasingly competitive landscape.",
-    },
-    {
-      type: "p",
-      text: "The future of real estate marketing is digital and the time to act is now.",
-    },
-      
+      {
+        type: "p_with_link",
+        linkText: " SkyUp Digital Solutions ",
+        href: "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        textAfter:
+          "understands that real estate marketing success in 2026 depends on innovation, visibility, and trust. Developers who adopt modern digital strategies today will dominate tomorrow’s property market.",
+      },
+      {
+        type: "p_with_link",
+        textBefore: "Working with a reliable",
+        linkText: " SEO Agency in Bangalore ",
+        href: "https://en.wikipedia.org/wiki/Special:Search?search=seo+company+in+bangalore&go=Go&ns0=1",
+        textAfter:
+          "ensures your projects reach the right audience, generate quality leads, and achieve sustainable sales growth in an increasingly competitive landscape.",
+      },
+      {
+        type: "p",
+        text: "The future of real estate marketing is digital and the time to act is now.",
+      },
     ],
   },
   {
     id: 5,
     slug: "manual-marketing-vs-automated-marketing-real-difference-2026",
     category: "AI Automation",
-    title:
-      "Manual Marketing vs Automated Marketing: What’s the Real Difference in 2026?",
+    title: "Best Digital Marketing Agency in Bangalore 2026",
+    description:
+      "Looking for a Digital Marketing Agency in Bangalore? SkyUp Digital Solutions offers SEO, Google Ads, social media & web design to boost leads.",
+    headline:
+      "Digital Marketing Agency in Bangalore: Manual Marketing vs Automated Marketing 7 Powerful Differences That Will Define Success in 2026",
     date: "2026",
     author: "SKYUP Digital",
     image: "/images/blog_5.webp",
@@ -1420,6 +1478,7 @@ export const BLOGS = [
       "Digital Marketing",
     ],
     sections: [
+      { type: "h2", text: "Introduction" },
       {
         type: "p",
         text: "In today’s fast-paced digital world, businesses are under pressure to generate leads, follow up instantly, and convert prospects efficiently. Yet many companies still rely heavily on manual marketing processes that slow growth and increase costs.",
@@ -1558,8 +1617,11 @@ export const BLOGS = [
     id: 6,
     slug: "marketing-automation-for-real-estate-businesses-2026-guide",
     category: "Real Estate Automation",
-    title:
-      "Marketing Automation for Real Estate Businesses: The Complete 2026 Guide",
+    headline:
+      "Top AI Companies in Bangalore: Marketing Automation for Real Estate Businesses - The Complete 2026 Growth Guide",
+    description:
+      "Explore top AI companies in Bangalore transforming industries with smart automation, machine learning, and digital innovation in 2026. Discover leaders now.",
+    title: "Top AI Companies in Bangalore Driving Innovation 2026",
     date: "2026",
     author: "SKYUP Digital",
     image: "/images/blog_6.webp",
@@ -1575,183 +1637,426 @@ export const BLOGS = [
     ],
     sections: [
       {
-        type: "p",
-        text: "Real estate marketing is no longer just about generating leads. The real challenge lies in managing, nurturing, and converting those leads efficiently. With long buying cycles, multiple follow-ups, and high-value transactions, manual processes often result in missed opportunities and revenue leakage.",
+        type: "h2",
+        text: `Introduction`,
+      },
+      {
+        type: "p_with_link_bold",
+        partsBefore: [
+          {text:"SkyUp Digital Solutions,",bold:true},
+          { text: " inspired by insights from the " },
+        ],
+        linkText: "Top AI Companies in Bangalore,",
+        href: "https://www.skyupdigitalsolutions.com/services/ai-company-in-bangalore",
+        partsAfter: [
+          {
+            text: "understands one powerful truth: real estate marketing in 2026 is no longer ",
+          },
+          { text: "manual, slow, or guess-based" },
+          { text: ". It is " },
+          { text: "automated, intelligent, and data-driven"},
+          { text: "." },
+        ],
+      },
+      {
+        type: "p_with_bold",
+        parts: [
+          {
+            text: "Today’s property buyers expect instant responses, personalized recommendations, and seamless communication. If a real estate business fails to respond within five minutes, the lead often moves to a competitor. In fact, studies show that companies responding within 5 minutes are ",
+          },
+          { text: "9 times more likely to convert leads.", bold: true },
+        ],
       },
       {
         type: "p",
-        text: "In this guide, we explore how marketing automation works for real estate businesses, why it is essential in 2026, and how developers and brokers can use it to improve lead quality, sales efficiency, and ROI.",
+        text: "So, how can real estate businesses automate intelligently without losing the human touch?",
+      },
+      {
+        type: "p",
+        text: "This complete 2026 guide explains everything clearly, practically, and strategically.",
       },
 
       { type: "h3", text: "What Is Marketing Automation in Real Estate?" },
       {
         type: "p",
-        text: "Marketing automation refers to the use of technology to automate repetitive marketing tasks, streamline lead management, and deliver personalized communication at scale.",
+        text: "Marketing automation uses software, AI tools, and workflows to manage repetitive marketing tasks automatically. Instead of manually calling every lead, sending individual emails, or tracking inquiries in spreadsheets, automation tools handle it instantly.",
       },
       {
         type: "p",
-        text: "For real estate businesses, marketing automation connects websites and landing pages, Google Ads and Meta Ads, CRM systems, email and WhatsApp messaging, and sales follow-up workflows into one unified system.",
+        text: "For real estate businesses, this includes:",
       },
       {
-        type: "p",
-        text: "The goal is to ensure no lead is wasted and every prospect receives the right message at the right time.",
+        type: "ul",
+        text: [
+          "Automated property inquiry responses",
+          "AI-powered chatbots",
+          "Email drip campaigns",
+          "CRM-based lead nurturing",
+          "Targeted ad retargeting",
+          "Automated WhatsApp follow-ups"
+        ],
+      },
+      {
+        type: "p_with_bold",
+        parts:[
+          {
+            text:"Many of the"
+          },
+          {
+            text:' Top AI Companies in Bangalore',bold:true
+          },
+          {
+            text:" are developing advanced automation tools that predict buyer behavior using machine learning. This means you can send the right property to the right buyer at the right time."
+          }
+        ]
       },
 
       {
         type: "h3",
-        text: "Why Marketing Automation Is Essential for Real Estate in 2026",
+        text: "Why Real Estate Businesses Need Automation in 2026",
       },
       {
         type: "p",
-        text: "Real estate buyers take weeks or months before making a decision. During this period, they compare projects, visit multiple sites, and engage with different developers.",
+        text: "The real estate industry is competitive and time-sensitive. Buyers research online before contacting agents. Therefore, digital presence and automation are no longer optional.",
       },
       {
         type: "p",
-        text: "Marketing automation enables instant lead responses, consistent follow-ups without manual effort, lead segmentation based on intent, improved conversion rates, and reduced dependency on manual sales coordination.",
+        text: "Here’s why automation matters:",
+      },
+      {
+        type:"h3",
+        text:'1. Faster Lead Response'
       },
       {
         type: "p",
-        text: "In a competitive market, speed and personalization become decisive advantages.",
+        text: "Speed increases conversion. Automation sends instant responses 24/7, even outside business hours.",
+      },
+      {
+        type:"h3",
+        text:'2. Better Lead Nurturing'
+      },
+      {
+        type: "p",
+        text: "Not every buyer is ready today. Automated email sequences educate and nurture prospects over weeks or months.",
+      },
+      {
+        type:"h3",
+        text:'3. Improved Personalization'
+      },
+      {
+        type: "p",
+        text: "AI tools analyze browsing behavior and suggest relevant properties automatically.",
+      },
+      {
+        type:"h3",
+        text:'4. Higher ROI'
+      },
+      {
+        type: "p_with_bold",
+        parts:[
+          {
+            text:"According to industry reports, businesses using marketing automation see up to "
+          },
+          {
+            text:'14.5% increase in sales productivity and 12% reduction in marketing overhead.',bold:true
+          }
+        ]
+      },
+      {
+        type:"h3",
+        text:'5. Scalable Growth'
+      },
+      {
+        type: "p",
+        text: "Automation allows you to manage thousands of leads without increasing manpower.",
       },
 
       {
         type: "h3",
-        text: "How Marketing Automation Works in a Real Estate Funnel",
+        text: "Key Automation Tools for Real Estate in 2026",
       },
       {
         type: "p",
-        text: "Marketing automation aligns marketing and sales into a single connected workflow. When a user submits a lead form, the lead is captured in the CRM, an instant confirmation message is sent, and the lead is assigned to a sales executive.",
-      },
-      {
-        type: "p",
-        text: "Follow-up reminders and nurturing workflows are triggered automatically while sales teams track engagement and intent signals—all without manual intervention.",
+        text: "To stay competitive, real estate brands should implement:",
       },
 
       {
         type: "h3",
-        text: "Key Components of Real Estate Marketing Automation",
+        text: "CRM Automation",
+      },
+      {
+        type:'p',
+        text:'A CRM tracks every lead interaction. It assigns tasks, sends reminders, and scores leads based on interest.'
       },
 
-      { type: "h3", text: "Lead Capture and CRM Integration" },
+      { type: "h3", text: "Email Automation" },
       {
         type: "p",
-        text: "The foundation of automation is seamless lead capture. Leads from websites, Google Ads, Meta Ads, and portals must flow into a centralized CRM system.",
+        text: "Drip campaigns automatically send:",
       },
       {
-        type: "p",
-        text: "A strong CRM setup enables real-time notifications, automatic lead assignment, lead source tracking, and full interaction history visibility.",
-      },
-
-      { type: "h3", text: "Automated Lead Response and Follow-Ups" },
-      {
-        type: "p",
-        text: "Speed of response directly impacts conversion in real estate. Automation ensures immediate responses even outside working hours.",
-      },
-      {
-        type: "p",
-        text: "Automated messages may include thank-you confirmations, project brochures, site visit scheduling links, location maps, and videos—building trust from the first interaction.",
+        type: "ul",
+        text: [
+          "New project updates",
+          "Price revisions",
+          "Site visit reminders",
+          "Investment tips",
+        ],
       },
 
-      { type: "h3", text: "Lead Segmentation Based on Buyer Intent" },
+      { type: "h3", text: "AI Chatbots" },
       {
         type: "p",
-        text: "Automation tools segment leads based on project interest, budget range, location preference, stage in the buying journey, and engagement behavior.",
-      },
-      {
-        type: "p",
-        text: "Segmented communication is more relevant and significantly improves response rates and lead quality.",
+        text: "Chatbots answer property questions instantly. They collect contact details and schedule calls.",
       },
 
-      { type: "h3", text: "Email and WhatsApp Automation" },
+      { type: "h3", text: "Retargeting Ads" },
       {
         type: "p",
-        text: "Email and WhatsApp are powerful channels when used strategically. Automation enables sending project updates, payment plans, offers, educational content, site visit reminders, and post-visit follow-ups.",
-      },
-      {
-        type: "p",
-        text: "Personalized automation performs far better than generic bulk messaging.",
+        text: "When a user visits your property page but doesn’t inquire, automated ads follow them on social media platforms.",
       },
 
-      { type: "h3", text: "Lead Nurturing for Long Sales Cycles" },
+      { type: "h3", text: "Predictive Analytics" },
       {
         type: "p",
-        text: "Most real estate leads do not convert immediately. Automated nurturing keeps your brand top-of-mind until the buyer is ready to take action.",
+        text: "AI tools forecast which leads are likely to convert. This allows sales teams to prioritize hot prospects.",
       },
-      {
-        type: "p",
-        text: "Nurturing campaigns may include buying guides, location growth insights, construction updates, testimonials, and case studies—reducing lead drop-offs.",
-      },
+      { type: "h3", text: "Frequently Asked Questions (FAQs)" },
 
       {
         type: "h3",
-        text: "Benefits of Marketing Automation for Real Estate Businesses",
+        text: "1. Is marketing automation expensive for real estate businesses?",
       },
       {
         type: "p",
-        text: "When implemented correctly, marketing automation improves lead response time to under one minute, increases site visit bookings, reduces manual effort, boosts sales productivity, and improves ROI from paid ads.",
-      },
-      {
-        type: "p",
-        text: "It also provides better visibility into marketing performance, transforming marketing into a predictable growth engine.",
+        text: "Initially, there is a setup cost. However, the long-term return is significantly higher because automation reduces manpower and increases conversion rates.",
       },
 
+      { type: "h3", text: "2. Will automation replace real estate agents?" },
+      {
+        type: "p",
+        text: "No. Automation handles repetitive tasks. Agents focus on negotiation, site visits, and relationship building.",
+      },
       {
         type: "h3",
-        text: "Common Mistakes Real Estate Businesses Make with Automation",
+        text: "3. How quickly can automation increase sales?",
       },
       {
         type: "p",
-        text: "Common mistakes include using automation without strategy, sending excessive or irrelevant messages, poor CRM configuration, lack of sales alignment, and ignoring engagement data.",
+        text: "Businesses often see measurable improvements within 60–90 days if implemented correctly.",
       },
-      {
-        type: "p",
-        text: "Automation should enhance the buyer experience—not overwhelm it.",
-      },
-
       {
         type: "h3",
-        text: "How to Implement Marketing Automation Successfully",
+        text: "4. Is automation suitable for small real estate developers?",
       },
       {
         type: "p",
-        text: "Successful implementation requires clear lead qualification criteria, defined workflows, strong marketing-sales integration, regular performance optimization, and compliance with data protection guidelines.",
+        text: "Yes. Even small developers can automate lead responses and follow-ups, improving professionalism and trust.",
       },
+      { type: "h3", text: "5. What role does AI play in real estate marketing?" },
+      {
+        type: "p_with_bold",
+        parts:[
+          {
+            text:"AI analyzes user behavior, predicts buyer intent, and personalizes marketing campaigns. Many"
+          },
+          {
+            text:" Top AI Companies in Bangalore ",bold:true
+          },
+          {
+            text:'are building systems that make real estate marketing smarter and more predictive.'
+          }
+        ]
+      },
+      { type: "h2", text: "Step-by-Step Implementation Plan" },
       {
         type: "p",
-        text: "Automation is an ongoing process, not a one-time setup.",
+        text: "If you want actionable clarity, follow this roadmap:",
       },
-
+      {
+        type:'h3',
+        text:'Step 1: Set Up CRM Integration'
+      },
+      {
+        type:'p',
+        text:'Connect your website, landing pages, and ads to a centralized CRM.'
+      },
+      {
+        type:'h3',
+        text:'Step 2: Automate Lead Capture'
+      },
+      {
+        type:'p',
+        text:'Create forms that trigger instant email or WhatsApp responses.'
+      },
+      {
+        type:'h3',
+        text:'Step 3: Build Drip Campaigns'
+      },
+      {
+        type:'p',
+        text:'Send automated emails such as:'
+      },
+      {
+        type: "ul",
+        text: [
+          "Welcome message",
+          "Project brochure",
+          "Testimonials",
+          "Limited-time offers",
+        ],
+      },
       {
         type: "h3",
-        text: "Marketing Automation Tools Commonly Used in Real Estate",
+        text: "Step 4: Use AI-Based Ad Targeting",
       },
       {
         type: "p",
-        text: "Real estate businesses commonly use CRM platforms, email marketing tools, WhatsApp automation platforms, landing page builders, and analytics and tracking tools.",
+        text: "Leverage predictive algorithms to target serious buyers.",
+      },
+      { type: "h3", text: "Step 5: Monitor Analytics Weekly" },
+      {
+        type: "p",
+        text: "Measure open rates, click rates, cost per lead, and conversion ratios.",
       },
       {
         type: "p",
-        text: "The ideal tool stack depends on business size, lead volume, and sales process complexity.",
+        text: "Consistency is the key to automation success.",
+      },
+      {
+        type:'h3',
+        text:'Common Mistakes to Avoid'
+      },
+      {
+        type:'p',
+        text:"Even automation can fail if implemented poorly. Avoid these mistakes:"
+      },
+      {
+        type: "ul",
+        text: [
+          "Over-automation without personalization",
+          "Sending too many promotional emails",
+          "Ignoring analytics",
+          "Not aligning sales and marketing teams",
+        ],
+      },
+      {
+        type: "p",
+        text: "Balance automation with human communication for maximum results.",
+      },
+      { type: "h3", text: "Storytelling Example: Automation in Action" },
+      {
+        type: "p",
+        text: "Imagine a buyer visits your 3BHK apartment page at 10 PM.",
+      },
+      {
+        type: "p",
+        text: "Without automation:",
+      },
+      {
+        type: "ul",
+        text: [
+          "No response until next morning",
+          "Buyer checks competitor websites"
+        ],
+      },
+      {
+        type: "p",
+        text: "With automation:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Instant chatbot response",
+          "Brochure sent automatically",
+          "Site visit link shared",
+          "Retargeting ads activated",
+          "Follow-up email scheduled"
+        ],
       },
 
       {
-        type: "h3",
-        text: "How SKYUP Digital Helps Real Estate Businesses with Automation",
+        type: "p",
+        text: "The result? Higher engagement and increased probability of conversion.",
+      },
+      {
+        type:'p',
+        text:'This is the power of intelligent marketing automation.'
+      },
+      {
+        type:'h3',
+        text:'The Future of Real Estate Marketing'
+      },
+      {
+        type:'p',
+        text:"In 2026, marketing is no longer reactive. It is predictive."
       },
       {
         type: "p",
-        text: "At SKYUP Digital, we design custom marketing automation systems that align marketing, sales, and technology for real estate developers and brokers.",
+        text: "Real estate businesses that adopt AI-driven automation will:",
+      },
+      {
+        type: "ul",
+        text: [
+          "Convert faster",
+          "Reduce costs",
+          "Build stronger customer relationships",
+          "Increase brand authority"
+        ],
       },
       {
         type: "p",
-        text: "Our approach focuses on improving lead quality, accelerating conversions, reducing operational effort, and enabling scalable growth through integrated SEO, paid ads, and website strategies.",
+        text: "Those who delay will struggle to compete.",
       },
 
-      { type: "h3", text: "Final Thoughts" },
+      {
+        type: "p_with_link",
+        textBefore:
+          "Therefore, learning from the innovations of the ",
+        linkText: "Top AI Companies in Bangalore",
+        href: "https://www.skyupdigitalsolutions.com/services/ai-company-in-bangalore",
+        textAfter: " is essential for staying ahead.",
+      },
+
+      { type: "h3", text: "Conclusion" },
+      {
+        type: "p_with_link_bold",
+        partsBefore: [
+          {text:"SkyUp Digital Solutions",bold:true},
+          { text: " guided by the expertise and innovation seen among the " },
+        ],
+        linkText: "Top AI Companies in Bangalore,",
+        href: "https://www.skyupdigitalsolutions.com/services/ai-company-in-bangalore",
+        partsAfter: [
+          {
+            text: " believes marketing automation is not just a trend - it is the foundation of real estate growth in 2026. ",
+          }
+        ],
+      },
       {
         type: "p",
-        text: "In 2026, real estate businesses relying on manual processes will struggle to scale. Marketing automation is no longer optional—it is a competitive necessity. When executed strategically, it ensures every lead is nurtured, every opportunity is maximized, and every marketing rupee delivers measurable ROI.",
+        text: "Automation increases speed.",
       },
+      {
+        type: "p",
+        text: " AI improves precision.",
+      },
+      {
+        type: "p",
+        text: "Human expertise builds trust.",
+      },
+      {
+        type:'p',
+        text:"When combined strategically, these elements create sustainable and scalable success for real estate businesses."
+      },
+      {
+        type:'p',
+        text:'The future belongs to those who act today.'
+      },
+      {
+        type:'p',
+        text:"If you want your real estate brand to grow faster, smarter, and more profitably, now is the time to embrace marketing automation."
+      }
     ],
   },
 ];
