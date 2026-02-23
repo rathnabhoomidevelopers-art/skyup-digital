@@ -642,6 +642,7 @@ export const BLOGS = [
       "How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore",
     description:
       "Learn how real estate builders can attract ready buyers in 2026 with expert strategies from a trusted SEO company in Bangalore.",
+    Keywords: "SEO Company in Bangalore",
     date: "2026",
     author: "SKYUP Digital",
     image: "/images/blog_3.webp",
@@ -1106,6 +1107,7 @@ export const BLOGS = [
     description:
       "Discover 2026 real estate digital marketing trends with a leading SEO Company in Bangalore to boost property leads, visibility, and faster sales.",
     date: "2026",
+    Keywords: "SEO Company in Bangalore",
     author: "SKYUP Digital",
     image: "/images/blog_4.webp",
     heroImage: "/images/blog_4.webp",
@@ -1466,6 +1468,7 @@ export const BLOGS = [
       "Digital Marketing Agency in Bangalore: Manual Marketing vs Automated Marketing 7 Powerful Differences That Will Define Success in 2026",
     date: "2026",
     author: "SKYUP Digital",
+    Keywords: "Digital Marketing Agency in Bangalore",
     image: "/images/blog_5.webp",
     heroImage: "/images/blog_5.webp",
     coverImage: "/images/blog_5.webp",
@@ -1622,6 +1625,7 @@ export const BLOGS = [
     description:
       "Explore top AI companies in Bangalore transforming industries with smart automation, machine learning, and digital innovation in 2026. Discover leaders now.",
     title: "Top AI Companies in Bangalore Driving Innovation 2026",
+    Keywords: "Top AI Companies in Bangalore",
     date: "2026",
     author: "SKYUP Digital",
     image: "/images/blog_6.webp",
