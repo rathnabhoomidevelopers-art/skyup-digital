@@ -222,15 +222,9 @@ export function Receipt() {
       igst = parseFloat(igstManual) || 0;
     } else {
       // Auto-calculate from percentages
-      cgst = cgstPercentage
-        ? autoCalculateGST(subtotal, cgstPercentage)
-        : 0;
-      sgst = sgstPercentage
-        ? autoCalculateGST(subtotal, sgstPercentage)
-        : 0;
-      igst = igstPercentage
-        ? autoCalculateGST(subtotal, igstPercentage)
-        : 0;
+      cgst = cgstPercentage ? autoCalculateGST(subtotal, cgstPercentage) : 0;
+      sgst = sgstPercentage ? autoCalculateGST(subtotal, sgstPercentage) : 0;
+      igst = igstPercentage ? autoCalculateGST(subtotal, igstPercentage) : 0;
     }
 
     const total = subtotal + cgst + sgst + igst;
@@ -270,9 +264,9 @@ export function Receipt() {
       cgst: cgst,
       sgst: sgst,
       igst: igst,
-      cgst_percentage: values.use_manual_gst ? 0 : (values.cgst_percentage || 0),
-      sgst_percentage: values.use_manual_gst ? 0 : (values.sgst_percentage || 0),
-      igst_percentage: values.use_manual_gst ? 0 : (values.igst_percentage || 0),
+      cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
+      sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
+      igst_percentage: values.use_manual_gst ? 0 : values.igst_percentage || 0,
       total: total,
       amount_in_words: numberToWords(total),
     };
@@ -280,9 +274,24 @@ export function Receipt() {
     try {
       const receiptFullData = {
         ...formData,
-        cgstLabel: cgst > 0 ? (values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage || 9}%`) : "",
-        sgstLabel: sgst > 0 ? (values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage || 9}%`) : "",
-        igstLabel: igst > 0 ? (values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage || 18}%`) : "",
+        cgstLabel:
+          cgst > 0
+            ? values.use_manual_gst
+              ? "CGST"
+              : `CGST @ ${values.cgst_percentage || 9}%`
+            : "",
+        sgstLabel:
+          sgst > 0
+            ? values.use_manual_gst
+              ? "SGST"
+              : `SGST @ ${values.sgst_percentage || 9}%`
+            : "",
+        igstLabel:
+          igst > 0
+            ? values.use_manual_gst
+              ? "IGST"
+              : `IGST @ ${values.igst_percentage || 18}%`
+            : "",
         ...companyDetails,
       };
 
@@ -685,7 +694,7 @@ export function Receipt() {
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         GST Details
                       </h3>
-                      
+
                       {/* Toggle between percentage and manual */}
                       <div className="mb-6">
                         <label className="flex items-center gap-3 cursor-pointer">
@@ -699,7 +708,8 @@ export function Receipt() {
                           </span>
                         </label>
                         <p className="text-xs text-gray-500 mt-1 ml-8">
-                          Check this to enter exact GST amounts instead of percentages
+                          Check this to enter exact GST amounts instead of
+                          percentages
                         </p>
                       </div>
 
@@ -707,7 +717,8 @@ export function Receipt() {
                         <>
                           <p className="text-sm text-gray-600 mb-4">
                             Choose either <strong>CGST + SGST</strong> (for
-                            intra-state) or <strong>IGST</strong> (for inter-state)
+                            intra-state) or <strong>IGST</strong> (for
+                            inter-state)
                           </p>
 
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -832,7 +843,9 @@ export function Receipt() {
                           {cgst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                {values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}
+                                {values.use_manual_gst
+                                  ? "CGST"
+                                  : `CGST @ ${values.cgst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{cgst.toLocaleString("en-IN")}
@@ -842,7 +855,9 @@ export function Receipt() {
                           {sgst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                {values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}
+                                {values.use_manual_gst
+                                  ? "SGST"
+                                  : `SGST @ ${values.sgst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{sgst.toLocaleString("en-IN")}
@@ -852,7 +867,9 @@ export function Receipt() {
                           {igst > 0 && (
                             <div className="flex justify-between items-center">
                               <span className="text-gray-600">
-                                {values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}
+                                {values.use_manual_gst
+                                  ? "IGST"
+                                  : `IGST @ ${values.igst_percentage}%`}
                               </span>
                               <span className="font-semibold text-gray-800">
                                 ₹{igst.toLocaleString("en-IN")}
