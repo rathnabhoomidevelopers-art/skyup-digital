@@ -189,7 +189,7 @@ export default function BlogDetail() {
             <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100">
               <img
                 src={blog.heroImage || blog.image}
-                alt={blog.title}
+                alt={blog.imageAlt || blog.title}
                 className="w-full h-[210px] sm:h-full object-cover"
               />
             </div>

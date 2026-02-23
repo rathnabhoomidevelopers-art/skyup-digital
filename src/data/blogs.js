@@ -1,5 +1,3 @@
-import { Bold } from "lucide-react";
-
 export const BLOGS = [
   {
     id: 1,
@@ -11,6 +9,7 @@ export const BLOGS = [
     description:
       "Grow your business with a trusted digital marketing agency in Bangalore offering SEO, PPC, social media, and lead generation solutions.",
     date: "2026",
+    imageAlt: "Digital marketing agency in Bangalore helping businesses grow with SEO, PPC, and social media",
     Keywords: "Digital Marketing Agency in Bangalore",
     author: "SKYUP Digital",
     image:
@@ -448,6 +447,7 @@ export const BLOGS = [
     description:
       "Unlock your business potential with expert digital marketing services in Bangalore. Drive traffic, generate leads, and grow your brand with proven strategies.",
     author: "SKYUP Digital",
+    imageAlt: "How to choose the right digital marketing agency in Bangalore - 2026 guide",
     image: "/images/blog2.webp",
     heroImage: "/images/blog2.webp",
     coverImage: "/images/blog2.webp",
@@ -645,6 +645,7 @@ export const BLOGS = [
     Keywords: "SEO Company in Bangalore",
     date: "2026",
     author: "SKYUP Digital",
+    imageAlt: "Real estate builders generating quality leads using SEO company in Bangalore",
     image: "/images/blog_3.webp",
     heroImage: "/images/blog_3.webp",
     coverImage: "/images/blog_3.webp",
@@ -1109,6 +1110,7 @@ export const BLOGS = [
     date: "2026",
     Keywords: "SEO Company in Bangalore",
     author: "SKYUP Digital",
+    imageAlt: "Top digital marketing trends for real estate in 2026 by SEO company in Bangalore",
     image: "/images/blog_4.webp",
     heroImage: "/images/blog_4.webp",
     coverImage: "/images/blog_4.webp",
@@ -1469,6 +1471,7 @@ export const BLOGS = [
     date: "2026",
     author: "SKYUP Digital",
     Keywords: "Digital Marketing Agency in Bangalore",
+    imageAlt: "Manual marketing vs automated marketing comparison for digital marketing agency in Bangalore",
     image: "/images/blog_5.webp",
     heroImage: "/images/blog_5.webp",
     coverImage: "/images/blog_5.webp",
@@ -1628,6 +1631,7 @@ export const BLOGS = [
     Keywords: "Top AI Companies in Bangalore",
     date: "2026",
     author: "SKYUP Digital",
+    imageAlt: "Top AI companies in Bangalore driving marketing automation for real estate businesses in 2026",
     image: "/images/blog_6.webp",
     heroImage: "/images/blog_6.webp",
     coverImage: "/images/blog_6.webp",
