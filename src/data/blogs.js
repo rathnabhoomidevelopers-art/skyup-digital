@@ -2102,7 +2102,7 @@ export const BLOGS = [
           {text:"SkyUp Digital Solutions,",bold:true},
           { text: "  a leading " },
         ],
-        linkText: " Website Development Company in Bangalore,",
+        linkText: " Website Development Company in Bangalore",
         href: "https://www.skyupdigitalsolutions.com/services/website-development-company-in-bangalore",
         partsAfter: [
           {
@@ -2132,10 +2132,10 @@ export const BLOGS = [
         type: "p_with_bold",
         parts: [
           {
-            text: "If you are searching for a reliable  ",
+            text: "If you are searching for a reliable  "
           },
-          { text: "Website Development Agency in Bangalore", bold: true },
-           { text: " “Website Development Company Near Me” " },
+          { text: ",Website Development Agency in Bangalore", bold: true },
+           { text: '“Website Development Company Near Me” ' },
            { text: "into Google," },
            { text: "you’re not just looking for a developer" },
            { text: "You’re looking for a long-term digital growth partner." },
@@ -2282,8 +2282,6 @@ export const BLOGS = [
         type: "p",
         text: "APIs connect websites with CRMs, ERPs, payment gateways, marketing automation tools, and mobile apps.",
       },
-      
-     
       {
         type:"h3",
         text:'4. Advanced Database Optimization'
@@ -2330,7 +2328,7 @@ export const BLOGS = [
       },
       {
         type: "p",
-        text: "When businesses search for a “Website Development Company Near Me,” they must ensure these elements are included.",
+        text: 'When businesses search for a “Website Development Company Near Me,” they must ensure these elements are included.',
       },
       
       {
