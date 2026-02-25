@@ -2069,7 +2069,7 @@ export const BLOGS = [
   },
    {
     id: 7,
-    slug: "full stack web development projects in 2026: 9 powerful strategies businesses use to build scalable digital systems",
+    slug: "full-stack-web-development-projects-in-2026:-9-powerful-strategies-businesses-use-to-build-scalable-digital-systems",
     category: "website-development",
     headline:
       "Full Stack Web Development Projects in 2026: 9 Powerful Strategies Businesses Use to Build Scalable Digital Systems",
@@ -2575,7 +2575,7 @@ export const BLOGS = [
             text:'Website Development Agency in Bangalore',bold:true
           },
           {
-            text:"or searching for a “Website Development Company Near Me,” the real question is not who can build a website but who can build your digital future."
+            text:'or searching for a “Website Development Company Near Me,” the real question is not who can build a website but who can build your digital future.'
           }
         ]
       },
@@ -2598,8 +2598,10 @@ export const BLOGS = [
           { text: " The time to " },
         ],
         linkText: " invest in scalable web development is now.",
-        href: "https://www.skyupdigitalsolutions.com/services/website-development-company-in-bangalore",
-      },
-     
+     href: "https://www.skyupdigitalsolutions.com/services/website-development-company-in-bangalore",
+      }
+      
+  ],
+   },
 ];
 
