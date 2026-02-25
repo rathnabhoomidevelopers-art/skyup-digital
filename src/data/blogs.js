@@ -2479,9 +2479,9 @@ export const BLOGS = [
        {
         type: "ul",
         text: [
-          "Traffic handled smoothly
+          "Traffic handled smoothly",
           "Payment gateways integrated securely"
-          "CRM captures every lead"
+          "CRM captures every lead",
           "Analytics predict customer behavior",
         ],
       },
@@ -2506,8 +2506,8 @@ export const BLOGS = [
         text: [
           "Technical expertise",
           "Portfolio diversity",
-          "Security standards"
-          "Post-launch support"
+          "Security standards",
+          "Post-launch support",
           "Scalability planning",
         ],
       },
@@ -2602,6 +2602,6 @@ export const BLOGS = [
         linkText: " invest in scalable web development is now.",
         href: "https://www.skyupdigitalsolutions.com/services/website-development-company-in-bangalore",
       },
-
+     
 ];
 
