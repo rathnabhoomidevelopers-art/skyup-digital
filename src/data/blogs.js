@@ -2480,7 +2480,7 @@ export const BLOGS = [
         type: "ul",
         text: [
           "Traffic handled smoothly",
-          "Payment gateways integrated securely"
+          "Payment gateways integrated securely",
           "CRM captures every lead",
           "Analytics predict customer behavior",
         ],
