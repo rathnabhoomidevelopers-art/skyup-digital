@@ -77,22 +77,22 @@ function BlogCard({ blog }) {
       </div>
 
       {/* Content */}
-      <div className="p-5 sm:p-6">
+      <div className="p-2 sm:p-4">
         <span className="inline-block text-[11px] sm:text-[12px] font-medium text-[#ff8000]">
           {blog.category.trim()}
         </span>
-        <h3 className="mt-2 text-[16px] sm:text-[18px] font-bold text-[#121826] leading-snug line-clamp-2">
+        <h3 className="mt-1 text-[16px] sm:text-[18px] font-bold text-[#121826] leading-snug line-clamp-2">
           {blog.headline || blog.title}
         </h3>
-        <p className="mt-2 text-[13px] sm:text-[14px] leading-relaxed text-[#3B4252] line-clamp-2">
+        <p className="mt-1 text-[13px] sm:text-[14px] leading-relaxed text-[#3B4252] line-clamp-2">
           {blog.description}
         </p>
-        <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-400">
+        <div className="mt-2 flex items-center gap-2 text-[11px] text-slate-400">
           <span>{blog.author}</span>
           <span className="h-1 w-1 rounded-full bg-slate-300" />
           <span>{blog.date}</span>
         </div>
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#F1F3F7] px-3 py-2 text-[13px] font-semibold text-[#0037CA] hover:bg-[#0037CA] hover:text-white transition">
+        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#F1F3F7] px-3 py-2 text-[13px] font-semibold text-[#0037CA] hover:bg-[#0037CA] hover:text-white transition">
           Read More <MoveUpRight className="h-4 w-4" />
         </div>
       </div>
