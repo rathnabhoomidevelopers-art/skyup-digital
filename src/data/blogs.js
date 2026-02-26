@@ -1622,7 +1622,7 @@ export const BLOGS = [
   {
     id: 6,
     slug: "marketing-automation-for-real-estate-businesses-2026-guide",
-    category: "AI",
+    category: "AI Automation",
     headline:
       "Top AI Companies in Bangalore: Marketing Automation for Real Estate Businesses - The Complete 2026 Growth Guide",
     description:
@@ -2070,7 +2070,7 @@ export const BLOGS = [
    {
     id: 7,
     slug: "full-stack-web-development-projects-in-2026:-9-powerful-strategies-businesses-use-to-build-scalable-digital-systems",
-    category: "Website development",
+    category: "Website Development",
     headline:
       "Full Stack Web Development Projects in 2026: 9 Powerful Strategies Businesses Use to Build Scalable Digital Systems",
     description:
