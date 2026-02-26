@@ -13,11 +13,11 @@ export const BLOGS = [
     Keywords: "Digital Marketing Agency in Bangalore",
     author: "SKYUP Digital",
     image:
-      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+          "/images/blog_1.webp",
     heroImage:
-      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+            "/images/blog_1.webp",
     coverImage:
-      "/images/digital-marketing-agency-in-bangalore-for-business-growth.jpeg",
+           "/images/blog_1.webp",
     tags: [
       "Digital Marketing",
       "Service-Based Business",
