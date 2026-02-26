@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Linkedin } from "lucide-react";
+import { ChevronLeft, Linkedin } from "lucide-react";
 import { BLOGS } from "../data/blogs";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,7 +8,6 @@ import { Facebook, Youtube, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 const slugify = (str = "") =>
   str
     .toLowerCase()
@@ -18,108 +17,12 @@ const slugify = (str = "") =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-const toSlug = (str) =>
-  str
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-
-// ─── Derive unique categories from blog data ──────────────────────────────────
-const ALL_CATEGORIES = [
-  "All",
-  ...Array.from(new Set(BLOGS.map((b) => b.category))),
-];
-
-// ─── SPA navigate helper (Vike) ───────────────────────────────────────────────
-let _navigate;
-try {
-  import("vike/client/router").then((m) => {
-    _navigate = m.navigate;
-  });
-} catch {
-  /* ignore */
-}
-
-const vikeNavigate = (path) => {
-  try {
-    if (_navigate) {
-      _navigate(path);
-    } else {
-      window.location.href = path;
-    }
-  } catch {
-    window.location.href = path;
-  }
-};
-
-// ─── Category Filter Bar ──────────────────────────────────────────────────────
-function CategoryFilterBar({ activeFilter, onChange }) {
-  return (
-    <div className="mb-6 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4">
-      {/* Mobile: Dropdown */}
-      <div className="sm:hidden">
-        <div className="relative">
-          <select
-            value={activeFilter}
-            onChange={(e) => onChange(e.target.value)}
-            className="w-full appearance-none rounded-xl bg-white border border-[#E7E9F5] px-4 py-3 pr-10 text-[13px] font-semibold text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30"
-          >
-            {ALL_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#111827]/60 rotate-90" />
-        </div>
-      </div>
-
-      {/* Desktop / Tablet: Pills */}
-      <div className="hidden sm:flex flex-wrap gap-2 sm:gap-3">
-        {ALL_CATEGORIES.map((cat) => {
-          const isActive = cat === activeFilter;
-          return (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => onChange(cat)}
-              className={[
-                "rounded-full px-4 py-2 text-[12px] sm:text-[13px] font-semibold transition-all",
-                isActive
-                  ? "bg-[#0B3BFF] text-white"
-                  : "bg-white text-[#111827] border border-[#E7E9F5] hover:bg-[#EEF1FF]",
-              ].join(" ")}
-            >
-              {cat}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function BlogDetail() {
+  // Get slug from Vike route params
   const { routeParams } = usePageContext();
   const slug = routeParams?.slug;
 
   const blog = BLOGS.find((b) => b.slug === slug);
-
-  // Derive active filter from current blog's category (or "All" if not found)
-  const [activeFilter, setActiveFilter] = useState(
-    () => blog?.category || "All"
-  );
-
-  const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-    if (filter === "All") {
-      vikeNavigate("/blogs");
-    } else {
-      vikeNavigate(`/blogs/category/${toSlug(filter)}`);
-    }
-  };
 
   const sections = blog?.sections?.length
     ? blog.sections
@@ -130,7 +33,7 @@ export default function BlogDetail() {
         },
       ];
 
-  // Build TOC from h2/h3 headings
+  // Build TOC from h3 headings
   const toc = useMemo(() => {
     const used = new Map();
     const items = [];
@@ -151,6 +54,7 @@ export default function BlogDetail() {
 
   const [activeId, setActiveId] = useState(toc[0]?.id || "");
 
+  // Observe headings and set active section
   useEffect(() => {
     if (!toc.length) return;
 
@@ -165,7 +69,7 @@ export default function BlogDetail() {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort(
-            (a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0)
+            (a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0),
           )[0];
 
         if (visible?.target?.id) setActiveId(visible.target.id);
@@ -174,7 +78,7 @@ export default function BlogDetail() {
         root: null,
         rootMargin: "-25% 0px -65% 0px",
         threshold: [0.1, 0.25, 0.5, 0.75, 1],
-      }
+      },
     );
 
     headingEls.forEach((el) => io.observe(el));
@@ -209,7 +113,6 @@ export default function BlogDetail() {
       <Header />
       <div className="relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
-          {/* Left social share sidebar */}
           <div className="hidden lg:block w-[80px] mr-6">
             <div className="sticky top-64 flex flex-col gap-4">
               <a
@@ -252,7 +155,7 @@ export default function BlogDetail() {
 
           {/* Blog content */}
           <div className="flex-1 max-w-6xl">
-            {/* Back link */}
+            {/* back */}
             <a
               href="/blogs"
               className="inline-flex no-underline items-center gap-2 text-[12px] font-semibold text-slate-700 hover:text-[#0B3BFF] transition"
@@ -263,34 +166,26 @@ export default function BlogDetail() {
               Back&nbsp;to&nbsp;Blog
             </a>
 
-            {/* ── CATEGORY FILTER BAR ── */}
+            {/* category */}
             <div className="mt-4">
-              <CategoryFilterBar
-                activeFilter={activeFilter}
-                onChange={handleFilterChange}
-              />
-            </div>
-
-            {/* Category badge */}
-            <div>
               <span className="inline-flex rounded-full bg-[#EEF1FF] text-[#0B3BFF] px-3 py-1 text-[11px] font-semibold">
                 {blog.category}
               </span>
             </div>
 
-            {/* Title */}
+            {/* title */}
             <h1 className="mt-3 text-[22px] sm:text-[28px] lg:text-[38px] fw-bold text-[#111827] leading-tight">
               {blog.headline}
             </h1>
 
-            {/* Meta */}
+            {/* meta */}
             <div className="mt-2 text-[12px] text-slate-500 flex items-center gap-3">
               <span>{blog.author}</span>
               <span className="h-1 w-1 rounded-full bg-slate-300" />
               <span>{blog.date}</span>
             </div>
 
-            {/* Hero image */}
+            {/* hero image */}
             <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100">
               <img
                 src={blog.heroImage || blog.image}
@@ -299,7 +194,7 @@ export default function BlogDetail() {
               />
             </div>
 
-            {/* Content */}
+            {/* content */}
             <div className="mt-6 space-y-5">
               {(() => {
                 const used = new Map();
@@ -406,7 +301,7 @@ export default function BlogDetail() {
                             </strong>
                           ) : (
                             <span key={idx}>{part.text}</span>
-                          )
+                          ),
                         )}
                       </p>
                     );
@@ -428,7 +323,7 @@ export default function BlogDetail() {
                             </strong>
                           ) : (
                             <span key={idx}>{part.text}</span>
-                          )
+                          ),
                         )}
                         <a
                           href={s.href}
@@ -448,7 +343,7 @@ export default function BlogDetail() {
                             </strong>
                           ) : (
                             <span key={idx}>{part.text}</span>
-                          )
+                          ),
                         )}
                       </p>
                     );
@@ -485,7 +380,7 @@ export default function BlogDetail() {
           {/* Right Table of Contents (desktop only) */}
           {toc.length > 0 && (
             <aside className="hidden lg:block w-[300px] ml-6">
-              <div className="sticky top-36">
+              <div className="sticky top-36 ">
                 <div className="rounded-2xl border border-slate-100 bg-white shadow-[0_12px_35px_rgba(0,0,0,0.06)] p-3">
                   <div className="text-[18px] font-bold text-slate-900 tracking-wide">
                     TABLE OF CONTENTS
@@ -541,41 +436,105 @@ export default function BlogDetail() {
           href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
-          className="whatsapp-chat sm:hidden w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+          className=" whatsapp-chat
+            sm:hidden
+            w-12 h-12
+            rounded-xl
+            bg-[#25D366]
+            flex items-center justify-center
+            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
+          "
         >
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+          <img
+            src="/images/whatsapp.svg"
+            alt="whatsapp"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
           href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
-          className="whatsapp-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[70px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform"
+          className=" whatsapp-chat-gtm
+            hidden sm:inline-flex
+            group no-underline relative items-center
+            bg-white
+            pl-3 pr-[70px] py-3
+            rounded-xl
+            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+            hover:scale-[1.02] transition-transform
+          "
         >
           <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">
             WhatsApp
           </span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+
+          <span
+            className="
+              absolute right-3 top-1/2 -translate-y-1/2
+              w-11 h-11 rounded-xl
+              bg-[#25D366]
+              flex items-center justify-center
+              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+            "
+          >
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
 
         <a
           href="tel:+918867867775"
-          className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+          className=" tel-chat
+            sm:hidden
+            w-12 h-12
+            rounded-xl
+            bg-[#3B46F6]
+            flex items-center justify-center
+            shadow-[0_12px_30px_rgba(0,0,0,0.25)]
+          "
         >
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+          <img
+            src="/images/call.svg"
+            alt="call"
+            className="w-7 h-7 text-white"
+          />
         </a>
 
         <a
           href="tel:+918867867775"
-          className="tel-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[66px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform"
+          className=" tel-chat-gtm
+            hidden sm:inline-flex
+            group no-underline relative items-center
+            bg-white
+            pl-3 pr-[66px] py-3
+            rounded-xl
+            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+            hover:scale-[1.02] transition-transform
+          "
         >
           <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">
             +91 8867867775
           </span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+
+          <span
+            className="
+              absolute right-3 top-1/2 -translate-y-1/2
+              w-11 h-11 rounded-xl
+              bg-[#3B46F6]
+              flex items-center justify-center
+              shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+            "
+          >
+            <img
+              src="/images/call.svg"
+              alt="call"
+              className="w-7 h-7 text-white"
+            />
           </span>
         </a>
       </motion.div>
