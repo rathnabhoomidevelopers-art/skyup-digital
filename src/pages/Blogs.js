@@ -1,9 +1,10 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { BLOGS } from "../data/blogs";
+import { navigate } from "vike/client/router";
 
 const MotionA = motion.a;
 
@@ -32,24 +33,31 @@ const cardAnim = {
   },
 };
 
-const RAW_CATEGORIES = ["All", ...new Set(BLOGS.map((b) => b.category.trim()))];
+// ── Derive unique filters from blog data (trim to fix trailing spaces) ──
+const FILTERS = ["All", ...new Set(BLOGS.map((b) => b.category.trim()))];
+
+const toSlug = (str) =>
+  str.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+const fromSlug = (slug) => FILTERS.find((f) => toSlug(f) === slug) || "All";
+
 const PAGE_SIZE = 6;
 
 const vikeNavigate = (path) => {
   try {
-    import("vike/client/router").then(({ navigate }) => navigate(path));
+    navigate(path);
   } catch {
     window.location.href = path;
   }
 };
 
-function BlogCard({ blog, variants }) {
+function BlogCard({ blog }) {
   return (
     <motion.button
       type="button"
       onClick={() => vikeNavigate(`/blogs/${blog.slug}`)}
       layout
-      variants={variants}
+      variants={cardAnim}
       initial="hidden"
       animate="show"
       exit="exit"
@@ -61,7 +69,7 @@ function BlogCard({ blog, variants }) {
         <img
           src={blog.heroImage || blog.image || blog.coverImage}
           alt={blog.imageAlt || blog.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500"
           loading="lazy"
           draggable={false}
         />
@@ -93,11 +101,12 @@ export function Blogs() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [page, setPage] = useState(1);
   const filterRef = useRef(null);
+  const headerOffset = 90;
 
   const scrollToFilters = () => {
     const el = filterRef.current;
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 90;
+    const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
@@ -107,16 +116,26 @@ export function Blogs() {
     requestAnimationFrame(() => requestAnimationFrame(scrollToFilters));
   };
 
+  // trim() both sides to handle trailing spaces in blog data
   const filteredBlogs = useMemo(() =>
-    activeFilter === "All" ? BLOGS : BLOGS.filter((b) => b.category.trim() === activeFilter),
+    activeFilter === "All"
+      ? BLOGS
+      : BLOGS.filter((b) => b.category.trim() === activeFilter.trim()),
     [activeFilter]
   );
 
   const totalPages = Math.max(1, Math.ceil(filteredBlogs.length / PAGE_SIZE));
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
   const paginatedBlogs = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return filteredBlogs.slice(start, start + PAGE_SIZE);
   }, [filteredBlogs, page]);
+
+  const showPagination = filteredBlogs.length > PAGE_SIZE;
 
   return (
     <div className="font-poppins">
@@ -153,7 +172,7 @@ export function Blogs() {
       <section className="w-full bg-[#F7F9FC] font-poppins overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
 
-          {/* ── FILTER BAR ── */}
+          {/* ── FILTER BAR — exact same design as ServiceCardsSection ── */}
           <div
             ref={filterRef}
             className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4"
@@ -169,7 +188,7 @@ export function Blogs() {
                   onChange={(e) => handleFilterChange(e.target.value)}
                   className="w-full appearance-none rounded-xl bg-white border border-[#E7E9F5] px-4 py-3 pr-10 text-[13px] font-semibold text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30"
                 >
-                  {RAW_CATEGORIES.map((f) => (
+                  {FILTERS.map((f) => (
                     <option key={f} value={f}>{f}</option>
                   ))}
                 </select>
@@ -177,23 +196,26 @@ export function Blogs() {
               </div>
             </div>
 
-            {/* Desktop: Pills */}
+            {/* Desktop/Tablet: Pills — exact same as ServiceCardsSection */}
             <div className="hidden sm:flex flex-wrap gap-2 sm:gap-3">
-              {RAW_CATEGORIES.map((filter) => (
-                <button
-                  key={filter}
-                  type="button"
-                  onClick={() => handleFilterChange(filter)}
-                  className={[
-                    "rounded-full px-4 py-2 text-[12px] sm:text-[13px] font-semibold transition-all",
-                    filter === activeFilter
-                      ? "bg-[#0B3BFF] text-white"
-                      : "bg-white text-[#111827] border border-[#E7E9F5] hover:bg-[#EEF1FF]",
-                  ].join(" ")}
-                >
-                  {filter}
-                </button>
-              ))}
+              {FILTERS.map((filter) => {
+                const isActive = filter === activeFilter;
+                return (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => handleFilterChange(filter)}
+                    className={[
+                      "rounded-full px-4 py-2 text-[12px] sm:text-[13px] font-semibold transition-all",
+                      isActive
+                        ? "bg-[#0B3BFF] text-white"
+                        : "bg-white text-[#111827] border border-[#E7E9F5] hover:bg-[#EEF1FF]",
+                    ].join(" ")}
+                  >
+                    {filter}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -207,20 +229,20 @@ export function Blogs() {
           >
             <AnimatePresence mode="popLayout">
               {paginatedBlogs.map((blog) => (
-                <BlogCard key={blog.slug} blog={blog} variants={cardAnim} />
+                <BlogCard key={blog.slug} blog={blog} />
               ))}
             </AnimatePresence>
           </motion.div>
 
-          {/* ── PAGINATION ── */}
-          {filteredBlogs.length > PAGE_SIZE && (
+          {/* ── PAGINATION — exact same as ServiceCardsSection ── */}
+          {showPagination && (
             <div className="mt-10 flex items-center justify-center gap-2">
               <button
                 type="button"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
                 className={[
-                  "inline-flex items-center rounded-full border px-2 py-2 text-[12px] sm:text-[13px] font-semibold transition",
+                  "inline-flex items-center gap-2 rounded-full border px-2 py-2 text-[12px] sm:text-[13px] font-semibold transition",
                   page === 1
                     ? "border-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed bg-white"
                     : "border-[#E7E9F5] text-[#111827] bg-white hover:bg-[#EEF1FF]",
@@ -232,6 +254,7 @@ export function Blogs() {
               <div className="hidden sm:flex items-center gap-1">
                 {Array.from({ length: totalPages }).map((_, idx) => {
                   const p = idx + 1;
+                  const active = p === page;
                   return (
                     <button
                       key={p}
@@ -239,7 +262,7 @@ export function Blogs() {
                       onClick={() => setPage(p)}
                       className={[
                         "h-9 w-9 rounded-full text-[13px] font-semibold transition",
-                        p === page
+                        active
                           ? "bg-[#0B3BFF] text-white"
                           : "bg-white text-[#111827] border border-[#E7E9F5] hover:bg-[#EEF1FF]",
                       ].join(" ")}
@@ -255,7 +278,7 @@ export function Blogs() {
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 className={[
-                  "inline-flex items-center rounded-full border px-2 py-2 text-[12px] sm:text-[13px] font-semibold transition",
+                  "inline-flex items-center gap-2 rounded-full border px-2 py-2 text-[12px] sm:text-[13px] font-semibold transition",
                   page === totalPages
                     ? "border-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed bg-white"
                     : "border-[#E7E9F5] text-[#111827] bg-white hover:bg-[#EEF1FF]",
