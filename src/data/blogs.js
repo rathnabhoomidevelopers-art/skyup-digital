@@ -2,7 +2,7 @@ export const BLOGS = [
   {
     id: 1,
     slug: "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
-    category: "Digital Marketing Strategy",
+    category: "Digital Marketing ",
     title: " Digital Marketing Agency in Bangalore for Business Growth",
     headline:
       "Digital Marketing Agency in Bangalore | The Complete Business Guide to Explosive Growth in 2026",
@@ -437,7 +437,7 @@ export const BLOGS = [
   {
     id: 2,
     slug: "how-to-choose-the-right-digital-marketing-agency-in-bangalore-2026-guide",
-    category: "Digital Marketing Agency",
+    category: "Digital Marketing ",
     title:
       "Maximize Your Business Potential with Digital Marketing in Bangalore",
     headline:
@@ -636,7 +636,7 @@ export const BLOGS = [
   {
     id: 3,
     slug: "real-estate-builders-generate-quality-leads-using-seo-2026",
-    category: "Real Estate SEO",
+    category: "SEO",
     title: "Quality Leads with SEO Company in Bangalore",
     headline:
       "How Real Estate Builders Can Generate Quality Leads Using SEO in 2026: 12 Proven Strategies Backed by a Top SEO Company in Bangalore",
@@ -1101,7 +1101,7 @@ export const BLOGS = [
   {
     id: 4,
     slug: "top-digital-marketing-trends-for-real-estate-2026",
-    category: "Real Estate Digital Marketing",
+    category: "Digital Marketing",
     title: "SEO Company in Bangalore: Real Estate Marketing Trends 2026",
     headline:
       "11 Powerful Digital Marketing Trends for Real Estate in 2026 That Every Developer Must Use to Win More Buyers",
@@ -1462,7 +1462,7 @@ export const BLOGS = [
   {
     id: 5,
     slug: "manual-marketing-vs-automated-marketing-real-difference-2026",
-    category: "AI Automation",
+    category: "Digital Marketing",
     title: "Best Digital Marketing Agency in Bangalore 2026",
     description:
       "Looking for a Digital Marketing Agency in Bangalore? SkyUp Digital Solutions offers SEO, Google Ads, social media & web design to boost leads.",
@@ -1622,7 +1622,7 @@ export const BLOGS = [
   {
     id: 6,
     slug: "marketing-automation-for-real-estate-businesses-2026-guide",
-    category: "Real Estate Automation",
+    category: "AI",
     headline:
       "Top AI Companies in Bangalore: Marketing Automation for Real Estate Businesses - The Complete 2026 Growth Guide",
     description:
@@ -2070,7 +2070,7 @@ export const BLOGS = [
    {
     id: 7,
     slug: "full-stack-web-development-projects-in-2026:-9-powerful-strategies-businesses-use-to-build-scalable-digital-systems",
-    category: "website-development",
+    category: "Website development",
     headline:
       "Full Stack Web Development Projects in 2026: 9 Powerful Strategies Businesses Use to Build Scalable Digital Systems",
     description:
@@ -2607,7 +2607,7 @@ export const BLOGS = [
    {
     id: 8,
     slug: "top-and-best-ppc-company-in-bangalore-2026-guide-to-3x-roi-and-instant-lead-growth",
-    category: "PPC Company",
+    category: "PPC",
     headline:
       "Top & Best PPC Company In Bangalore - 2026 Guide to 3X ROI & Instant Lead Growth",
     description:
