@@ -29,7 +29,6 @@ const CATEGORIES = [
   "AI",
   "PPC",
   "Web Development",
-
 ];
 
 export function Blogs() {
@@ -149,7 +148,7 @@ export function Blogs() {
         transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
-        
+        <a
           href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
@@ -158,7 +157,7 @@ export function Blogs() {
           <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
         </a>
 
-        
+        <a
           href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
@@ -172,14 +171,14 @@ export function Blogs() {
           </span>
         </a>
 
-        
-          href="tel:+918867867775"
+          <a      
+            href="tel:+918867867775"
           className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
         >
           <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
         </a>
 
-        
+        <a
           href="tel:+918867867775"
           className="tel-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[66px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform"
         >
