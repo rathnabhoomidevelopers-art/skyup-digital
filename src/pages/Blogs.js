@@ -65,15 +65,18 @@ function BlogCard({ blog }) {
       transition={{ type: "spring", stiffness: 220, damping: 20 }}
       className="text-left rounded-2xl bg-white border border-[#E9EEF6] shadow-[0_14px_40px_rgba(15,23,42,0.06)] overflow-hidden w-full"
     >
+      {/* Hero image */}
       <div className="w-full h-[180px] sm:h-[200px] overflow-hidden bg-slate-100">
         <img
           src={blog.heroImage || blog.image || blog.coverImage}
           alt={blog.imageAlt || blog.title}
-          className="w-full h-full object-cover transition-transform duration-500"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
           draggable={false}
         />
       </div>
+
+      {/* Content */}
       <div className="p-5 sm:p-6">
         <span className="inline-block text-[11px] sm:text-[12px] font-medium text-[#ff8000]">
           {blog.category.trim()}
@@ -95,7 +98,7 @@ function BlogCard({ blog }) {
       </div>
     </motion.button>
   );
-}
+};
 
 export function Blogs() {
   const [activeFilter, setActiveFilter] = useState("All");
