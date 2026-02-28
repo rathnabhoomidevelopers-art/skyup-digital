@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 
-// Remove MotionLink, use motion.a instead
+const INITIAL_VISIBLE = 5;
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: {
@@ -18,8 +19,12 @@ export default function FAQSection({
   faqs = [],
 }) {
   const [openIndex, setOpenIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   if (!faqs.length) return null;
+
+  const hasMore = faqs.length > INITIAL_VISIBLE;
+  const visibleFaqs = showAll ? faqs : faqs.slice(0, INITIAL_VISIBLE);
 
   return (
     <section className="w-full bg-[#EEF1FC] py-24 font-poppins overflow-hidden">
@@ -68,77 +73,122 @@ export default function FAQSection({
           </motion.div>
 
           {/* RIGHT ACCORDION */}
-          <LayoutGroup>
-            <div className="space-y-4">
-              {faqs.map((item, index) => {
-                const isOpen = openIndex === index;
+          <div>
+            <LayoutGroup>
+              <div className="space-y-4">
+                {visibleFaqs.map((item, index) => {
+                  const isOpen = openIndex === index;
 
-                return (
-                  <motion.div
-                    key={index}
-                    layout
-                    initial={{ opacity: 0, y: 14 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 90, damping: 20 }}
-                    className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#E6EAF2]"
-                  >
-                    <button
-                      onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className="w-full flex items-center justify-between px-3 sm:px-6 py-3 text-left"
+                  return (
+                    <motion.div
+                      key={index}
+                      layout
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{ type: "spring", stiffness: 90, damping: 20 }}
+                      className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#E6EAF2]"
                     >
-                      <span
-                        className={`font-semibold text-sm sm:text-base transition-colors ${
-                          isOpen ? "text-[#0037CA]" : "text-[#2B2B2B]"
-                        }`}
+                      <button
+                        onClick={() => setOpenIndex(isOpen ? null : index)}
+                        className="w-full flex items-center justify-between px-3 sm:px-6 py-3 text-left"
                       >
-                        {item.q}
-                      </span>
-
-                      <motion.span
-                        animate={{
-                          rotate: isOpen ? 180 : 0,
-                          scale: isOpen ? 1.05 : 1,
-                          backgroundColor: isOpen ? "#0037CA" : "#ffffff",
-                        }}
-                        transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                        className={`flex h-7 w-9 sm:w-7 items-center justify-center rounded-full
-                          ${isOpen ? "border-transparent" : "border border-[#E6EAF2]"}
-                        `}
-                      >
-                        {isOpen ? (
-                          <Minus className="h-4 w-4 text-white" />
-                        ) : (
-                          <Plus className="h-4 w-4 text-[#2B2B2B]" />
-                        )}
-                      </motion.span>
-                    </button>
-
-                    <AnimatePresence initial={false} mode="sync">
-                      {isOpen && (
-                        <motion.div
-                          key="content"
-                          layout
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{
-                            height: { type: "spring", stiffness: 120, damping: 22 },
-                            opacity: { duration: 0.18 },
-                          }}
-                          className="overflow-hidden"
+                        <span
+                          className={`font-semibold text-sm sm:text-base transition-colors ${
+                            isOpen ? "text-[#0037CA]" : "text-[#2B2B2B]"
+                          }`}
                         >
-                          <div className="px-4 sm:px-6 pb-3 text-[#2B2B2B] text-sm leading-relaxed">
-                            {item.a}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </LayoutGroup>
+                          {item.q}
+                        </span>
+
+                        <motion.span
+                          animate={{
+                            rotate: isOpen ? 180 : 0,
+                            scale: isOpen ? 1.05 : 1,
+                            backgroundColor: isOpen ? "#0037CA" : "#ffffff",
+                          }}
+                          transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                          className={`flex h-7 w-9 sm:w-7 items-center justify-center rounded-full
+                            ${isOpen ? "border-transparent" : "border border-[#E6EAF2]"}
+                          `}
+                        >
+                          {isOpen ? (
+                            <Minus className="h-4 w-4 text-white" />
+                          ) : (
+                            <Plus className="h-4 w-4 text-[#2B2B2B]" />
+                          )}
+                        </motion.span>
+                      </button>
+
+                      <AnimatePresence initial={false} mode="sync">
+                        {isOpen && (
+                          <motion.div
+                            key="content"
+                            layout
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{
+                              height: { type: "spring", stiffness: 120, damping: 22 },
+                              opacity: { duration: 0.18 },
+                            }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-4 sm:px-6 pb-3 text-[#2B2B2B] text-sm leading-relaxed">
+                              {item.a}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </LayoutGroup>
+
+            {/* VIEW MORE / VIEW LESS BUTTON */}
+            {hasMore && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 100, damping: 20 }}
+                className="mt-5 flex justify-center"
+              >
+                <motion.button
+                  onClick={() => {
+                    setShowAll((prev) => !prev);
+                    if (showAll) setOpenIndex(0);
+                  }}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                  className="
+                    inline-flex items-center gap-2
+                    font-semibold text-sm sm:text-base
+                    px-6 py-2.5
+                    rounded-full
+                    border-2 border-[#0037CA]
+                    text-[#0037CA] bg-white
+                    hover:bg-white hover:text-black
+                    transition-colors duration-200
+                    shadow-[0_4px_14px_rgba(0,55,202,0.12)]
+                  "
+                >
+                  {showAll ? (
+                    <>
+                      View Less
+                      <ChevronUp className="h-5 w-5" />
+                    </>
+                  ) : (
+                    <>
+                      View More ({faqs.length - INITIAL_VISIBLE} more)
+                      <ChevronDown className="h-5 w-5" />
+                    </>
+                  )}
+                </motion.button>
+              </motion.div>
+            )}
+          </div>
         </div>
       </motion.div>
     </section>
