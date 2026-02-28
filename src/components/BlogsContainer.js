@@ -1,20 +1,26 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo, useRef } from "react";
 import { BLOGS } from "../data/blogs";
 
 export default function BlogsContainer() {
-  const [activeCategory, setActiveCategory] = useState("All Posts");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [page, setPage] = useState(1);
+  const filterRef = useRef(null);
 
   const pageSize = 9;
+
+  const FILTERS = ["All", ...new Set(BLOGS.map((b) => b.category.trim()))];
+
   const filtered = useMemo(() => {
-    if (activeCategory === "All Posts") return BLOGS;
-    return BLOGS.filter((b) => b.category === activeCategory);
+    if (activeCategory === "All") return BLOGS;
+    return BLOGS.filter(
+      (b) => b.category.trim() === activeCategory.trim()
+    );
   }, [activeCategory]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
 
-  const onFilter = (cat) => {
+  const onFilterChange = (cat) => {
     setActiveCategory(cat);
     setPage(1);
   };
@@ -23,8 +29,55 @@ export default function BlogsContainer() {
     <section className="w-full bg-white font-poppins">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
 
-        {/* Blog Grid */}
-        <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        {/* ✅ Filter Section */}
+        <div
+          ref={filterRef}
+          className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4"
+        >
+          {/* Mobile Dropdown */}
+          <div className="sm:hidden">
+            <label className="block text-[16px] font-semibold text-[#111827] mb-2">
+              Filter by category
+            </label>
+
+            <select
+              value={activeCategory}
+              onChange={(e) => onFilterChange(e.target.value)}
+              className="w-full rounded-xl bg-white border border-[#E7E9F5] px-4 py-3 text-[13px] font-semibold text-[#111827]"
+            >
+              {FILTERS.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Desktop Pills */}
+          <div className="hidden sm:flex flex-wrap gap-3">
+            {FILTERS.map((filter) => {
+              const isActive = filter === activeCategory;
+
+              return (
+                <button
+                  key={filter}
+                  type="button"
+                  onClick={() => onFilterChange(filter)}
+                  className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-all ${
+                    isActive
+                      ? "bg-[#0B3BFF] text-white"
+                      : "bg-white text-[#111827] border border-[#E7E9F5] hover:bg-[#EEF1FF]"
+                  }`}
+                >
+                  {filter}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ✅ Blog Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {paged.map((b) => (
             <a
               key={b.id}
@@ -53,7 +106,6 @@ export default function BlogsContainer() {
             </a>
           ))}
         </div>
-
       </div>
     </section>
   );
