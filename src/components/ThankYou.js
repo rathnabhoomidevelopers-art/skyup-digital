@@ -182,11 +182,11 @@ export default function ThankYou() {
             <div className="text-xs font-bold uppercase tracking-[0.05em] text-slate-600 sm:text-sm">
               Address
             </div>
-            <p className="mt-2 text-sm leading-5 text-slate-700 sm:text-base sm:leading-6">
+            <a href="https://share.google/mOS54S7HnQWJEGTsg" target="_blank" className="mt-2 text-sm leading-5 text-slate-700 sm:text-base sm:leading-6 no-underline">
               2nd Floor, No 23, 14A, Dasarahalli Main Rd, E Block&nbsp;
               <br className="sm:hidden" />
               Sahakar Nagar, Bengaluru, Karnataka 560092
-            </p>
+            </a>
           </div>
         </motion.aside>
       </motion.main>
