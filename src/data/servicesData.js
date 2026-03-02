@@ -1429,7 +1429,7 @@ export const SERVICES = {
       a: "We begin by understanding your business goals, challenges, and data availability to create a clear strategy tailored to your objectives.", 
     },
     {
-      q:"2. How do you ensure the quality of data used for ML models?",
+      q:"How do you ensure the quality of data used for ML models?",
       a: "We perform data collection, cleaning, validation, and preprocessing to ensure high accuracy and reliable model performance.", 
     },
     {
