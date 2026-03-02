@@ -1386,10 +1386,10 @@ export const SERVICES = {
 },
 
 "machine-learning": {
-  heroTitle: "Machine Learning",
+  heroTitle: "Unlock the Power of Intelligent Machine Learning Solutions",
   slug: "machine-learning",
   heroDesc:
-    "SKYUP: Intelligent AI automation for businesses, recognized among Top AI Companies in Bangalore.",
+    "Drive smarter decisions and faster growth with advanced, data-driven machine learning solutions.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
   heroImage: "/images/ai_banner.webp",
@@ -1425,84 +1425,88 @@ export const SERVICES = {
   //FAQsections
   faq:[
     {
-      q:"What is AI automation?",
-      a: "AI automation uses artificial intelligence to automate repetitive tasks, optimize workflows, and improve decision-making across business operations.", 
+      q:"What is the first step in your machine learning process?",
+      a: "We begin by understanding your business goals, challenges, and data availability to create a clear strategy tailored to your objectives.", 
     },
     {
-      q:"How can AI automation benefit my business?",
-      a: "It helps reduce manual effort, increase efficiency, improve accuracy, and drive faster growth while saving time and operational costs.", 
+      q:"2. How do you ensure the quality of data used for ML models?",
+      a: "We perform data collection, cleaning, validation, and preprocessing to ensure high accuracy and reliable model performance.", 
     },
     {
-      q:"Is AI automation suitable for small businesses?",
-      a:"Yes. AI automation can be scaled to suit businesses of all sizes and customized based on specific goals and budgets.",
+      q:"How long does it take to develop a machine learning solution?",
+      a:"The timeline depends on project complexity, data size, and business requirements. Most projects move from strategy to deployment in structured phases.",
     },
     {
-      q:"Do you offer customized AI automation solutions?",
-      a:"Absolutely. We design AI automation strategies tailored to your business needs, industry, and growth objectives",
+      q:"Do you provide custom machine learning solutions?",
+      a:"Yes, we design fully customized ML models aligned with your industry, business goals, and operational needs.",
+    },
+     {
+      q:"Can machine learning solutions integrate with existing systems?",
+      a:"Absolutely. We ensure seamless integration with your current software, CRM, ERP, website, or mobile applications.",
     },
   ],
   // Trust section content for this slug
   trustTitle: "Why Choose",
-  trustHighlight: { blue: "SKYUP", black: "Digital Solutions as Your AI Automation Agency in Bangalore?" },
+  trustHighlight: { blue: "SKYUP", black: " Digital Solutions for Machine Learning Solutions " },
   trustCards: [
     {
       icon: "/images/service_orange_2.svg",
-      title: "Automation-First Strategy",
-      desc: "Every automation is designed around your business process, goals, and scalability—not just tools.",
+      title: "AI-Powered Automation",
+      desc: "Automating repetitive processes to improve efficiency and reduce operational costs.",
     },
     {
       icon: "/images/service_orange_14.svg",
-      title: "AI-Driven Automation Solutions",
-      desc: "Intelligent automation built using AI, workflows, and integrations to deliver real business impact.",
+      title: "Natural Language Processing",
+      desc: "Building intelligent chatbots, sentiment analysis systems, and text-based AI solutions.",
     },
     {
       icon: "/images/service_orange_1.svg",
-      title: "Industry-Focused Experience",
-      desc: "Proven automation solutions for real estate, startups, SMEs, and growing businesses.",
+      title: "Computer Vision Solutions",
+      desc: "Implementing image recognition, object detection, and visual data analysis systems.",
     },
     {
       icon: "/images/service_orange_12.svg",
-      title: "Seamless System Integration",
-      desc: "Automation that connects CRMs, marketing tools, and business systems for smooth data flow.",
+      title: "Data Analysis & Preparation",
+      desc: "Collecting, cleaning, and structuring high-quality data to build accurate and reliable ML models.",
     },
     {
       icon: "/images/service_orange_13.svg",
-      title: "Scalable Automation Frameworks",
-      desc: "Automation solutions built to scale with your business growth and evolving needs.",
+      title: "Predictive Analytics",
+      desc: "Using advanced algorithms to forecast trends, customer behavior, and business outcomes.",
     },
     {
       icon: "/images/service_orange_5.svg",
-      title: "Performance & ROI Focused",
-      desc: "Every automation is measured, optimized, and aligned to deliver real business value.",
+      title: "Custom ML Model Development",
+      desc: "Designing tailored machine learning models aligned with your business goals.",
     },
   ],
 
   journeyTitle: "The Journey We Follow",
-  journeySub: "As a leading Branding Agency in Bangalore, SKYUP Digital Solutions follows a strategic journey to build strong logos, clear brand identities, and consistent branding across all platforms.",
+  journeySub: "A structured, data-driven approach from strategy to deployment, ensuring measurable and scalable success.",
   steps: [
     {
       no: 1,
-      title: "Audit",
+      title: "Understanding Your Goals",
       desc:
-        "Understand current processes and automation opportunities.",
+        "We analyze your business needs, challenges, and growth objectives.",
     },
     {
       no: 2,
-      title: "Plan",
+      title: "Data Collection & Strategy Planning",
       desc:
-        "Design automation workflows aligned with business goals.",
+        "Gathering quality data and creating a structured ML roadmap.",
     },
     {
       no: 3,
-      title: "Implement",
+      title: "Model Development",
       desc:
-        "Set up tools, integrations, and automated processes.",
+        "Building intelligent, customized machine learning models.",
     },
     {
       no: 4,
-      title: "Optimize",
+      title: "Testing & Optimization",
       desc:
-        "Monitor performance and improve automation efficiency.",
+        "Validating accuracy and refining performance for best results.",
     },
   ],
 },
