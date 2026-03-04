@@ -1387,7 +1387,10 @@ export const SERVICES = {
 
 "machine-learning": {
   heroTitle: "Unlock the Power of Intelligent Machine Learning Solutions",
+   title: "Machine Learning Solutions | SkyUp Digital solutions",
+  keyword: "Machine Learning Solutions ",
   slug: "machine-learning",
+  description: "Transform your business with advanced Machine Learning Solutions by SkyUp. Drive smarter decisions, automation & growth. Contact us today!",
   heroDesc:
     "Drive smarter decisions and faster growth with advanced, data-driven machine learning solutions.",
   primaryCta: "Get Started Today",
