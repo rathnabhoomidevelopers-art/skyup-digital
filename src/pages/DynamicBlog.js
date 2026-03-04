@@ -1,17 +1,13 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   Trash2, Plus, Image as ImageIcon, Link as LinkIcon,
   Type, Layout, List, Sparkles, Settings, Upload, Send,
   Facebook, Youtube, MessageCircle, Linkedin, ChevronLeft,
-  Eye, EyeOff,
+  Eye, EyeOff, ChevronDown, ChevronUp, Zap,
 } from "lucide-react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Head } from "vike-react/Head";
 
 const API_BASE = "http://localhost:3500";
 
-// Matches BlogDetail's slugify exactly
 const slugify = (str = "") =>
   str.toLowerCase().trim()
     .replace(/[""''"'`]/g, "")
@@ -19,42 +15,111 @@ const slugify = (str = "") =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
+const Label = ({ children, sub }) => (
+  <label className="block mb-1">
+    <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">{children}</span>
+    {sub && <span className="text-[10px] text-[#0037CA] ml-1 font-normal normal-case tracking-normal">{sub}</span>}
+  </label>
+);
+
+const Input = (props) => (
+  <input
+    {...props}
+    className={`w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800
+      placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0037CA]/30
+      focus:border-[#0037CA] transition-all ${props.className || ""}`}
+  />
+);
+
+const Textarea = (props) => (
+  <textarea
+    {...props}
+    className={`w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800
+      placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0037CA]/30
+      focus:border-[#0037CA] transition-all resize-none ${props.className || ""}`}
+  />
+);
+
+const Select = ({ label, sub, value, onChange, options }) => (
+  <div>
+    {label && <Label sub={sub}>{label}</Label>}
+    <select
+      value={value} onChange={onChange}
+      className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-700
+        focus:outline-none focus:ring-2 focus:ring-[#0037CA]/30 focus:border-[#0037CA]
+        transition-all cursor-pointer appearance-none"
+      style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 10px center" }}
+    >
+      {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+    </select>
+  </div>
+);
+
+const SectionHead = ({ children }) => (
+  <div className="flex items-center gap-2 pt-1 pb-0.5">
+    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">{children}</span>
+    <div className="flex-1 h-px bg-slate-100" />
+  </div>
+);
+
+const ContentEditable = ({ html, onChange, className, style, tagName: Tag = "div", ...rest }) => {
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    if (ref.current && document.activeElement !== ref.current) {
+      ref.current.innerHTML = html || "";
+    }
+  }, [html]);
+
+  return (
+    <Tag
+      ref={ref}
+      contentEditable
+      suppressContentEditableWarning
+      className={className}
+      style={style}
+      onBlur={(e) => onChange(e.currentTarget.innerHTML)}
+      {...rest}
+    />
+  );
+};
+
 export default function DynamicBlog() {
-  const [elements, setElements]               = useState([]);
-  const [selectedId, setSelectedId]           = useState(null);
-  const [showAddMenu, setShowAddMenu]         = useState(false);
+  const [elements, setElements]                 = useState([]);
+  const [selectedId, setSelectedId]             = useState(null);
+  const [showAddMenu, setShowAddMenu]           = useState(false);
   const [showMetaSettings, setShowMetaSettings] = useState(false);
-  const [showLoginModal, setShowLoginModal]   = useState(false);
-  const [publishStatus, setPublishStatus]     = useState(null);
-  const [publishMsg, setPublishMsg]           = useState("");
-  const [loginForm, setLoginForm]             = useState({ email: "", password: "" });
-  const [loginError, setLoginError]           = useState("");
-  const [previewMode, setPreviewMode]         = useState(false);
+  const [showLoginModal, setShowLoginModal]     = useState(false);
+  const [publishStatus, setPublishStatus]       = useState(null);
+  const [publishMsg, setPublishMsg]             = useState("");
+  const [loginForm, setLoginForm]               = useState({ email: "", password: "" });
+  const [loginError, setLoginError]             = useState("");
+  const [previewMode, setPreviewMode]           = useState(false);
 
   const selectedElement = elements.find((el) => el.id === selectedId) || null;
 
   const [metaTags, setMetaTags] = useState({
-    title: "My Blog Title",
-    description: "My blog description",
-    keywords: "",
-    canonical: "",
+    title: "", description: "", keywords: "", canonical: "",
   });
 
   const [blogMeta, setBlogMeta] = useState({
-    headline: "",
-    category: "Technology",
-    author: "Admin",
+    headline: "", category: "Technology", author: "Admin",
     date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-    heroImage: "",
-    imageAlt: "",
-    slug: "",
+    heroImage: "", imageAlt: "", slug: "",
   });
 
-  // Build live TOC — mirrors BlogDetail logic exactly
+  const handleHeadlineChange = (val) => {
+    setBlogMeta((p) => ({
+      ...p,
+      headline: val,
+      slug: p.slug || slugify(val),
+    }));
+  };
+
   const toc = useMemo(() => {
     const used = new Map();
     return elements
-      .filter((el) => el.type === "heading" && el.content)
+      .filter((el) => (el.type === "heading" || el.type === "h1") && el.content)
       .map((el) => {
         const base  = slugify(el.content);
         const count = (used.get(base) || 0) + 1;
@@ -63,15 +128,16 @@ export default function DynamicBlog() {
       });
   }, [elements]);
 
-  // ── Element CRUD ──────────────────────────────────────────────────────────
   const addElement = (type) => {
     const el = {
-      id: Date.now(),
-      type,
+      id: Date.now(), type,
       content: type === "image" ? "" : "Edit this content",
       styles: {
-        fontSize: "text-base", fontWeight: "font-normal", fontFamily: "",
-        color: "text-gray-900", textTransform: "", fontStyle: "",
+        fontSize: type === "h1" ? "text-4xl" : "text-base",
+        fontWeight: type === "h1" ? "font-bold" : "font-normal",
+        fontFamily: "",
+        color: type === "h1" ? "text-[#111827]" : "text-gray-900",
+        textTransform: "", fontStyle: "",
         textAlign: "text-left", textDecoration: "", gradient: "",
         layout: type === "div" ? "block" : "", gridCols: "", gap: "",
         flexDirection: "", justifyContent: "", alignItems: "",
@@ -88,21 +154,22 @@ export default function DynamicBlog() {
     };
     setElements((p) => [...p, el]);
     setShowAddMenu(false);
+    setSelectedId(el.id);
   };
 
-  const updateElement = (id, updates) =>
-    setElements((p) => p.map((el) => el.id === id ? { ...el, ...updates } : el));
+  const updateElement = useCallback((id, updates) =>
+    setElements((p) => p.map((el) => el.id === id ? { ...el, ...updates } : el)), []);
 
-  const updateStyles = (id, upd) =>
+  const updateStyles = useCallback((id, upd) =>
     setElements((p) => p.map((el) =>
-      el.id === id ? { ...el, styles: { ...el.styles, ...upd } } : el));
+      el.id === id ? { ...el, styles: { ...el.styles, ...upd } } : el)), []);
 
   const deleteElement = (id) => {
     setElements((p) => p.filter((el) => el.id !== id));
     if (selectedId === id) setSelectedId(null);
   };
 
-  const addListItem    = (id) =>
+  const addListItem = (id) =>
     setElements((p) => p.map((el) =>
       el.id === id ? { ...el, items: [...el.items, `Item ${el.items.length + 1}`] } : el));
 
@@ -114,13 +181,13 @@ export default function DynamicBlog() {
     setElements((p) => p.map((el) =>
       el.id === id ? { ...el, items: el.items.filter((_, i) => i !== idx) } : el));
 
-  // ── Image helpers ─────────────────────────────────────────────────────────
   const handleImageUpload = (id, file) => {
     if (!file) return;
     const r = new FileReader();
     r.onload = (e) => updateElement(id, { src: e.target.result });
     r.readAsDataURL(file);
   };
+
   const handleHeroUpload = (file) => {
     if (!file) return;
     const r = new FileReader();
@@ -128,32 +195,25 @@ export default function DynamicBlog() {
     r.readAsDataURL(file);
   };
 
-  // ── Export — format matches BlogDetail's BLOGS array exactly ──────────────
   const exportBlogData = () => {
     const sections = elements.map((el) => {
-      if (el.type === "heading")
-        return { type: el.headingLevel === "h2" ? "h2" : "h3", text: el.content };
-      if (el.type === "paragraph")
-        return { type: "p", text: el.content };
-      if (el.type === "quote")
-        return { type: "quote", text: el.content };
-      if (el.type === "image")
-        return { type: "image", src: el.src, caption: el.alt };
-      if (el.type === "ul" || el.type === "ol")
-        return { type: "ul", text: el.items };
-      if (el.type === "anchor")
-        return { type: "p_with_link", textBefore: "", linkText: el.content, href: el.href, textAfter: "" };
+      if (el.type === "h1")        return { type: "h1", text: el.content };
+      if (el.type === "heading")   return { type: el.headingLevel === "h2" ? "h2" : "h3", text: el.content };
+      if (el.type === "paragraph") return { type: "p", text: el.content };
+      if (el.type === "quote")     return { type: "quote", text: el.content };
+      if (el.type === "image")     return { type: "image", src: el.src, caption: el.alt };
+      if (el.type === "ul" || el.type === "ol") return { type: el.type, text: el.items };
+      if (el.type === "anchor")    return { type: "p_with_link", textBefore: "", linkText: el.content, href: el.href, textAfter: "" };
       return { type: "p", text: el.content };
     });
 
     const displayTitle = blogMeta.headline || metaTags.title;
-    const slug = blogMeta.slug || metaTags.title.toLowerCase().replace(/\s+/g, "-");
+    const slug = blogMeta.slug || slugify(displayTitle) || `blog-${Date.now()}`;
 
     return {
-      id: Date.now(),
-      slug,
-      headline: displayTitle,      // used as <h1> in BlogDetail
-      title: metaTags.title,       // used in meta tags / listings
+      id: Date.now(), slug,
+      headline: displayTitle,
+      title: metaTags.title || displayTitle,
       description: metaTags.description,
       Keywords: metaTags.keywords,
       category: blogMeta.category,
@@ -176,13 +236,18 @@ export default function DynamicBlog() {
   };
 
   const copyData = () => {
-    navigator.clipboard.writeText(JSON.stringify(exportBlogData(), null, 2));
-    alert("Blog data copied to clipboard!");
+    navigator.clipboard.writeText(JSON.stringify(exportBlogData(), null, 2))
+      .then(() => alert("Blog data copied to clipboard!"))
+      .catch(() => alert("Copy failed — check browser permissions."));
   };
 
   // ── Auth / Publish ────────────────────────────────────────────────────────
   const handleLogin = async () => {
     setLoginError("");
+    if (!loginForm.email || !loginForm.password) {
+      setLoginError("Email and password are required.");
+      return;
+    }
     try {
       const res  = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
@@ -193,16 +258,26 @@ export default function DynamicBlog() {
       if (res.ok) {
         localStorage.setItem("authToken", data.token);
         setShowLoginModal(false);
+        setLoginForm({ email: "", password: "" });
+        setLoginError("");
         doPublish(data.token);
       } else {
-        setLoginError(data.message || "Login failed");
+        setLoginError(data.message || "Login failed. Check credentials.");
       }
-    } catch (e) {
-      setLoginError("Network error: " + e.message);
-    }
+    } catch (e) { setLoginError("Network error: " + e.message); }
   };
 
   const publishBlog = () => {
+    const displayTitle = blogMeta.headline || metaTags.title;
+    if (!displayTitle) {
+      alert("Please add a headline before publishing (Settings → Display Headline).");
+      setShowMetaSettings(true);
+      return;
+    }
+    if (elements.length === 0) {
+      alert("Please add at least one content block before publishing.");
+      return;
+    }
     const token = localStorage.getItem("authToken");
     if (!token) { setShowLoginModal(true); return; }
     doPublish(token);
@@ -218,139 +293,195 @@ export default function DynamicBlog() {
       });
       const data = await res.json();
       if (res.status === 401 || res.status === 403) {
-        // Token expired — clear it and re-show login
         localStorage.removeItem("authToken");
         setPublishStatus(null);
         setShowLoginModal(true);
         return;
       }
       setPublishStatus(res.ok ? "success" : "error");
-      setPublishMsg(data.message || data.error || "Done");
+      setPublishMsg(data.message || data.error || (res.ok ? "Published successfully!" : "Publish failed."));
     } catch (e) {
       setPublishStatus("error");
       setPublishMsg("Network error: " + e.message);
     }
   };
 
-  // ── Render element — builder mode (editable + selection rings) ────────────
+  // ── Builder render ────────────────────────────────────────────────────────
   const renderBuilderElement = (element) => {
     const { id, type, content, styles, headingLevel, href, src, alt, speed, direction, items } = element;
 
     const classNames = Object.entries(styles)
-      .filter(([k, v]) => k !== "fontFamily" && Boolean(v))
-      .map(([, v]) => v).join(" ");
+      .filter(([k, v]) => k !== "fontFamily" && Boolean(v)).map(([, v]) => v).join(" ");
 
     const inlineStyle = {};
-    if (styles.fontFamily === "poppins")    inlineStyle.fontFamily = "'Poppins', sans-serif";
+    if (styles.fontFamily === "poppins")       inlineStyle.fontFamily = "'Poppins', sans-serif";
     else if (styles.fontFamily === "orbitron") inlineStyle.fontFamily = "'Orbitron', monospace";
     else if (styles.fontFamily === "courier")  inlineStyle.fontFamily = "'Courier Prime', monospace";
 
     const isSelected = selectedId === id;
-    const ring = `transition-all cursor-pointer ${isSelected
-      ? "ring-2 ring-[#0037CA] ring-offset-2"
-      : "hover:ring-2 hover:ring-[#FA9F42] hover:ring-offset-2"}`;
+    const ring = `transition-all cursor-pointer outline-none ${
+      isSelected
+        ? "ring-2 ring-[#0037CA] ring-offset-1"
+        : "hover:ring-2 hover:ring-[#FA9F42] hover:ring-offset-1"
+    }`;
     const pick = (e) => { e.stopPropagation(); setSelectedId(id); };
 
     switch (type) {
+      // ── FIX: h1 element type ──────────────────────────────────────────────
+      case "h1":
+        return (
+          <h1
+            className={`scroll-mt-28 text-[28px] sm:text-[36px] font-extrabold text-[#111827] leading-tight ${classNames} ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+          >
+            {content}
+          </h1>
+        );
+
+      // ── FIX: use ContentEditable wrapper for paragraph to avoid React conflict ──
       case "paragraph":
         return (
-          <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${classNames} ${ring}`}
-            onClick={pick} style={inlineStyle}
-            contentEditable suppressContentEditableWarning
-            onBlur={(e) => updateElement(id, { content: e.target.innerHTML })}
-            dangerouslySetInnerHTML={{ __html: content }} />
+          <ContentEditable
+            tagName="p"
+            html={content}
+            onChange={(html) => updateElement(id, { content: html })}
+            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${classNames} ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+          />
         );
+
       case "quote":
         return (
-          <div className={`rounded-xl border border-[#E7E9F5] bg-[#F7F9FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700 ${ring}`}
-            onClick={pick} style={inlineStyle}>
-            <div className="border-l-4 border-[#0B3BFF] pl-3 italic leading-relaxed"
-              contentEditable suppressContentEditableWarning
-              onBlur={(e) => updateElement(id, { content: e.target.innerText })}>
+          <div
+            className={`rounded-xl border border-[#E7E9F5] bg-[#F7F9FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700 ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+          >
+            <div
+              className="border-l-4 border-[#0B3BFF] pl-3 italic leading-relaxed"
+              contentEditable
+              suppressContentEditableWarning
+              onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+            >
               {content}
             </div>
           </div>
         );
+
       case "heading": {
         const Tag = headingLevel || "h3";
         const hCls = Tag === "h2"
           ? `scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827] ${classNames}`
           : `scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827] ${classNames}`;
         return (
-          <Tag className={`${hCls} ${ring}`} onClick={pick} style={inlineStyle}
-            contentEditable suppressContentEditableWarning
-            onBlur={(e) => updateElement(id, { content: e.target.innerText })}>
+          <Tag
+            className={`${hCls} ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+          >
             {content}
           </Tag>
         );
       }
+
       case "anchor":
         return (
-          <a className={`text-[#0B3BFF] font-semibold no-underline hover:opacity-90 block ${ring}`}
-            href={href} target="_blank" rel="noopener noreferrer"
-            onClick={pick} style={inlineStyle}
-            contentEditable suppressContentEditableWarning
-            onBlur={(e) => updateElement(id, { content: e.target.innerText })}>
+          <a
+            className={`text-[#0B3BFF] font-semibold no-underline hover:opacity-90 block ${ring}`}
+            href={href}
+            onClick={(e) => { e.preventDefault(); pick(e); }}
+            style={inlineStyle}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+          >
             {content}
           </a>
         );
+
       case "div":
         return (
-          <div className={`${classNames} ${ring}`} onClick={pick} style={inlineStyle}
-            contentEditable suppressContentEditableWarning
-            onBlur={(e) => updateElement(id, { content: e.target.innerText })}>
+          <div
+            className={`${classNames} ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+          >
             {content}
           </div>
         );
+
       case "span":
         return (
-          <span className={`${classNames} ${ring}`} onClick={pick} style={inlineStyle}
-            contentEditable suppressContentEditableWarning
-            onBlur={(e) => updateElement(id, { content: e.target.innerText })}>
+          <span
+            className={`${classNames} ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => updateElement(id, { content: e.currentTarget.innerText })}
+          >
             {content}
           </span>
         );
+
       case "image": {
-        if (!src)
-          return (
-            <div className={`rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-400 ${ring}`}
-              onClick={pick}>
-              <ImageIcon size={32} className="mx-auto mb-2 opacity-40" />
-              <p className="text-sm">No image — select this element and upload</p>
-            </div>
-          );
+        if (!src) return (
+          <div className={`rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-10 text-center ${ring}`} onClick={pick}>
+            <ImageIcon size={28} className="mx-auto mb-2 text-slate-300" />
+            <p className="text-sm text-slate-400">Select this block → upload image in panel</p>
+          </div>
+        );
         const imgStyle = { ...inlineStyle };
         if (element.useCustomSize) {
           if (element.customWidth)  imgStyle.width  = `${element.customWidth}px`;
           if (element.customHeight) imgStyle.height = `${element.customHeight}px`;
         }
         return (
-          <figure className={`rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 ${ring}`}
-            onClick={pick}>
-            <img src={src} alt={alt} style={imgStyle}
-              className={element.useCustomSize ? "" : "w-full h-auto"} />
+          <figure className={`rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 ${ring}`} onClick={pick}>
+            <img src={src} alt={alt || ""} style={imgStyle} className={element.useCustomSize ? "" : "w-full h-auto"} />
             {alt && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{alt}</figcaption>}
           </figure>
         );
       }
+
       case "marquee":
         return (
-          <marquee className={`${classNames} ${ring}`}
+          <marquee
+            className={`${classNames} ${ring}`}
             scrollamount={speed === "slow" ? 2 : speed === "fast" ? 10 : 6}
-            direction={direction} onClick={pick} style={inlineStyle}>
+            direction={direction}
+            onClick={pick}
+            style={inlineStyle}
+          >
             {content}
           </marquee>
         );
+
       case "ul":
       case "ol": {
         const Tag = type;
         return (
-          <Tag className={`list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800 ${ring}`}
-            onClick={pick} style={inlineStyle}>
+          <Tag
+            className={`list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800 ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+          >
             {(items || []).map((it, i) => <li key={i} className="leading-relaxed">{it}</li>)}
           </Tag>
         );
       }
+
       case "dl":
         return (
           <dl className={`${classNames} ${ring}`} onClick={pick} style={inlineStyle}>
@@ -362,12 +493,16 @@ export default function DynamicBlog() {
             ))}
           </dl>
         );
+
       default: return null;
     }
   };
 
-  // ── Render element — preview mode (read-only, matches BlogDetail renderer) ─
+  // ── Preview render (mirrors BlogDetail exactly) ───────────────────────────
   const renderPreviewElement = (el, i) => {
+    if (el.type === "h1") {
+      return <h1 key={i} className="scroll-mt-28 text-[28px] sm:text-[36px] font-extrabold text-[#111827] leading-tight">{el.content}</h1>;
+    }
     if (el.type === "heading") {
       const Tag = el.headingLevel || "h3";
       const cls = Tag === "h2"
@@ -375,31 +510,25 @@ export default function DynamicBlog() {
         : "scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827]";
       return <Tag key={i} className={cls}>{el.content}</Tag>;
     }
-    if (el.type === "quote")
-      return (
-        <div key={i} className="rounded-xl border border-[#E7E9F5] bg-[#F7F9FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700">
-          <div className="border-l-4 border-[#0B3BFF] pl-3 italic leading-relaxed">{el.content}</div>
-        </div>
-      );
-    if (el.type === "image")
-      return (
-        <figure key={i} className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50">
-          {el.src
-            ? <img src={el.src} alt={el.alt || "Blog image"} className="w-full h-auto" />
-            : <div className="w-full h-40 flex items-center justify-center text-slate-400 text-sm">No image uploaded</div>
-          }
-          {el.alt && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{el.alt}</figcaption>}
-        </figure>
-      );
-    if (el.type === "anchor")
-      return (
-        <p key={i} className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
-          <a href={el.href} target="_blank" rel="noopener noreferrer"
-            className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90">
-            {el.content}
-          </a>
-        </p>
-      );
+    if (el.type === "quote") return (
+      <div key={i} className="rounded-xl border border-[#E7E9F5] bg-[#F7F9FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700">
+        <div className="border-l-4 border-[#0B3BFF] pl-3 italic leading-relaxed">{el.content}</div>
+      </div>
+    );
+    if (el.type === "image") return (
+      <figure key={i} className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50">
+        {el.src
+          ? <img src={el.src} alt={el.alt || "Blog image"} className="w-full h-auto" />
+          : <div className="w-full h-40 flex items-center justify-center text-slate-400 text-sm">No image</div>}
+        {el.alt && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{el.alt}</figcaption>}
+      </figure>
+    );
+    if (el.type === "anchor") return (
+      <p key={i} className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
+        <a href={el.href} target="_blank" rel="noopener noreferrer"
+          className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90">{el.content}</a>
+      </p>
+    );
     if (el.type === "ul" || el.type === "ol") {
       const Tag = el.type;
       return (
@@ -408,250 +537,353 @@ export default function DynamicBlog() {
         </Tag>
       );
     }
-    if (el.type === "marquee")
-      return <marquee key={i} scrollamount={6}>{el.content}</marquee>;
-    // paragraph / div / span / dl / default
+    if (el.type === "marquee") return <marquee key={i} scrollamount={6}>{el.content}</marquee>;
     return (
-      <p key={i} className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
-        dangerouslySetInnerHTML={{ __html: el.content }} />
+      <p key={i}
+        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+        dangerouslySetInnerHTML={{ __html: el.content }}
+      />
     );
   };
 
   const displayTitle = blogMeta.headline || metaTags.title;
 
-  // ──────────────────────────────────────────────────────────────────────────
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
-      style={{ fontFamily: "'Courier Prime', monospace" }}>
+  // ── Progress checks ───────────────────────────────────────────────────────
+  const progressItems = [
+    { label: "Title",   done: Boolean(blogMeta.headline || metaTags.title) },
+    { label: "Image",   done: Boolean(blogMeta.heroImage) },
+    { label: "Slug",    done: Boolean(blogMeta.slug) },
+    { label: `${elements.length} block${elements.length !== 1 ? "s" : ""}`, done: elements.length > 0 },
+  ];
 
-      <Head>
-        <title>{metaTags.title}</title>
+  // ─────────────────────────────────────────────────────────────────────────
+  return (
+    <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'Poppins', sans-serif" }}>
+      {/* <Head>
+        <title>{metaTags.title || "Blog Builder"}</title>
         <meta name="description" content={metaTags.description} />
         {metaTags.keywords  && <meta name="keywords"  content={metaTags.keywords} />}
         {metaTags.canonical && <link rel="canonical"  href={metaTags.canonical} />}
-      </Head>
+      </Head> */}
 
-      <Header />
+      {/* <Header /> */}
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Courier+Prime:wght@400;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
-        .glow-text { text-shadow: 0 0 10px rgba(0,255,255,.8), 0 0 20px rgba(0,255,255,.5); }
-        .neon-btn {
-          background:#0037CA; border:2px solid #0037CA; color:#fff;
-          padding:.5rem 1.5rem; font-family:'Orbitron',monospace; font-weight:700;
-          text-transform:uppercase; letter-spacing:2px; cursor:pointer; transition:all .3s;
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+
+        .panel-scroll::-webkit-scrollbar { width: 4px; }
+        .panel-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .panel-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        input[type="file"] {
+          font-size: 12px; color: #64748b;
+          border: 1.5px dashed #cbd5e1; border-radius: 8px;
+          padding: 8px 12px; width: 100%; background: #f8fafc;
+          cursor: pointer; transition: border-color .2s;
         }
-        .neon-btn:hover { background:#FA9F42; border-color:#FA9F42; color:#000; }
-        .ctrl-input {
-          background:rgba(0,0,0,.4); border:1px solid #00ffff; color:#00ffff;
-          padding:.5rem; font-family:'Courier Prime',monospace; width:100%; transition:all .3s;
+        input[type="file"]:hover { border-color: #0037CA; }
+
+        .badge {
+          display: inline-flex; align-items: center;
+          background: #EEF1FF; color: #0037CA;
+          padding: 2px 10px; border-radius: 999px;
+          font-size: 11px; font-weight: 600;
         }
-        .ctrl-input:focus { outline:none; box-shadow:0 0 10px rgba(0,255,255,.5); background:rgba(0,0,0,.6); }
-        .ctrl-select {
-          background:rgba(0,0,0,.6); border:1px solid #00ffff; color:#00ffff;
-          padding:.5rem; font-family:'Courier Prime',monospace; width:100%; cursor:pointer;
+
+        .btn-publish {
+          background: linear-gradient(135deg, #0037CA 0%, #0B3BFF 100%);
+          color: #fff; border: none; padding: 11px 20px;
+          border-radius: 10px; font-weight: 600; font-size: 13px;
+          cursor: pointer; width: 100%; display: flex;
+          align-items: center; justify-content: center; gap: 8px;
+          transition: all .25s; box-shadow: 0 4px 14px rgba(0,55,202,.25);
+          font-family: 'Poppins', sans-serif;
         }
-        .ctrl-select:focus { outline:none; box-shadow:0 0 10px rgba(0,255,255,.5); }
-        .pub-btn {
-          background:linear-gradient(135deg,#10b981,#059669); border:2px solid #10b981; color:#fff;
-          padding:.5rem 1.5rem; font-family:'Orbitron',monospace; font-weight:700;
-          text-transform:uppercase; letter-spacing:1px; cursor:pointer; transition:all .3s;
-          width:100%; display:flex; align-items:center; justify-content:center; gap:.5rem;
+        .btn-publish:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,55,202,.35); }
+        .btn-publish:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+        .btn-secondary {
+          background: #fff; color: #374151; border: 1.5px solid #e2e8f0;
+          padding: 9px 14px; border-radius: 8px; font-size: 12px;
+          font-weight: 500; cursor: pointer; flex: 1;
+          display: flex; align-items: center; justify-content: center; gap: 6px;
+          transition: all .2s; font-family: 'Poppins', sans-serif;
         }
-        .pub-btn:hover { background:linear-gradient(135deg,#059669,#047857); }
-        .pub-btn:disabled { opacity:.5; cursor:not-allowed; }
-        .font-poppins { font-family:'Poppins',sans-serif; }
+        .btn-secondary:hover { border-color: #0037CA; color: #0037CA; background: #EEF1FF; }
+
+        .btn-danger {
+          background: #fff5f5; color: #ef4444; border: 1.5px solid #fecaca;
+          padding: 6px 10px; border-radius: 7px; cursor: pointer;
+          display: flex; align-items: center; gap: 4px;
+          font-size: 12px; transition: all .2s; font-family: 'Poppins', sans-serif;
+        }
+        .btn-danger:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+        .elem-chip {
+          background: #fff; border: 1.5px solid #e2e8f0; color: #475569;
+          padding: 8px 6px; border-radius: 8px; font-size: 11px; font-weight: 500;
+          cursor: pointer; display: flex; flex-direction: column; align-items: center;
+          gap: 4px; transition: all .2s;
+        }
+        .elem-chip:hover { border-color: #FA9F42; color: #FA9F42; background: #fffaf5; }
+        .elem-chip.active { border-color: #0037CA; color: #0037CA; background: #EEF1FF; }
+
+        .preview-bar {
+          background: linear-gradient(90deg, #0037CA 0%, #0B3BFF 100%);
+          padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+          position: sticky; top: 0; z-index: 50;
+          box-shadow: 0 2px 12px rgba(0,55,202,.25);
+        }
+
+        /* Fix: prevent contentEditable outline flash */
+        [contenteditable]:focus { outline: none; }
       `}</style>
 
-      {/* ── Main layout ─────────────────────────────────────────────────── */}
-      <div className={`grid min-h-screen ${previewMode ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[400px_1fr]"}`}>
+      <div className={`grid min-h-screen ${previewMode ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[380px_1fr]"}`}>
 
-        {/* ════════ CONTROL PANEL ════════ */}
+        {/* ══════════════════ CONTROL PANEL ══════════════════ */}
         {!previewMode && (
-          <div className="bg-black/80 backdrop-blur-sm border-r-2 border-cyan-400 overflow-y-auto"
-            style={{ maxHeight: "100vh" }}>
+          <div className="bg-white border-r border-slate-200 flex flex-col panel-scroll overflow-y-auto shadow-sm"
+            style={{ maxHeight: "100vh", position: "sticky", top: 0 }}>
 
-            {/* Panel header */}
-            <div className="p-5 border-b-2 border-cyan-400 bg-gradient-to-r from-purple-900/50 to-transparent">
-              <div className="flex items-center justify-between mb-1">
-                <h1 className="text-2xl font-bold glow-text" style={{ fontFamily: "'Orbitron',monospace" }}>
-                  BLOG BUILDER
-                </h1>
-                <div className="flex gap-2">
+            {/* ── Panel Header ── */}
+            <div className="px-5 py-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#0037CA] flex items-center justify-center shadow-sm">
+                    <Zap size={15} className="text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-[15px] font-bold text-slate-800 leading-none">Blog Builder</h1>
+                    <p className="text-[10px] text-slate-400 mt-0.5 leading-none">SkyUp Digital</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
                   <button onClick={() => setPreviewMode(true)}
                     title="Full BlogDetail preview"
-                    className="bg-purple-900/50 border border-cyan-400 text-cyan-300 p-2 rounded hover:bg-[#0037CA] hover:border-[#0037CA] hover:text-white transition-all">
-                    <Eye size={17} />
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-xs font-medium hover:border-[#0037CA] hover:text-[#0037CA] hover:bg-[#EEF1FF] transition-all">
+                    <Eye size={13} /> Preview
                   </button>
                   <button onClick={() => setShowMetaSettings((v) => !v)}
-                    title="Settings & Publish"
-                    className="bg-purple-900/50 border border-cyan-400 text-cyan-300 p-2 rounded hover:bg-[#0037CA] hover:border-[#0037CA] hover:text-white transition-all">
-                    <Settings size={17} />
+                    title="Settings"
+                    className={`p-1.5 rounded-lg border text-xs transition-all ${showMetaSettings ? "bg-[#EEF1FF] border-[#0037CA] text-[#0037CA]" : "border-slate-200 text-slate-500 hover:border-[#0037CA] hover:text-[#0037CA]"}`}>
+                    <Settings size={15} />
                   </button>
                 </div>
               </div>
-              <p className="text-cyan-400 text-xs">Preview matches your live BlogDetail page</p>
+
+              {/* Progress indicator — FIX: correct per-field check */}
+              <div className="mt-3 flex items-center gap-3 flex-wrap">
+                {progressItems.map(({ label, done }) => (
+                  <div key={label} className="flex items-center gap-1">
+                    <div className={`w-2 h-2 rounded-full transition-colors ${done ? "bg-green-400" : "bg-slate-200"}`} />
+                    <span className="text-[10px] text-slate-400">{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* ── Settings panel ── */}
+            {/* ── Settings Panel ── */}
             {showMetaSettings && (
-              <div className="p-5 border-b border-cyan-400/30 bg-purple-900/20 space-y-3">
-                <p className="text-cyan-300 text-xs font-bold tracking-widest">SEO META</p>
+              <div className="border-b border-slate-100 bg-slate-50/70">
+                {/* SEO */}
+                <div className="px-5 py-4 space-y-3">
+                  <SectionHead>SEO Settings</SectionHead>
 
-                {[
-                  { label: "Meta Title",   key: "title",    state: metaTags, setter: setMetaTags, ph: "My Blog Title" },
-                  { label: "Keywords",     key: "keywords", state: metaTags, setter: setMetaTags, ph: "seo, blog, react" },
-                  { label: "Canonical URL",key: "canonical",state: metaTags, setter: setMetaTags, ph: "https://example.com/slug" },
-                ].map(({ label, key, state, setter, ph }) => (
-                  <div key={key}>
-                    <label className="block text-cyan-300 text-xs mb-1">{label}</label>
-                    <input type="text" value={state[key]}
-                      onChange={(e) => setter((p) => ({ ...p, [key]: e.target.value }))}
-                      className="ctrl-input text-sm" placeholder={ph} />
+                  <div>
+                    <Label>Page Title <span className="text-[10px] text-slate-400 font-normal normal-case">(for &lt;title&gt; tag)</span></Label>
+                    <Input value={metaTags.title} placeholder="My Blog Post Title"
+                      onChange={(e) => setMetaTags((p) => ({ ...p, title: e.target.value }))} />
                   </div>
-                ))}
-
-                <div>
-                  <label className="block text-cyan-300 text-xs mb-1">Meta Description</label>
-                  <textarea value={metaTags.description} rows={2}
-                    onChange={(e) => setMetaTags((p) => ({ ...p, description: e.target.value }))}
-                    className="ctrl-input text-sm" />
-                </div>
-
-                <p className="text-cyan-300 text-xs font-bold tracking-widest pt-1">BLOG METADATA</p>
-
-                <div>
-                  <label className="block text-cyan-300 text-xs mb-1">
-                    Headline <span className="text-cyan-500 font-normal">(shown as &lt;h1&gt; on page)</span>
-                  </label>
-                  <input type="text" value={blogMeta.headline}
-                    onChange={(e) => setBlogMeta((p) => ({ ...p, headline: e.target.value }))}
-                    className="ctrl-input text-sm" placeholder="Your display headline" />
-                </div>
-
-                {[
-                  { label: "Slug",          key: "slug",     ph: "my-blog-post" },
-                  { label: "Category",      key: "category", ph: "Technology" },
-                  { label: "Author",        key: "author",   ph: "Admin" },
-                  { label: "Date",          key: "date",     ph: "Jan 15, 2025" },
-                  { label: "Hero Image Alt",key: "imageAlt", ph: "Alt text for hero image" },
-                ].map(({ label, key, ph }) => (
-                  <div key={key}>
-                    <label className="block text-cyan-300 text-xs mb-1">{label}</label>
-                    <input type="text" value={blogMeta[key]}
-                      onChange={(e) => setBlogMeta((p) => ({ ...p, [key]: e.target.value }))}
-                      className="ctrl-input text-sm" placeholder={ph} />
+                  <div>
+                    <Label>Meta Description</Label>
+                    <Textarea value={metaTags.description} placeholder="Brief description for search engines…" rows={2}
+                      onChange={(e) => setMetaTags((p) => ({ ...p, description: e.target.value }))} />
                   </div>
-                ))}
-
-                <div>
-                  <label className="block text-cyan-300 text-xs mb-1">Hero Image</label>
-                  <input type="file" accept="image/*"
-                    onChange={(e) => handleHeroUpload(e.target.files[0])}
-                    className="ctrl-input text-sm" />
-                  {blogMeta.heroImage && (
-                    <img src={blogMeta.heroImage} alt="hero"
-                      className="mt-2 w-full h-20 object-cover rounded border border-cyan-400/30" />
-                  )}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label>Keywords</Label>
+                      <Input value={metaTags.keywords} placeholder="seo, blog, react"
+                        onChange={(e) => setMetaTags((p) => ({ ...p, keywords: e.target.value }))} />
+                    </div>
+                    <div>
+                      <Label>Canonical URL</Label>
+                      <Input value={metaTags.canonical} placeholder="https://…"
+                        onChange={(e) => setMetaTags((p) => ({ ...p, canonical: e.target.value }))} />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Actions */}
-                <div className="space-y-2 pt-1">
+                {/* Blog Meta */}
+                <div className="px-5 py-4 space-y-3 border-t border-slate-100">
+                  <SectionHead>Blog Details</SectionHead>
+
+                  <div>
+                    <Label sub="(shown as <h1> on page)">Display Headline</Label>
+                    <Input value={blogMeta.headline} placeholder="Your compelling headline here…"
+                      onChange={(e) => handleHeadlineChange(e.target.value)} />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label sub="(auto-generated)">URL Slug</Label>
+                      <Input value={blogMeta.slug} placeholder="my-blog-post"
+                        onChange={(e) => setBlogMeta((p) => ({ ...p, slug: slugify(e.target.value) }))} />
+                    </div>
+                    <div>
+                      <Label>Category</Label>
+                      <Input value={blogMeta.category} placeholder="Technology"
+                        onChange={(e) => setBlogMeta((p) => ({ ...p, category: e.target.value }))} />
+                    </div>
+                    <div>
+                      <Label>Author</Label>
+                      <Input value={blogMeta.author} placeholder="Admin"
+                        onChange={(e) => setBlogMeta((p) => ({ ...p, author: e.target.value }))} />
+                    </div>
+                    <div>
+                      <Label>Date</Label>
+                      <Input value={blogMeta.date} placeholder="Jan 15, 2025"
+                        onChange={(e) => setBlogMeta((p) => ({ ...p, date: e.target.value }))} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label>Hero Image</Label>
+                    <input type="file" accept="image/*"
+                      onChange={(e) => handleHeroUpload(e.target.files[0])} />
+                    {blogMeta.heroImage && (
+                      <div className="mt-2 relative rounded-lg overflow-hidden">
+                        <img src={blogMeta.heroImage} alt="hero"
+                          className="w-full h-24 object-cover rounded-lg" />
+                        <button onClick={() => setBlogMeta((p) => ({ ...p, heroImage: "" }))}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-all">×</button>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <Label>Hero Image Alt Text</Label>
+                    <Input value={blogMeta.imageAlt} placeholder="Descriptive alt text for SEO"
+                      onChange={(e) => setBlogMeta((p) => ({ ...p, imageAlt: e.target.value }))} />
+                  </div>
+                </div>
+
+                {/* Publish actions */}
+                <div className="px-5 py-4 border-t border-slate-100 space-y-2">
+                  <SectionHead>Publish</SectionHead>
+
                   <div className="flex gap-2">
-                    <button onClick={downloadJSON}
-                      className="flex-1 bg-purple-900/50 border border-cyan-400 text-cyan-300 px-3 py-2 rounded hover:bg-[#0037CA] hover:border-[#0037CA] hover:text-white text-xs transition-all">
-                      ⬇ Download JSON
+                    <button onClick={downloadJSON} className="btn-secondary">
+                      <Upload size={12} /> Download JSON
                     </button>
-                    <button onClick={copyData}
-                      className="flex-1 bg-purple-900/50 border border-cyan-400 text-cyan-300 px-3 py-2 rounded hover:bg-[#FA9F42] hover:border-[#FA9F42] hover:text-black text-xs transition-all">
-                      ⎘ Copy JSON
+                    <button onClick={copyData} className="btn-secondary">
+                      <span className="text-base leading-none">⎘</span> Copy
                     </button>
                   </div>
-                  <button onClick={publishBlog} disabled={publishStatus === "loading"} className="pub-btn">
+
+                  <button onClick={publishBlog} disabled={publishStatus === "loading"} className="btn-publish">
                     {publishStatus === "loading"
-                      ? <><Upload size={15} className="animate-spin" /> Publishing…</>
-                      : <><Send size={15} /> Publish & Push to GitHub</>}
+                      ? <><Upload size={14} className="animate-spin" /> Publishing…</>
+                      : <><Send size={14} /> Publish &amp; Push to GitHub</>}
                   </button>
+
                   {publishStatus === "success" && (
-                    <div className="text-green-400 text-xs p-2 bg-green-900/20 rounded border border-green-500/30 text-center">✅ {publishMsg}</div>
+                    <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-xs font-medium">
+                      <span>✅</span> {publishMsg}
+                    </div>
                   )}
                   {publishStatus === "error" && (
-                    <div className="text-red-400 text-xs p-2 bg-red-900/20 rounded border border-red-500/30 text-center">❌ {publishMsg}</div>
+                    <div className="flex items-center gap-2 text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs font-medium">
+                      <span>❌</span> {publishMsg}
+                    </div>
                   )}
                 </div>
               </div>
             )}
 
-            {/* ── Add element ── */}
-            <div className="p-5 border-b border-cyan-400/30">
+            {/* ── Add Element ── */}
+            <div className="px-5 py-4 border-b border-slate-100">
               <button onClick={() => setShowAddMenu((v) => !v)}
-                className="neon-btn w-full flex items-center justify-center gap-2 text-sm">
-                <Plus size={16} /> Add Element
+                className="w-full flex items-center justify-between px-4 py-2.5 bg-[#0037CA] text-white rounded-lg font-semibold text-sm hover:bg-[#0030b5] transition-all shadow-sm">
+                <span className="flex items-center gap-2"><Plus size={15} /> Add Content Block</span>
+                {showAddMenu ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </button>
+
               {showAddMenu && (
-                <div className="mt-3 grid grid-cols-3 gap-2">
+                <div className="mt-3 grid grid-cols-4 gap-1.5">
                   {[
+                    { type: "h1",        icon: Type,      label: "H1" },
                     { type: "paragraph", icon: Type,      label: "Para" },
                     { type: "heading",   icon: Type,      label: "Heading" },
                     { type: "quote",     icon: Type,      label: "Quote" },
+                    { type: "image",     icon: ImageIcon, label: "Image" },
+                    { type: "ul",        icon: List,      label: "Bullet" },
+                    { type: "ol",        icon: List,      label: "Numbered" },
                     { type: "anchor",    icon: LinkIcon,  label: "Link" },
                     { type: "div",       icon: Layout,    label: "Div" },
                     { type: "span",      icon: Layout,    label: "Span" },
-                    { type: "image",     icon: ImageIcon, label: "Image" },
-                    { type: "ul",        icon: List,      label: "UL" },
-                    { type: "ol",        icon: List,      label: "OL" },
                     { type: "dl",        icon: List,      label: "DL" },
-                    { type: "marquee",   icon: Sparkles,  label: "Marquee" },
+                    { type: "marquee",   icon: Sparkles,  label: "Ticker" },
                   ].map(({ type, icon: Icon, label }) => (
                     <button key={type} onClick={() => addElement(type)}
-                      className="bg-purple-900/50 border border-cyan-400 text-cyan-300 p-2 rounded hover:bg-[#FA9F42] hover:border-[#FA9F42] hover:text-black transition-all flex flex-col items-center gap-1 text-xs">
-                      <Icon size={14} />{label}
+                      className="elem-chip">
+                      <Icon size={13} />
+                      <span>{label}</span>
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* ── Element editor ── */}
+            {/* ── Element Editor ── */}
             {selectedElement ? (
-              <div className="p-5 space-y-4">
+              <div className="px-5 py-4 space-y-4 flex-1">
+                {/* Editor header */}
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-cyan-300" style={{ fontFamily: "'Orbitron',monospace" }}>
-                    EDIT: {selectedElement.type.toUpperCase()}
-                  </h2>
-                  <button onClick={() => deleteElement(selectedElement.id)}
-                    className="bg-red-900/50 border border-red-400 text-red-300 p-1.5 rounded hover:bg-red-600 hover:text-white transition-all">
-                    <Trash2 size={15} />
+                  <div className="flex items-center gap-2">
+                    <span className="badge">{selectedElement.type}</span>
+                    <span className="text-[11px] text-slate-400">editing</span>
+                  </div>
+                  <button onClick={() => deleteElement(selectedElement.id)} className="btn-danger">
+                    <Trash2 size={12} /> Delete
                   </button>
                 </div>
 
-                {/* Content */}
+                {/* Content textarea — shown for all text-based elements except image/list/dl */}
                 {!["image","ul","ol","dl"].includes(selectedElement.type) && (
                   <div>
-                    <label className="block text-cyan-300 text-xs mb-1">Content</label>
-                    <textarea value={selectedElement.content.replace(/<[^>]*>/g, "")}
+                    <Label>Content</Label>
+                    <Textarea
+                      value={selectedElement.content.replace(/<[^>]*>/g, "")}
                       onChange={(e) => updateElement(selectedElement.id, { content: e.target.value })}
-                      className="ctrl-input text-sm" rows={3} />
+                      rows={3}
+                      placeholder="Type your content…"
+                    />
 
                     {selectedElement.type === "paragraph" && (
-                      <div className="mt-2 p-3 bg-purple-900/20 rounded border border-cyan-400/30 space-y-2">
-                        <label className="block text-cyan-300 text-xs font-bold">INSERT INLINE LINK</label>
-                        <input type="text" id={`lt-${selectedElement.id}`}
-                          className="ctrl-input text-xs" placeholder="Link text" />
-                        <input type="text" id={`lu-${selectedElement.id}`}
-                          className="ctrl-input text-xs" placeholder="https://..." />
-                        <button onClick={() => {
-                          const lt = document.getElementById(`lt-${selectedElement.id}`).value;
-                          const lu = document.getElementById(`lu-${selectedElement.id}`).value;
-                          if (lt && lu) {
-                            const html = `<a href="${lu}" class="text-[#0B3BFF] font-semibold no-underline hover:opacity-90" target="_blank" rel="noopener noreferrer">${lt}</a>`;
-                            updateElement(selectedElement.id, { content: selectedElement.content + " " + html });
-                            document.getElementById(`lt-${selectedElement.id}`).value = "";
-                            document.getElementById(`lu-${selectedElement.id}`).value = "";
-                          }
-                        }} className="bg-purple-900/50 border border-cyan-400 text-cyan-300 px-3 py-1 rounded hover:bg-[#0037CA] hover:text-white w-full text-xs">
-                          + Insert Link
+                      <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg space-y-2">
+                        <p className="text-[11px] font-semibold text-[#0037CA] uppercase tracking-wider">Insert Inline Link</p>
+                        <Input id={`lt-${selectedElement.id}`} placeholder="Link text (e.g. 'click here')" />
+                        <Input id={`lu-${selectedElement.id}`} placeholder="URL (https://…)" />
+                        <button
+                          onClick={() => {
+                            const ltEl = document.getElementById(`lt-${selectedElement.id}`);
+                            const luEl = document.getElementById(`lu-${selectedElement.id}`);
+                            const lt = ltEl?.value?.trim();
+                            const lu = luEl?.value?.trim();
+                            if (lt && lu) {
+                              const html = `<a href="${lu}" class="text-[#0B3BFF] font-semibold no-underline hover:opacity-90" target="_blank" rel="noopener noreferrer">${lt}</a>`;
+                              updateElement(selectedElement.id, { content: (selectedElement.content || "") + " " + html });
+                              if (ltEl) ltEl.value = "";
+                              if (luEl) luEl.value = "";
+                            } else {
+                              alert("Please enter both link text and URL.");
+                            }
+                          }}
+                          className="btn-secondary w-full justify-center"
+                        >
+                          <LinkIcon size={11} /> Insert Link
                         </button>
                       </div>
                     )}
@@ -660,138 +892,109 @@ export default function DynamicBlog() {
 
                 {/* Heading level */}
                 {selectedElement.type === "heading" && (
-                  <div>
-                    <label className="block text-cyan-300 text-xs mb-1">
-                      Heading Level
-                      <span className="text-cyan-500 ml-1 font-normal">(h2 & h3 show in TOC)</span>
-                    </label>
-                    <select value={selectedElement.headingLevel}
-                      onChange={(e) => updateElement(selectedElement.id, { headingLevel: e.target.value })}
-                      className="ctrl-select text-sm">
-                      {[
-                        ["h2", "H2 — Section heading (large)"],
-                        ["h3", "H3 — Subsection (medium)"],
-                        ["h4", "H4"], ["h5", "H5"], ["h6", "H6"],
-                      ].map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                    </select>
-                  </div>
+                  <Select
+                    label="Heading Level" sub="h2 & h3 appear in TOC"
+                    value={selectedElement.headingLevel}
+                    onChange={(e) => updateElement(selectedElement.id, { headingLevel: e.target.value })}
+                    options={[
+                      ["h2","H2 — Section heading (large)"],
+                      ["h3","H3 — Subsection (medium)"],
+                      ["h4","H4"],["h5","H5"],["h6","H6"],
+                    ]}
+                  />
                 )}
 
-                {/* Anchor */}
+                {/* Anchor URL */}
                 {selectedElement.type === "anchor" && (
                   <div>
-                    <label className="block text-cyan-300 text-xs mb-1">URL</label>
-                    <input type="text" value={selectedElement.href}
-                      onChange={(e) => updateElement(selectedElement.id, { href: e.target.value })}
-                      className="ctrl-input text-sm" placeholder="https://example.com" />
+                    <Label>Link URL</Label>
+                    <Input value={selectedElement.href} placeholder="https://example.com"
+                      onChange={(e) => updateElement(selectedElement.id, { href: e.target.value })} />
                   </div>
                 )}
 
                 {/* Image */}
                 {selectedElement.type === "image" && (
-                  <>
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Upload Image</label>
+                      <Label>Upload Image</Label>
                       <input type="file" accept="image/*"
-                        onChange={(e) => handleImageUpload(selectedElement.id, e.target.files[0])}
-                        className="ctrl-input text-sm" />
+                        onChange={(e) => handleImageUpload(selectedElement.id, e.target.files[0])} />
+                      {selectedElement.src && (
+                        <img src={selectedElement.src} alt="" className="mt-2 w-full h-24 object-cover rounded-lg border border-slate-100" />
+                      )}
                     </div>
                     <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Alt Text / Caption</label>
-                      <input type="text" value={selectedElement.alt || ""}
-                        onChange={(e) => updateElement(selectedElement.id, { alt: e.target.value })}
-                        className="ctrl-input text-sm" placeholder="Describe the image" />
+                      <Label>Alt Text / Caption</Label>
+                      <Input value={selectedElement.alt || ""} placeholder="Describe the image for SEO & accessibility"
+                        onChange={(e) => updateElement(selectedElement.id, { alt: e.target.value })} />
                     </div>
-                    <div className="p-3 bg-purple-900/20 rounded border border-cyan-400/30">
-                      <label className="flex items-center gap-2 text-cyan-300 text-xs mb-2 cursor-pointer">
+                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                      <label className="flex items-center gap-2 cursor-pointer mb-2">
                         <input type="checkbox" checked={!!selectedElement.useCustomSize}
                           onChange={(e) => updateElement(selectedElement.id, { useCustomSize: e.target.checked })}
-                          className="w-4 h-4" />
-                        Custom pixel dimensions
+                          className="w-4 h-4 accent-[#0037CA]" />
+                        <span className="text-xs font-medium text-slate-600">Custom pixel dimensions</span>
                       </label>
                       {selectedElement.useCustomSize ? (
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="block text-cyan-300 text-xs mb-1">Width (px)</label>
-                            <input type="number" min="1" value={selectedElement.customWidth || ""}
-                              onChange={(e) => updateElement(selectedElement.id, { customWidth: e.target.value })}
-                              className="ctrl-input text-xs" placeholder="e.g. 400" />
+                            <Label>Width (px)</Label>
+                            <Input type="number" min="1" value={selectedElement.customWidth || ""} placeholder="e.g. 600"
+                              onChange={(e) => updateElement(selectedElement.id, { customWidth: e.target.value })} />
                           </div>
                           <div>
-                            <label className="block text-cyan-300 text-xs mb-1">Height (px)</label>
-                            <input type="number" min="1" value={selectedElement.customHeight || ""}
-                              onChange={(e) => updateElement(selectedElement.id, { customHeight: e.target.value })}
-                              className="ctrl-input text-xs" placeholder="e.g. 300" />
+                            <Label>Height (px)</Label>
+                            <Input type="number" min="1" value={selectedElement.customHeight || ""} placeholder="e.g. 400"
+                              onChange={(e) => updateElement(selectedElement.id, { customHeight: e.target.value })} />
                           </div>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-2 gap-2 mt-1">
-                          <div>
-                            <label className="block text-cyan-300 text-xs mb-1">Width</label>
-                            <select value={selectedElement.styles.width}
-                              onChange={(e) => updateStyles(selectedElement.id, { width: e.target.value })}
-                              className="ctrl-select text-xs">
-                              {["w-auto","w-full","w-3/4","w-1/2","w-1/3","w-1/4"].map((w) => (
-                                <option key={w} value={w}>{w}</option>
-                              ))}
-                            </select>
-                          </div>
-                          <div>
-                            <label className="block text-cyan-300 text-xs mb-1">Height</label>
-                            <select value={selectedElement.styles.height}
-                              onChange={(e) => updateStyles(selectedElement.id, { height: e.target.value })}
-                              className="ctrl-select text-xs">
-                              {["h-auto","h-32","h-48","h-64","h-96"].map((h) => (
-                                <option key={h} value={h}>{h}</option>
-                              ))}
-                            </select>
-                          </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Select label="Width" value={selectedElement.styles.width}
+                            onChange={(e) => updateStyles(selectedElement.id, { width: e.target.value })}
+                            options={[["w-auto","Auto"],["w-full","Full"],["w-3/4","75%"],["w-1/2","50%"],["w-1/3","33%"],["w-1/4","25%"]]} />
+                          <Select label="Height" value={selectedElement.styles.height}
+                            onChange={(e) => updateStyles(selectedElement.id, { height: e.target.value })}
+                            options={[["h-auto","Auto"],["h-32","Small"],["h-48","Medium"],["h-64","Large"],["h-96","XL"]]} />
                         </div>
                       )}
                     </div>
-                  </>
+                  </div>
                 )}
 
                 {/* Marquee */}
                 {selectedElement.type === "marquee" && (
-                  <>
-                    <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Speed</label>
-                      <select value={selectedElement.speed}
-                        onChange={(e) => updateElement(selectedElement.id, { speed: e.target.value })}
-                        className="ctrl-select text-sm">
-                        {["slow","normal","fast"].map((s) => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Direction</label>
-                      <select value={selectedElement.direction}
-                        onChange={(e) => updateElement(selectedElement.id, { direction: e.target.value })}
-                        className="ctrl-select text-sm">
-                        {["left","right","up","down"].map((d) => <option key={d} value={d}>{d}</option>)}
-                      </select>
-                    </div>
-                  </>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Select label="Speed" value={selectedElement.speed}
+                      onChange={(e) => updateElement(selectedElement.id, { speed: e.target.value })}
+                      options={[["slow","Slow"],["normal","Normal"],["fast","Fast"]]} />
+                    <Select label="Direction" value={selectedElement.direction}
+                      onChange={(e) => updateElement(selectedElement.id, { direction: e.target.value })}
+                      options={[["left","← Left"],["right","→ Right"],["up","↑ Up"],["down","↓ Down"]]} />
+                  </div>
                 )}
 
-                {/* List items */}
+                {/* List Items */}
                 {(selectedElement.type === "ul" || selectedElement.type === "ol") && (
                   <div>
-                    <label className="block text-cyan-300 text-xs mb-1">List Items</label>
-                    {(selectedElement.items || []).map((item, idx) => (
-                      <div key={idx} className="flex gap-2 mb-2">
-                        <input type="text" value={item}
-                          onChange={(e) => updateListItem(selectedElement.id, idx, e.target.value)}
-                          className="ctrl-input flex-1 text-sm" />
-                        <button onClick={() => deleteListItem(selectedElement.id, idx)}
-                          className="bg-red-900/50 border border-red-400 text-red-300 px-2 rounded hover:bg-red-600 hover:text-white transition-all">
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    ))}
+                    <Label>List Items</Label>
+                    <div className="space-y-1.5">
+                      {(selectedElement.items || []).map((item, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                          <span className="text-[11px] text-slate-400 w-5 text-right shrink-0">{idx + 1}.</span>
+                          <Input value={item}
+                            onChange={(e) => updateListItem(selectedElement.id, idx, e.target.value)} />
+                          <button onClick={() => deleteListItem(selectedElement.id, idx)}
+                            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg border border-red-100 text-red-400 hover:bg-red-50 transition-all">
+                            <Trash2 size={11} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                     <button onClick={() => addListItem(selectedElement.id)}
-                      className="bg-purple-900/50 border border-cyan-400 text-cyan-300 px-3 py-1 rounded hover:bg-[#0037CA] hover:text-white w-full text-xs transition-all">
-                      + Add Item
+                      className="mt-2 btn-secondary w-full justify-center text-xs">
+                      <Plus size={11} /> Add Item
                     </button>
                   </div>
                 )}
@@ -799,156 +1002,144 @@ export default function DynamicBlog() {
                 {/* DL */}
                 {selectedElement.type === "dl" && (
                   <div>
-                    <label className="block text-cyan-300 text-xs mb-1">Definitions</label>
-                    {(selectedElement.items || []).map((item, idx) => (
-                      <div key={idx} className="mb-3 p-2 bg-purple-900/20 rounded border border-cyan-400/30">
-                        <input type="text" value={item.term}
-                          onChange={(e) => {
-                            const n = selectedElement.items.map((it, i) => i === idx ? { ...it, term: e.target.value } : it);
-                            updateElement(selectedElement.id, { items: n });
-                          }}
-                          className="ctrl-input mb-2 text-xs" placeholder="Term" />
-                        <input type="text" value={item.definition}
-                          onChange={(e) => {
-                            const n = selectedElement.items.map((it, i) => i === idx ? { ...it, definition: e.target.value } : it);
-                            updateElement(selectedElement.id, { items: n });
-                          }}
-                          className="ctrl-input text-xs" placeholder="Definition" />
-                      </div>
-                    ))}
-                    <button onClick={() => updateElement(selectedElement.id, { items: [...selectedElement.items, { term: "Term", definition: "Definition" }] })}
-                      className="bg-purple-900/50 border border-cyan-400 text-cyan-300 px-3 py-1 rounded hover:bg-[#0037CA] hover:text-white w-full text-xs transition-all">
-                      + Add
+                    <Label>Definition Items</Label>
+                    <div className="space-y-2">
+                      {(selectedElement.items || []).map((item, idx) => (
+                        <div key={idx} className="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5">
+                          <Input value={item.term} placeholder="Term"
+                            onChange={(e) => {
+                              const n = selectedElement.items.map((it, i) => i === idx ? { ...it, term: e.target.value } : it);
+                              updateElement(selectedElement.id, { items: n });
+                            }} />
+                          <Input value={item.definition} placeholder="Definition"
+                            onChange={(e) => {
+                              const n = selectedElement.items.map((it, i) => i === idx ? { ...it, definition: e.target.value } : it);
+                              updateElement(selectedElement.id, { items: n });
+                            }} />
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => updateElement(selectedElement.id, { items: [...selectedElement.items, { term: "Term", definition: "Definition" }] })}
+                      className="mt-2 btn-secondary w-full justify-center text-xs">
+                      <Plus size={11} /> Add Definition
                     </button>
                   </div>
                 )}
 
-                {/* Typography */}
-                <div className="border-t border-cyan-400/30 pt-3 space-y-2">
-                  <p className="text-cyan-300 text-xs font-bold tracking-widest">TYPOGRAPHY</p>
-
-                  {[
-                    { label: "Font Size",   key: "fontSize",  opts: ["text-xs","text-sm","text-base","text-lg","text-xl","text-2xl","text-3xl","text-4xl","text-5xl"] },
-                    { label: "Font Weight", key: "fontWeight",opts: ["font-thin","font-light","font-normal","font-medium","font-semibold","font-bold","font-extrabold","font-black"] },
-                    { label: "Align",       key: "textAlign", opts: ["text-left","text-center","text-right","text-justify"] },
-                  ].map(({ label, key, opts }) => (
-                    <div key={key}>
-                      <label className="block text-cyan-300 text-xs mb-1">{label}</label>
-                      <select value={selectedElement.styles[key]}
-                        onChange={(e) => updateStyles(selectedElement.id, { [key]: e.target.value })}
-                        className="ctrl-select text-xs">
-                        {opts.map((o) => <option key={o} value={o}>{o}</option>)}
-                      </select>
-                    </div>
-                  ))}
-
-                  <div>
-                    <label className="block text-cyan-300 text-xs mb-1">Font Family</label>
-                    <select value={selectedElement.styles.fontFamily}
-                      onChange={(e) => updateStyles(selectedElement.id, { fontFamily: e.target.value })}
-                      className="ctrl-select text-xs">
-                      <option value="">Default (Poppins)</option>
-                      <option value="font-sans">Sans Serif</option>
-                      <option value="font-serif">Serif</option>
-                      <option value="font-mono">Monospace</option>
-                      <option value="poppins">Poppins</option>
-                      <option value="orbitron">Orbitron</option>
-                      <option value="courier">Courier Prime</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-cyan-300 text-xs mb-1">Color</label>
-                    <select value={selectedElement.styles.color}
-                      onChange={(e) => updateStyles(selectedElement.id, { color: e.target.value, gradient: "" })}
-                      className="ctrl-select text-xs">
-                      {["text-gray-900","text-gray-700","text-slate-600","text-slate-800","text-[#111827]","text-[#0B3BFF]","text-blue-500","text-red-500","text-green-500","text-purple-500","text-yellow-500","text-pink-500","text-cyan-500","text-white"].map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
+                {/* ── Typography ── */}
+                <div className="border-t border-slate-100 pt-4 space-y-3">
+                  <SectionHead>Typography</SectionHead>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Style</label>
-                      <select value={selectedElement.styles.fontStyle}
-                        onChange={(e) => updateStyles(selectedElement.id, { fontStyle: e.target.value })}
-                        className="ctrl-select text-xs">
-                        <option value="">Normal</option>
-                        <option value="italic">Italic</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-cyan-300 text-xs mb-1">Transform</label>
-                      <select value={selectedElement.styles.textTransform}
-                        onChange={(e) => updateStyles(selectedElement.id, { textTransform: e.target.value })}
-                        className="ctrl-select text-xs">
-                        <option value="">None</option>
-                        <option value="uppercase">UPPER</option>
-                        <option value="lowercase">lower</option>
-                        <option value="capitalize">Capital</option>
-                      </select>
-                    </div>
+                    <Select label="Font Size" value={selectedElement.styles.fontSize}
+                      onChange={(e) => updateStyles(selectedElement.id, { fontSize: e.target.value })}
+                      options={["text-xs","text-sm","text-base","text-lg","text-xl","text-2xl","text-3xl","text-4xl"].map((o) => [o, o])} />
+
+                    <Select label="Font Weight" value={selectedElement.styles.fontWeight}
+                      onChange={(e) => updateStyles(selectedElement.id, { fontWeight: e.target.value })}
+                      options={[["font-light","Light"],["font-normal","Normal"],["font-medium","Medium"],["font-semibold","Semi Bold"],["font-bold","Bold"],["font-extrabold","Extra Bold"]]} />
+
+                    <Select label="Text Align" value={selectedElement.styles.textAlign}
+                      onChange={(e) => updateStyles(selectedElement.id, { textAlign: e.target.value })}
+                      options={[["text-left","Left"],["text-center","Center"],["text-right","Right"],["text-justify","Justify"]]} />
+
+                    <Select label="Style" value={selectedElement.styles.fontStyle}
+                      onChange={(e) => updateStyles(selectedElement.id, { fontStyle: e.target.value })}
+                      options={[["","Normal"],["italic","Italic"]]} />
                   </div>
+
+                  <Select label="Font Family" value={selectedElement.styles.fontFamily}
+                    onChange={(e) => updateStyles(selectedElement.id, { fontFamily: e.target.value })}
+                    options={[["","Default (Poppins)"],["font-sans","Sans Serif"],["font-serif","Serif"],["font-mono","Monospace"],["poppins","Poppins"],["orbitron","Orbitron"],["courier","Courier Prime"]]} />
+
+                  <Select label="Color" value={selectedElement.styles.color}
+                    onChange={(e) => updateStyles(selectedElement.id, { color: e.target.value, gradient: "" })}
+                    options={[
+                      ["text-[#111827]","Dark (Headline)"],["text-slate-600","Body Gray"],["text-slate-500","Muted"],
+                      ["text-[#0037CA]","Brand Blue"],["text-[#FA9F42]","Brand Orange"],["text-[#0B3BFF]","Bright Blue"],
+                      ["text-red-500","Red"],["text-green-600","Green"],["text-white","White"],
+                    ]} />
+
+                  <Select label="Transform" value={selectedElement.styles.textTransform}
+                    onChange={(e) => updateStyles(selectedElement.id, { textTransform: e.target.value })}
+                    options={[["","None"],["uppercase","UPPERCASE"],["lowercase","lowercase"],["capitalize","Capitalize"]]} />
                 </div>
 
-                {/* Spacing & Effects */}
-                <div className="border-t border-cyan-400/30 pt-3 space-y-2">
-                  <p className="text-cyan-300 text-xs font-bold tracking-widest">SPACING & EFFECTS</p>
+                {/* ── Spacing & Effects ── */}
+                <div className="border-t border-slate-100 pt-4 space-y-3">
+                  <SectionHead>Spacing & Effects</SectionHead>
                   <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { label: "Padding", key: "padding", opts: ["","p-1","p-2","p-4","p-6","p-8"],       lbls: ["None","p-1","p-2","p-4","p-6","p-8"] },
-                      { label: "Margin",  key: "margin",  opts: ["","m-1","m-2","m-4","m-6","m-8"],       lbls: ["None","m-1","m-2","m-4","m-6","m-8"] },
-                      { label: "Border",  key: "border",  opts: ["","border","border-2","border-4"],      lbls: ["None","1px","2px","4px"] },
-                      { label: "Rounded", key: "rounded", opts: ["","rounded","rounded-lg","rounded-xl","rounded-full"], lbls: ["None","SM","LG","XL","Full"] },
-                      { label: "Shadow",  key: "shadow",  opts: ["","shadow","shadow-md","shadow-lg","shadow-xl"], lbls: ["None","SM","MD","LG","XL"] },
-                    ].map(({ label, key, opts, lbls }) => (
-                      <div key={key}>
-                        <label className="block text-cyan-300 text-xs mb-1">{label}</label>
-                        <select value={selectedElement.styles[key]}
-                          onChange={(e) => updateStyles(selectedElement.id, { [key]: e.target.value })}
-                          className="ctrl-select text-xs">
-                          {opts.map((o, i) => <option key={o} value={o}>{lbls[i]}</option>)}
-                        </select>
-                      </div>
-                    ))}
+                    <Select label="Padding" value={selectedElement.styles.padding}
+                      onChange={(e) => updateStyles(selectedElement.id, { padding: e.target.value })}
+                      options={[["","None"],["p-2","XS"],["p-4","SM"],["p-6","MD"],["p-8","LG"],["p-10","XL"]]} />
+                    <Select label="Margin" value={selectedElement.styles.margin}
+                      onChange={(e) => updateStyles(selectedElement.id, { margin: e.target.value })}
+                      options={[["","None"],["m-2","XS"],["m-4","SM"],["m-6","MD"],["m-8","LG"]]} />
+                    <Select label="Border" value={selectedElement.styles.border}
+                      onChange={(e) => updateStyles(selectedElement.id, { border: e.target.value })}
+                      options={[["","None"],["border","Thin"],["border-2","Medium"],["border-4","Thick"]]} />
+                    <Select label="Rounded" value={selectedElement.styles.rounded}
+                      onChange={(e) => updateStyles(selectedElement.id, { rounded: e.target.value })}
+                      options={[["","None"],["rounded","SM"],["rounded-lg","LG"],["rounded-xl","XL"],["rounded-2xl","2XL"],["rounded-full","Full"]]} />
+                    <Select label="Shadow" value={selectedElement.styles.shadow}
+                      onChange={(e) => updateStyles(selectedElement.id, { shadow: e.target.value })}
+                      options={[["","None"],["shadow-sm","XS"],["shadow","SM"],["shadow-md","MD"],["shadow-lg","LG"],["shadow-xl","XL"]]} />
+                    {selectedElement.styles.border && (
+                      <Select label="Border Color" value={selectedElement.styles.borderColor}
+                        onChange={(e) => updateStyles(selectedElement.id, { borderColor: e.target.value })}
+                        options={[["","Default"],["border-slate-200","Gray"],["border-[#0037CA]","Blue"],["border-[#FA9F42]","Orange"],["border-red-300","Red"],["border-green-300","Green"]]} />
+                    )}
                   </div>
                 </div>
 
                 {/* List style */}
                 {(selectedElement.type === "ul" || selectedElement.type === "ol") && (
-                  <div className="border-t border-cyan-400/30 pt-3">
-                    <label className="block text-cyan-300 text-xs mb-1 font-bold tracking-widest">LIST STYLE</label>
-                    <select value={selectedElement.styles.listStyle}
+                  <div className="border-t border-slate-100 pt-4">
+                    <Select label="List Style" value={selectedElement.styles.listStyle}
                       onChange={(e) => updateStyles(selectedElement.id, { listStyle: e.target.value })}
-                      className="ctrl-select text-xs">
-                      {(selectedElement.type === "ul"
+                      options={selectedElement.type === "ul"
                         ? [["list-disc","● Disc"],["list-circle","○ Circle"],["list-square","■ Square"],["list-none","None"]]
-                        : [["list-decimal","1. Decimal"],["list-lower-alpha","a. Lower"],["list-upper-alpha","A. Upper"],["list-lower-roman","i. Roman"],["list-upper-roman","I. Roman"]]
-                      ).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                    </select>
+                        : [["list-decimal","1. Decimal"],["list-lower-alpha","a. Lower Alpha"],["list-upper-alpha","A. Upper Alpha"],["list-lower-roman","i. Roman"],["list-upper-roman","I. Roman"]]} />
                   </div>
                 )}
               </div>
             ) : (
-              <div className="p-6 text-center text-cyan-400/40 text-sm">
-                {elements.length > 0 ? "← Click an element to edit it" : "Click \"Add Element\" to start"}
+              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                {elements.length > 0 ? (
+                  <>
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
+                      <Type size={18} className="text-slate-400" />
+                    </div>
+                    <p className="text-sm font-medium text-slate-500">Select a block to edit</p>
+                    <p className="text-xs text-slate-400 mt-1">Click any element in the preview</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-12 h-12 rounded-2xl bg-[#EEF1FF] flex items-center justify-center mb-3">
+                      <Plus size={22} className="text-[#0037CA]" />
+                    </div>
+                    <p className="text-sm font-semibold text-slate-600">Start building your blog</p>
+                    <p className="text-xs text-slate-400 mt-1">Click "Add Content Block" above</p>
+                  </>
+                )}
               </div>
             )}
           </div>
         )}
 
-        {/* ════════ PREVIEW (BlogDetail layout) ════════ */}
+        {/* ══════════════════ CANVAS / PREVIEW ══════════════════ */}
         <div className="bg-white overflow-y-auto" onClick={() => !previewMode && setSelectedId(null)}>
 
           {previewMode && (
-            <div className="sticky top-0 z-50 bg-[#0037CA] text-white px-6 py-3 flex items-center justify-between shadow-lg">
-              <span className="font-bold text-xs tracking-widest" style={{ fontFamily: "'Orbitron',monospace" }}>
-                ◉ PREVIEW — Exact BlogDetail Layout
-              </span>
+            <div className="preview-bar">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-[#FA9F42] rounded-full animate-pulse" />
+                <span className="text-white font-semibold text-sm">Live Preview — BlogDetail Layout</span>
+              </div>
               <button onClick={() => setPreviewMode(false)}
-                className="flex items-center gap-2 bg-white/10 border border-white/30 text-white px-4 py-1.5 rounded hover:bg-white/20 transition-all text-xs">
-                <EyeOff size={14} /> Back to Editor
+                className="flex items-center gap-2 bg-white/15 border border-white/25 text-white px-4 py-1.5 rounded-lg hover:bg-white/25 transition-all text-xs font-medium">
+                <EyeOff size={13} /> Back to Editor
               </button>
             </div>
           )}
@@ -958,14 +1149,14 @@ export default function DynamicBlog() {
             <div className="relative">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
 
-                {/* Left social sidebar */}
+                {/* Social sidebar */}
                 <div className="hidden lg:block w-[80px] mr-6">
                   <div className="sticky top-64 flex flex-col gap-4">
                     {[
-                      { Icon: Facebook,       cls: "hover:bg-[#0B3BFF]"  },
-                      { Icon: MessageCircle,  cls: "hover:bg-[#25D366]"  },
-                      { Icon: Linkedin,       cls: "hover:bg-[#1DA1F2]"  },
-                      { Icon: Youtube,        cls: "hover:bg-[#FF0000]"  },
+                      { Icon: Facebook,      cls: "hover:bg-[#0B3BFF]" },
+                      { Icon: MessageCircle, cls: "hover:bg-[#25D366]" },
+                      { Icon: Linkedin,      cls: "hover:bg-[#1DA1F2]" },
+                      { Icon: Youtube,       cls: "hover:bg-[#FF0000]" },
                     ].map(({ Icon, cls }, i) => (
                       <span key={i}
                         className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors cursor-default`}>
@@ -975,9 +1166,8 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
-                {/* Blog content area */}
+                {/* Blog content */}
                 <div className="flex-1 max-w-6xl">
-                  {/* Back */}
                   <span className="inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700 cursor-default">
                     <span className="h-7 w-7 rounded-full border border-slate-200 flex items-center justify-center">
                       <ChevronLeft className="h-4 w-4" />
@@ -985,7 +1175,6 @@ export default function DynamicBlog() {
                     Back to Blog
                   </span>
 
-                  {/* Category */}
                   {blogMeta.category && (
                     <div className="mt-4">
                       <span className="inline-flex rounded-full bg-[#EEF1FF] text-[#0B3BFF] px-3 py-1 text-[11px] font-semibold">
@@ -994,46 +1183,46 @@ export default function DynamicBlog() {
                     </div>
                   )}
 
-                  {/* Headline h1 */}
                   <h1 className="mt-3 text-[22px] sm:text-[28px] lg:text-[38px] font-bold text-[#111827] leading-tight">
-                    {displayTitle || <span className="text-slate-300 italic font-normal text-2xl">Your headline appears here…</span>}
+                    {displayTitle || <span className="text-slate-300 italic font-normal text-xl">Your headline appears here…</span>}
                   </h1>
 
-                  {/* Author + Date */}
                   <div className="mt-2 text-[12px] text-slate-500 flex items-center gap-3">
                     <span>{blogMeta.author}</span>
                     <span className="h-1 w-1 rounded-full bg-slate-300" />
                     <span>{blogMeta.date}</span>
                   </div>
 
-                  {/* Hero image */}
                   <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100">
                     {blogMeta.heroImage
                       ? <img src={blogMeta.heroImage} alt={blogMeta.imageAlt || displayTitle}
                           className="w-full h-[210px] sm:h-full object-cover" />
-                      : <div className="w-full h-[210px] flex items-center justify-center text-slate-400 text-sm">
-                          Hero image will appear here (upload in ⚙ settings)
+                      : <div className="w-full h-[210px] flex flex-col items-center justify-center text-slate-400 gap-2">
+                          <ImageIcon size={28} className="opacity-30" />
+                          <p className="text-sm">Hero image appears here — upload in ⚙ Settings</p>
                         </div>
                     }
                   </div>
 
-                  {/* Sections */}
                   <div className="mt-6 space-y-5">
                     {elements.length === 0 ? (
-                      <div className="text-center py-20 text-gray-400">
-                        <Type size={52} className="mx-auto mb-3 opacity-20" />
-                        <p className="text-base">No elements yet — add them in the panel</p>
+                      <div className="text-center py-20 text-slate-300">
+                        <Type size={48} className="mx-auto mb-3 opacity-50" />
+                        <p className="text-slate-400 text-base font-medium">No content blocks yet</p>
+                        <p className="text-slate-300 text-sm mt-1">Add elements using the panel on the left</p>
                       </div>
                     ) : previewMode
                       ? elements.map((el, i) => renderPreviewElement(el, i))
                       : elements.map((el) => (
-                          <div key={el.id}>{renderBuilderElement(el)}</div>
+                          <div key={el.id} onClick={(e) => e.stopPropagation()}>
+                            {renderBuilderElement(el)}
+                          </div>
                         ))
                     }
                   </div>
                 </div>
 
-                {/* Right TOC sidebar — exact copy of BlogDetail */}
+                {/* TOC sidebar */}
                 {toc.length > 0 && (
                   <aside className="hidden lg:block w-[300px] ml-6">
                     <div className="sticky top-36">
@@ -1050,7 +1239,7 @@ export default function DynamicBlog() {
                           ))}
                         </div>
                         <div className="mt-2 text-[10px] text-slate-400">
-                          Populated automatically from h2 / h3 headings
+                          Auto-generated from h1 / h2 / h3 headings
                         </div>
                       </div>
                     </div>
@@ -1062,47 +1251,64 @@ export default function DynamicBlog() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
 
-      {/* ── Login modal ─────────────────────────────────────────────────── */}
+      {/* ── Login Modal ── */}
       {showLoginModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-[9999] px-4">
-          <div className="bg-black border-2 border-cyan-400 p-8 rounded-xl w-full max-w-md">
-            <h2 className="text-cyan-300 text-xl font-bold mb-1" style={{ fontFamily: "'Orbitron',monospace" }}>
-              LOGIN TO PUBLISH
-            </h2>
-            <p className="text-cyan-500 text-xs mb-5">Required to push blog to GitHub</p>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[9999] px-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-7 border border-slate-100">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-[#0037CA] flex items-center justify-center shadow-sm">
+                <Zap size={18} className="text-white" />
+              </div>
+              <div>
+                <h2 className="text-[16px] font-bold text-slate-800">Sign in to publish</h2>
+                <p className="text-[11px] text-slate-400">Required to push to GitHub</p>
+              </div>
+            </div>
 
             {loginError && (
-              <div className="text-red-400 text-xs mb-4 p-2 bg-red-900/20 rounded border border-red-500/30">
-                ❌ {loginError}
+              <div className="flex items-center gap-2 text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs mb-4">
+                <span>❌</span> {loginError}
               </div>
             )}
 
             <div className="space-y-3 mb-5">
               <div>
-                <label className="block text-cyan-300 text-xs mb-1">Email</label>
-                <input type="email" value={loginForm.email}
+                <Label>Email address</Label>
+                <Input
+                  type="email"
+                  value={loginForm.email}
+                  placeholder="admin@skyupdigital.com"
                   onChange={(e) => setLoginForm((p) => ({ ...p, email: e.target.value }))}
                   onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                  className="ctrl-input" placeholder="admin@yoursite.com" autoFocus />
+                  autoFocus
+                />
               </div>
               <div>
-                <label className="block text-cyan-300 text-xs mb-1">Password</label>
-                <input type="password" value={loginForm.password}
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  value={loginForm.password}
+                  placeholder="••••••••"
                   onChange={(e) => setLoginForm((p) => ({ ...p, password: e.target.value }))}
                   onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-                  className="ctrl-input" placeholder="••••••••" />
+                />
               </div>
             </div>
 
-            <div className="flex gap-3">
-              <button onClick={handleLogin} className="pub-btn flex-1 py-2">
-                Login & Publish
+            <div className="flex gap-2">
+              <button onClick={handleLogin} className="btn-publish flex-1 py-2.5 text-sm rounded-lg">
+                Sign in &amp; Publish
               </button>
               <button
-                onClick={() => { setShowLoginModal(false); setLoginError(""); setLoginForm({ email: "", password: "" }); }}
-                className="flex-1 border border-cyan-400/50 text-cyan-400 px-4 py-2 rounded hover:border-red-400 hover:text-red-400 transition-all text-sm bg-transparent">
+                onClick={() => {
+                  setShowLoginModal(false);
+                  setLoginError("");
+                  setLoginForm({ email: "", password: "" });
+                }}
+                className="btn-secondary px-4"
+              >
                 Cancel
               </button>
             </div>
@@ -1111,4 +1317,4 @@ export default function DynamicBlog() {
       )}
     </div>
   );
-}
+}                                                

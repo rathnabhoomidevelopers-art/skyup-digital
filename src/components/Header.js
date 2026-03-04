@@ -79,7 +79,7 @@ export default function Header() {
             <a href="/" className="flex items-center gap-2 !no-underline">
               <img
                 src="/images/rbd-logo.webp"
-                alt="RBD Logo"
+                alt="SKYUP Logo"
                 className="h-10 w-auto sm:h-12 md:h-10 lg:h-12"
               />
             </a>
