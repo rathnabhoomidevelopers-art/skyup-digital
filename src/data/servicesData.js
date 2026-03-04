@@ -1492,7 +1492,7 @@ export const SERVICES = {
     },
     {
       no: 2,
-      title: "Data Collection & Strategy Planning",
+      title: "Data Collection & Planning",
       desc:
         "Gathering quality data and creating a structured ML roadmap.",
     },
