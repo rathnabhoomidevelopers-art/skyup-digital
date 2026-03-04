@@ -10,10 +10,10 @@ export default function Header() {
 
   const links = [
     { to: "/", label: "Home" },
-    { to: "/aboutus", label: "About Us" },
-    { to: "/service", label: "Services" },
-    { to: "/blogs", label: "Blogs" },
-    { to: "/careers", label: "Careers" },
+    { to: "/aboutus-digital-marketing-company-in-bangalore", label: "About Us" },
+    { to: "/digital-marketing-services-in-bangalore", label: "Services" },
+    { to: "/blogs-difference-between-digital-marketing-and-traditional-marketing", label: "Blogs" },
+    { to: "/careers-digital-marketing-job", label: "Careers" },
   ];
 
   const socialLinks = [
@@ -153,7 +153,7 @@ export default function Header() {
 
               {/* CTA */}
               <a
-                href="/contactus"
+                href="/contact-us"
                 className="hidden md:inline-flex items-center justify-center rounded-full bg-[#0037CA] px-3 py-2 text-[13px] lg:px-4 lg:py-2.5 lg:text-base font-semibold text-white shadow-sm hover:bg-[#0452da] transition-colors whitespace-nowrap !no-underline"
               >
                 Contact US
@@ -233,7 +233,7 @@ export default function Header() {
               </div>
 
               <a
-                href="/contactus"
+                href="/contact-us"
                 onClick={() => setMobileOpen(false)}
                 className="mt-3 inline-flex items-center justify-center rounded-full bg-[#0052E0] px-5 py-2 text-sm font-semibold text-white shadow-sm !no-underline"
               >

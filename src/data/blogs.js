@@ -439,7 +439,7 @@ export const BLOGS = [
     slug: "how-to-choose-the-right-digital-marketing-agency-in-bangalore-2026-guide",
     category: "Digital Marketing ",
     title:
-      "Maximize Your Business Potential with Digital Marketing in Bangalore",
+      "Maximize Business Growth with Digital Marketing",
     headline:
       "How to Choose the Right Digital Marketing Agency in Bangalore: 2026 Guide",
     date: "2026",
@@ -1621,7 +1621,7 @@ export const BLOGS = [
   },
   {
     id: 6,
-    slug: "marketing-automation-for-real-estate-businesses-2026-guide",
+    slug: "top-ai-companies-in-bangalore-2026",
     category: "AI Automation",
     headline:
       "Top AI Companies in Bangalore: Marketing Automation for Real Estate Businesses - The Complete 2026 Growth Guide",
@@ -2069,7 +2069,7 @@ export const BLOGS = [
   },
    {
     id: 7,
-    slug: "full-stack-web-development-projects-in-2026:-9-powerful-strategies-businesses-use-to-build-scalable-digital-systems",
+    slug: "website-development-company-in-bangalore",
     category: "Website Development",
     headline:
       "Full Stack Web Development Projects in 2026: 9 Powerful Strategies Businesses Use to Build Scalable Digital Systems",

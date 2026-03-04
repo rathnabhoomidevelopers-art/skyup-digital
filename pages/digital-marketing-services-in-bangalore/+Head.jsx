@@ -57,7 +57,7 @@ export default function Head() {
 
   return (
     <>
-      <link rel="canonical" href="https://www.skyupdigitalsolutions.com/service" />
+      <link rel="canonical" href="https://www.skyupdigitalsolutions.com/digital-marketing-services-in-bangalore" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

@@ -52,7 +52,9 @@ export function Service() {
   try {
     const pageContext = usePageContext();
     categoryFromUrl =
-      new URLSearchParams(pageContext?.urlParsed?.search ?? "").get("category") || "";
+      new URLSearchParams(pageContext?.urlParsed?.search ?? "").get(
+        "category",
+      ) || "";
   } catch {
     if (typeof window !== "undefined") {
       categoryFromUrl =
@@ -108,7 +110,8 @@ export function Service() {
         </h2>
 
         <p className="mt-3 text-[#2B2B2B] text-[16px] sm:text-[20px] leading-relaxed">
-          Serving companies of every scale. Connect with us to start the conversation.
+          Serving companies of every scale. Connect with us to start the
+          conversation.
         </p>
 
         <div className="mt-8 flex justify-center">
@@ -135,29 +138,101 @@ export function Service() {
         transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
-        <a href="https://wa.me/918867867775" target="_blank" rel="noopener noreferrer"
-          className="whatsapp-chat sm:hidden w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
-          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+        {/* WhatsApp - Mobile */}
+        <a
+          href="https://wa.me/918867867775"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsapp-chat sm:hidden w-12 h-12 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+        >
+          <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7" />
         </a>
 
-        <a href="https://wa.me/918867867775" target="_blank" rel="noopener noreferrer"
-          className="whatsapp-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[70px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform">
-          <span className="text-slate-800 group-hover:text-green-600 font-semibold text-base whitespace-nowrap transition-colors">WhatsApp</span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7 text-white" />
+        {/* WhatsApp - Desktop */}
+        <a
+          href="https://wa.me/918867867775"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsapp-chat-gtm hidden sm:inline-flex no-underline relative items-center bg-white rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] overflow-hidden"
+          style={{
+            width: "52px",
+            height: "52px",
+            transition: "width 0.3s ease",
+            paddingRight: "0",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.width = "190px";
+            e.currentTarget.querySelector(".wa-label").style.opacity = "1";
+            e.currentTarget.querySelector(".wa-label").style.maxWidth = "120px";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.width = "52px";
+            e.currentTarget.querySelector(".wa-label").style.opacity = "0";
+            e.currentTarget.querySelector(".wa-label").style.maxWidth = "0";
+          }}
+        >
+          <span
+            className="wa-label font-semibold text-base text-slate-800 whitespace-nowrap pl-3"
+            style={{
+              maxWidth: "0",
+              opacity: "0",
+              overflow: "hidden",
+              transition: "max-width 0.3s ease, opacity 0.3s ease",
+            }}
+          >
+            WhatsApp
+          </span>
+          <span className="absolute right-[4px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)] shrink-0">
+            <img
+              src="/images/whatsapp.svg"
+              alt="whatsapp"
+              className="w-7 h-7"
+            />
           </span>
         </a>
 
-        <a href="tel:+918867867775"
-          className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
-          <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+        {/* Call - Mobile */}
+        <a
+          href="tel:+918867867775"
+          className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+        >
+          <img src="/images/call.svg" alt="call" className="w-7 h-7" />
         </a>
 
-        <a href="tel:+918867867775"
-          className="tel-chat-gtm hidden sm:inline-flex group no-underline relative items-center bg-white pl-3 pr-[66px] py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-transform">
-          <span className="text-slate-800 group-hover:text-[#3B46F6] font-semibold text-base whitespace-nowrap transition-colors">+91 8867867775</span>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
-            <img src="/images/call.svg" alt="call" className="w-7 h-7 text-white" />
+        {/* Call - Desktop */}
+        <a
+          href="tel:+918867867775"
+          className="tel-chat-gtm hidden sm:inline-flex no-underline relative items-center bg-white rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] overflow-hidden"
+          style={{
+            width: "52px",
+            height: "52px",
+            transition: "width 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.width = "220px";
+            e.currentTarget.querySelector(".call-label").style.opacity = "1";
+            e.currentTarget.querySelector(".call-label").style.maxWidth =
+              "160px";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.width = "52px";
+            e.currentTarget.querySelector(".call-label").style.opacity = "0";
+            e.currentTarget.querySelector(".call-label").style.maxWidth = "0";
+          }}
+        >
+          <span
+            className="call-label font-semibold text-base text-slate-800 whitespace-nowrap pl-3"
+            style={{
+              maxWidth: "0",
+              opacity: "0",
+              overflow: "hidden",
+              transition: "max-width 0.3s ease, opacity 0.3s ease",
+            }}
+          >
+            +91 8867867775
+          </span>
+          <span className="absolute right-[4px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)] shrink-0">
+            <img src="/images/call.svg" alt="call" className="w-7 h-7" />
           </span>
         </a>
       </motion.div>

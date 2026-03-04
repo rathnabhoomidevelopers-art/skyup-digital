@@ -14,10 +14,10 @@ const services = [
 ];
 
   const resources = [
-    { label: "About Us", to: "/aboutus" },
-    { label: "Services", to: "/service" },
-    { label: "Blogs", to: "/blogs" },
-    { label: "Careers", to: "/careers" },
+    { label: "About Us", to: "/aboutus-digital-marketing-company-in-bangalore" },
+    { label: "Services", to: "/digital-marketing-services-in-bangalore" },
+    { label: "Blogs", to: "/blogs-difference-between-digital-marketing-and-traditional-marketing" },
+    { label: "Careers", to: "/careers-digital-marketing-job" },
     { label: "Privacy Policy", to: "/privacypolicy" },
     { label: "Terms & Conditions", to: "/termscondition" },
   ];

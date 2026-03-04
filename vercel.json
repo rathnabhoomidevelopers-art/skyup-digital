@@ -7,6 +7,31 @@
       "has": [{ "type": "host", "value": "skyupdigitalsolutions.com" }],
       "destination": "https://www.skyupdigitalsolutions.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/careers",
+      "destination": "/careers-digital-marketing-job",
+      "permanent": true
+    },
+    {
+      "source": "/aboutus",
+      "destination": "/aboutus-digital-marketing-company-in-bangalore",
+      "permanent": true
+    },
+    {
+      "source": "/blogs",
+      "destination": "/blogs-difference-between-digital-marketing-and-traditional-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/contactus",
+      "destination": "/contact-us",
+      "permanent": true
+    },
+    {
+      "source": "/digital-marketing-services-in-bangalore",
+      "destination": "/service",
+      "permanent": true
     }
   ],
   "rewrites": [
