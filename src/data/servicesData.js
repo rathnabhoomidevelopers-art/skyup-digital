@@ -1397,32 +1397,21 @@ export const SERVICES = {
   secondaryCta: "WhatsApp",
   heroImage: "/images/ai_banner.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
-  whyTitle: "Our Automation Services",
+  whyTitle: "Why Businesses Trust SkyUp Digital Solutions for Machine Learning Solutions ",
   features: [
     {
-      title: "Workflow Automation",
-      desc: "Automate repetitive business processes to save time and effort.",
+      title: "Custom-Built AI Strategies",
+      desc: "We design tailored machine learning models aligned with your business goals, ensuring practical, scalable, and results-driven solutions.",
     },
     {
-      title: "CRM Automation",
-      desc: "Automate lead capture, follow-ups, and customer management.",
+      title: "Data-Driven Decision Making",
+      desc: "Our advanced analytics and predictive modeling help businesses gain actionable insights, improve efficiency, and maximize ROI.",
     },
     {
-      title: "Marketing Automation",
-      desc: "Automate emails, lead nurturing, and campaign workflows.",
+      title: "Secure & Compliant Solutions",
+      desc: "Data security and compliance are our priority, ensuring safe and reliable AI implementation.",
     },
-    {
-      title: "Sales Automation",
-      desc: "Streamline sales tasks, pipelines, and follow-ups.",
-    },
-    {
-      title: "Reporting & Data Automation",
-      desc: "Automate reports, dashboards, and data tracking.",
-    },
-    {
-      title: "Customer Support Automation",
-      desc: "Automate customer support queries and responses for faster resolution.",
-    },
+    
   ],
 
   //FAQsections
