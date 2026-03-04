@@ -1105,7 +1105,7 @@ export const SERVICES = {
   ],
 
   journeyTitle: "The Journey We Follow",
-  journeySub: "Our Creative Graphics Design process focuses on understanding the brand, creating impactful visuals, and  delivering consistent designs across all platforms.",
+  journeySub: "Our Creative Graphics Design process focuses on understanding the brand, creating impactful visuals, and delivering consistent designs across all platforms.",
   steps: [
     {
       no: 1,
@@ -1386,7 +1386,7 @@ export const SERVICES = {
 },
 
 "machine-learning": {
-  heroTitle: "Unlock the Power of Intelligent Machine Learning Solutions",
+  heroTitle: "Unleash Smart Machine Learning Solutions",
    title: "Machine Learning Solutions | SkyUp Digital solutions",
   keyword: "Machine Learning Solutions ",
   slug: "machine-learning",
@@ -1401,15 +1401,27 @@ export const SERVICES = {
   features: [
     {
       title: "Custom-Built AI Strategies",
-      desc: "We design tailored machine learning models aligned with your business goals, ensuring practical, scalable, and results-driven solutions.",
+      desc: "We design tailored ML models aligned to your goals for scalable, results-driven impact.",
     },
     {
       title: "Data-Driven Decision Making",
-      desc: "Our advanced analytics and predictive modeling help businesses gain actionable insights, improve efficiency, and maximize ROI.",
+      desc: "Advanced analytics & predictive models drive insights, boost efficiency, and maximize ROI.",
     },
     {
       title: "Secure & Compliant Solutions",
       desc: "Data security and compliance are our priority, ensuring safe and reliable AI implementation.",
+    },
+     {
+      title: "End-to-End ML Implementation",
+      desc: "From strategy to deployment, we deliver seamless AI integration and execution support.",
+    },
+    {
+      title: "Seamless System Integration",
+      desc: "We build domain-specific ML models tailored to solve real business challenges.",
+    },
+    {
+      title: "Continuous Optimization & Support",
+      desc: "Our experts refine and optimize models to ensure long-term accuracy and growth.",
     },
     
   ],
