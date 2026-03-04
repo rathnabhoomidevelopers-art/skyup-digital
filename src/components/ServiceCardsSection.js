@@ -19,8 +19,7 @@ const toSlug = (str) =>
     .replace(/\s+/, "-")
     .replace(/[^a-z0-9-]/g, "");
 
-const fromSlug = (slug) =>
-  FILTERS.find((f) => toSlug(f) === slug) || "All";
+const fromSlug = (slug) => FILTERS.find((f) => toSlug(f) === slug) || "All";
 
 const PAGE_SIZE = 6;
 
@@ -151,21 +150,13 @@ export default function ServiceCardsSection({ initialCategory }) {
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
-  const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-    setPage(1);
-
-    if (filter === "All") {
-      window.history.replaceState(null, "", "/service");
-    } else {
-      const slug = toSlug(filter);
-      window.history.replaceState(null, "", `/service/category/${slug}`);
-    }
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(scrollToFilters);
-    });
-  };
+const handleFilterChange = (filter) => {
+  setActiveFilter(filter);
+  setPage(1);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(scrollToFilters);
+  });
+};
 
   const filteredCards = useMemo(() => {
     if (activeFilter === "All") return cards;
@@ -228,7 +219,9 @@ export default function ServiceCardsSection({ initialCategory }) {
                 className="w-full appearance-none rounded-xl bg-white border border-[#E7E9F5] px-4 py-3 pr-10 text-[13px] font-semibold text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0B3BFF]/30"
               >
                 {FILTERS.map((f) => (
-                  <option key={f} value={f}>{f}</option>
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
                 ))}
               </select>
               <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#111827]/60 rotate-90" />
@@ -341,7 +334,14 @@ export default function ServiceCardsSection({ initialCategory }) {
   );
 }
 
-function Card({ title, desc, badge = "Featured Service", icon, variants, onClick }) {
+function Card({
+  title,
+  desc,
+  badge = "Featured Service",
+  icon,
+  variants,
+  onClick,
+}) {
   return (
     <motion.button
       type="button"
