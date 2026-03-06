@@ -1,39 +1,5 @@
 export const BLOGS = [
   {
-    "id": 1772798223047,
-    "slug": "how-to-create-websites-using-ai",
-    "headline": "How to create websites using AI",
-    "title": "Create Website using AI",
-    "description": "websites are the business appearance and pillar for the growth",
-    "Keywords": "create websites using ai",
-    "category": "Technology",
-    "date": "Mar 6, 2026",
-    "author": "skyup",
-    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772798221/skyup/blogs/ykkoe7qopt4hpwjkigip.png",
-    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772798221/skyup/blogs/ykkoe7qopt4hpwjkigip.png",
-    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772798221/skyup/blogs/ykkoe7qopt4hpwjkigip.png",
-    "imageAlt": "website using AI",
-    "tags": [],
-    "sections": [
-      {
-        "type": "h2",
-        "text": "How to create websites using AI"
-      },
-      {
-        "type": "p",
-        "text": "Having a website or social media page is no longer sufficient in the fiercely competitive digital economy of today. Every day, businesses have to fight for consumers' attention, trust, and conversions. This is the point at which a Bangalore digital marketing agency becomes your most important growth partner."
-      },
-      {
-        "type": "ul",
-        "text": [
-          "SEO related website",
-          "Softwares",
-          "CRM"
-        ]
-      }
-    ]
-  },
-  {
     "id": 1,
     "slug": "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
     "category": "Digital Marketing ",
