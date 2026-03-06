@@ -5,7 +5,7 @@ import { AuthProvider } from '@/context/AuthContext'
 function Page() {
   return (
     <AuthProvider>
-      <Receipt />
+      <Receipt/>
     </AuthProvider>
   )
 }
