@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { navigate } from 'vike/client/router'
+import { navigate } from "vike/client/router";
 import { useAuth } from "../context/AuthContext";
 
 const loginValidationSchema = Yup.object({
@@ -22,7 +22,14 @@ export function Login() {
     try {
       const result = await login(values.email, values.password);
       if (result.success) {
-        await navigate("/admin/receipt");
+        const role = result.user?.role;
+        if (role === "admin") {
+          await navigate("/admin/receipt");
+        } else if (role === "blogger") {
+          await navigate("/admin/dynamicblog");
+        } else {
+          await navigate("/admin");
+        }
       } else {
         setServerError(result.message || "Login failed. Please try again.");
       }
