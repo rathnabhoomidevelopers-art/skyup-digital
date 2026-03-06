@@ -346,7 +346,7 @@ export default function DynamicBlog() {
       heroImage: blogMeta.heroImage,
       coverImage: blogMeta.heroImage, // ✅ ADDED — matches existing blogs structure
       imageAlt: blogMeta.imageAlt || displayTitle,
-      tags: [],                        // ✅ ADDED — prevents rendering errors
+      tags: [], // ✅ ADDED — prevents rendering errors
       sections,
     };
   };
@@ -450,8 +450,8 @@ export default function DynamicBlog() {
         // Replace base64 with Cloudinary URL in all 3 image fields
         blogData = {
           ...blogData,
-          image:      imgData.url,
-          heroImage:  imgData.url,
+          image: imgData.url,
+          heroImage: imgData.url,
           coverImage: imgData.url,
         };
       }
@@ -1969,18 +1969,38 @@ export default function DynamicBlog() {
                 {/* Social sidebar */}
                 <div className="hidden lg:block w-[80px] mr-6">
                   <div className="sticky top-64 flex flex-col gap-4">
+                    // ✅ Fixed — real clickable links
                     {[
-                      { Icon: Facebook, cls: "hover:bg-[#0B3BFF]" },
-                      { Icon: MessageCircle, cls: "hover:bg-[#25D366]" },
-                      { Icon: Linkedin, cls: "hover:bg-[#1DA1F2]" },
-                      { Icon: Youtube, cls: "hover:bg-[#FF0000]" },
-                    ].map(({ Icon, cls }, i) => (
-                      <span
+                      {
+                        Icon: Facebook,
+                        cls: "hover:bg-[#0B3BFF]",
+                        href: "https://www.facebook.com/profile.php?id=61584820941998",
+                      },
+                      {
+                        Icon: MessageCircle,
+                        cls: "hover:bg-[#25D366]",
+                        href: "https://wa.me/918867867775",
+                      },
+                      {
+                        Icon: Linkedin,
+                        cls: "hover:bg-[#1DA1F2]",
+                        href: "https://www.linkedin.com/company/110886969",
+                      },
+                      {
+                        Icon: Youtube,
+                        cls: "hover:bg-[#FF0000]",
+                        href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
+                      },
+                    ].map(({ Icon, cls, href }, i) => (
+                      <a
                         key={i}
-                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors cursor-default`}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors`}
                       >
                         <Icon className="h-5 w-5" />
-                      </span>
+                      </a>
                     ))}
                   </div>
                 </div>
