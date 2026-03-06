@@ -15,7 +15,7 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
-    cssCodeSplit: true, // was false — this was causing one giant CSS bundle
+    cssCodeSplit: false, // was false — this was causing one giant CSS bundle
     cssMinify: true,
     minify: "esbuild",
     rollupOptions: {
