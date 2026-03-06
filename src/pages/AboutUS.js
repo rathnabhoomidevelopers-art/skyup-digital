@@ -104,7 +104,7 @@ export function AboutUS() {
         className="h-[221px] px-2 lg:h-[332px] flex flex-col items-center justify-center relative"
       >
         <motion.div variants={fadeUp}>
-          <h1 className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] font-bold">
+          <h1 className="relative z-10 text-center lg:text-[64px] sm:text-[32px] text-[24px] lg:w-[1400px] font-bold">
             Trusted
             <span className="text-[#0037CA]">
               &nbsp;Digital Marketing&nbsp;
