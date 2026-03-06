@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { navigate } from 'vike/client/router'
 import { useAuth } from "../context/AuthContext";
 
 const loginValidationSchema = Yup.object({
@@ -21,7 +22,7 @@ export function Login() {
     try {
       const result = await login(values.email, values.password);
       if (result.success) {
-        window.location.href = "/admin/receipt";
+        await navigate("/admin/receipt");
       } else {
         setServerError(result.message || "Login failed. Please try again.");
       }
