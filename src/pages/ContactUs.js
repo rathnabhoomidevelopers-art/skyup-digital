@@ -13,7 +13,7 @@ import axios from "axios";
 import { navigate } from "vike/client/router";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "https://skyup-backend.vercel.app";
+  import.meta.env.VITE_API_BASE_URL || "https://skyup-backend-3k9s.onrender.com";
 
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const smoothSpringFast = {
