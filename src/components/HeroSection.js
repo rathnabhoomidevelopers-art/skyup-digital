@@ -122,6 +122,7 @@ const HeroSection = () => {
         <video
           src="/videos/digital-marketing-hero.mp4"
           autoPlay loop muted playsInline
+          preload="none"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="pointer-events-none absolute inset-0 bg-black/80" />

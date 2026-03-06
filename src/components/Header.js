@@ -10,9 +10,15 @@ export default function Header() {
 
   const links = [
     { to: "/", label: "Home" },
-    { to: "/aboutus-digital-marketing-company-in-bangalore", label: "About Us" },
+    {
+      to: "/aboutus-digital-marketing-company-in-bangalore",
+      label: "About Us",
+    },
     { to: "/digital-marketing-services-in-bangalore", label: "Services" },
-    { to: "/blogs-difference-between-digital-marketing-and-traditional-marketing", label: "Blogs" },
+    {
+      to: "/blogs-difference-between-digital-marketing-and-traditional-marketing",
+      label: "Blogs",
+    },
     { to: "/careers-digital-marketing-job", label: "Careers" },
   ];
 
@@ -33,7 +39,7 @@ export default function Header() {
     },
     {
       Icon: "/images/Twitter.svg",
-      href: "https://www.linkedin.com/company/110886969/admin/",
+      href: "https://www.linkedin.com/company/110886969",
       bg: "bg-blue-400",
       hoverBg: "hover:bg-blue-800",
       text: "text-white",
@@ -81,6 +87,9 @@ export default function Header() {
                 src="/images/rbd-logo.webp"
                 alt="SKYUP Logo"
                 className="h-10 w-auto sm:h-12 md:h-10 lg:h-12"
+                width={192}
+                height={55}
+                fetchPriority="high"
               />
             </a>
 
@@ -146,7 +155,7 @@ export default function Header() {
                     rel="noopener noreferrer"
                     className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
                   >
-                    <img src={Icon} alt="icon" />
+                    <img src={Icon} alt="icon" loading="lazy" />
                   </a>
                 ))}
               </div>
@@ -166,7 +175,11 @@ export default function Header() {
                 onClick={toggleMobileMenu}
                 aria-label="Toggle main menu"
               >
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
@@ -195,7 +208,9 @@ export default function Header() {
                       onClick={() => setMobileOpen(false)}
                       className={[
                         "w-full text-left text-sm font-medium px-3 py-2 rounded-md",
-                        isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
+                        isActive
+                          ? "bg-white text-[#1F6BFF]"
+                          : "text-gray-900 hover:bg-white/60",
                       ].join(" ")}
                     >
                       {l.label}
@@ -210,7 +225,9 @@ export default function Header() {
                     onClick={() => setMobileOpen(false)}
                     className={[
                       "w-full text-left text-sm font-medium px-3 py-2 rounded-md !no-underline",
-                      isActive ? "bg-white text-[#1F6BFF]" : "text-gray-900 hover:bg-white/60",
+                      isActive
+                        ? "bg-white text-[#1F6BFF]"
+                        : "text-gray-900 hover:bg-white/60",
                     ].join(" ")}
                   >
                     {l.label}
@@ -227,7 +244,7 @@ export default function Header() {
                     rel="noopener noreferrer"
                     className={`h-9 w-9 rounded-full ${bg} flex items-center justify-center ${text} hover:scale-110 transition-all duration-200 !no-underline ${hoverBg}`}
                   >
-                    <img src={Icon} alt="icon" />
+                    <img src={Icon} alt="icon" loading="lazy" />
                   </a>
                 ))}
               </div>
