@@ -1,9 +1,9 @@
 // pages/+Head.jsx
-import { usePageContext } from 'vike-react/usePageContext'
+import { usePageContext } from "vike-react/usePageContext";
 
 export default function Head() {
-  const { config } = usePageContext()
-  const description = config?.metaDescription || ''
+  const { config } = usePageContext();
+  const description = config?.metaDescription || "";
 
   return (
     <>
@@ -12,26 +12,17 @@ export default function Head() {
 
       {/* Preconnect — keep these */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
 
       {/* Non-blocking font load (was render-blocking before) */}
       <link
-        rel="preload"
-        as="style"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-      />
-      <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        media="print"
-        onLoad="this.media='all'"
       />
-      <noscript>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        />
-      </noscript>
 
       <link rel="icon" href="/images/skyup_logo1.svg" />
       <link rel="apple-touch-icon" href="/images/skyup_logo1.svg" />
@@ -40,8 +31,9 @@ export default function Head() {
       <meta name="robots" content="index, follow" />
 
       {/* ✅ GTM deferred — loads after page is interactive */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
           window.addEventListener('load', function() {
             setTimeout(function() {
               (function(w,d,s,l,i){
@@ -57,7 +49,8 @@ export default function Head() {
             }, 2500);
           });
         `,
-      }} />
+        }}
+      />
     </>
-  )
+  );
 }
