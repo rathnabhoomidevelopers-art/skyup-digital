@@ -18,8 +18,25 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
-    cssCodeSplit: false,
+    cssCodeSplit: true,        // was false — this was causing one giant CSS bundle
     cssMinify: true,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // ✅ Split heavy vendor libs into separate chunks
+          if (id.includes('node_modules/framer-motion'))  return 'framer-motion'
+          if (id.includes('node_modules/react-dom'))      return 'react-dom'
+          if (id.includes('node_modules/react/'))         return 'react'
+          if (id.includes('node_modules/formik') ||
+              id.includes('node_modules/yup'))            return 'forms'
+        },
+        // ✅ Stable filenames for better caching
+        chunkFileNames:  'static/js/[name].[hash].js',
+        entryFileNames:  'static/js/[name].[hash].js',
+        assetFileNames:  'static/[ext]/[name].[hash].[ext]',
+      }
+    }
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -28,6 +45,8 @@ export default defineConfig({
     loader: 'jsx',
     include: /.*\.[jt]sx?$/,
     exclude: [],
+    // ✅ Remove console.log in production
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
   },
   optimizeDeps: {
     esbuildOptions: {
