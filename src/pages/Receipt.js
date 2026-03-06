@@ -36,6 +36,32 @@ const IconSpinner = () => (
 );
 
 // ─────────────────────────────────────────────
+// Shared company details
+// ─────────────────────────────────────────────
+const COMPANY_DETAILS = {
+  name: "Skyup Digital Solutions LLP",
+  address: "Parinidhi #23, E Block,\n14A Main Road, 2nd Floor,\nSahakaranagar,\nBangalore - 560092",
+  gstNo: "29AFUFS6710E1ZJ",
+  bankDetails: {
+    bankName: "Kotak Mahindra Bank",
+    accountName: "SKYUP DIGITAL SOLUTIONS LLP",
+    accountNo: "1019032325",
+    ifscCode: "KKBK0008045",
+    branch: "Sahakara Nagar",
+  },
+};
+
+function buildTemplateData(receipt) {
+  return {
+    ...receipt,
+    ...COMPANY_DETAILS,
+    cgstLabel: receipt.cgst > 0 ? (receipt.cgst_percentage > 0 ? `CGST @ ${receipt.cgst_percentage}%` : "CGST") : "",
+    sgstLabel: receipt.sgst > 0 ? (receipt.sgst_percentage > 0 ? `SGST @ ${receipt.sgst_percentage}%` : "SGST") : "",
+    igstLabel: receipt.igst > 0 ? (receipt.igst_percentage > 0 ? `IGST @ ${receipt.igst_percentage}%` : "IGST") : "",
+  };
+}
+
+// ─────────────────────────────────────────────
 // Delete Confirm Dialog
 // ─────────────────────────────────────────────
 function DeleteConfirmDialog({ receipt, onConfirm, onCancel, loading }) {
@@ -82,22 +108,22 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
     const subtotal = (items || []).reduce((s, i) => s + (i.qty || 0) * (i.rate || 0), 0);
     let cgst, sgst, igst;
     if (manual) { cgst = parseFloat(cM)||0; sgst = parseFloat(sM)||0; igst = parseFloat(iM)||0; }
-    else { cgst = cP ? autoCalc(subtotal,cP):0; sgst = sP ? autoCalc(subtotal,sP):0; igst = iP ? autoCalc(subtotal,iP):0; }
-    return { subtotal, cgst, sgst, igst, total: subtotal+cgst+sgst+igst };
+    else { cgst = cP ? autoCalc(subtotal, cP) : 0; sgst = sP ? autoCalc(subtotal, sP) : 0; igst = iP ? autoCalc(subtotal, iP) : 0; }
+    return { subtotal, cgst, sgst, igst, total: subtotal + cgst + sgst + igst };
   };
 
   const numberToWords = (num) => {
-    const ones=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
-    const tens=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-    const teens=["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-    if(num===0) return "Zero rupees only";
-    const cvt=(n)=>{let s="";if(n>99){s+=ones[Math.floor(n/100)]+" hundred ";n%=100;}if(n>19){s+=tens[Math.floor(n/10)]+" ";n%=10;}else if(n>=10){return s+teens[n-10]+" ";}if(n>0)s+=ones[n]+" ";return s;};
-    let w="";
-    if(num>=10000000){w+=cvt(Math.floor(num/10000000))+"crore ";num%=10000000;}
-    if(num>=100000){w+=cvt(Math.floor(num/100000))+"lakh ";num%=100000;}
-    if(num>=1000){w+=cvt(Math.floor(num/1000))+"thousand ";num%=1000;}
-    w+=cvt(num);
-    return(w.trim().charAt(0).toUpperCase()+w.trim().slice(1)+" rupees only").replace(/\s+/g," ");
+    const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
+    const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+    const teens = ["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+    if (num === 0) return "Zero rupees only";
+    const cvt = (n) => { let s = ""; if (n > 99) { s += ones[Math.floor(n/100)] + " hundred "; n %= 100; } if (n > 19) { s += tens[Math.floor(n/10)] + " "; n %= 10; } else if (n >= 10) { return s + teens[n-10] + " "; } if (n > 0) s += ones[n] + " "; return s; };
+    let w = "";
+    if (num >= 10000000) { w += cvt(Math.floor(num/10000000)) + "crore "; num %= 10000000; }
+    if (num >= 100000) { w += cvt(Math.floor(num/100000)) + "lakh "; num %= 100000; }
+    if (num >= 1000) { w += cvt(Math.floor(num/1000)) + "thousand "; num %= 1000; }
+    w += cvt(num);
+    return (w.trim().charAt(0).toUpperCase() + w.trim().slice(1) + " rupees only").replace(/\s+/g, " ");
   };
 
   const toDateInput = (val) => { try { return val ? new Date(val).toISOString().split("T")[0] : ""; } catch { return ""; } };
@@ -128,7 +154,7 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
     hsn_no: receipt.hsn_no || "",
     items: receipt.items?.length
       ? receipt.items.map(i => ({ description: i.description||"", qty: i.qty||"", rate: i.rate||"" }))
-      : [{ description:"", qty:"", rate:"" }],
+      : [{ description: "", qty: "", rate: "" }],
     cgst_percentage: receipt.cgst_percentage || 9,
     sgst_percentage: receipt.sgst_percentage || 9,
     igst_percentage: receipt.igst_percentage || 18,
@@ -140,31 +166,31 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
 
   const handleSave = async (values) => {
     setSaving(true); setError(null);
-    const { subtotal,cgst,sgst,igst,total } = calcTotals(
+    const { subtotal, cgst, sgst, igst, total } = calcTotals(
       values.items, values.cgst_percentage, values.sgst_percentage,
       values.igst_percentage, values.use_manual_gst,
       values.cgst_manual, values.sgst_manual, values.igst_manual
     );
     const payload = {
-      to: values.to, client_gst: values.client_gst||"URD",
-      date: values.date, invoice_due: values.invoice_due||null, hsn_no: values.hsn_no||"",
-      items: values.items.map(i=>({ description:i.description, qty:parseInt(i.qty), rate:parseInt(i.rate), amount:parseInt(i.qty)*parseInt(i.rate) })),
+      to: values.to, client_gst: values.client_gst || "URD",
+      date: values.date, invoice_due: values.invoice_due || null, hsn_no: values.hsn_no || "",
+      items: values.items.map(i => ({ description: i.description, qty: parseInt(i.qty), rate: parseInt(i.rate), amount: parseInt(i.qty) * parseInt(i.rate) })),
       subtotal, cgst, sgst, igst,
-      cgst_percentage: values.use_manual_gst?0:values.cgst_percentage||0,
-      sgst_percentage: values.use_manual_gst?0:values.sgst_percentage||0,
-      igst_percentage: values.use_manual_gst?0:values.igst_percentage||0,
+      cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
+      sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
+      igst_percentage: values.use_manual_gst ? 0 : values.igst_percentage || 0,
       total, amount_in_words: numberToWords(total),
     };
     try {
-    const res = await fetch(`${API_URL}/receipt/${receipt._id.toString()}`, {
+      const res = await fetch(`${API_URL}/receipt/${receipt._id.toString()}`, {
         method: "PUT",
-        headers: { "Content-Type":"application/json", Authorization:`Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),
       });
       const result = await res.json();
       if (res.ok) { onSaved({ ...receipt, ...payload }); }
       else { setError(result.message || "Failed to update receipt"); }
-    } catch(err) { setError("Error: " + err.message); }
+    } catch (err) { setError("Error: " + err.message); }
     finally { setSaving(false); }
   };
 
@@ -172,10 +198,10 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-[65] flex items-center justify-center"
-      style={{ backgroundColor:"rgba(0,0,0,0.65)", backdropFilter:"blur(3px)" }}>
+      style={{ backgroundColor: "rgba(0,0,0,0.65)", backdropFilter: "blur(3px)" }}>
       <div className="bg-white rounded-2xl shadow-2xl flex flex-col"
-        style={{ width:"min(96vw, 780px)", maxHeight:"92vh" }}>
-        {/* Header */}
+        style={{ width: "min(96vw, 780px)", maxHeight: "92vh" }}>
+
         <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
           <div>
             <h2 className="text-xl font-bold text-gray-800">Edit Receipt</h2>
@@ -194,8 +220,8 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
           )}
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSave}>
             {({ values, errors, touched }) => {
-              const { subtotal,cgst,sgst,igst,total } = calcTotals(
-                values.items||[], values.cgst_percentage, values.sgst_percentage,
+              const { subtotal, cgst, sgst, igst, total } = calcTotals(
+                values.items || [], values.cgst_percentage, values.sgst_percentage,
                 values.igst_percentage, values.use_manual_gst,
                 values.cgst_manual, values.sgst_manual, values.igst_manual
               );
@@ -226,7 +252,6 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                     <Field type="text" name="hsn_no" className={ic} placeholder="HSN/SAC code" />
                   </div>
 
-                  {/* Items */}
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                     <h4 className="text-sm font-bold text-gray-700 mb-3">Line Items</h4>
                     <FieldArray name="items">
@@ -242,7 +267,7 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                                   </svg>
                                 </button>
                               )}
-                              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full mb-3 inline-block">Item {index+1}</span>
+                              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full mb-3 inline-block">Item {index + 1}</span>
                               <div className="mb-3 mt-1">
                                 <label className="block text-xs font-semibold text-gray-600 mb-1">Description *</label>
                                 <Field as="textarea" name={`items.${index}.description`} rows="2" className={`${ic} resize-none`} placeholder="Service or product description" />
@@ -262,13 +287,13 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                                 <div>
                                   <label className="block text-xs font-semibold text-gray-600 mb-1">Amount</label>
                                   <div className="px-3 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700">
-                                    ₹{((item.qty||0)*(item.rate||0)).toLocaleString("en-IN")}
+                                    ₹{((item.qty || 0) * (item.rate || 0)).toLocaleString("en-IN")}
                                   </div>
                                 </div>
                               </div>
                             </div>
                           ))}
-                          <button type="button" onClick={() => push({ description:"",qty:"",rate:"" })}
+                          <button type="button" onClick={() => push({ description: "", qty: "", rate: "" })}
                             className="w-full py-2.5 border-2 border-dashed border-blue-300 rounded-lg text-blue-600 text-sm font-semibold hover:bg-blue-50 transition flex items-center justify-center gap-2">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -280,7 +305,6 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                     </FieldArray>
                   </div>
 
-                  {/* GST */}
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
                     <h4 className="text-sm font-bold text-gray-700 mb-3">GST Details</h4>
                     <label className="flex items-center gap-2 mb-3 cursor-pointer text-sm text-gray-700">
@@ -289,7 +313,7 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                     </label>
                     {!values.use_manual_gst ? (
                       <div className="grid grid-cols-3 gap-3">
-                        {[["cgst_percentage","CGST %"],["sgst_percentage","SGST %"],["igst_percentage","IGST %"]].map(([n,l]) => (
+                        {[["cgst_percentage","CGST %"],["sgst_percentage","SGST %"],["igst_percentage","IGST %"]].map(([n, l]) => (
                           <div key={n}>
                             <label className="block text-xs font-semibold text-gray-600 mb-1">{l}</label>
                             <Field type="number" name={n} min="0" max="100" step="0.01" className={ic} />
@@ -298,7 +322,7 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                       </div>
                     ) : (
                       <div className="grid grid-cols-3 gap-3">
-                        {[["cgst_manual","CGST (₹)"],["sgst_manual","SGST (₹)"],["igst_manual","IGST (₹)"]].map(([n,l]) => (
+                        {[["cgst_manual","CGST (₹)"],["sgst_manual","SGST (₹)"],["igst_manual","IGST (₹)"]].map(([n, l]) => (
                           <div key={n}>
                             <label className="block text-xs font-semibold text-gray-600 mb-1">{l}</label>
                             <Field type="number" name={n} min="0" step="0.01" className={ic} placeholder="0" />
@@ -308,14 +332,13 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
                     )}
                   </div>
 
-                  {/* Summary */}
                   {subtotal > 0 && (
                     <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
                       <h4 className="text-sm font-bold text-gray-700 mb-2">Summary</h4>
                       <div className="flex justify-between text-sm"><span className="text-gray-500">Subtotal</span><span className="font-medium">₹{subtotal.toLocaleString("en-IN")}</span></div>
-                      {cgst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">CGST</span><span>₹{cgst.toLocaleString("en-IN")}</span></div>}
-                      {sgst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">SGST</span><span>₹{sgst.toLocaleString("en-IN")}</span></div>}
-                      {igst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">IGST</span><span>₹{igst.toLocaleString("en-IN")}</span></div>}
+                      {cgst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">CGST</span><span>₹{cgst.toLocaleString("en-IN")}</span></div>}
+                      {sgst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">SGST</span><span>₹{sgst.toLocaleString("en-IN")}</span></div>}
+                      {igst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">IGST</span><span>₹{igst.toLocaleString("en-IN")}</span></div>}
                       <div className="border-t pt-2 flex justify-between font-bold">
                         <span className="text-gray-800">Total</span>
                         <span className="text-blue-700 text-lg">₹{total.toLocaleString("en-IN")}</span>
@@ -344,112 +367,53 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
 }
 
 // ─────────────────────────────────────────────
-// Download Preview Modal
-// ─────────────────────────────────────────────
-function DownloadPreviewModal({ receipt, onClose }) {
-  const previewRef = useRef();
-  const [downloading, setDownloading] = useState(false);
-
-  const companyDetails = {
-    name: "Skyup Digital Solutions LLP",
-    address: "Parinidhi #23, E Block,\n14A Main Road, 2nd Floor,\nSahakaranagar,\nBangalore - 560092",
-    gstNo: "29AFUFS6710E1ZJ",
-    bankDetails: {
-      bankName: "Kotak Mahindra Bank", accountName: "SKYUP DIGITAL SOLUTIONS LLP",
-      accountNo: "1019032325", ifscCode: "KKBK0008045", branch: "Sahakara Nagar",
-    },
-  };
-
-  const receiptData = {
-    ...receipt, ...companyDetails,
-    cgstLabel: receipt.cgst>0 ? (receipt.cgst_percentage>0 ? `CGST @ ${receipt.cgst_percentage}%` : "CGST") : "",
-    sgstLabel: receipt.sgst>0 ? (receipt.sgst_percentage>0 ? `SGST @ ${receipt.sgst_percentage}%` : "SGST") : "",
-    igstLabel: receipt.igst>0 ? (receipt.igst_percentage>0 ? `IGST @ ${receipt.igst_percentage}%` : "IGST") : "",
-  };
-
-  const handleDownload = async () => {
-    setDownloading(true);
-    try { await generatePDF(previewRef.current, receipt.invoice_no); }
-    finally { setDownloading(false); }
-  };
-
-  return (
-    <div className="fixed inset-0 z-[65] flex items-center justify-center"
-      style={{ backgroundColor:"rgba(0,0,0,0.65)", backdropFilter:"blur(3px)" }}>
-      <div className="bg-white rounded-2xl shadow-2xl flex flex-col"
-        style={{ width:"min(96vw, 900px)", maxHeight:"92vh" }}>
-        <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
-          <div>
-            <h2 className="text-xl font-bold text-gray-800">Download Receipt</h2>
-            <p className="text-sm text-blue-600 font-mono mt-0.5">{receipt.invoice_no}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <button onClick={handleDownload} disabled={downloading}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg text-sm transition disabled:opacity-60">
-              {downloading ? <><IconSpinner /> Generating…</> : <><IconDownload /> Download PDF</>}
-            </button>
-            <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 transition text-gray-400 hover:text-gray-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div className="overflow-y-auto flex-1 bg-gray-100 p-6 flex justify-center">
-          <div ref={previewRef} style={{ transform:"scale(0.75)", transformOrigin:"top center" }}>
-            <ReceiptTemplate data={receiptData} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────
 // Per-receipt Action Buttons
 // ─────────────────────────────────────────────
-function ReceiptActions({ receipt, token, onDeleted, onEdit, onDownload }) {
+function ReceiptActions({ receipt, token, onDeleted, onEdit, onDownload, downloadingId }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const isDownloading = downloadingId === receipt._id.toString();
 
   const handleDelete = async () => {
     setDeleting(true);
     try {
-const res = await fetch(`${API_URL}/receipt/${receipt._id.toString()}`, {
-          method: "DELETE",
+      const res = await fetch(`${API_URL}/receipt/${receipt._id.toString()}`, {
+        method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-if (res.ok) { setShowConfirm(false); onDeleted(receipt._id.toString()); }
-      else { const d = await res.json(); alert("Failed to delete: " + (d.message||"Unknown error")); setDeleting(false); }
-    } catch(err) { alert("Error: " + err.message); setDeleting(false); }
+      if (res.ok) { setShowConfirm(false); onDeleted(receipt._id.toString()); }
+      else { const d = await res.json(); alert("Failed to delete: " + (d.message || "Unknown error")); setDeleting(false); }
+    } catch (err) { alert("Error: " + err.message); setDeleting(false); }
   };
 
   return (
     <>
       {showConfirm && (
-        <DeleteConfirmDialog receipt={receipt} onConfirm={handleDelete} onCancel={()=>setShowConfirm(false)} loading={deleting} />
+        <DeleteConfirmDialog receipt={receipt} onConfirm={handleDelete} onCancel={() => setShowConfirm(false)} loading={deleting} />
       )}
       <div className="flex items-center gap-1.5">
         <button
-          onClick={(e)=>{ e.stopPropagation(); onEdit(receipt); }}
+          onClick={(e) => { e.stopPropagation(); onEdit(receipt); }}
           title="Edit receipt"
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition whitespace-nowrap"
         >
           <IconEdit /><span>Edit</span>
         </button>
         <button
-          onClick={(e)=>{ e.stopPropagation(); setShowConfirm(true); }}
+          onClick={(e) => { e.stopPropagation(); setShowConfirm(true); }}
           title="Delete receipt"
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition whitespace-nowrap"
         >
           <IconDelete /><span>Delete</span>
         </button>
         <button
-          onClick={(e)=>{ e.stopPropagation(); onDownload(receipt); }}
+          onClick={(e) => { e.stopPropagation(); onDownload(receipt); }}
           title="Download PDF"
-          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition whitespace-nowrap"
+          disabled={!!downloadingId}
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <IconDownload /><span>PDF</span>
+          {isDownloading ? <IconSpinner /> : <IconDownload />}
+          <span>{isDownloading ? "…" : "PDF"}</span>
         </button>
       </div>
     </>
@@ -458,44 +422,45 @@ if (res.ok) { setShowConfirm(false); onDeleted(receipt._id.toString()); }
 
 // ─────────────────────────────────────────────
 // Receipt List Modal
+// onDownloadPdf(templateData) — provided by parent Receipt,
+// loads receiptData + showPreview then calls generatePDF on receiptRef
 // ─────────────────────────────────────────────
-function ReceiptListModal({ isOpen, onClose, token }) {
+function ReceiptListModal({ isOpen, onClose, token, onDownloadPdf, downloadingId }) {
   const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [editingReceipt, setEditingReceipt] = useState(null);
-  const [downloadReceipt, setDownloadReceipt] = useState(null);
 
   useEffect(() => { if (isOpen) fetchReceipts(); }, [isOpen]);
 
   const fetchReceipts = async () => {
     setLoading(true); setError(null);
     try {
-      const res = await fetch(`${API_URL}/receipts`, { headers: { Authorization:`Bearer ${token}` } });
+      const res = await fetch(`${API_URL}/receipts`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
-      if (res.ok) setReceipts([...data].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)));
+      if (res.ok) setReceipts([...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       else setError("Failed to fetch receipts");
-    } catch(err) { setError("Error: "+err.message); }
+    } catch (err) { setError("Error: " + err.message); }
     finally { setLoading(false); }
   };
 
- const handleDeleted = (id) => {
-  setReceipts(prev => prev.filter(r => r._id.toString() !== id.toString()));
-  if (selectedReceipt?._id?.toString() === id.toString()) setSelectedReceipt(null);
-};
+  const handleDeleted = (id) => {
+    setReceipts(prev => prev.filter(r => r._id.toString() !== id.toString()));
+    if (selectedReceipt?._id?.toString() === id.toString()) setSelectedReceipt(null);
+  };
 
- const handleSaved = (updated) => {
-  setReceipts(prev => prev.map(r => r._id.toString() === updated._id.toString() ? {...r, ...updated} : r));
-  if (selectedReceipt?._id?.toString() === updated._id?.toString()) setSelectedReceipt({...selectedReceipt, ...updated});
-  setEditingReceipt(null);
-};
+  const handleSaved = (updated) => {
+    setReceipts(prev => prev.map(r => r._id.toString() === updated._id.toString() ? { ...r, ...updated } : r));
+    if (selectedReceipt?._id?.toString() === updated._id?.toString()) setSelectedReceipt({ ...selectedReceipt, ...updated });
+    setEditingReceipt(null);
+  };
 
-  const fd = (d) => { if(!d) return "—"; return new Date(d).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}); };
-  const fmt = (n) => `₹${Number(n||0).toLocaleString("en-IN")}`;
+  const fd = (d) => { if (!d) return "—"; return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }); };
+  const fmt = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-  const filtered = receipts.filter(r=>
+  const filtered = receipts.filter(r =>
     r.invoice_no?.toLowerCase().includes(search.toLowerCase()) ||
     r.to?.toLowerCase().includes(search.toLowerCase()) ||
     r.client_gst?.toLowerCase().includes(search.toLowerCase())
@@ -505,19 +470,20 @@ function ReceiptListModal({ isOpen, onClose, token }) {
 
   return (
     <>
-      {editingReceipt && <EditReceiptModal receipt={editingReceipt} token={token} onClose={()=>setEditingReceipt(null)} onSaved={handleSaved} />}
-      {downloadReceipt && <DownloadPreviewModal receipt={downloadReceipt} onClose={()=>setDownloadReceipt(null)} />}
+      {editingReceipt && (
+        <EditReceiptModal receipt={editingReceipt} token={token} onClose={() => setEditingReceipt(null)} onSaved={handleSaved} />
+      )}
 
       <div className="fixed inset-0 z-50 flex items-center justify-center"
-        style={{ backgroundColor:"rgba(0,0,0,0.55)", backdropFilter:"blur(2px)" }}>
+        style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(2px)" }}>
         <div className="bg-white rounded-2xl shadow-2xl flex flex-col"
-          style={{ width:"min(96vw, 1040px)", maxHeight:"90vh" }}>
+          style={{ width: "min(96vw, 1040px)", maxHeight: "90vh" }}>
 
           {/* Header */}
           <div className="flex items-center justify-between px-7 py-5 border-b border-gray-100">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 tracking-tight">All Receipts</h2>
-              <p className="text-sm text-gray-500 mt-0.5">{receipts.length} invoice{receipts.length!==1?"s":""} generated</p>
+              <p className="text-sm text-gray-500 mt-0.5">{receipts.length} invoice{receipts.length !== 1 ? "s" : ""} generated</p>
             </div>
             <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500 hover:text-gray-800">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -529,10 +495,10 @@ function ReceiptListModal({ isOpen, onClose, token }) {
           {/* Search */}
           <div className="px-7 py-4 border-b border-gray-100 bg-gray-50/60">
             <div className="relative">
-              <svg className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <input type="text" value={search} onChange={e=>setSearch(e.target.value)}
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search by invoice no, client name, or GST…"
                 className="w-[350px] pl-7 pr-8 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition" />
             </div>
@@ -541,7 +507,7 @@ function ReceiptListModal({ isOpen, onClose, token }) {
           {/* Content */}
           <div className="flex flex-1 overflow-hidden">
             {/* List */}
-            <div className="overflow-y-auto" style={{ width:selectedReceipt?"48%":"100%", transition:"width 0.2s" }}>
+            <div className="overflow-y-auto" style={{ width: selectedReceipt ? "48%" : "100%", transition: "width 0.2s" }}>
               {loading ? (
                 <div className="flex flex-col items-center justify-center h-48 gap-3">
                   <IconSpinner /><span className="text-gray-500 text-sm">Loading receipts…</span>
@@ -553,41 +519,40 @@ function ReceiptListModal({ isOpen, onClose, token }) {
                 </div>
               ) : filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-48">
-                  <p className="text-gray-500 text-sm">{search?"No receipts match your search":"No receipts generated yet"}</p>
+                  <p className="text-gray-500 text-sm">{search ? "No receipts match your search" : "No receipts generated yet"}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
                   {filtered.map((receipt) => (
                     <div
                       key={receipt._id}
-                     // FIX
-className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
-  selectedReceipt?._id?.toString() === receipt._id?.toString()
-    ? "bg-blue-50 border-l-4 border-blue-500"
-    : "border-l-4 border-transparent"
-}`}
-                     onClick={() => setSelectedReceipt(selectedReceipt?._id?.toString() === receipt._id?.toString() ? null : receipt)}
+                      className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
+                        selectedReceipt?._id?.toString() === receipt._id?.toString()
+                          ? "bg-blue-50 border-l-4 border-blue-500"
+                          : "border-l-4 border-transparent"
+                      }`}
+                      onClick={() => setSelectedReceipt(
+                        selectedReceipt?._id?.toString() === receipt._id?.toString() ? null : receipt
+                      )}
                     >
                       <div className="flex items-start gap-3">
-                        {/* Info */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
                             <span className="font-semibold text-blue-700 text-sm font-mono">{receipt.invoice_no}</span>
-                            <span className="text-xs text-gray-400">{fd(receipt.date||receipt.createdAt)}</span>
+                            <span className="text-xs text-gray-400">{fd(receipt.date || receipt.createdAt)}</span>
                           </div>
-                          <p className="text-sm text-gray-800 font-medium truncate">{receipt.to?.split("\n")[0]||"—"}</p>
-                          <p className="text-xs text-gray-400 mt-0.5">GST: {receipt.client_gst||"URD"}</p>
+                          <p className="text-sm text-gray-800 font-medium truncate">{receipt.to?.split("\n")[0] || "—"}</p>
+                          <p className="text-xs text-gray-400 mt-0.5">GST: {receipt.client_gst || "URD"}</p>
                         </div>
-
-                        {/* Right side: amount + actions */}
                         <div className="flex flex-col items-end gap-2 flex-shrink-0">
                           <span className="text-base font-bold text-gray-800">{fmt(receipt.total)}</span>
                           <ReceiptActions
                             receipt={receipt}
                             token={token}
                             onDeleted={handleDeleted}
-                            onEdit={r=>setEditingReceipt(r)}
-                            onDownload={r=>setDownloadReceipt(r)}
+                            onEdit={r => setEditingReceipt(r)}
+                            onDownload={r => onDownloadPdf(buildTemplateData(r))}
+                            downloadingId={downloadingId}
                           />
                         </div>
                       </div>
@@ -603,26 +568,30 @@ className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-gray-800 text-lg">Invoice Details</h3>
-                    <button onClick={()=>setSelectedReceipt(null)} className="text-gray-400 hover:text-gray-700 p-1 rounded transition">
+                    <button onClick={() => setSelectedReceipt(null)} className="text-gray-400 hover:text-gray-700 p-1 rounded transition">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
 
-                  {/* Quick Actions in detail */}
                   <div className="flex gap-2 mb-5">
-                    <button onClick={()=>setEditingReceipt(selectedReceipt)}
+                    <button onClick={() => setEditingReceipt(selectedReceipt)}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition">
                       <IconEdit /> Edit
                     </button>
-                    <button onClick={()=>setDownloadReceipt(selectedReceipt)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition">
-                      <IconDownload /> Download
+                    <button
+                      onClick={() => onDownloadPdf(buildTemplateData(selectedReceipt))}
+                      disabled={!!downloadingId}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {downloadingId === selectedReceipt._id.toString()
+                        ? <><IconSpinner /> Generating…</>
+                        : <><IconDownload /> Download</>
+                      }
                     </button>
                   </div>
 
-                  {/* Meta */}
                   <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4 space-y-2">
                     <div className="flex justify-between text-sm"><span className="text-gray-500 font-medium">Invoice No</span><span className="font-mono font-bold text-blue-700">{selectedReceipt.invoice_no}</span></div>
                     <div className="flex justify-between text-sm"><span className="text-gray-500 font-medium">Date</span><span>{fd(selectedReceipt.date)}</span></div>
@@ -630,14 +599,12 @@ className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
                     {selectedReceipt.hsn_no && <div className="flex justify-between text-sm"><span className="text-gray-500 font-medium">HSN/SAC</span><span>{selectedReceipt.hsn_no}</span></div>}
                   </div>
 
-                  {/* Client */}
                   <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Client</p>
                     <p className="text-sm text-gray-800 whitespace-pre-line font-medium">{selectedReceipt.to}</p>
-                    <p className="text-xs text-gray-500 mt-1">GST: {selectedReceipt.client_gst||"URD"}</p>
+                    <p className="text-xs text-gray-500 mt-1">GST: {selectedReceipt.client_gst || "URD"}</p>
                   </div>
 
-                  {/* Items */}
                   {selectedReceipt.items?.length > 0 && (
                     <div className="bg-white rounded-xl border border-gray-200 mb-4 overflow-hidden">
                       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-2">Line Items</p>
@@ -650,7 +617,7 @@ className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
-                          {selectedReceipt.items.map((item,i)=>(
+                          {selectedReceipt.items.map((item, i) => (
                             <tr key={i}>
                               <td className="px-4 py-2 text-gray-700 text-xs whitespace-pre-line">{item.description}</td>
                               <td className="px-2 py-2 text-center text-gray-600 text-xs">{item.qty}</td>
@@ -662,12 +629,11 @@ className={`px-5 py-4 hover:bg-blue-50/40 transition cursor-pointer ${
                     </div>
                   )}
 
-                  {/* Totals */}
                   <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-2">
                     <div className="flex justify-between text-sm"><span className="text-gray-500">Subtotal</span><span className="font-medium">{fmt(selectedReceipt.subtotal)}</span></div>
-                    {selectedReceipt.cgst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">CGST{selectedReceipt.cgst_percentage>0?` @ ${selectedReceipt.cgst_percentage}%`:""}</span><span>{fmt(selectedReceipt.cgst)}</span></div>}
-                    {selectedReceipt.sgst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">SGST{selectedReceipt.sgst_percentage>0?` @ ${selectedReceipt.sgst_percentage}%`:""}</span><span>{fmt(selectedReceipt.sgst)}</span></div>}
-                    {selectedReceipt.igst>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">IGST{selectedReceipt.igst_percentage>0?` @ ${selectedReceipt.igst_percentage}%`:""}</span><span>{fmt(selectedReceipt.igst)}</span></div>}
+                    {selectedReceipt.cgst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">CGST{selectedReceipt.cgst_percentage > 0 ? ` @ ${selectedReceipt.cgst_percentage}%` : ""}</span><span>{fmt(selectedReceipt.cgst)}</span></div>}
+                    {selectedReceipt.sgst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">SGST{selectedReceipt.sgst_percentage > 0 ? ` @ ${selectedReceipt.sgst_percentage}%` : ""}</span><span>{fmt(selectedReceipt.sgst)}</span></div>}
+                    {selectedReceipt.igst > 0 && <div className="flex justify-between text-sm"><span className="text-gray-500">IGST{selectedReceipt.igst_percentage > 0 ? ` @ ${selectedReceipt.igst_percentage}%` : ""}</span><span>{fmt(selectedReceipt.igst)}</span></div>}
                     <div className="border-t pt-2 flex justify-between font-bold">
                       <span className="text-gray-800">Total</span>
                       <span className="text-blue-700 text-base">{fmt(selectedReceipt.total)}</span>
@@ -709,23 +675,14 @@ export function Receipt() {
   const [receiptData, setReceiptData] = useState(null);
   const [nextInvoiceSerial, setNextInvoiceSerial] = useState(1);
   const [showReceiptList, setShowReceiptList] = useState(false);
+  const [listDownloadingId, setListDownloadingId] = useState(null);
   const receiptRef = useRef();
-
-  const companyDetails = {
-    name: "Skyup Digital Solutions LLP",
-    address: "Parinidhi #23, E Block,\n14A Main Road, 2nd Floor,\nSahakaranagar,\nBangalore - 560092",
-    gstNo: "29AFUFS6710E1ZJ",
-    bankDetails: {
-      bankName: "Kotak Mahindra Bank", accountName: "SKYUP DIGITAL SOLUTIONS LLP",
-      accountNo: "1019032325", ifscCode: "KKBK0008045", branch: "Sahakara Nagar",
-    },
-  };
 
   useEffect(() => { if (token) fetchLastInvoiceNumber(); }, [token]);
 
   const fetchLastInvoiceNumber = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/last-invoice`, { headers: { Authorization:`Bearer ${token}` } });
+      const res = await fetch(`${API_URL}/api/last-invoice`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
       if (data.lastSerial) setNextInvoiceSerial(data.lastSerial + 1);
     } catch {
@@ -735,10 +692,31 @@ export function Receipt() {
   };
 
   const getCurrentFinancialYear = () => {
-    const today = new Date(); const y = today.getFullYear(); const m = today.getMonth()+1;
-    return m>=4 ? `${y}-${(y+1).toString().slice(-2)}` : `${y-1}-${y.toString().slice(-2)}`;
+    const today = new Date(); const y = today.getFullYear(); const m = today.getMonth() + 1;
+    return m >= 4 ? `${y}-${(y + 1).toString().slice(-2)}` : `${y - 1}-${y.toString().slice(-2)}`;
   };
-  const generateInvoiceNumber = (serial) => `SDS/${serial.toString().padStart(3,"0")}/${getCurrentFinancialYear()}`;
+  const generateInvoiceNumber = (serial) => `SDS/${serial.toString().padStart(3, "0")}/${getCurrentFinancialYear()}`;
+
+  // ── Called by ReceiptListModal when a PDF button is clicked ──────────────
+  // 1. Load templateData into receiptData state (mounts <ReceiptTemplate> at receiptRef)
+  // 2. Wait one tick for the DOM to paint
+  // 3. Call generatePDF on receiptRef.current — exactly the same ref the form uses
+  // 4. Tear down the preview state
+  const handleListDownloadPdf = async (templateData) => {
+    if (listDownloadingId) return;
+    setListDownloadingId(templateData._id.toString());
+    setReceiptData(templateData);
+    setShowPreview(true);
+    // Give React one animation frame to paint ReceiptTemplate into receiptRef
+    await new Promise(resolve => setTimeout(resolve, 300));
+    try {
+      await generatePDF(receiptRef.current, templateData.invoice_no);
+    } finally {
+      setShowPreview(false);
+      setReceiptData(null);
+      setListDownloadingId(null);
+    }
+  };
 
   const validationSchema = Yup.object({
     to: Yup.string().required("Client name/address is required"),
@@ -759,90 +737,99 @@ export function Receipt() {
     igst_manual: Yup.number().min(0),
   });
 
-  const autoCalc = (amount, pct) => Math.round(amount*(pct/100));
+  const autoCalc = (amount, pct) => Math.round(amount * (pct / 100));
 
   const numberToWords = (num) => {
-    const ones=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
-    const tens=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-    const teens=["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-    if(num===0) return "Zero rupees only";
-    const cvt=(n)=>{let s="";if(n>99){s+=ones[Math.floor(n/100)]+" hundred ";n%=100;}if(n>19){s+=tens[Math.floor(n/10)]+" ";n%=10;}else if(n>=10){return s+teens[n-10]+" ";}if(n>0)s+=ones[n]+" ";return s;};
-    let w="";
-    if(num>=10000000){w+=cvt(Math.floor(num/10000000))+"crore ";num%=10000000;}
-    if(num>=100000){w+=cvt(Math.floor(num/100000))+"lakh ";num%=100000;}
-    if(num>=1000){w+=cvt(Math.floor(num/1000))+"thousand ";num%=1000;}
-    w+=cvt(num);
-    return(w.trim().charAt(0).toUpperCase()+w.trim().slice(1)+" rupees only").replace(/\s+/g," ");
+    const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
+    const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+    const teens = ["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+    if (num === 0) return "Zero rupees only";
+    const cvt = (n) => { let s = ""; if (n > 99) { s += ones[Math.floor(n/100)] + " hundred "; n %= 100; } if (n > 19) { s += tens[Math.floor(n/10)] + " "; n %= 10; } else if (n >= 10) { return s + teens[n-10] + " "; } if (n > 0) s += ones[n] + " "; return s; };
+    let w = "";
+    if (num >= 10000000) { w += cvt(Math.floor(num/10000000)) + "crore "; num %= 10000000; }
+    if (num >= 100000) { w += cvt(Math.floor(num/100000)) + "lakh "; num %= 100000; }
+    if (num >= 1000) { w += cvt(Math.floor(num/1000)) + "thousand "; num %= 1000; }
+    w += cvt(num);
+    return (w.trim().charAt(0).toUpperCase() + w.trim().slice(1) + " rupees only").replace(/\s+/g, " ");
   };
 
-  const calculateTotals = (items,cP,sP,iP,manual,cM,sM,iM) => {
-    if(!items||!Array.isArray(items)) return {subtotal:0,cgst:0,sgst:0,igst:0,total:0};
-    const subtotal = items.reduce((s,i)=>s+(i.qty||0)*(i.rate||0),0);
-    let cgst,sgst,igst;
-    if(manual){cgst=parseFloat(cM)||0;sgst=parseFloat(sM)||0;igst=parseFloat(iM)||0;}
-    else{cgst=cP?autoCalc(subtotal,cP):0;sgst=sP?autoCalc(subtotal,sP):0;igst=iP?autoCalc(subtotal,iP):0;}
-    return {subtotal,cgst,sgst,igst,total:subtotal+cgst+sgst+igst};
+  const calculateTotals = (items, cP, sP, iP, manual, cM, sM, iM) => {
+    if (!items || !Array.isArray(items)) return { subtotal: 0, cgst: 0, sgst: 0, igst: 0, total: 0 };
+    const subtotal = items.reduce((s, i) => s + (i.qty || 0) * (i.rate || 0), 0);
+    let cgst, sgst, igst;
+    if (manual) { cgst = parseFloat(cM)||0; sgst = parseFloat(sM)||0; igst = parseFloat(iM)||0; }
+    else { cgst = cP ? autoCalc(subtotal, cP) : 0; sgst = sP ? autoCalc(subtotal, sP) : 0; igst = iP ? autoCalc(subtotal, iP) : 0; }
+    return { subtotal, cgst, sgst, igst, total: subtotal + cgst + sgst + igst };
   };
 
-  const handleSubmit = async (values,{setSubmitting,resetForm}) => {
-    const {subtotal,cgst,sgst,igst,total} = calculateTotals(
-      values.items,values.cgst_percentage,values.sgst_percentage,
-      values.igst_percentage,values.use_manual_gst,
-      values.cgst_manual,values.sgst_manual,values.igst_manual
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const { subtotal, cgst, sgst, igst, total } = calculateTotals(
+      values.items, values.cgst_percentage, values.sgst_percentage,
+      values.igst_percentage, values.use_manual_gst,
+      values.cgst_manual, values.sgst_manual, values.igst_manual
     );
     const invoiceNumber = generateInvoiceNumber(nextInvoiceSerial);
     const formData = {
-      to:values.to, client_gst:values.client_gst||"URD", invoice_no:invoiceNumber,
-      date:values.date, invoice_due:values.invoice_due||null, hsn_no:values.hsn_no||"",
-      items:values.items.map(i=>({description:i.description,qty:parseInt(i.qty),rate:parseInt(i.rate),amount:parseInt(i.qty)*parseInt(i.rate)})),
-      subtotal,cgst,sgst,igst,
-      cgst_percentage:values.use_manual_gst?0:values.cgst_percentage||0,
-      sgst_percentage:values.use_manual_gst?0:values.sgst_percentage||0,
-      igst_percentage:values.use_manual_gst?0:values.igst_percentage||0,
-      total, amount_in_words:numberToWords(total),
+      to: values.to, client_gst: values.client_gst || "URD", invoice_no: invoiceNumber,
+      date: values.date, invoice_due: values.invoice_due || null, hsn_no: values.hsn_no || "",
+      items: values.items.map(i => ({ description: i.description, qty: parseInt(i.qty), rate: parseInt(i.rate), amount: parseInt(i.qty) * parseInt(i.rate) })),
+      subtotal, cgst, sgst, igst,
+      cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
+      sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
+      igst_percentage: values.use_manual_gst ? 0 : values.igst_percentage || 0,
+      total, amount_in_words: numberToWords(total),
     };
     try {
       const receiptFullData = {
-        ...formData, ...companyDetails,
-        cgstLabel:cgst>0?(values.use_manual_gst?"CGST":`CGST @ ${values.cgst_percentage||9}%`):"",
-        sgstLabel:sgst>0?(values.use_manual_gst?"SGST":`SGST @ ${values.sgst_percentage||9}%`):"",
-        igstLabel:igst>0?(values.use_manual_gst?"IGST":`IGST @ ${values.igst_percentage||18}%`):"",
+        ...formData,
+        ...COMPANY_DETAILS,
+        cgstLabel: cgst > 0 ? (values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage || 9}%`) : "",
+        sgstLabel: sgst > 0 ? (values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage || 9}%`) : "",
+        igstLabel: igst > 0 ? (values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage || 18}%`) : "",
       };
-      setReceiptData(receiptFullData); setShowPreview(true);
-      setTimeout(async()=>{
+      setReceiptData(receiptFullData);
+      setShowPreview(true);
+      setTimeout(async () => {
         await generatePDF(receiptRef.current, invoiceNumber);
-        const res = await fetch(`${API_URL}/receipt`,{
-          method:"POST",
-          headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`},
-          body:JSON.stringify(formData),
+        const res = await fetch(`${API_URL}/receipt`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify(formData),
         });
         const result = await res.json();
-        if(res.ok){
+        if (res.ok) {
           alert("Receipt created and downloaded successfully!");
-          setNextInvoiceSerial(nextInvoiceSerial+1);
-          localStorage.setItem("lastInvoiceSerial",nextInvoiceSerial.toString());
-          resetForm(); setShowPreview(false);
-        } else { alert("Failed to save receipt: "+result.message); }
+          setNextInvoiceSerial(nextInvoiceSerial + 1);
+          localStorage.setItem("lastInvoiceSerial", nextInvoiceSerial.toString());
+          resetForm();
+          setShowPreview(false);
+        } else { alert("Failed to save receipt: " + result.message); }
         setSubmitting(false);
-      },500);
-    } catch(err){ alert("Error: "+err.message); setSubmitting(false); }
+      }, 500);
+    } catch (err) { alert("Error: " + err.message); setSubmitting(false); }
   };
 
   const handlePrint = () => {
-    const pw = window.open("","_blank");
+    const pw = window.open("", "_blank");
     pw.document.write(`<!DOCTYPE html><html><head><title>Invoice ${receiptData?.invoice_no}</title>
       <script src="https://cdn.tailwindcss.com"></script>
       <style>@media print{body{margin:0;padding:0;}@page{size:A4;margin:0;}}</style>
       </head><body>${receiptRef.current.innerHTML}</body></html>`);
     pw.document.close();
-    setTimeout(()=>{pw.print();},250);
+    setTimeout(() => { pw.print(); }, 250);
   };
 
   const ic = "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 font-poppins">
-      <ReceiptListModal isOpen={showReceiptList} onClose={()=>setShowReceiptList(false)} token={token} />
+      <ReceiptListModal
+        isOpen={showReceiptList}
+        onClose={() => setShowReceiptList(false)}
+        token={token}
+        onDownloadPdf={handleListDownloadPdf}
+        downloadingId={listDownloadingId}
+      />
 
       <div className="max-w-5xl mx-auto">
         {!showPreview ? (
@@ -853,7 +840,7 @@ export function Receipt() {
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">Create New Receipt</h1>
                 <p className="text-gray-600">Generate professional invoice for your client</p>
               </div>
-              <button onClick={()=>setShowReceiptList(true)}
+              <button onClick={() => setShowReceiptList(true)}
                 className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-lg transition shadow-sm hover:shadow-md text-sm flex-shrink-0">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -865,36 +852,34 @@ export function Receipt() {
 
             <Formik
               initialValues={{
-                to:"", client_gst:"",
-                date:new Date().toISOString().split("T")[0],
-                invoice_due:"", hsn_no:"",
-                items:[{description:"",qty:"",rate:""}],
-                cgst_percentage:9, sgst_percentage:9, igst_percentage:18,
-                cgst_manual:"", sgst_manual:"", igst_manual:"",
-                use_manual_gst:false,
+                to: "", client_gst: "",
+                date: new Date().toISOString().split("T")[0],
+                invoice_due: "", hsn_no: "",
+                items: [{ description: "", qty: "", rate: "" }],
+                cgst_percentage: 9, sgst_percentage: 9, igst_percentage: 18,
+                cgst_manual: "", sgst_manual: "", igst_manual: "",
+                use_manual_gst: false,
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({values,errors,touched,isSubmitting})=>{
-                const {subtotal,cgst,sgst,igst,total} = calculateTotals(
-                  values.items||[],values.cgst_percentage,values.sgst_percentage,
-                  values.igst_percentage,values.use_manual_gst,
-                  values.cgst_manual,values.sgst_manual,values.igst_manual
+              {({ values, errors, touched, isSubmitting }) => {
+                const { subtotal, cgst, sgst, igst, total } = calculateTotals(
+                  values.items || [], values.cgst_percentage, values.sgst_percentage,
+                  values.igst_percentage, values.use_manual_gst,
+                  values.cgst_manual, values.sgst_manual, values.igst_manual
                 );
                 return (
                   <Form className="space-y-6">
-                    {/* Invoice Number */}
                     <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
                       <p className="text-sm font-medium text-blue-800 mb-1">Next Invoice Number</p>
                       <p className="text-2xl font-bold text-blue-600">{generateInvoiceNumber(nextInvoiceSerial)}</p>
                     </div>
 
-                    {/* Client */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Client Name & Address <span className="text-red-500">*</span></label>
                       <Field as="textarea" name="to" rows="3" className={`${ic} resize-none`} placeholder="Enter client name and complete address" />
-                      {errors.to&&touched.to&&<p className="text-red-600 text-sm mt-1">⚠ {errors.to}</p>}
+                      {errors.to && touched.to && <p className="text-red-600 text-sm mt-1">⚠ {errors.to}</p>}
                     </div>
 
                     <div>
@@ -907,7 +892,7 @@ export function Receipt() {
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Invoice Date <span className="text-red-500">*</span></label>
                         <Field type="date" name="date" className={ic} />
-                        {errors.date&&touched.date&&<p className="text-red-600 text-sm mt-1">⚠ {errors.date}</p>}
+                        {errors.date && touched.date && <p className="text-red-600 text-sm mt-1">⚠ {errors.date}</p>}
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Invoice Due Date <span className="text-gray-400 text-xs">(Optional)</span></label>
@@ -920,28 +905,27 @@ export function Receipt() {
                       <Field type="text" name="hsn_no" className={ic} placeholder="Enter HSN/SAC code" />
                     </div>
 
-                    {/* Items */}
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Line Items</h3>
                       <FieldArray name="items">
-                        {({push,remove})=>(
+                        {({ push, remove }) => (
                           <div className="space-y-6">
-                            {values.items.map((item,index)=>(
+                            {values.items.map((item, index) => (
                               <div key={index} className="bg-white border border-gray-300 rounded-lg p-6 relative">
-                                {values.items.length>1&&(
-                                  <button type="button" onClick={()=>remove(index)}
+                                {values.items.length > 1 && (
+                                  <button type="button" onClick={() => remove(index)}
                                     className="absolute top-4 right-4 text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-full transition">
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                   </button>
                                 )}
-                                <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">Item {index+1}</span>
+                                <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">Item {index + 1}</span>
                                 <div className="space-y-4 mt-2">
                                   <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
                                     <Field as="textarea" name={`items.${index}.description`} rows="3" className={`${ic} resize-none`} placeholder="Enter service or product description" />
-                                    {errors.items?.[index]?.description&&touched.items?.[index]?.description&&<p className="text-red-600 text-sm mt-1">⚠ {errors.items[index].description}</p>}
+                                    {errors.items?.[index]?.description && touched.items?.[index]?.description && <p className="text-red-600 text-sm mt-1">⚠ {errors.items[index].description}</p>}
                                   </div>
                                   <div className="grid grid-cols-3 gap-4">
                                     <div>
@@ -955,14 +939,14 @@ export function Receipt() {
                                     <div>
                                       <label className="block text-sm font-semibold text-gray-700 mb-2">Amount</label>
                                       <div className={`${ic} bg-gray-100 border-gray-200 font-semibold text-gray-700`}>
-                                        ₹{((item.qty||0)*(item.rate||0)).toLocaleString("en-IN")}
+                                        ₹{((item.qty || 0) * (item.rate || 0)).toLocaleString("en-IN")}
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             ))}
-                            <button type="button" onClick={()=>push({description:"",qty:"",rate:""})}
+                            <button type="button" onClick={() => push({ description: "", qty: "", rate: "" })}
                               className="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold py-3 px-6 rounded-lg transition border-2 border-dashed border-blue-300 flex items-center justify-center gap-2">
                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -974,7 +958,6 @@ export function Receipt() {
                       </FieldArray>
                     </div>
 
-                    {/* GST */}
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">GST Details</h3>
                       <label className="flex items-center gap-3 cursor-pointer mb-4">
@@ -983,28 +966,27 @@ export function Receipt() {
                       </label>
                       {!values.use_manual_gst ? (
                         <div className="grid grid-cols-3 gap-6">
-                          {[["cgst_percentage","CGST %"],["sgst_percentage","SGST %"],["igst_percentage","IGST %"]].map(([n,l])=>(
+                          {[["cgst_percentage","CGST %"],["sgst_percentage","SGST %"],["igst_percentage","IGST %"]].map(([n, l]) => (
                             <div key={n}><label className="block text-sm font-semibold text-gray-700 mb-2">{l}</label><Field type="number" name={n} min="0" max="100" step="0.01" className={ic} /></div>
                           ))}
                         </div>
                       ) : (
                         <div className="grid grid-cols-3 gap-6">
-                          {[["cgst_manual","CGST (₹)"],["sgst_manual","SGST (₹)"],["igst_manual","IGST (₹)"]].map(([n,l])=>(
+                          {[["cgst_manual","CGST (₹)"],["sgst_manual","SGST (₹)"],["igst_manual","IGST (₹)"]].map(([n, l]) => (
                             <div key={n}><label className="block text-sm font-semibold text-gray-700 mb-2">{l}</label><Field type="number" name={n} min="0" step="0.01" className={ic} placeholder="0" /></div>
                           ))}
                         </div>
                       )}
                     </div>
 
-                    {/* Summary */}
-                    {subtotal>0&&(
+                    {subtotal > 0 && (
                       <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Calculation Summary</h3>
                         <div className="space-y-3">
                           <div className="flex justify-between"><span className="text-gray-600">Subtotal</span><span className="font-semibold">₹{subtotal.toLocaleString("en-IN")}</span></div>
-                          {cgst>0&&<div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst?"CGST":`CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{cgst.toLocaleString("en-IN")}</span></div>}
-                          {sgst>0&&<div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst?"SGST":`SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{sgst.toLocaleString("en-IN")}</span></div>}
-                          {igst>0&&<div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst?"IGST":`IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{igst.toLocaleString("en-IN")}</span></div>}
+                          {cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{cgst.toLocaleString("en-IN")}</span></div>}
+                          {sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{sgst.toLocaleString("en-IN")}</span></div>}
+                          {igst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{igst.toLocaleString("en-IN")}</span></div>}
                           <div className="border-t pt-3 flex justify-between">
                             <span className="text-lg font-bold text-gray-800">Total Amount</span>
                             <span className="text-2xl font-bold text-blue-600">₹{total.toLocaleString("en-IN")}</span>
@@ -1014,11 +996,10 @@ export function Receipt() {
                       </div>
                     )}
 
-                    {/* Submit */}
                     <div className="pt-6">
                       <button type="submit" disabled={isSubmitting}
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition disabled:opacity-50 shadow-md hover:shadow-lg flex items-center gap-2">
-                        {isSubmitting ? <><IconSpinner/> Creating Receipt…</> : (
+                        {isSubmitting ? <><IconSpinner /> Creating Receipt…</> : (
                           <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg> Create & Download Receipt</>
@@ -1032,26 +1013,29 @@ export function Receipt() {
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-wrap gap-4 print:hidden">
-              <button onClick={()=>generatePDF(receiptRef.current,receiptData.invoice_no)}
-                className="flex-1 min-w-[200px] bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
-                <IconDownload /> Download PDF
-              </button>
-              <button onClick={handlePrint}
-                className="flex-1 min-w-[200px] bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                Print Receipt
-              </button>
-              <button onClick={()=>setShowPreview(false)}
-                className="flex-1 min-w-[200px] bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Create New Receipt
-              </button>
-            </div>
+            {/* Only show action bar when NOT doing a silent list download */}
+            {!listDownloadingId && (
+              <div className="bg-white rounded-xl shadow-lg p-6 flex flex-wrap gap-4 print:hidden">
+                <button onClick={() => generatePDF(receiptRef.current, receiptData.invoice_no)}
+                  className="flex-1 min-w-[200px] bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
+                  <IconDownload /> Download PDF
+                </button>
+                <button onClick={handlePrint}
+                  className="flex-1 min-w-[200px] bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print Receipt
+                </button>
+                <button onClick={() => setShowPreview(false)}
+                  className="flex-1 min-w-[200px] bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  Create New Receipt
+                </button>
+              </div>
+            )}
             <div ref={receiptRef}><ReceiptTemplate data={receiptData} /></div>
           </div>
         )}
