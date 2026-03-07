@@ -38,6 +38,18 @@
     {
       "source": "/api/(.*)",
       "destination": "https://skyup-backend-3k9s.onrender.com/api/$1"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/blogger/(.*)",
+      "destination": "/blogger/index.html"
     }
   ],
   "headers": [

@@ -386,7 +386,7 @@ export default function DynamicBlog() {
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("adminToken", data.token);
         setShowLoginModal(false);
         setLoginForm({ email: "", password: "" });
         setLoginError("");
@@ -412,7 +412,7 @@ export default function DynamicBlog() {
       alert("Please add at least one content block before publishing.");
       return;
     }
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("adminToken");
     if (!token) {
       setShowLoginModal(true);
       return;
@@ -471,7 +471,7 @@ export default function DynamicBlog() {
       const data = await res.json();
 
       if (res.status === 401 || res.status === 403) {
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("adminToken");
         setPublishStatus(null);
         setShowLoginModal(true);
         return;
