@@ -1,10 +1,13 @@
 export { Layout }
-import '@/index.css'
+import '../../src/index.css'
+import { AuthProvider } from '../../src/context/AuthContext'
 
 function Layout({ children }) {
   return (
-    <div>
-      {children}
-    </div>
+    <AuthProvider>
+      <div>
+        {children}
+      </div>
+    </AuthProvider>
   )
 }
