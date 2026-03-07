@@ -26,7 +26,7 @@ export function Login() {
         if (role === "admin") {
           await navigate("/admin/receipt");
         } else if (role === "blogger") {
-          await navigate("/admin/dynamicblog");
+          await navigate("/blogger/dynamicblog")
         } else {
           await navigate("/admin");
         }
