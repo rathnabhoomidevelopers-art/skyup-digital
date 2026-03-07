@@ -223,6 +223,7 @@ export default function DynamicBlog() {
       },
       ...(type === "heading" && { headingLevel: "h3" }),
       ...(type === "anchor" && { href: "https://example.com" }),
+      ...(type === "p_link" && { textBefore: "", linkText: "click here", href: "https://example.com", textAfter: "" }),
       ...(type === "image" && {
         src: "",
         alt: "",
@@ -338,6 +339,14 @@ export default function DynamicBlog() {
           linkText: el.content,
           href: el.href,
           textAfter: "",
+        };
+      if (el.type === "p_link")
+        return {
+          type: "p_with_link",
+          textBefore: el.textBefore || "",
+          linkText: el.linkText || "",
+          href: el.href || "",
+          textAfter: el.textAfter || "",
         };
       return { type: "p", text: el.content };
     });
@@ -648,6 +657,25 @@ export default function DynamicBlog() {
           </a>
         );
 
+      case "p_link":
+        return (
+          <p
+            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`}
+            onClick={pick}
+            style={inlineStyle}
+          >
+            {element.textBefore && <span>{element.textBefore} </span>}
+            <a
+              href={element.href || "#"}
+              onClick={(e) => e.preventDefault()}
+              className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90"
+            >
+              {element.linkText || "link"}
+            </a>
+            {element.textAfter && <span> {element.textAfter}</span>}
+          </p>
+        );
+
       case "div":
         return (
           <div
@@ -844,6 +872,21 @@ export default function DynamicBlog() {
           >
             {el.content}
           </a>
+        </p>
+      );
+    if (el.type === "p_link")
+      return (
+        <p key={i} className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
+          {el.textBefore && <span>{el.textBefore} </span>}
+          <a
+            href={el.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#0B3BFF] font-semibold no-underline hover:opacity-90"
+          >
+            {el.linkText}
+          </a>
+          {el.textAfter && <span> {el.textAfter}</span>}
         </p>
       );
     if (el.type === "ul" || el.type === "ol") {
@@ -1299,6 +1342,7 @@ export default function DynamicBlog() {
                     { type: "ul", icon: List, label: "Bullet" },
                     { type: "ol", icon: List, label: "Numbered" },
                     { type: "anchor", icon: LinkIcon, label: "Link" },
+                    { type: "p_link", icon: LinkIcon, label: "Para+Link" },
                     { type: "div", icon: Layout, label: "Div" },
                     { type: "span", icon: Layout, label: "Span" },
                     { type: "dl", icon: List, label: "DL" },
@@ -1335,7 +1379,7 @@ export default function DynamicBlog() {
                 </div>
 
                 {/* Content textarea — shown for all text-based elements except image/list/dl */}
-                {!["image", "ul", "ol", "dl"].includes(
+                {!["image", "ul", "ol", "dl", "p_link"].includes(
                   selectedElement.type,
                 ) && (
                   <div>
@@ -1352,61 +1396,10 @@ export default function DynamicBlog() {
                     />
 
                     {selectedElement.type === "paragraph" && (
-                      <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg space-y-2">
-                        <p className="text-[11px] font-semibold text-[#0037CA] uppercase tracking-wider">
-                          Insert Inline Link
+                      <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                        <p className="text-[10px] text-slate-500">
+                          💡 Need a link inside text? Use the <strong>Para+Link</strong> block from "Add Content Block".
                         </p>
-                        <p className="text-[10px] text-slate-500 leading-snug">
-                          1. Click inside the paragraph where you want the link<br/>
-                          2. Fill in the fields below and click Insert
-                        </p>
-                        <Input
-                          id={`lt-${selectedElement.id}`}
-                          placeholder="Link text (e.g. 'click here')"
-                        />
-                        <Input
-                          id={`lu-${selectedElement.id}`}
-                          placeholder="URL (https://…)"
-                        />
-                        <button
-                          onClick={() => {
-                            const ltEl = document.getElementById(`lt-${selectedElement.id}`);
-                            const luEl = document.getElementById(`lu-${selectedElement.id}`);
-                            const lt = ltEl?.value?.trim();
-                            const lu = luEl?.value?.trim();
-                            if (!lt || !lu) {
-                              alert("Please enter both link text and URL.");
-                              return;
-                            }
-                            const html = `<a href="${lu}" class="text-[#0B3BFF] font-semibold no-underline hover:opacity-90" target="_blank" rel="noopener noreferrer">${lt}</a>`;
-                            // Try to insert at saved cursor position
-                            const sel = savedSelectionRef.current;
-                            if (sel && sel.elementId === selectedElement.id && sel.range) {
-                              try {
-                                const range = sel.range;
-                                range.deleteContents();
-                                const frag = range.createContextualFragment(html);
-                                range.insertNode(frag);
-                                // Sync the updated DOM back to state
-                                const domEl = document.getElementById(`para-${selectedElement.id}`);
-                                if (domEl) updateElement(selectedElement.id, { content: domEl.innerHTML });
-                                savedSelectionRef.current = null;
-                                if (ltEl) ltEl.value = "";
-                                if (luEl) luEl.value = "";
-                                return;
-                              } catch(e) { /* fall through to append */ }
-                            }
-                            // Fallback: append to end
-                            updateElement(selectedElement.id, {
-                              content: (selectedElement.content || "") + " " + html,
-                            });
-                            if (ltEl) ltEl.value = "";
-                            if (luEl) luEl.value = "";
-                          }}
-                          className="btn-secondary w-full justify-center"
-                        >
-                          <LinkIcon size={11} /> Insert Link at Cursor
-                        </button>
                       </div>
                     )}
                   </div>
@@ -1446,6 +1439,49 @@ export default function DynamicBlog() {
                         })
                       }
                     />
+                  </div>
+                )}
+
+                {/* Para + Link editor */}
+                {selectedElement.type === "p_link" && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-[#EEF1FF] border border-[#c7d2fe] rounded-lg text-[11px] text-[#0037CA] font-medium leading-snug">
+                      Preview: <span className="text-slate-600">{selectedElement.textBefore || "…"} </span>
+                      <span className="text-[#0B3BFF] font-semibold">{selectedElement.linkText || "link"}</span>
+                      <span className="text-slate-600"> {selectedElement.textAfter || "…"}</span>
+                    </div>
+                    <div>
+                      <Label>Text Before Link</Label>
+                      <Input
+                        value={selectedElement.textBefore || ""}
+                        placeholder="e.g. Rahul wants to"
+                        onChange={(e) => updateElement(selectedElement.id, { textBefore: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Link Text</Label>
+                      <Input
+                        value={selectedElement.linkText || ""}
+                        placeholder="e.g. add the blog"
+                        onChange={(e) => updateElement(selectedElement.id, { linkText: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Link URL</Label>
+                      <Input
+                        value={selectedElement.href || ""}
+                        placeholder="https://example.com"
+                        onChange={(e) => updateElement(selectedElement.id, { href: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Text After Link</Label>
+                      <Input
+                        value={selectedElement.textAfter || ""}
+                        placeholder="e.g. using this tool"
+                        onChange={(e) => updateElement(selectedElement.id, { textAfter: e.target.value })}
+                      />
+                    </div>
                   </div>
                 )}
 
