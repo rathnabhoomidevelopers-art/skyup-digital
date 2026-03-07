@@ -223,7 +223,12 @@ export default function DynamicBlog() {
       },
       ...(type === "heading" && { headingLevel: "h3" }),
       ...(type === "anchor" && { href: "https://example.com" }),
-      ...(type === "p_link" && { textBefore: "", linkText: "click here", href: "https://example.com", textAfter: "" }),
+      ...(type === "p_link" && {
+        textBefore: "",
+        linkText: "click here",
+        href: "https://example.com",
+        textAfter: "",
+      }),
       ...(type === "image" && {
         src: "",
         alt: "",
@@ -368,7 +373,7 @@ export default function DynamicBlog() {
       heroImage: blogMeta.heroImage,
       coverImage: blogMeta.heroImage, // ✅ ADDED — matches existing blogs structure
       imageAlt: blogMeta.imageAlt || displayTitle,
-      tags: [],                        // ✅ ADDED — prevents rendering errors
+      tags: [], // ✅ ADDED — prevents rendering errors
       sections,
     };
   };
@@ -472,8 +477,8 @@ export default function DynamicBlog() {
         // Replace base64 with Cloudinary URL in all 3 image fields
         blogData = {
           ...blogData,
-          image:      imgData.url,
-          heroImage:  imgData.url,
+          image: imgData.url,
+          heroImage: imgData.url,
           coverImage: imgData.url,
         };
       }
@@ -583,13 +588,19 @@ export default function DynamicBlog() {
             onMouseUp={() => {
               const sel = window.getSelection();
               if (sel && sel.rangeCount > 0) {
-                savedSelectionRef.current = { elementId: id, range: sel.getRangeAt(0).cloneRange() };
+                savedSelectionRef.current = {
+                  elementId: id,
+                  range: sel.getRangeAt(0).cloneRange(),
+                };
               }
             }}
             onKeyUp={() => {
               const sel = window.getSelection();
               if (sel && sel.rangeCount > 0) {
-                savedSelectionRef.current = { elementId: id, range: sel.getRangeAt(0).cloneRange() };
+                savedSelectionRef.current = {
+                  elementId: id,
+                  range: sel.getRangeAt(0).cloneRange(),
+                };
               }
             }}
           />
@@ -760,12 +771,13 @@ export default function DynamicBlog() {
           </marquee>
         );
 
+      // ✅ Fixed — uses the element's own listStyle
       case "ul":
       case "ol": {
         const Tag = type;
         return (
           <Tag
-            className={`list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800 ${ring}`}
+            className={`${styles.listStyle || (type === "ol" ? "list-decimal" : "list-disc")} list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800 ${ring}`}
             onClick={pick}
             style={inlineStyle}
           >
@@ -876,7 +888,10 @@ export default function DynamicBlog() {
       );
     if (el.type === "p_link")
       return (
-        <p key={i} className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
+        <p
+          key={i}
+          className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+        >
           {el.textBefore && <span>{el.textBefore} </span>}
           <a
             href={el.href}
@@ -1318,7 +1333,10 @@ export default function DynamicBlog() {
             {/* ── Add Element ── */}
             <div className="px-5 py-4 border-b border-slate-100">
               <button
-                onClick={() => { setShowAddMenu((v) => !v); setInsertAtIndex(null); }}
+                onClick={() => {
+                  setShowAddMenu((v) => !v);
+                  setInsertAtIndex(null);
+                }}
                 className="w-full flex items-center justify-between px-4 py-2.5 bg-[#0037CA] text-white rounded-lg font-semibold text-sm hover:bg-[#0030b5] transition-all shadow-sm"
               >
                 <span className="flex items-center gap-2">
@@ -1398,7 +1416,9 @@ export default function DynamicBlog() {
                     {selectedElement.type === "paragraph" && (
                       <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg">
                         <p className="text-[10px] text-slate-500">
-                          💡 Need a link inside text? Use the <strong>Para+Link</strong> block from "Add Content Block".
+                          💡 Need a link inside text? Use the{" "}
+                          <strong>Para+Link</strong> block from "Add Content
+                          Block".
                         </p>
                       </div>
                     )}
@@ -1446,16 +1466,28 @@ export default function DynamicBlog() {
                 {selectedElement.type === "p_link" && (
                   <div className="space-y-3">
                     <div className="p-3 bg-[#EEF1FF] border border-[#c7d2fe] rounded-lg text-[11px] text-[#0037CA] font-medium leading-snug">
-                      Preview: <span className="text-slate-600">{selectedElement.textBefore || "…"} </span>
-                      <span className="text-[#0B3BFF] font-semibold">{selectedElement.linkText || "link"}</span>
-                      <span className="text-slate-600"> {selectedElement.textAfter || "…"}</span>
+                      Preview:{" "}
+                      <span className="text-slate-600">
+                        {selectedElement.textBefore || "…"}{" "}
+                      </span>
+                      <span className="text-[#0B3BFF] font-semibold">
+                        {selectedElement.linkText || "link"}
+                      </span>
+                      <span className="text-slate-600">
+                        {" "}
+                        {selectedElement.textAfter || "…"}
+                      </span>
                     </div>
                     <div>
                       <Label>Text Before Link</Label>
                       <Input
                         value={selectedElement.textBefore || ""}
                         placeholder="e.g. Rahul wants to"
-                        onChange={(e) => updateElement(selectedElement.id, { textBefore: e.target.value })}
+                        onChange={(e) =>
+                          updateElement(selectedElement.id, {
+                            textBefore: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -1463,7 +1495,11 @@ export default function DynamicBlog() {
                       <Input
                         value={selectedElement.linkText || ""}
                         placeholder="e.g. add the blog"
-                        onChange={(e) => updateElement(selectedElement.id, { linkText: e.target.value })}
+                        onChange={(e) =>
+                          updateElement(selectedElement.id, {
+                            linkText: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -1471,7 +1507,11 @@ export default function DynamicBlog() {
                       <Input
                         value={selectedElement.href || ""}
                         placeholder="https://example.com"
-                        onChange={(e) => updateElement(selectedElement.id, { href: e.target.value })}
+                        onChange={(e) =>
+                          updateElement(selectedElement.id, {
+                            href: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -1479,7 +1519,11 @@ export default function DynamicBlog() {
                       <Input
                         value={selectedElement.textAfter || ""}
                         placeholder="e.g. using this tool"
-                        onChange={(e) => updateElement(selectedElement.id, { textAfter: e.target.value })}
+                        onChange={(e) =>
+                          updateElement(selectedElement.id, {
+                            textAfter: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -2155,7 +2199,10 @@ export default function DynamicBlog() {
                             <div
                               className="insert-between-wrap relative"
                               onMouseEnter={() => setHoveredInsertIndex(-1)}
-                              onMouseLeave={() => hoveredInsertIndex === -1 && setHoveredInsertIndex(null)}
+                              onMouseLeave={() =>
+                                hoveredInsertIndex === -1 &&
+                                setHoveredInsertIndex(null)
+                              }
                             >
                               <button
                                 className="insert-between-btn"
@@ -2179,7 +2226,10 @@ export default function DynamicBlog() {
                           <div
                             className="insert-between-wrap relative"
                             onMouseEnter={() => setHoveredInsertIndex(i)}
-                            onMouseLeave={() => hoveredInsertIndex === i && setHoveredInsertIndex(null)}
+                            onMouseLeave={() =>
+                              hoveredInsertIndex === i &&
+                              setHoveredInsertIndex(null)
+                            }
                           >
                             <button
                               className="insert-between-btn"
