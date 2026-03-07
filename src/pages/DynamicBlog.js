@@ -21,11 +21,9 @@ import {
   ChevronDown,
   ChevronUp,
   Zap,
-  ArrowUp,
-  ArrowDown,
-  PlusCircle,
 } from "lucide-react";
 
+// ✅ FIX 1: Use environment variable instead of hardcoded localhost
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3500";
 
 const slugify = (str = "") =>
@@ -130,60 +128,12 @@ const ContentEditable = ({
   );
 };
 
-// ── NEW: Insert-between button ────────────────────────────────────────────────
-const InsertHere = ({ onInsert }) => {
-  const [open, setOpen] = useState(false);
-  const types = [
-    { type: "h1", icon: "H1" },
-    { type: "paragraph", icon: "Para" },
-    { type: "heading", icon: "H2/H3" },
-    { type: "quote", icon: "Quote" },
-    { type: "image", icon: "Image" },
-    { type: "ul", icon: "Bullet" },
-    { type: "ol", icon: "Numbered" },
-    { type: "anchor", icon: "Link" },
-    { type: "div", icon: "Div" },
-    { type: "span", icon: "Span" },
-    { type: "dl", icon: "DL" },
-    { type: "marquee", icon: "Ticker" },
-  ];
-  return (
-    <div className="relative flex items-center justify-center my-0.5 group/insert">
-      <div className="flex-1 h-px bg-transparent group-hover/insert:bg-[#0037CA]/20 transition-colors" />
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="mx-2 flex items-center gap-1 px-2 py-0.5 rounded-full border border-dashed border-slate-200 bg-white text-slate-400 text-[10px] font-medium hover:border-[#0037CA] hover:text-[#0037CA] hover:bg-[#EEF1FF] transition-all opacity-0 group-hover/insert:opacity-100 z-10"
-      >
-        <PlusCircle size={10} /> Insert here
-      </button>
-      <div className="flex-1 h-px bg-transparent group-hover/insert:bg-[#0037CA]/20 transition-colors" />
-      {open && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 bg-white border border-slate-200 rounded-xl shadow-xl p-2 flex flex-wrap gap-1 w-64">
-          {types.map(({ type, icon }) => (
-            <button
-              key={type}
-              onClick={() => { onInsert(type); setOpen(false); }}
-              className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px] font-medium text-slate-600 hover:border-[#FA9F42] hover:text-[#FA9F42] hover:bg-[#fffaf5] transition-all"
-            >
-              {icon}
-            </button>
-          ))}
-          <button
-            onClick={() => setOpen(false)}
-            className="ml-auto text-[10px] text-slate-400 hover:text-slate-600 px-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
 export default function DynamicBlog() {
   const [elements, setElements] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [showAddMenu, setShowAddMenu] = useState(false);
+  const [insertAtIndex, setInsertAtIndex] = useState(null); // null = append at end
+  const [hoveredInsertIndex, setHoveredInsertIndex] = useState(null);
   const [showMetaSettings, setShowMetaSettings] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [publishStatus, setPublishStatus] = useState(null);
@@ -191,11 +141,7 @@ export default function DynamicBlog() {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
   const [previewMode, setPreviewMode] = useState(false);
-
-  // ── NEW: inline link state ────────────────────────────────────────────────
-  const [savedSelection, setSavedSelection] = useState(null); // { text, range }
-  const [linkUrl, setLinkUrl] = useState("");
-  const [showLinkInput, setShowLinkInput] = useState(false);
+  const savedSelectionRef = React.useRef(null); // for inline link at cursor
 
   const selectedElement = elements.find((el) => el.id === selectedId) || null;
 
@@ -243,84 +189,66 @@ export default function DynamicBlog() {
       });
   }, [elements]);
 
-  // ── UNCHANGED: addElement (adds to end) ──────────────────────────────────
-  const addElement = (type) => {
-    const el = makeElementTemplate(type);
-    setElements((p) => [...p, el]);
+  const addElement = (type, atIndex = null) => {
+    const el = {
+      id: Date.now(),
+      type,
+      content: type === "image" ? "" : "Edit this content",
+      styles: {
+        fontSize: type === "h1" ? "text-4xl" : "text-base",
+        fontWeight: type === "h1" ? "font-bold" : "font-normal",
+        fontFamily: "",
+        color: type === "h1" ? "text-[#111827]" : "text-gray-900",
+        textTransform: "",
+        fontStyle: "",
+        textAlign: "text-left",
+        textDecoration: "",
+        gradient: "",
+        layout: type === "div" ? "block" : "",
+        gridCols: "",
+        gap: "",
+        flexDirection: "",
+        justifyContent: "",
+        alignItems: "",
+        border: "",
+        borderColor: "",
+        rounded: "",
+        shadow: "",
+        padding: "",
+        margin: "",
+        width: "w-auto",
+        height: "h-auto",
+        listStyle:
+          type === "ul" ? "list-disc" : type === "ol" ? "list-decimal" : "",
+      },
+      ...(type === "heading" && { headingLevel: "h3" }),
+      ...(type === "anchor" && { href: "https://example.com" }),
+      ...(type === "image" && {
+        src: "",
+        alt: "",
+        customWidth: "",
+        customHeight: "",
+        useCustomSize: false,
+      }),
+      ...(type === "marquee" && { speed: "normal", direction: "left" }),
+      ...((type === "ul" || type === "ol") && { items: ["Item 1", "Item 2"] }),
+      ...(type === "dl" && {
+        items: [{ term: "Term", definition: "Definition" }],
+      }),
+    };
+    setElements((p) => {
+      if (atIndex === -1) return [el, ...p];
+      if (atIndex !== null) {
+        const next = [...p];
+        next.splice(atIndex + 1, 0, el);
+        return next;
+      }
+      return [...p, el];
+    });
     setShowAddMenu(false);
+    setInsertAtIndex(null);
+    setHoveredInsertIndex(null);
     setSelectedId(el.id);
-  };
-
-  // ── NEW: shared element template ─────────────────────────────────────────
-  const makeElementTemplate = (type) => ({
-    id: Date.now() + Math.random(),
-    type,
-    content: type === "image" ? "" : "Edit this content",
-    styles: {
-      fontSize: type === "h1" ? "text-4xl" : "text-base",
-      fontWeight: type === "h1" ? "font-bold" : "font-normal",
-      fontFamily: "",
-      color: type === "h1" ? "text-[#111827]" : "text-gray-900",
-      textTransform: "",
-      fontStyle: "",
-      textAlign: "text-left",
-      textDecoration: "",
-      gradient: "",
-      layout: type === "div" ? "block" : "",
-      gridCols: "",
-      gap: "",
-      flexDirection: "",
-      justifyContent: "",
-      alignItems: "",
-      border: "",
-      borderColor: "",
-      rounded: "",
-      shadow: "",
-      padding: "",
-      margin: "",
-      width: "w-auto",
-      height: "h-auto",
-      listStyle:
-        type === "ul" ? "list-disc" : type === "ol" ? "list-decimal" : "",
-    },
-    ...(type === "heading" && { headingLevel: "h3" }),
-    ...(type === "anchor" && { href: "https://example.com" }),
-    ...(type === "image" && {
-      src: "",
-      alt: "",
-      customWidth: "",
-      customHeight: "",
-      useCustomSize: false,
-    }),
-    ...(type === "marquee" && { speed: "normal", direction: "left" }),
-    ...((type === "ul" || type === "ol") && { items: ["Item 1", "Item 2"] }),
-    ...(type === "dl" && {
-      items: [{ term: "Term", definition: "Definition" }],
-    }),
-  });
-
-  // ── NEW: insert after a specific index ───────────────────────────────────
-  const insertAfter = (type, afterIndex) => {
-    const el = makeElementTemplate(type);
-    setElements((p) => {
-      const next = [...p];
-      next.splice(afterIndex + 1, 0, el);
-      return next;
-    });
-    setSelectedId(el.id);
-  };
-
-  // ── NEW: move element up / down ──────────────────────────────────────────
-  const moveElement = (id, dir) => {
-    setElements((p) => {
-      const idx = p.findIndex((el) => el.id === id);
-      if (idx === -1) return p;
-      const next = [...p];
-      const swapIdx = dir === "up" ? idx - 1 : idx + 1;
-      if (swapIdx < 0 || swapIdx >= next.length) return p;
-      [next[idx], next[swapIdx]] = [next[swapIdx], next[idx]];
-      return next;
-    });
   };
 
   const updateElement = useCallback(
@@ -388,6 +316,7 @@ export default function DynamicBlog() {
     r.readAsDataURL(file);
   };
 
+  // ✅ FIX 2: Added coverImage and tags to match existing blogs structure
   const exportBlogData = () => {
     const sections = elements.map((el) => {
       if (el.type === "h1") return { type: "h1", text: el.content };
@@ -428,9 +357,9 @@ export default function DynamicBlog() {
       author: blogMeta.author,
       image: blogMeta.heroImage,
       heroImage: blogMeta.heroImage,
-      coverImage: blogMeta.heroImage,
+      coverImage: blogMeta.heroImage, // ✅ ADDED — matches existing blogs structure
       imageAlt: blogMeta.imageAlt || displayTitle,
-      tags: [],
+      tags: [],                        // ✅ ADDED — prevents rendering errors
       sections,
     };
   };
@@ -470,7 +399,7 @@ export default function DynamicBlog() {
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("adminToken", data.token);
+        localStorage.setItem("authToken", data.token);
         setShowLoginModal(false);
         setLoginForm({ email: "", password: "" });
         setLoginError("");
@@ -496,7 +425,7 @@ export default function DynamicBlog() {
       alert("Please add at least one content block before publishing.");
       return;
     }
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("authToken");
     if (!token) {
       setShowLoginModal(true);
       return;
@@ -510,6 +439,7 @@ export default function DynamicBlog() {
     try {
       let blogData = exportBlogData();
 
+      // ── Step 1: Upload hero image to Cloudinary if it's base64 ──
       if (blogData.heroImage?.startsWith("data:")) {
         setPublishMsg("Uploading image to Cloudinary...");
 
@@ -530,14 +460,16 @@ export default function DynamicBlog() {
           return;
         }
 
+        // Replace base64 with Cloudinary URL in all 3 image fields
         blogData = {
           ...blogData,
-          image: imgData.url,
-          heroImage: imgData.url,
+          image:      imgData.url,
+          heroImage:  imgData.url,
           coverImage: imgData.url,
         };
       }
 
+      // ── Step 2: Push blog data to GitHub ────────────────────────
       setPublishMsg("Pushing to GitHub...");
 
       const res = await fetch(`${API_BASE}/api/publish-blog`, {
@@ -552,7 +484,7 @@ export default function DynamicBlog() {
       const data = await res.json();
 
       if (res.status === 401 || res.status === 403) {
-        localStorage.removeItem("adminToken");
+        localStorage.removeItem("authToken");
         setPublishStatus(null);
         setShowLoginModal(true);
         return;
@@ -570,44 +502,8 @@ export default function DynamicBlog() {
     }
   };
 
-  // ── NEW: capture text selection from canvas ───────────────────────────────
-  const captureSelection = () => {
-    const sel = window.getSelection();
-    if (sel && sel.rangeCount > 0 && sel.toString().trim() !== "") {
-      setSavedSelection({ text: sel.toString().trim() });
-      setShowLinkInput(true);
-    } else {
-      setSavedSelection(null);
-      setShowLinkInput(true);
-    }
-  };
-
-  // ── NEW: apply link — wraps selected text or appends ─────────────────────
-  const insertInlineLink = (elementId) => {
-    const url = linkUrl.trim();
-    if (!url) return;
-    const el = elements.find((e) => e.id === elementId);
-    if (!el) return;
-
-    const linkHtml = (text) =>
-      `<a href="${url}" class="text-[#0B3BFF] font-semibold no-underline hover:opacity-90" target="_blank" rel="noopener noreferrer">${text}</a>`;
-
-    if (savedSelection?.text) {
-      // Replace first exact occurrence of the selected plain text in the HTML content
-      const escaped = savedSelection.text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const newContent = el.content.replace(new RegExp(escaped), linkHtml(savedSelection.text));
-      updateElement(elementId, { content: newContent });
-    } else {
-      updateElement(elementId, { content: (el.content || "") + " " + linkHtml("link") });
-    }
-
-    setSavedSelection(null);
-    setLinkUrl("");
-    setShowLinkInput(false);
-  };
-
   // ── Builder render ────────────────────────────────────────────────────────
-  const renderBuilderElement = (element, index) => {
+  const renderBuilderElement = (element) => {
     const {
       id,
       type,
@@ -646,39 +542,10 @@ export default function DynamicBlog() {
       setSelectedId(id);
     };
 
-    // ── NEW: wraps every element with move buttons + InsertHere ──────────
-    const wrap = (node) => (
-      <div key={id}>
-        <div className="relative group/elem">
-          {/* Up / Down reorder buttons — appear on hover */}
-          <div className="absolute -left-7 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 opacity-0 group-hover/elem:opacity-100 transition-opacity z-10">
-            <button
-              onClick={() => moveElement(id, "up")}
-              disabled={index === 0}
-              title="Move up"
-              className="w-5 h-5 flex items-center justify-center rounded bg-white border border-slate-200 text-slate-400 hover:text-[#0037CA] hover:border-[#0037CA] disabled:opacity-20 transition-all shadow-sm"
-            >
-              <ArrowUp size={9} />
-            </button>
-            <button
-              onClick={() => moveElement(id, "down")}
-              disabled={index === elements.length - 1}
-              title="Move down"
-              className="w-5 h-5 flex items-center justify-center rounded bg-white border border-slate-200 text-slate-400 hover:text-[#0037CA] hover:border-[#0037CA] disabled:opacity-20 transition-all shadow-sm"
-            >
-              <ArrowDown size={9} />
-            </button>
-          </div>
-          <div onClick={(e) => e.stopPropagation()}>{node}</div>
-        </div>
-        {/* Insert-between zone */}
-        <InsertHere onInsert={(t) => insertAfter(t, index)} />
-      </div>
-    );
-
     switch (type) {
+      // ── FIX: h1 element type ──────────────────────────────────────────────
       case "h1":
-        return wrap(
+        return (
           <h1
             className={`scroll-mt-28 text-[28px] sm:text-[36px] font-extrabold text-[#111827] leading-tight ${classNames} ${ring}`}
             onClick={pick}
@@ -693,20 +560,34 @@ export default function DynamicBlog() {
           </h1>
         );
 
+      // ── FIX: use ContentEditable wrapper for paragraph to avoid React conflict ──
       case "paragraph":
-        return wrap(
+        return (
           <ContentEditable
             tagName="p"
+            id={`para-${id}`}
             html={content}
             onChange={(html) => updateElement(id, { content: html })}
             className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${classNames} ${ring}`}
             onClick={pick}
             style={inlineStyle}
+            onMouseUp={() => {
+              const sel = window.getSelection();
+              if (sel && sel.rangeCount > 0) {
+                savedSelectionRef.current = { elementId: id, range: sel.getRangeAt(0).cloneRange() };
+              }
+            }}
+            onKeyUp={() => {
+              const sel = window.getSelection();
+              if (sel && sel.rangeCount > 0) {
+                savedSelectionRef.current = { elementId: id, range: sel.getRangeAt(0).cloneRange() };
+              }
+            }}
           />
         );
 
       case "quote":
-        return wrap(
+        return (
           <div
             className={`rounded-xl border border-[#E7E9F5] bg-[#F7F9FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700 ${ring}`}
             onClick={pick}
@@ -731,7 +612,7 @@ export default function DynamicBlog() {
           Tag === "h2"
             ? `scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827] ${classNames}`
             : `scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827] ${classNames}`;
-        return wrap(
+        return (
           <Tag
             className={`${hCls} ${ring}`}
             onClick={pick}
@@ -748,7 +629,7 @@ export default function DynamicBlog() {
       }
 
       case "anchor":
-        return wrap(
+        return (
           <a
             className={`text-[#0B3BFF] font-semibold no-underline hover:opacity-90 block ${ring}`}
             href={href}
@@ -768,7 +649,7 @@ export default function DynamicBlog() {
         );
 
       case "div":
-        return wrap(
+        return (
           <div
             className={`${classNames} ${ring}`}
             onClick={pick}
@@ -784,7 +665,7 @@ export default function DynamicBlog() {
         );
 
       case "span":
-        return wrap(
+        return (
           <span
             className={`${classNames} ${ring}`}
             onClick={pick}
@@ -801,7 +682,7 @@ export default function DynamicBlog() {
 
       case "image": {
         if (!src)
-          return wrap(
+          return (
             <div
               className={`rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-10 text-center ${ring}`}
               onClick={pick}
@@ -818,7 +699,7 @@ export default function DynamicBlog() {
           if (element.customHeight)
             imgStyle.height = `${element.customHeight}px`;
         }
-        return wrap(
+        return (
           <figure
             className={`rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 ${ring}`}
             onClick={pick}
@@ -839,7 +720,7 @@ export default function DynamicBlog() {
       }
 
       case "marquee":
-        return wrap(
+        return (
           <marquee
             className={`${classNames} ${ring}`}
             scrollamount={speed === "slow" ? 2 : speed === "fast" ? 10 : 6}
@@ -854,7 +735,7 @@ export default function DynamicBlog() {
       case "ul":
       case "ol": {
         const Tag = type;
-        return wrap(
+        return (
           <Tag
             className={`list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800 ${ring}`}
             onClick={pick}
@@ -870,7 +751,7 @@ export default function DynamicBlog() {
       }
 
       case "dl":
-        return wrap(
+        return (
           <dl
             className={`${classNames} ${ring}`}
             onClick={pick}
@@ -997,6 +878,7 @@ export default function DynamicBlog() {
 
   const displayTitle = blogMeta.headline || metaTags.title;
 
+  // ── Progress checks ───────────────────────────────────────────────────────
   const progressItems = [
     { label: "Title", done: Boolean(blogMeta.headline || metaTags.title) },
     { label: "Image", done: Boolean(blogMeta.heroImage) },
@@ -1007,11 +889,21 @@ export default function DynamicBlog() {
     },
   ];
 
+  // ─────────────────────────────────────────────────────────────────────────
   return (
     <div
       className="min-h-screen bg-slate-50"
       style={{ fontFamily: "'Poppins', sans-serif" }}
     >
+      {/* <Head>
+        <title>{metaTags.title || "Blog Builder"}</title>
+        <meta name="description" content={metaTags.description} />
+        {metaTags.keywords  && <meta name="keywords"  content={metaTags.keywords} />}
+        {metaTags.canonical && <link rel="canonical"  href={metaTags.canonical} />}
+      </Head> */}
+
+      {/* <Header /> */}
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
@@ -1081,7 +973,30 @@ export default function DynamicBlog() {
           box-shadow: 0 2px 12px rgba(0,55,202,.25);
         }
 
+        /* Fix: prevent contentEditable outline flash */
         [contenteditable]:focus { outline: none; }
+
+        /* Insert between elements */
+        .insert-between-btn {
+          opacity: 0; transition: opacity .15s;
+          display: flex; align-items: center; justify-content: center;
+          gap: 6px; width: 100%; padding: 3px 0; cursor: pointer;
+          color: #0037CA; font-size: 11px; font-weight: 600;
+          background: none; border: none;
+        }
+        .insert-between-wrap:hover .insert-between-btn { opacity: 1; }
+        .insert-between-line {
+          flex: 1; height: 1.5px; background: linear-gradient(90deg, transparent, #0037CA80, transparent);
+        }
+
+        .insert-type-grid {
+          display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+          padding: 10px; background: white; border: 1.5px solid #e2e8f0;
+          border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.1);
+          position: absolute; z-index: 100; left: 0; right: 0;
+          animation: popIn .15s ease;
+        }
+        @keyframes popIn { from { opacity:0; transform:scaleY(.92); } to { opacity:1; transform:scaleY(1); } }
       `}</style>
 
       <div
@@ -1127,6 +1042,7 @@ export default function DynamicBlog() {
                 </div>
               </div>
 
+              {/* Progress indicator — FIX: correct per-field check */}
               <div className="mt-3 flex items-center gap-3 flex-wrap">
                 {progressItems.map(({ label, done }) => (
                   <div key={label} className="flex items-center gap-1">
@@ -1142,6 +1058,7 @@ export default function DynamicBlog() {
             {/* ── Settings Panel ── */}
             {showMetaSettings && (
               <div className="border-b border-slate-100 bg-slate-50/70">
+                {/* SEO */}
                 <div className="px-5 py-4 space-y-3">
                   <SectionHead>SEO Settings</SectionHead>
 
@@ -1204,6 +1121,7 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
+                {/* Blog Meta */}
                 <div className="px-5 py-4 space-y-3 border-t border-slate-100">
                   <SectionHead>Blog Details</SectionHead>
 
@@ -1304,6 +1222,7 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
+                {/* Publish actions */}
                 <div className="px-5 py-4 border-t border-slate-100 space-y-2">
                   <SectionHead>Publish</SectionHead>
 
@@ -1333,6 +1252,7 @@ export default function DynamicBlog() {
                     )}
                   </button>
 
+                  {/* ✅ FIX 3: Show step-by-step status while publishing */}
                   {publishStatus === "loading" && publishMsg && (
                     <div className="flex items-center gap-2 text-blue-700 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
                       <span>⏳</span> {publishMsg}
@@ -1355,7 +1275,7 @@ export default function DynamicBlog() {
             {/* ── Add Element ── */}
             <div className="px-5 py-4 border-b border-slate-100">
               <button
-                onClick={() => setShowAddMenu((v) => !v)}
+                onClick={() => { setShowAddMenu((v) => !v); setInsertAtIndex(null); }}
                 className="w-full flex items-center justify-between px-4 py-2.5 bg-[#0037CA] text-white rounded-lg font-semibold text-sm hover:bg-[#0030b5] transition-all shadow-sm"
               >
                 <span className="flex items-center gap-2">
@@ -1386,7 +1306,7 @@ export default function DynamicBlog() {
                   ].map(({ type, icon: Icon, label }) => (
                     <button
                       key={type}
-                      onClick={() => addElement(type)}
+                      onClick={() => addElement(type, insertAtIndex)}
                       className="elem-chip"
                     >
                       <Icon size={13} />
@@ -1400,6 +1320,7 @@ export default function DynamicBlog() {
             {/* ── Element Editor ── */}
             {selectedElement ? (
               <div className="px-5 py-4 space-y-4 flex-1">
+                {/* Editor header */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="badge">{selectedElement.type}</span>
@@ -1413,6 +1334,7 @@ export default function DynamicBlog() {
                   </button>
                 </div>
 
+                {/* Content textarea — shown for all text-based elements except image/list/dl */}
                 {!["image", "ul", "ol", "dl"].includes(
                   selectedElement.type,
                 ) && (
@@ -1429,68 +1351,62 @@ export default function DynamicBlog() {
                       placeholder="Type your content…"
                     />
 
-                    {/* ── UPDATED: paragraph inline link — now supports selecting any word ── */}
                     {selectedElement.type === "paragraph" && (
                       <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg space-y-2">
                         <p className="text-[11px] font-semibold text-[#0037CA] uppercase tracking-wider">
-                          Link Any Word
+                          Insert Inline Link
                         </p>
-                        {/* Step instructions */}
-                        <div className="text-[10px] text-slate-500 bg-white border border-slate-100 rounded-lg p-2 leading-relaxed space-y-0.5">
-                          <p>① Click the paragraph in the canvas on the right</p>
-                          <p>② <strong>Select / highlight</strong> the exact word(s) to link</p>
-                          <p>③ Click <strong>"Capture Selection"</strong> below</p>
-                          <p>④ Enter URL and click <strong>"Apply"</strong></p>
-                        </div>
+                        <p className="text-[10px] text-slate-500 leading-snug">
+                          1. Click inside the paragraph where you want the link<br/>
+                          2. Fill in the fields below and click Insert
+                        </p>
+                        <Input
+                          id={`lt-${selectedElement.id}`}
+                          placeholder="Link text (e.g. 'click here')"
+                        />
+                        <Input
+                          id={`lu-${selectedElement.id}`}
+                          placeholder="URL (https://…)"
+                        />
                         <button
-                          onClick={captureSelection}
-                          className="btn-secondary w-full justify-center text-xs"
+                          onClick={() => {
+                            const ltEl = document.getElementById(`lt-${selectedElement.id}`);
+                            const luEl = document.getElementById(`lu-${selectedElement.id}`);
+                            const lt = ltEl?.value?.trim();
+                            const lu = luEl?.value?.trim();
+                            if (!lt || !lu) {
+                              alert("Please enter both link text and URL.");
+                              return;
+                            }
+                            const html = `<a href="${lu}" class="text-[#0B3BFF] font-semibold no-underline hover:opacity-90" target="_blank" rel="noopener noreferrer">${lt}</a>`;
+                            // Try to insert at saved cursor position
+                            const sel = savedSelectionRef.current;
+                            if (sel && sel.elementId === selectedElement.id && sel.range) {
+                              try {
+                                const range = sel.range;
+                                range.deleteContents();
+                                const frag = range.createContextualFragment(html);
+                                range.insertNode(frag);
+                                // Sync the updated DOM back to state
+                                const domEl = document.getElementById(`para-${selectedElement.id}`);
+                                if (domEl) updateElement(selectedElement.id, { content: domEl.innerHTML });
+                                savedSelectionRef.current = null;
+                                if (ltEl) ltEl.value = "";
+                                if (luEl) luEl.value = "";
+                                return;
+                              } catch(e) { /* fall through to append */ }
+                            }
+                            // Fallback: append to end
+                            updateElement(selectedElement.id, {
+                              content: (selectedElement.content || "") + " " + html,
+                            });
+                            if (ltEl) ltEl.value = "";
+                            if (luEl) luEl.value = "";
+                          }}
+                          className="btn-secondary w-full justify-center"
                         >
-                          <LinkIcon size={11} /> Capture Selection
+                          <LinkIcon size={11} /> Insert Link at Cursor
                         </button>
-                        {showLinkInput && (
-                          <div className="space-y-1.5 pt-1.5 border-t border-blue-100">
-                            {savedSelection?.text ? (
-                              <div className="text-[10px] text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1.5">
-                                ✅ Will link: "<strong>{savedSelection.text}</strong>"
-                              </div>
-                            ) : (
-                              <div className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1.5">
-                                ⚠️ No text selected — a "link" word will be appended at the end
-                              </div>
-                            )}
-                            <Input
-                              value={linkUrl}
-                              placeholder="URL (https://…)"
-                              onChange={(e) => setLinkUrl(e.target.value)}
-                              onKeyDown={(e) =>
-                                e.key === "Enter" &&
-                                insertInlineLink(selectedElement.id)
-                              }
-                              autoFocus
-                            />
-                            <div className="flex gap-1.5">
-                              <button
-                                onClick={() =>
-                                  insertInlineLink(selectedElement.id)
-                                }
-                                className="btn-secondary flex-1 justify-center text-xs"
-                              >
-                                Apply Link
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setShowLinkInput(false);
-                                  setSavedSelection(null);
-                                  setLinkUrl("");
-                                }}
-                                className="px-3 py-2 rounded-lg border border-slate-200 text-slate-400 text-xs hover:border-red-300 hover:text-red-400 transition-all"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     )}
                   </div>
@@ -2111,6 +2027,7 @@ export default function DynamicBlog() {
             </div>
           )}
 
+          {/* ── Exact BlogDetail structure ── */}
           <section className="w-full bg-white font-poppins">
             <div className="relative">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
@@ -2118,36 +2035,17 @@ export default function DynamicBlog() {
                 <div className="hidden lg:block w-[80px] mr-6">
                   <div className="sticky top-64 flex flex-col gap-4">
                     {[
-                      {
-                        Icon: Facebook,
-                        cls: "hover:bg-[#0B3BFF]",
-                        href: "https://www.facebook.com/profile.php?id=61584820941998",
-                      },
-                      {
-                        Icon: MessageCircle,
-                        cls: "hover:bg-[#25D366]",
-                        href: "https://wa.me/918867867775",
-                      },
-                      {
-                        Icon: Linkedin,
-                        cls: "hover:bg-[#1DA1F2]",
-                        href: "https://www.linkedin.com/company/110886969",
-                      },
-                      {
-                        Icon: Youtube,
-                        cls: "hover:bg-[#FF0000]",
-                        href: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
-                      },
-                    ].map(({ Icon, cls, href }, i) => (
-                      <a
+                      { Icon: Facebook, cls: "hover:bg-[#0B3BFF]" },
+                      { Icon: MessageCircle, cls: "hover:bg-[#25D366]" },
+                      { Icon: Linkedin, cls: "hover:bg-[#1DA1F2]" },
+                      { Icon: Youtube, cls: "hover:bg-[#FF0000]" },
+                    ].map(({ Icon, cls }, i) => (
+                      <span
                         key={i}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors`}
+                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors cursor-default`}
                       >
                         <Icon className="h-5 w-5" />
-                      </a>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -2200,8 +2098,7 @@ export default function DynamicBlog() {
                     )}
                   </div>
 
-                  {/* ── Canvas elements — now pass index for move/insert ── */}
-                  <div className="mt-6 space-y-5 pl-8">
+                  <div className="mt-6 space-y-5">
                     {elements.length === 0 ? (
                       <div className="text-center py-20 text-slate-300">
                         <Type size={48} className="mx-auto mb-3 opacity-50" />
@@ -2215,10 +2112,54 @@ export default function DynamicBlog() {
                     ) : previewMode ? (
                       elements.map((el, i) => renderPreviewElement(el, i))
                     ) : (
-                      elements.map((el, index) => (
-                        <div key={el.id} onClick={(e) => e.stopPropagation()}>
-                          {renderBuilderElement(el, index)}
-                        </div>
+                      elements.map((el, i) => (
+                        <React.Fragment key={el.id}>
+                          {/* ── Insert BEFORE first element ── */}
+                          {i === 0 && (
+                            <div
+                              className="insert-between-wrap relative"
+                              onMouseEnter={() => setHoveredInsertIndex(-1)}
+                              onMouseLeave={() => hoveredInsertIndex === -1 && setHoveredInsertIndex(null)}
+                            >
+                              <button
+                                className="insert-between-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setInsertAtIndex(-1);
+                                  setShowAddMenu(true);
+                                  setShowMetaSettings(true);
+                                }}
+                              >
+                                <span className="insert-between-line" />
+                                <Plus size={11} /> Insert Here
+                                <span className="insert-between-line" />
+                              </button>
+                            </div>
+                          )}
+                          <div onClick={(e) => e.stopPropagation()}>
+                            {renderBuilderElement(el)}
+                          </div>
+                          {/* ── Insert AFTER each element ── */}
+                          <div
+                            className="insert-between-wrap relative"
+                            onMouseEnter={() => setHoveredInsertIndex(i)}
+                            onMouseLeave={() => hoveredInsertIndex === i && setHoveredInsertIndex(null)}
+                          >
+                            <button
+                              className="insert-between-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setInsertAtIndex(i);
+                                setShowAddMenu(true);
+                                setShowMetaSettings(true);
+                              }}
+                            >
+                              <span className="insert-between-line" />
+                              <Plus size={11} /> Insert Here
+                              <span className="insert-between-line" />
+                            </button>
+                          </div>
+                        </React.Fragment>
                       ))
                     )}
                   </div>
@@ -2254,6 +2195,8 @@ export default function DynamicBlog() {
           </section>
         </div>
       </div>
+
+      {/* <Footer /> */}
 
       {/* ── Login Modal ── */}
       {showLoginModal && (
