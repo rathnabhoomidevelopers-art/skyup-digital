@@ -1,5 +1,31 @@
 export const BLOGS = [
   {
+    "id": 1772867632583,
+    "slug": "m",
+    "headline": "mdgxm h,jg,jghjjj",
+    "title": "kbhkbjkjlk.",
+    "description": "buhouk",
+    "Keywords": "khkh",
+    "category": "PPC",
+    "date": "Mar 7, 2026",
+    "author": "Admin",
+    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772867631/skyup/blogs/v2gvt7k9fjagwnmur8vy.webp",
+    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772867631/skyup/blogs/v2gvt7k9fjagwnmur8vy.webp",
+    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1772867631/skyup/blogs/v2gvt7k9fjagwnmur8vy.webp",
+    "imageAlt": "fvfgb",
+    "tags": [],
+    "sections": [
+      {
+        "type": "h1",
+        "text": "Edit this content"
+      },
+      {
+        "type": "p",
+        "text": "Edit this content"
+      }
+    ]
+  },
+  {
     "id": 1,
     "slug": "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
     "category": "Digital Marketing ",
