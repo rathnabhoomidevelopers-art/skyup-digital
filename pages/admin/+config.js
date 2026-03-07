@@ -1,4 +1,5 @@
 export default {
   ssr: false,
-  clientRouting: true
+  clientRouting: true,
+  prerender: false
 }

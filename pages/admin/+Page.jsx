@@ -1,11 +1,6 @@
 export { Page }
-import { Login } from '@/components/Login'
-import { AuthProvider } from '@/context/AuthContext'
+import { Login } from '../../src/components/Login'
 
 function Page() {
-  return (
-    <AuthProvider>
-      <Login />
-    </AuthProvider>
-  )
+  return  <Login/>
 }
