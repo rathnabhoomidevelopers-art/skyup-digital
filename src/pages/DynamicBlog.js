@@ -166,6 +166,13 @@ export default function DynamicBlog() {
     slug: "",
   });
 
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: "https://www.facebook.com/profile.php?id=61584820941998",
+    whatsapp: "https://wa.me/918867867775",
+    linkedin: "https://www.linkedin.com/company/110886969",
+    youtube: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
+  });
+
   const handleHeadlineChange = (val) => {
     setBlogMeta((p) => ({
       ...p,
@@ -1301,6 +1308,29 @@ export default function DynamicBlog() {
                       }
                     />
                   </div>
+                  <div className="border-t border-slate-100 pt-3 space-y-2">
+                    <SectionHead>Social Links</SectionHead>
+                    {[
+                      { key: "facebook", label: "Facebook URL" },
+                      { key: "whatsapp", label: "WhatsApp URL" },
+                      { key: "linkedin", label: "LinkedIn URL" },
+                      { key: "youtube", label: "YouTube URL" },
+                    ].map(({ key, label }) => (
+                      <div key={key}>
+                        <Label>{label}</Label>
+                        <Input
+                          value={socialLinks[key]}
+                          placeholder={`https://...`}
+                          onChange={(e) =>
+                            setSocialLinks((p) => ({
+                              ...p,
+                              [key]: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Publish actions */}
@@ -2138,17 +2168,36 @@ export default function DynamicBlog() {
                 <div className="hidden lg:block w-[80px] mr-6">
                   <div className="sticky top-64 flex flex-col gap-4">
                     {[
-                      { Icon: Facebook, cls: "hover:bg-[#0B3BFF]" },
-                      { Icon: MessageCircle, cls: "hover:bg-[#25D366]" },
-                      { Icon: Linkedin, cls: "hover:bg-[#1DA1F2]" },
-                      { Icon: Youtube, cls: "hover:bg-[#FF0000]" },
-                    ].map(({ Icon, cls }, i) => (
-                      <span
+                      {
+                        Icon: Facebook,
+                        cls: "hover:bg-[#0B3BFF]",
+                        href: socialLinks.facebook,
+                      },
+                      {
+                        Icon: MessageCircle,
+                        cls: "hover:bg-[#25D366]",
+                        href: socialLinks.whatsapp,
+                      },
+                      {
+                        Icon: Linkedin,
+                        cls: "hover:bg-[#1DA1F2]",
+                        href: socialLinks.linkedin,
+                      },
+                      {
+                        Icon: Youtube,
+                        cls: "hover:bg-[#FF0000]",
+                        href: socialLinks.youtube,
+                      },
+                    ].map(({ Icon, cls, href }, i) => (
+                      <a
                         key={i}
-                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors cursor-default`}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] ${cls} hover:text-white transition-colors`}
                       >
                         <Icon className="h-5 w-5" />
-                      </span>
+                      </a>
                     ))}
                   </div>
                 </div>

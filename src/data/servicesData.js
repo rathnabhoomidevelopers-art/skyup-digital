@@ -137,7 +137,7 @@ export const SERVICES = {
   heroDesc:"Leading seo company in bangalore offering complete SEO solutions to increase search rankings, organic traffic, and ROI.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/seo_banner.webp",
+  heroImage: "/images/SEO_11zon.webp",
   heroImageAlt: "Search Engine Optimization (SEO)",
   whyTitle: "Search engine Optimization Services",
   features: [
@@ -383,7 +383,7 @@ export const SERVICES = {
       "Result-driven Email Marketing Services in Bangalore designed to nurture leads, boost engagement, and increase conversions.",
     primaryCta: "Get Started Today",
     secondaryCta: "WhatsApp",
-    heroImage: "/images/email_banner.webp",
+    heroImage: "/images/Email_Marketing_11zon.webp",
     heroImageAlt: "Social media marketing dashboard",
     whyTitle: " Email marketing services Includes",
     features: [
@@ -508,7 +508,7 @@ export const SERVICES = {
     "Achieve faster results with expert Google Ads management. As the Best PPC Company In Bangalore, we combine smart targeting, compelling creatives, and continuous optimization for maximum performance.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/ppc_banner.webp",
+  heroImage: "/images/PPC_11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "PPC Marketing Services Includes",
   features: [
@@ -660,7 +660,7 @@ export const SERVICES = {
     "A professional UI/UX Design Company in Bangalore delivering clean, user-friendly designs that enhance experience and engagement across digital platforms.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/uiux_banner.webp",
+  heroImage: "/images/UIUX_11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "UI / UX Design Services includes",
   features: [
@@ -790,7 +790,7 @@ export const SERVICES = {
     "A trusted Website Development Company in Bangalore delivering fast, secure, and scalable websites tailored to business needs, user experience, and modern web standards.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/website_banner.webp",
+  heroImage: "/images/Website_Development_11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "Our Website Development Services",
   features: [
@@ -1395,7 +1395,7 @@ export const SERVICES = {
     "Drive smarter decisions and faster growth with advanced, data-driven machine learning solutions.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/ai_banner.webp",
+  heroImage: "/images/Machine_Learning_11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "Why Businesses Trust SkyUp Digital Solutions for Machine Learning Solutions ",
   features: [
