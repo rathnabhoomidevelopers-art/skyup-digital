@@ -582,7 +582,7 @@ export default function DynamicBlog() {
             id={`para-${id}`}
             html={content}
             onChange={(html) => updateElement(id, { content: html })}
-            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${classNames} ${ring}`}
+            className={`my-0 text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${classNames} ${ring}`}
             onClick={pick}
             style={inlineStyle}
             onMouseUp={() => {
@@ -671,7 +671,7 @@ export default function DynamicBlog() {
       case "p_link":
         return (
           <p
-            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`}
+            className={`my-0 text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`}
             onClick={pick}
             style={inlineStyle}
           >
@@ -874,7 +874,7 @@ export default function DynamicBlog() {
       return (
         <p
           key={i}
-          className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+          className="my-0 text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
         >
           <a
             href={el.href}
@@ -890,7 +890,7 @@ export default function DynamicBlog() {
       return (
         <p
           key={i}
-          className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+          className="my-0 text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
         >
           {el.textBefore && <span>{el.textBefore} </span>}
           <a
@@ -928,7 +928,7 @@ export default function DynamicBlog() {
     return (
       <p
         key={i}
-        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
+        className="my-0 text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
         dangerouslySetInnerHTML={{ __html: el.content }}
       />
     );
