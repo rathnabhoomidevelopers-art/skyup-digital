@@ -482,6 +482,29 @@ export default function DynamicBlog() {
           coverImage: imgData.url,
         };
       }
+      // ── Step 1.5: Upload base64 images inside sections to Cloudinary ──
+      const uploadedSections = await Promise.all(
+        blogData.sections.map(async (section) => {
+          if (section.type === "image" && section.src?.startsWith("data:")) {
+            setPublishMsg("Uploading content image to Cloudinary...");
+            const imgRes = await fetch(`${API_BASE}/api/upload-blog-image`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ imageBase64: section.src }),
+            });
+            const imgData = await imgRes.json();
+            if (imgRes.ok) {
+              return { ...section, src: imgData.url }; // ✅ replace base64 with URL
+            }
+          }
+          return section;
+        }),
+      );
+
+      blogData = { ...blogData, sections: uploadedSections };
 
       // ── Step 2: Push blog data to GitHub ────────────────────────
       setPublishMsg("Pushing to GitHub...");

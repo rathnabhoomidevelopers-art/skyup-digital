@@ -1015,7 +1015,7 @@ export const SERVICES = {
     "Graphics Design that brings your brand to life with visually appealing, impactful, and consistent designs across all digital and print platforms.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/graphic_banner.webp",
+  heroImage: "/images/Graphic Design_11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "Our Graphic Design Services",
   features: [
@@ -1143,7 +1143,7 @@ export const SERVICES = {
     "SKYUP Digital Solutions is a Bangalore-based branding agency helping businesses build strong brand identities through strategy, design, and digital-first thinking.",
   primaryCta: "Get Started Today",
   secondaryCta: "WhatsApp",
-  heroImage: "/images/branding_banner.webp",
+  heroImage: "/images/Branding _11zon.webp",
   heroImageAlt: "Best PPC Company In Bangalore",
   whyTitle: "Our Branding Services",
   features: [
