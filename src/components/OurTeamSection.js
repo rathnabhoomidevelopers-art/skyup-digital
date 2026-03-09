@@ -32,6 +32,11 @@ const teamMembers = [
     name: "Harish Moger",
     role: "UI/UX Designer - Level II",
     image: "/images/Harish.webp"
+  },
+  {
+    name: "Roshan Prabhu",
+    role: "AI Developer",
+    image: "/images/Roshan P_11zon.webp"
   }
 ];
 
@@ -191,7 +196,7 @@ export default function OurTeamSection() {
           whileInView="show"
           viewport={{ once: true }}
         >
-          {/* LEFT: Big Pooja card (full height) */}
+          {/* LEFT: Big card (full height) */}
           <motion.div
             className="w-full lg:w-[432px] h-[614px] relative overflow-hidden rounded-2xl border border-[#FA9F43] flex justify-center items-start"
             variants={itemVariants}
@@ -236,7 +241,7 @@ export default function OurTeamSection() {
 
             {/* BOTTOM ROW: 2 cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {teamMembers.slice(4, 6).map((member) => (
+              {teamMembers.slice(4, 7).map((member) => (
                 <motion.div
                   key={member.name}
                   className="relative overflow-hidden rounded-2xl border border-[#FA9F43] w-full h-[291px] flex justify-center items-start"

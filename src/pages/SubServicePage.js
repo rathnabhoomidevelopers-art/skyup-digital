@@ -89,14 +89,14 @@ export default function SubServicePage({ vikeSlug }) {
           >
             <div className="max-w-[721px] sm:h-[361px] sm:mt-2">
               <h1
-                className="text-[24px] text-start font-bold leading-tight text-[#2B2B2B]
-                            sm:w-[950px] sm:text-[56px] lg:text-[60px]"
+                className="text-[24px] text-start font-bold leading-tight text-white
+                            sm:w-[950px] sm:text-[56px] lg:text-[50px]"
               >
                 {data.heroTitle}
               </h1>
               <p
                 className="mt-3 max-w-2xl text-[14px] leading-relaxed text-start
-                            sm:mt-6 sm:text-[18px] lg:text-[18px]"
+                            sm:mt-6 sm:text-[18px] lg:text-[18px] text-white/70"
               >
                 {data.heroDesc}
               </p>
