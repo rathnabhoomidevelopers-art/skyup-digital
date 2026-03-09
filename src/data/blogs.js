@@ -1,5 +1,80 @@
 export const BLOGS = [
   {
+    "id": 1773053377411,
+    "slug": "how-to-create-a-react-website",
+    "headline": "how to create a react website",
+    "title": "zyx",
+    "description": "asvdsfvb",
+    "Keywords": "vdfvb",
+    "category": "seo",
+    "date": "Mar 9, 2026",
+    "author": "skyup",
+    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773053375/skyup/blogs/ogrf5x1wcpat05qwfdse.jpg",
+    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773053375/skyup/blogs/ogrf5x1wcpat05qwfdse.jpg",
+    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773053375/skyup/blogs/ogrf5x1wcpat05qwfdse.jpg",
+    "imageAlt": "skyup",
+    "tags": [],
+    "sections": [
+      {
+        "type": "h2",
+        "text": "Introduction"
+      },
+      {
+        "type": "p",
+        "text": "Having a website or social media page is no longer sufficient in the fiercely competitive digital economy of today. Every day, businesses have to fight for consumers' attention, trust, and conversions. This is the point at which a Bangalore digital marketing agency becomes your most important growth partner."
+      },
+      {
+        "type": "p",
+        "text": "Thousands of startups, SMEs, and businesses call Bangalore, India's Silicon Valley, home. Businesses are actively looking for a trustworthy local digital marketing agency that can produce quantifiable outcomes due to the fierce competition."
+      },
+      {
+        "type": "p_with_link",
+        "textBefore": "You will learn how digital marketing agencies operate, why Bangalore is a strategic hub, what services are most important, and how to select the right partner especially when working with reputable experts like",
+        "linkText": " SkyUp Digital Solutions",
+        "href": "https://www.skyupdigitalsolutions.com",
+        "textAfter": " in this comprehensive business guide."
+      },
+      {
+        "type": "h3",
+        "text": "Why Bangalore Is a Hotspot for Digital Marketing Agencies"
+      },
+      {
+        "type": "p",
+        "text": "Bangalore is a hub for digital innovation, not just a tech city."
+      },
+      {
+        "type": "p",
+        "text": "Here’s why:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Building brand presence",
+          "Generating qualified leads"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "To put it simply, they transform your online platforms into effective assets that generate income."
+      },
+      {
+        "type": "h2",
+        "text": "Key Services Offered by a Digital Marketing Agency in Bangalore"
+      },
+      {
+        "type": "h3",
+        "text": "1. Search Engine Optimization (SEO)"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "📈 Increases brand visibility",
+          "Item 2"
+        ]
+      }
+    ]
+  },
+  {
     "id": 1,
     "slug": "digital-marketing-agency-in-bangalore-the-complete-business-guide-to-explosive-growth-in-2026",
     "category": "Digital Marketing ",
