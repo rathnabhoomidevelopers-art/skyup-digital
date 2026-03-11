@@ -1,5 +1,557 @@
 export const BLOGS = [
   {
+    "id": 1773230413199,
+    "slug": "on-page-vs-off-page-vs-technical-seo-7-powerful-differences-every-business-must-know-in-2026",
+    "headline": "On-Page vs Off-Page vs Technical SEO: 7 Powerful Differences Every Business Must Know in 2026",
+    "title": "On-Page vs Off-Page SEO Guide | SEO Company in Bangalore",
+    "description": "Learn On-Page, Off-Page and Technical SEO differences. Improve rankings with Skyup Digital Solutions, a trusted SEO company in Bangalore for business growth.",
+    "Keywords": "SEO Company in Bangalore",
+    "category": "SEO",
+    "date": "Mar 11, 2026",
+    "author": "Admin",
+    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773230410/skyup/blogs/uqe1rkum6k2sadqplmqa.webp",
+    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773230410/skyup/blogs/uqe1rkum6k2sadqplmqa.webp",
+    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773230410/skyup/blogs/uqe1rkum6k2sadqplmqa.webp",
+    "imageAlt": "Best SEO Company in Bangalore",
+    "tags": [],
+    "sections": [
+      {
+        "type": "h2",
+        "text": "Introduction"
+      },
+      {
+        "type": "p",
+        "text": "If you want your website to appear on the first page of search results, understanding Search Engine Optimization (SEO) is essential. Many businesses invest in SEO but often get confused about the three core pillars: On-Page SEO, Off-Page SEO, and Technical SEO."
+      },
+      {
+        "type": "p",
+        "text": "These three strategies work together to improve search rankings, increase website traffic, and generate more leads. Whether you run an e-commerce store, service company, or startup, implementing the right SEO techniques can significantly boost your online visibility."
+      },
+      {
+        "type": "p_with_link",
+        "textBefore": "For businesses searching for a reliable ",
+        "linkText": "SEO company in Bangalore,",
+        "href": "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        "textAfter": "understanding these SEO components helps you make smarter marketing decisions and choose the right strategy."
+      },
+      {
+        "type": "p",
+        "text": "In this guide, we will clearly explain On-Page vs Off-Page vs Technical SEO, how they differ, why they matter, and how businesses can use them effectively to grow online."
+      },
+      {
+        "type": "h2",
+        "text": "What is SEO and Why It Matters for Businesses?"
+      },
+      {
+        "type": "p",
+        "text": "Search Engine Optimization (SEO) is the process of improving a website so that it ranks higher on search engines like Google. Higher rankings mean:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "More website traffic",
+          "Better brand visibility",
+          "Increased trust and credibility",
+          "More leads and sales"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "According to industry studies, over 68% of online experiences begin with a search engine, and websites on the first page of Google receive more than 90% of total traffic."
+      },
+      {
+        "type": "p",
+        "text": "This is why many businesses partner with a professional SEO company in Bangalore to improve their search rankings and attract targeted customers."
+      },
+      {
+        "type": "p",
+        "text": "However, SEO success depends on mastering three essential pillars:"
+      },
+      {
+        "type": "ol",
+        "text": [
+          "On-Page SEO",
+          "Off-Page SEO",
+          "Technical SEO"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Let’s break them down in simple terms."
+      },
+      {
+        "type": "h2",
+        "text": "1. On-Page SEO: Optimizing Your Website Content"
+      },
+      {
+        "type": "p",
+        "text": "On-Page SEO refers to all the optimization techniques done inside your website to improve search engine rankings."
+      },
+      {
+        "type": "p",
+        "text": "It focuses mainly on content quality, keyword usage, and page structure."
+      },
+      {
+        "type": "h3",
+        "text": "Key On-Page SEO Elements"
+      },
+      {
+        "type": "h3",
+        "text": "1. Keyword Optimization"
+      },
+      {
+        "type": "p",
+        "text": "Using the right keywords helps search engines understand your content. For example:\nPrimary keyword: SEO company in Bangalore\n"
+      },
+      {
+        "type": "p",
+        "text": "Secondary keywords:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Best SEO services in Bangalore",
+          "SEO agency in Bangalore",
+          "Search engine optimization services",
+          "Professional SEO company"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "These keywords should appear naturally in:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          " Titles",
+          "Headings",
+          "Meta descriptions",
+          "Content",
+          "Image alt tags"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "2. High-Quality Content"
+      },
+      {
+        "type": "p",
+        "text": "Search engines prioritize helpful and informative content. A strong SEO strategy includes:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Blog articles",
+          "Service pages",
+          "Guides",
+          "Case studies"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Content should solve user problems and provide value."
+      },
+      {
+        "type": "h3",
+        "text": "3. Title Tags and Meta Descriptions"
+      },
+      {
+        "type": "p",
+        "text": "These elements help improve click-through rates."
+      },
+      {
+        "type": "p",
+        "text": "Example:"
+      },
+      {
+        "type": "p",
+        "text": "Title:"
+      },
+      {
+        "type": "p",
+        "text": "Best SEO Company in Bangalore | Professional SEO Services"
+      },
+      {
+        "type": "p",
+        "text": "Meta description:"
+      },
+      {
+        "type": "p",
+        "text": "Improve rankings with expert SEO strategies from a leading SEO company in Bangalore."
+      },
+      {
+        "type": "h3",
+        "text": "4. Internal Linking"
+      },
+      {
+        "type": "p",
+        "text": "Internal links connect related pages on your website and help search engines understand your site structure."
+      },
+      {
+        "type": "p",
+        "text": "Example internal link:"
+      },
+      {
+        "type": "p",
+        "text": "Businesses looking to improve their search visibility can explore professional services offered by Skyup Digital Solutions, a trusted"
+      },
+      {
+        "type": "p_with_link",
+        "textBefore": "",
+        "linkText": "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        "href": "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        "textAfter": ""
+      },
+      {
+        "type": "p",
+        "text": "Internal links also help distribute authority across pages."
+      },
+      {
+        "type": "h3",
+        "text": "5. User Experience (UX)"
+      },
+      {
+        "type": "p",
+        "text": "Good On-Page SEO ensures:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Easy navigation",
+          " Mobile-friendly design",
+          "Fast loading pages",
+          "Engaging layout"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Better user experience leads to longer session time and lower bounce rates."
+      },
+      {
+        "type": "h2",
+        "text": "2. Off-Page SEO: Building Website Authority"
+      },
+      {
+        "type": "p",
+        "text": "While On-Page SEO happens on your website, Off-Page SEO happens outside your website."
+      },
+      {
+        "type": "p",
+        "text": "Its main goal is to build credibility and trust in the eyes of search engines."
+      },
+      {
+        "type": "p",
+        "text": "Google uses Off-Page signals to determine how popular and authoritative your website is."
+      },
+      {
+        "type": "h3",
+        "text": "Key Off-Page SEO Strategies"
+      },
+      {
+        "type": "h3",
+        "text": "1. Backlink Building"
+      },
+      {
+        "type": "p",
+        "text": "Backlinks are links from other websites pointing to your website."
+      },
+      {
+        "type": "p",
+        "text": "Search engines consider backlinks as votes of confidence."
+      },
+      {
+        "type": "p",
+        "text": "The more high-quality backlinks you earn, the stronger your website authority becomes."
+      },
+      {
+        "type": "p",
+        "text": "Examples of backlink sources:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Guest blogging",
+          "News websites",
+          "Business directories",
+          "Industry blogs"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "2. Social Media Marketing"
+      },
+      {
+        "type": "p",
+        "text": "Social platforms help increase content reach and drive traffic to your website."
+      },
+      {
+        "type": "p",
+        "text": "While social signals are not direct ranking factors, they increase brand awareness and link opportunities."
+      },
+      {
+        "type": "h3",
+        "text": "3. Brand Mentions"
+      },
+      {
+        "type": "p",
+        "text": "Even when websites mention your brand without linking, it still signals authority to search engines."
+      },
+      {
+        "type": "h3",
+        "text": "4. Local SEO Optimization"
+      },
+      {
+        "type": "p",
+        "text": "For local businesses, Off-Page SEO includes:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Google Business Profile optimization",
+          "Local directory listings",
+          "Customer reviews"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "This is especially important for companies targeting local searches like SEO companies in Bangalore."
+      },
+      {
+        "type": "h2",
+        "text": "3. Technical SEO: Strengthening Website Infrastructure"
+      },
+      {
+        "type": "p",
+        "text": "Technical SEO focuses on optimizing the backend structure of a website so search engines can easily crawl and index pages."
+      },
+      {
+        "type": "p",
+        "text": "Without proper technical optimization, even great content may struggle to rank."
+      },
+      {
+        "type": "h3",
+        "text": "Important Technical SEO Factors"
+      },
+      {
+        "type": "h3",
+        "text": "1. Website Speed"
+      },
+      {
+        "type": "p",
+        "text": "Page speed is a major ranking factor."
+      },
+      {
+        "type": "p",
+        "text": "Research shows that 53% of users leave a website if it takes more than 3 seconds to load."
+      },
+      {
+        "type": "p",
+        "text": "Speed improvements include:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Image compression",
+          "Browser caching",
+          "Fast hosting",
+          "Optimized code"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "2. Mobile Optimization\n"
+      },
+      {
+        "type": "p",
+        "text": "More than 60% of searches now happen on mobile devices."
+      },
+      {
+        "type": "p",
+        "text": "Google uses mobile-first indexing, meaning your mobile website version is prioritized for ranking."
+      },
+      {
+        "type": "h3",
+        "text": "3. XML Sitemap"
+      },
+      {
+        "type": "p",
+        "text": "An XML sitemap helps search engines discover important pages on your website quickly."
+      },
+      {
+        "type": "h3",
+        "text": "4. Secure Website (HTTPS)"
+      },
+      {
+        "type": "p",
+        "text": "Security is another ranking signal. Websites with HTTPS encryption are considered safer and more trustworthy."
+      },
+      {
+        "type": "h3",
+        "text": "5. Structured Data (Schema Markup)"
+      },
+      {
+        "type": "p",
+        "text": "Schema helps search engines better understand your content and enables rich search results like:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Star ratings",
+          "FAQs",
+          "Product information"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "On-Page vs Off-Page vs Technical SEO: Key Differences"
+      },
+      {
+        "type": "h3",
+        "text": "SEO Type"
+      },
+      {
+        "type": "ol",
+        "text": [
+          "On-Page SEO",
+          "Off-Page SEO",
+          "Technical SEO"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Focus"
+      },
+      {
+        "type": "ol",
+        "text": [
+          "Content and page optimization",
+          "Backlinks and brand authority",
+          "Website infrastructure"
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Goal"
+      },
+      {
+        "type": "ol",
+        "text": [
+          "Improve relevance",
+          "Increase trust",
+          "Improve crawlability"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "All three work together to create a complete SEO strategy."
+      },
+      {
+        "type": "p",
+        "text": "Businesses that combine all three often achieve the best search rankings. "
+      },
+      {
+        "type": "h2",
+        "text": "Why Businesses Need Professional SEO Services"
+      },
+      {
+        "type": "p",
+        "text": "SEO is constantly evolving. Search engines update algorithms frequently, making it challenging for businesses to keep up."
+      },
+      {
+        "type": "p",
+        "text": "Partnering with an experienced SEO company in Bangalore ensures:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "Data-driven SEO strategies",
+          "Continuous optimization",
+          "Technical improvements",
+          "High-quality link building",
+          "Local SEO growth"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Companies like Skyup Digital Solutions help businesses improve search visibility and generate qualified leads through advanced SEO techniques."
+      },
+      {
+        "type": "h3",
+        "text": "Frequently Asked Questions (FAQs)"
+      },
+      {
+        "type": "h3",
+        "text": "What is the most important type of SEO?"
+      },
+      {
+        "type": "p_with_link",
+        "textBefore": "All three types On-Page, Off-Page, and Technical SEO are equally important. On-Page improves relevance, Off-Page builds authority, and Technical SEO ensures proper",
+        "linkText": " indexing.",
+        "href": "https://en.wikipedia.org/wiki/Special:Search?search=+indexing.&go=Go&ns0=1",
+        "textAfter": ""
+      },
+      {
+        "type": "h3",
+        "text": "How long does SEO take to show results?"
+      },
+      {
+        "type": "p",
+        "text": "SEO usually takes 3 to 6 months to start showing noticeable results depending on competition, website quality, and strategy."
+      },
+      {
+        "type": "h3",
+        "text": "Can a website rank without backlinks?"
+      },
+      {
+        "type": "p",
+        "text": "It is possible for low-competition keywords, but for competitive searches like an SEO company in Bangalore, backlinks are usually essential."
+      },
+      {
+        "type": "h3",
+        "text": "How often should SEO be updated?"
+      },
+      {
+        "type": "p",
+        "text": "SEO should be monitored continuously. Content updates, technical improvements, and backlink strategies should be reviewed monthly."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Understanding the difference between On-Page SEO, Off-Page SEO, and Technical SEO is the first step toward building a powerful digital marketing strategy."
+      },
+      {
+        "type": "p",
+        "text": "Each pillar plays a unique role:"
+      },
+      {
+        "type": "ul",
+        "text": [
+          "On-Page SEO improves content relevance  ",
+          "Off-Page SEO builds trust and authority",
+          "Technical SEO strengthens website performance"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "When combined effectively, these strategies help businesses achieve higher search rankings, increased traffic, and better conversions."
+      },
+      {
+        "type": "p_with_link",
+        "textBefore": "For companies looking to grow online, working with an experienced ",
+        "linkText": "SEO company in Bangalore ",
+        "href": "https://www.skyupdigitalsolutions.com/services/seo-company-in-bangalore",
+        "textAfter": "like Skyup Digital Solutions can make a significant difference in long-term digital success."
+      },
+      {
+        "type": "p",
+        "text": "SEO is not just about rankings, it's about creating a strong online presence that attracts the right customers at the right time."
+      }
+    ]
+  },
+  {
     "id": 1773224265834,
     "slug": "the-ultimate-google-ads-guide-for-bangalore-businesses-9-proven-strategies-to-generate-leads-fast",
     "headline": "The Ultimate Google Ads Guide for Bangalore Businesses: 9 Proven Strategies to Generate Leads Fast",
