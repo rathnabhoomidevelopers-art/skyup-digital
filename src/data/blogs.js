@@ -9,9 +9,9 @@ export const BLOGS = [
     "category": "PPC",
     "date": "Mar 11, 2026",
     "author": "Admin",
-    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224262/skyup/blogs/videxeojx7nb8kcfdudz.jpg",
-    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224262/skyup/blogs/videxeojx7nb8kcfdudz.jpg",
-    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224262/skyup/blogs/videxeojx7nb8kcfdudz.jpg",
+    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224344/skyup/blogs/qtl6erbtidtkmjj7qsvb.jpg",
+    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224344/skyup/blogs/qtl6erbtidtkmjj7qsvb.jpg",
+    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1773224344/skyup/blogs/qtl6erbtidtkmjj7qsvb.jpg",
     "imageAlt": "Best PPC Company in Bangalore",
     "tags": [],
     "sections": [
