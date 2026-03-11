@@ -55,13 +55,6 @@ export const BLOGS = [
         "text": "Here are some powerful reasons why Google Ads works so well for local businesses:"
       },
       {
-        "type": "p_with_link",
-        "textBefore": "1.",
-        "linkText": " Instant Visibility on Google",
-        "href": "https://en.wikipedia.org/w/index.php?search=Instant+Visibility+on+Google&title=Special:Search&ns0=1",
-        "textAfter": ""
-      },
-      {
         "type": "h3",
         "text": " 1. Instant Visibility on Google"
       },
