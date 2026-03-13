@@ -9,7 +9,7 @@ export const BLOGS = [
     "category": "SEO",
     "date": "Mar 12, 2026",
     "author": "Admin",
-    "image": "",
+    "image": "/images/kp1paudpig2dw6xktdwa.webp",
     "heroImage": "/images/kp1paudpig2dw6xktdwa.webp",
     "coverImage": "/images/kp1paudpig2dw6xktdwa.webp",
     "imageAlt": "SEO Company in Bangalore",
