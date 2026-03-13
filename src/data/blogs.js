@@ -10,8 +10,8 @@ export const BLOGS = [
     "date": "Mar 12, 2026",
     "author": "Admin",
     "image": "",
-    "heroImage": "",
-    "coverImage": "",
+    "heroImage": "/images/kp1paudpig2dw6xktdwa.webp",
+    "coverImage": "/images/kp1paudpig2dw6xktdwa.webp",
     "imageAlt": "SEO Company in Bangalore",
     "tags": [],
     "sections": [
