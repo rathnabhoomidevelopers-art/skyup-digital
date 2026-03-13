@@ -2238,7 +2238,7 @@ export default function DynamicBlog() {
                       <img
                         src={blogMeta.heroImage}
                         alt={blogMeta.imageAlt || displayTitle}
-                        className="w-full object-cover h-[200px] sm:h-[280px] md:h-[360px] lg:h-[420px]"
+                        className="w-full object-cover h-[220px] sm:h-[280px] md:h-[360px] lg:h-[420px]"
                       />
                     ) : (
                       <div className="w-full h-[210px] flex flex-col items-center justify-center text-slate-400 gap-2">
