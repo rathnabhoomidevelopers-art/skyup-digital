@@ -254,7 +254,7 @@ export default function BlogDetail() {
                         <img
                           src={s.src}
                           alt={s.caption || "Blog image"}
-                          className="w-full h-auto"
+                          className="w-full max-w-full h-auto block"
                         />
                         {s.caption ? (
                           <figcaption className="px-4 py-3 text-[12px] text-slate-500">
