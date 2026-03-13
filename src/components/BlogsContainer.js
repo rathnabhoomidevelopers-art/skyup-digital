@@ -90,7 +90,7 @@ export default function BlogsContainer() {
                     <img
                       src={b.image}
                       alt={b.title}
-                      className="w-full h-[170px] sm:h-[180px] object-cover"
+                      className="w-full h-[180px] sm:h-[180px] object-cover"
                     />
                   </div>
                 </div>
