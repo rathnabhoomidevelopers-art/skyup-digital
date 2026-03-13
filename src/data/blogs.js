@@ -1,7 +1,7 @@
 export const BLOGS = [
   {
     "id": 1773379387258,
-    "slug": "2026-power-guide-google-search-console-ga4-setup-for-bangalore-startups-a-must-know-strategy-by-an-seo-company-in-bangalore",
+    "slug": "google-search-console-ga4-guide-seo-company-in-bangalore",
     "headline": "2026 Power Guide: Google Search Console & GA4 Setup for Bangalore Startups - A Must-Know Strategy by an SEO Company in Bangalore",
     "title": "GA4 & Search Console Guide 2026 | SEO Company in Bangalore",
     "description": "Learn Google Search Console and GA4 setup for Bangalore startups in 2026. Expert tips from a trusted SEO Company in Bangalore to improve traffic, insights\n",
