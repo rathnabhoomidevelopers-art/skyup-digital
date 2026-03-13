@@ -2163,7 +2163,7 @@ export default function DynamicBlog() {
           {/* ── Exact BlogDetail structure ── */}
           <section className="w-full bg-white font-poppins">
             <div className="relative">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex overflow-hidden">
                 {/* Social sidebar */}
                 <div className="hidden lg:block w-[80px] mr-6">
                   <div className="sticky top-64 flex flex-col gap-4">
@@ -2203,7 +2203,7 @@ export default function DynamicBlog() {
                 </div>
 
                 {/* Blog content */}
-                <div className="flex-1 max-w-6xl">
+                <div className="flex-1 min-w-0 max-w-6xl">
                   <span className="inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700 cursor-default">
                     <span className="h-7 w-7 rounded-full border border-slate-200 flex items-center justify-center">
                       <ChevronLeft className="h-4 w-4" />
@@ -2238,7 +2238,7 @@ export default function DynamicBlog() {
                       <img
                         src={blogMeta.heroImage}
                         alt={blogMeta.imageAlt || displayTitle}
-                        className="w-full h-[210px] md:h-[350px] xl:h-[480px] object-cover"
+                        className="w-full object-cover h-[200px] sm:h-[280px] md:h-[360px] lg:h-[420px]"
                       />
                     ) : (
                       <div className="w-full h-[210px] flex flex-col items-center justify-center text-slate-400 gap-2">
