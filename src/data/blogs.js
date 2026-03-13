@@ -22,7 +22,7 @@ export const BLOGS = [
       {
         "type": "p_with_link",
         "textBefore": "Skyup Digital Solutions, a leading name among the",
-        "linkText": "Top AI Companies in Bangalore,",
+        "linkText": " Top AI Companies in Bangalore,",
         "href": "https://www.skyupdigitalsolutions.com/services/ai-company-in-bangalore",
         "textAfter": " is helping businesses unlock the full potential of artificial intelligence and automation in 2026. As technology evolves rapidly, companies across industries are embracing AI-powered automation to streamline operations, improve customer experiences, and scale faster than ever before."
       },
