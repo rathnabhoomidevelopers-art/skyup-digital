@@ -65,18 +65,11 @@ export default function SubServicePage({ vikeSlug }) {
       <Header />
       <section className="w-full font-poppins">
         {/* HERO */}
-        <div
-          className="
-            relative w-full overflow-hidden
-            h-[350px] sm:h-[466px]
-            bg-gradient-to-b from-[#F4F7FF] to-[#DCE6FF]
-            sm:bg-transparent
-          "
-        >
+        <div className="relative w-full overflow-hidden h-[350px] sm:h-[466px]">
           <img
             src={data.heroImage}
             alt={data.heroImageAlt || data.heroTitle}
-            className="absolute inset-0 h-full w-full object-cover hidden sm:block"
+            className="absolute inset-0 h-full w-full object-cover"
           />
 
           <div
