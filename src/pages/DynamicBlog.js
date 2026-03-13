@@ -777,7 +777,11 @@ export default function DynamicBlog() {
               src={src}
               alt={alt || ""}
               style={imgStyle}
-              className={element.useCustomSize ? "" : "w-full h-auto"}
+              className={
+                element.useCustomSize
+                  ? "max-w-full h-auto block"
+                  : "w-full h-auto block"
+              }
             />
             {alt && (
               <figcaption className="px-4 py-3 text-[12px] text-slate-500">
@@ -886,7 +890,7 @@ export default function DynamicBlog() {
             <img
               src={el.src}
               alt={el.alt || "Blog image"}
-              className="w-full h-auto"
+              className="w-full h-auto block"
             />
           ) : (
             <div className="w-full h-40 flex items-center justify-center text-slate-400 text-sm">
