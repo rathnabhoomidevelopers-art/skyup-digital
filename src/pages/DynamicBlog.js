@@ -2233,12 +2233,12 @@ export default function DynamicBlog() {
                     <span>{blogMeta.date}</span>
                   </div>
 
-                  <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100">
+                  <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100 w-full">
                     {blogMeta.heroImage ? (
                       <img
                         src={blogMeta.heroImage}
                         alt={blogMeta.imageAlt || displayTitle}
-                        className="w-full h-[210px] sm:h-full object-cover"
+                        className="w-full h-[210px] md:h-[350px] xl:h-[480px] object-cover"
                       />
                     ) : (
                       <div className="w-full h-[210px] flex flex-col items-center justify-center text-slate-400 gap-2">
