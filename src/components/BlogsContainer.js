@@ -6,7 +6,7 @@ export default function BlogsContainer() {
   const [page, setPage] = useState(1);
   const filterRef = useRef(null);
 
-  const pageSize = 9;
+  const pageSize = 12;
 
   const FILTERS = ["All", ...new Set(BLOGS.map((b) => b.category.trim()))];
 
