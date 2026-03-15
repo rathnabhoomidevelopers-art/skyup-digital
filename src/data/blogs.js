@@ -9,9 +9,9 @@ export const BLOGS = [
     "category": "AI Automation",
     "date": "Mar 14, 2026",
     "author": "Admin",
-    "image": "",
-    "heroImage": "",
-    "coverImage": "",
+    "image": "/images/blog_Ai_1.webp",
+    "heroImage": "/images/blog_Ai_1.webp",
+    "coverImage": "/images/blog_Ai_1.webp",
     "imageAlt": "Top Ai Companies in Bangalore",
     "tags": [],
     "sections": [
