@@ -90,15 +90,15 @@ export default function SubServicePage({ vikeSlug }) {
               sm:items-start sm:text-left sm:gap-8 sm:px-6 lg:px-10
             "
           >
-            <div className="max-w-[721px] sm:h-[361px] sm:mt-2">
+            <div className="max-w-[721px] sm:h-[361px] sm:mt-2 sm:text-left">
               <h1
-                className="text-[24px] text-start font-bold leading-tight text-white
+                className="text-[24px]  font-bold leading-tight text-white
                             sm:w-[950px] sm:text-[56px] lg:text-[50px]"
               >
                 {data.heroTitle}
               </h1>
               <p
-                className="mt-3 max-w-2xl text-[14px] leading-relaxed text-start
+                className="mt-3 max-w-2xl text-[14px] leading-relaxed 
                             sm:mt-6 sm:text-[18px] lg:text-[18px] text-white/70"
               >
                 {data.heroDesc}
