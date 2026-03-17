@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
   Trash2,
   Plus,
@@ -132,7 +132,7 @@ export default function DynamicBlog() {
   const [elements, setElements] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [showAddMenu, setShowAddMenu] = useState(false);
-  const [insertAtIndex, setInsertAtIndex] = useState(null); // null = append at end
+  const [insertAtIndex, setInsertAtIndex] = useState(null);
   const [hoveredInsertIndex, setHoveredInsertIndex] = useState(null);
   const [showMetaSettings, setShowMetaSettings] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -141,7 +141,7 @@ export default function DynamicBlog() {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
   const [previewMode, setPreviewMode] = useState(false);
-  const savedSelectionRef = React.useRef(null); // for inline link at cursor
+  const savedSelectionRef = React.useRef(null);
 
   const selectedElement = elements.find((el) => el.id === selectedId) || null;
 
@@ -172,6 +172,29 @@ export default function DynamicBlog() {
     linkedin: "https://www.linkedin.com/company/110886969",
     youtube: "https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru",
   });
+
+  // ── ✅ NEW: Warn user before reload/tab close if they have unsaved content ──
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      const hasContent =
+        elements.length > 0 ||
+        blogMeta.headline ||
+        metaTags.title ||
+        blogMeta.heroImage;
+
+      if (hasContent) {
+        // Setting returnValue triggers the browser's native "Leave site?" dialog.
+        // Modern browsers ignore custom messages and show their own generic warning.
+        e.preventDefault();
+        e.returnValue =
+          "You have unsaved changes. Are you sure you want to leave? All your work will be lost.";
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [elements, blogMeta.headline, metaTags.title, blogMeta.heroImage]);
 
   const handleHeadlineChange = (val) => {
     setBlogMeta((p) => ({
@@ -329,7 +352,6 @@ export default function DynamicBlog() {
     r.readAsDataURL(file);
   };
 
-  // ✅ FIX 2: Added coverImage and tags to match existing blogs structure
   const exportBlogData = () => {
     const sections = elements.map((el) => {
       if (el.type === "h1") return { type: "h1", text: el.content };
@@ -378,9 +400,9 @@ export default function DynamicBlog() {
       author: blogMeta.author,
       image: blogMeta.heroImage,
       heroImage: blogMeta.heroImage,
-      coverImage: blogMeta.heroImage, // ✅ ADDED — matches existing blogs structure
+      coverImage: blogMeta.heroImage,
       imageAlt: blogMeta.imageAlt || displayTitle,
-      tags: [], // ✅ ADDED — prevents rendering errors
+      tags: [],
       sections,
     };
   };
@@ -405,7 +427,6 @@ export default function DynamicBlog() {
       .catch(() => alert("Copy failed — check browser permissions."));
   };
 
-  // ── Auth / Publish ────────────────────────────────────────────────────────
   const handleLogin = async () => {
     setLoginError("");
     if (!loginForm.email || !loginForm.password) {
@@ -454,68 +475,113 @@ export default function DynamicBlog() {
     doPublish(token);
   };
 
+  // ── ✅ FIXED: Upload a single base64 image to Cloudinary via FormData ──────
+  // Sends as multipart/form-data with a real Blob so the server gets a proper
+  // file upload — avoids JSON body-size limits and base64-prefix confusion.
+  const uploadImageToCloudinary = async (dataUri, token, label = "image") => {
+    setPublishMsg(`Uploading ${label} to Cloudinary...`);
+
+    // Strip the "data:image/...;base64," prefix to get raw base64
+    const [meta, base64] = dataUri.split(",");
+    if (!base64) throw new Error(`Invalid image data for ${label}`);
+
+    // Detect mime type from prefix (e.g. "data:image/png;base64")
+    const mimeMatch = meta.match(/data:([^;]+);/);
+    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
+
+    // Convert base64 → binary → Blob
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Uint8Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const blob = new Blob([byteNumbers], { type: mimeType });
+
+    // Build FormData — server receives it as a real file upload
+    const formData = new FormData();
+    formData.append("image", blob, `upload.${mimeType.split("/")[1] || "jpg"}`);
+
+    const imgRes = await fetch(`${API_BASE}/api/upload-blog-image`, {
+      method: "POST",
+      headers: {
+        // ⚠️ Do NOT set Content-Type here — browser sets it automatically
+        // with the correct multipart boundary when using FormData
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    // Try to parse response as JSON; fall back to raw text for debugging
+    let imgData;
+    const rawText = await imgRes.text();
+    try {
+      imgData = JSON.parse(rawText);
+    } catch {
+      console.error(`Upload response (${label}):`, rawText);
+      throw new Error(
+        `Server returned unexpected response for ${label}: ${rawText.slice(0, 120)}`,
+      );
+    }
+
+    if (!imgRes.ok) {
+      const reason =
+        imgData?.error ||
+        imgData?.message ||
+        imgData?.msg ||
+        `HTTP ${imgRes.status}`;
+      throw new Error(`${label} upload failed — ${reason}`);
+    }
+
+    const url = imgData?.url || imgData?.secure_url || imgData?.imageUrl;
+    if (!url) {
+      console.error("Upload response missing url field:", imgData);
+      throw new Error(
+        `${label} upload succeeded but no URL was returned. Check server response.`,
+      );
+    }
+
+    return url;
+  };
+
   const doPublish = async (token) => {
     setPublishStatus("loading");
     setPublishMsg("");
     try {
       let blogData = exportBlogData();
 
-      // ── Step 1: Upload hero image to Cloudinary if it's base64 ──
+      // ── Step 1: Upload hero image ────────────────────────────────────────
       if (blogData.heroImage?.startsWith("data:")) {
-        setPublishMsg("Uploading image to Cloudinary...");
-
-        const imgRes = await fetch(`${API_BASE}/api/upload-blog-image`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ imageBase64: blogData.heroImage }),
-        });
-
-        const imgData = await imgRes.json();
-
-        if (!imgRes.ok) {
-          setPublishStatus("error");
-          setPublishMsg(imgData.error || "Image upload failed.");
-          return;
-        }
-
-        // Replace base64 with Cloudinary URL in all 3 image fields
+        const heroUrl = await uploadImageToCloudinary(
+          blogData.heroImage,
+          token,
+          "hero image",
+        );
         blogData = {
           ...blogData,
-          image: imgData.url,
-          heroImage: imgData.url,
-          coverImage: imgData.url,
+          image: heroUrl,
+          heroImage: heroUrl,
+          coverImage: heroUrl,
         };
       }
-      // ── Step 1.5: Upload base64 images inside sections to Cloudinary ──
+
+      // ── Step 2: Upload inline section images ─────────────────────────────
       const uploadedSections = await Promise.all(
-        blogData.sections.map(async (section) => {
+        blogData.sections.map(async (section, idx) => {
           if (section.type === "image" && section.src?.startsWith("data:")) {
-            setPublishMsg("Uploading content image to Cloudinary...");
-            const imgRes = await fetch(`${API_BASE}/api/upload-blog-image`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({ imageBase64: section.src }),
-            });
-            const imgData = await imgRes.json();
-            if (imgRes.ok) {
-              return { ...section, src: imgData.url }; // ✅ replace base64 with URL
-            }
+            const sectionUrl = await uploadImageToCloudinary(
+              section.src,
+              token,
+              `content image ${idx + 1}`,
+            );
+            return { ...section, src: sectionUrl };
           }
           return section;
         }),
       );
-
       blogData = { ...blogData, sections: uploadedSections };
 
-      // ── Step 2: Push blog data to GitHub ────────────────────────
+      // ── Step 3: Push blog JSON to GitHub ─────────────────────────────────
       setPublishMsg("Pushing to GitHub...");
-
       const res = await fetch(`${API_BASE}/api/publish-blog`, {
         method: "POST",
         headers: {
@@ -542,11 +608,12 @@ export default function DynamicBlog() {
       );
     } catch (e) {
       setPublishStatus("error");
-      setPublishMsg("Network error: " + e.message);
+      // Show the full error message so it's easy to debug
+      setPublishMsg(e.message || "An unexpected error occurred.");
+      console.error("doPublish error:", e);
     }
   };
 
-  // ── Builder render ────────────────────────────────────────────────────────
   const renderBuilderElement = (element) => {
     const {
       id,
@@ -587,7 +654,6 @@ export default function DynamicBlog() {
     };
 
     switch (type) {
-      // ── FIX: h1 element type ──────────────────────────────────────────────
       case "h1":
         return (
           <h1
@@ -604,7 +670,6 @@ export default function DynamicBlog() {
           </h1>
         );
 
-      // ── FIX: use ContentEditable wrapper for paragraph to avoid React conflict ──
       case "paragraph":
         return (
           <ContentEditable
@@ -801,7 +866,6 @@ export default function DynamicBlog() {
           </marquee>
         );
 
-      // ✅ Fixed — uses the element's own listStyle
       case "ul":
       case "ol": {
         const Tag = type;
@@ -841,7 +905,6 @@ export default function DynamicBlog() {
     }
   };
 
-  // ── Preview render (mirrors BlogDetail exactly) ───────────────────────────
   const renderPreviewElement = (el, i) => {
     if (el.type === "h1") {
       return (
@@ -966,7 +1029,6 @@ export default function DynamicBlog() {
 
   const displayTitle = blogMeta.headline || metaTags.title;
 
-  // ── Progress checks ───────────────────────────────────────────────────────
   const progressItems = [
     { label: "Title", done: Boolean(blogMeta.headline || metaTags.title) },
     { label: "Image", done: Boolean(blogMeta.heroImage) },
@@ -977,21 +1039,11 @@ export default function DynamicBlog() {
     },
   ];
 
-  // ─────────────────────────────────────────────────────────────────────────
   return (
     <div
       className="min-h-screen bg-slate-50"
       style={{ fontFamily: "'Poppins', sans-serif" }}
     >
-      {/* <Head>
-        <title>{metaTags.title || "Blog Builder"}</title>
-        <meta name="description" content={metaTags.description} />
-        {metaTags.keywords  && <meta name="keywords"  content={metaTags.keywords} />}
-        {metaTags.canonical && <link rel="canonical"  href={metaTags.canonical} />}
-      </Head> */}
-
-      {/* <Header /> */}
-
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
@@ -1016,16 +1068,17 @@ export default function DynamicBlog() {
           font-size: 11px; font-weight: 600;
         }
 
+        /* ✅ CHANGED: Publish button — bold green gradient */
         .btn-publish {
-          background: linear-gradient(135deg, #0037CA 0%, #0B3BFF 100%);
+          background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
           color: #fff; border: none; padding: 11px 20px;
           border-radius: 10px; font-weight: 600; font-size: 13px;
           cursor: pointer; width: 100%; display: flex;
           align-items: center; justify-content: center; gap: 8px;
-          transition: all .25s; box-shadow: 0 4px 14px rgba(0,55,202,.25);
+          transition: all .25s; box-shadow: 0 4px 14px rgba(22,163,74,.30);
           font-family: 'Poppins', sans-serif;
         }
-        .btn-publish:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,55,202,.35); }
+        .btn-publish:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,163,74,.45); }
         .btn-publish:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
         .btn-secondary {
@@ -1061,10 +1114,8 @@ export default function DynamicBlog() {
           box-shadow: 0 2px 12px rgba(0,55,202,.25);
         }
 
-        /* Fix: prevent contentEditable outline flash */
         [contenteditable]:focus { outline: none; }
 
-        /* Insert between elements */
         .insert-between-btn {
           opacity: 0; transition: opacity .15s;
           display: flex; align-items: center; justify-content: center;
@@ -1130,7 +1181,6 @@ export default function DynamicBlog() {
                 </div>
               </div>
 
-              {/* Progress indicator — FIX: correct per-field check */}
               <div className="mt-3 flex items-center gap-3 flex-wrap">
                 {progressItems.map(({ label, done }) => (
                   <div key={label} className="flex items-center gap-1">
@@ -1146,7 +1196,6 @@ export default function DynamicBlog() {
             {/* ── Settings Panel ── */}
             {showMetaSettings && (
               <div className="border-b border-slate-100 bg-slate-50/70">
-                {/* SEO */}
                 <div className="px-5 py-4 space-y-3">
                   <SectionHead>SEO Settings</SectionHead>
 
@@ -1209,7 +1258,6 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
-                {/* Blog Meta */}
                 <div className="px-5 py-4 space-y-3 border-t border-slate-100">
                   <SectionHead>Blog Details</SectionHead>
 
@@ -1333,7 +1381,6 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
-                {/* Publish actions */}
                 <div className="px-5 py-4 border-t border-slate-100 space-y-2">
                   <SectionHead>Publish</SectionHead>
 
@@ -1363,7 +1410,6 @@ export default function DynamicBlog() {
                     )}
                   </button>
 
-                  {/* ✅ FIX 3: Show step-by-step status while publishing */}
                   {publishStatus === "loading" && publishMsg && (
                     <div className="flex items-center gap-2 text-blue-700 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
                       <span>⏳</span> {publishMsg}
@@ -1435,7 +1481,6 @@ export default function DynamicBlog() {
             {/* ── Element Editor ── */}
             {selectedElement ? (
               <div className="px-5 py-4 space-y-4 flex-1">
-                {/* Editor header */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="badge">{selectedElement.type}</span>
@@ -1449,7 +1494,6 @@ export default function DynamicBlog() {
                   </button>
                 </div>
 
-                {/* Content textarea — shown for all text-based elements except image/list/dl */}
                 {!["image", "ul", "ol", "dl", "p_link"].includes(
                   selectedElement.type,
                 ) && (
@@ -1478,7 +1522,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* Heading level */}
                 {selectedElement.type === "heading" && (
                   <Select
                     label="Heading Level"
@@ -1499,7 +1542,6 @@ export default function DynamicBlog() {
                   />
                 )}
 
-                {/* Anchor URL */}
                 {selectedElement.type === "anchor" && (
                   <div>
                     <Label>Link URL</Label>
@@ -1515,7 +1557,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* Para + Link editor */}
                 {selectedElement.type === "p_link" && (
                   <div className="space-y-3">
                     <div className="p-3 bg-[#EEF1FF] border border-[#c7d2fe] rounded-lg text-[11px] text-[#0037CA] font-medium leading-snug">
@@ -1582,7 +1623,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* Image */}
                 {selectedElement.type === "image" && (
                   <div className="space-y-3">
                     <div>
@@ -1705,7 +1745,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* Marquee */}
                 {selectedElement.type === "marquee" && (
                   <div className="grid grid-cols-2 gap-2">
                     <Select
@@ -1740,7 +1779,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* List Items */}
                 {(selectedElement.type === "ul" ||
                   selectedElement.type === "ol") && (
                   <div>
@@ -1781,7 +1819,6 @@ export default function DynamicBlog() {
                   </div>
                 )}
 
-                {/* DL */}
                 {selectedElement.type === "dl" && (
                   <div>
                     <Label>Definition Items</Label>
@@ -2074,7 +2111,6 @@ export default function DynamicBlog() {
                   </div>
                 </div>
 
-                {/* List style */}
                 {(selectedElement.type === "ul" ||
                   selectedElement.type === "ol") && (
                   <div className="border-t border-slate-100 pt-4">
@@ -2160,7 +2196,6 @@ export default function DynamicBlog() {
             </div>
           )}
 
-          {/* ── Exact BlogDetail structure ── */}
           <section className="w-full bg-white font-poppins">
             <div className="relative">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex overflow-x-hidden">
@@ -2266,7 +2301,6 @@ export default function DynamicBlog() {
                     ) : (
                       elements.map((el, i) => (
                         <React.Fragment key={el.id}>
-                          {/* ── Insert BEFORE first element ── */}
                           {i === 0 && (
                             <div
                               className="insert-between-wrap relative"
@@ -2294,7 +2328,6 @@ export default function DynamicBlog() {
                           <div onClick={(e) => e.stopPropagation()}>
                             {renderBuilderElement(el)}
                           </div>
-                          {/* ── Insert AFTER each element ── */}
                           <div
                             className="insert-between-wrap relative"
                             onMouseEnter={() => setHoveredInsertIndex(i)}
@@ -2353,8 +2386,6 @@ export default function DynamicBlog() {
           </section>
         </div>
       </div>
-
-      {/* <Footer /> */}
 
       {/* ── Login Modal ── */}
       {showLoginModal && (

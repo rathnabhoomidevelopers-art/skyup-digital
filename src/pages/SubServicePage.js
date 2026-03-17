@@ -66,11 +66,21 @@ export default function SubServicePage({ vikeSlug }) {
       <section className="w-full font-poppins">
         {/* HERO */}
         <div className="relative w-full overflow-hidden h-[350px] sm:h-[466px]">
-          <img
-            src={data.heroImage}
-            alt={data.heroImageAlt || data.heroTitle}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <picture className="absolute inset-0 h-full w-full">
+            {/* Mobile: shown on screens < 640px (Tailwind's "sm" breakpoint) */}
+            <source
+              srcSet="/images/service_banner_mobile.webp"
+              media="(max-width: 639px)"
+            />
+            {/* Desktop: shown on screens ≥ 640px */}
+            <source srcSet={data.heroImage} media="(min-width: 640px)" />
+            {/* Fallback <img> — required inside every <picture> */}
+            <img
+              src={data.heroImage}
+              alt={data.heroImageAlt || data.heroTitle}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </picture>
 
           <div
             className="
