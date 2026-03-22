@@ -2,15 +2,88 @@ import BlogsContainer from "../components/BlogsContainer";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useCallback } from "react";
 
 const MotionA = motion.a;
+const BLOGS_PER_PAGE = 6;
 
+// ─── Pagination bar ───────────────────────────────────────────────────────────
+function Pagination({ page, totalPages, goTo }) {
+  if (totalPages <= 1) return null;
+
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= page - 1 && i <= page + 1)) {
+        pages.push(i);
+      } else if (
+        (i === page - 2 && page - 2 > 1) ||
+        (i === page + 2 && page + 2 < totalPages)
+      ) {
+        pages.push("...");
+      }
+    }
+    return pages.filter((v, i, a) => !(v === "..." && a[i - 1] === "..."));
+  };
+
+  return (
+    <div className="flex items-center justify-center gap-1.5 py-8">
+      {/* Prev */}
+      <button
+        onClick={() => goTo(page - 1)}
+        disabled={page === 1}
+        aria-label="Previous page"
+        className="h-9 w-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-[#0037CA] hover:text-[#0037CA] disabled:opacity-30 disabled:cursor-not-allowed transition"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+
+      {getPageNumbers().map((num, idx) =>
+        num === "..." ? (
+          <span
+            key={`ellipsis-${idx}`}
+            className="h-9 w-9 flex items-center justify-center text-slate-400 text-[13px] select-none"
+          >
+            &hellip;
+          </span>
+        ) : (
+          <button
+            key={num}
+            onClick={() => goTo(num)}
+            aria-label={`Go to page ${num}`}
+            aria-current={num === page ? "page" : undefined}
+            className={[
+              "h-9 w-9 rounded-full text-[13px] font-semibold transition",
+              num === page
+                ? "bg-[#0037CA] text-white border border-[#0037CA]"
+                : "border border-slate-200 text-slate-600 hover:border-[#0037CA] hover:text-[#0037CA]",
+            ].join(" ")}
+          >
+            {num}
+          </button>
+        )
+      )}
+
+      {/* Next */}
+      <button
+        onClick={() => goTo(page + 1)}
+        disabled={page === totalPages}
+        aria-label="Next page"
+        className="h-9 w-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-[#0037CA] hover:text-[#0037CA] disabled:opacity-30 disabled:cursor-not-allowed transition"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+// ─── Animations (original) ────────────────────────────────────────────────────
 const smoothSpring = { type: "spring", stiffness: 80, damping: 18, mass: 0.9 };
 const fadeUp = {
   hidden: { opacity: 0, y: 26 },
   show: { opacity: 1, y: 0, transition: smoothSpring },
 };
-
 const staggerWrap = {
   hidden: {},
   show: {
@@ -21,10 +94,38 @@ const staggerWrap = {
   },
 };
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export function Blogs() {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // BlogsContainer calls this whenever its filtered blog count changes
+  const handleTotalPages = useCallback((filteredCount) => {
+    setTotalPages(Math.max(1, Math.ceil(filteredCount / BLOGS_PER_PAGE)));
+  }, []);
+
+  // BlogsContainer calls this when the category filter changes → reset to page 1
+  const handleCategoryChange = useCallback(() => {
+    setPage(1);
+  }, []);
+
+  const goTo = useCallback(
+    (n) => {
+      if (n < 1 || n > totalPages) return;
+      setPage(n);
+      // Scroll back up to the top of the blog grid smoothly
+      document
+        .getElementById("blogs-section")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    [totalPages]
+  );
+
   return (
     <div className="font-poppins">
       <Header />
+
+      {/* ── Hero banner (original, untouched) ── */}
       <motion.div
         initial="hidden"
         animate="show"
@@ -53,7 +154,30 @@ export function Blogs() {
           strategies for the Bangalore region.
         </motion.p>
       </motion.div>
-      <BlogsContainer />
+
+      {/* ── Blogs section ── */}
+      {/*
+        id="blogs-section" is the scroll target when a page number is clicked.
+        BlogsContainer receives 4 new props:
+          - page          → current page number (1-based)
+          - perPage       → how many blogs to show (6)
+          - onTotalPages  → callback(filteredCount) so this parent can compute totalPages
+          - onCategoryChange → callback() to reset page to 1 on filter change
+        Everything else inside BlogsContainer (category filter UI, card layout, etc.) stays the same.
+      */}
+      <div id="blogs-section" className="scroll-mt-4">
+        <BlogsContainer
+          page={page}
+          perPage={BLOGS_PER_PAGE}
+          onTotalPages={handleTotalPages}
+          onCategoryChange={handleCategoryChange}
+        />
+
+        {/* Pagination bar lives here, below the grid */}
+        <Pagination page={page} totalPages={totalPages} goTo={goTo} />
+      </div>
+
+      {/* ── CTA section (original, untouched) ── */}
       <div className="bg-[#FFF8F0] mt-6 py-1">
         <motion.section
           initial="hidden"
@@ -102,6 +226,8 @@ export function Blogs() {
           </div>
         </motion.section>
       </div>
+
+      {/* ── Floating WhatsApp + Call (original, untouched) ── */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -153,11 +279,7 @@ export function Blogs() {
             WhatsApp
           </span>
           <span className="absolute right-[4px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)] shrink-0">
-            <img
-              src="/images/whatsapp.svg"
-              alt="whatsapp"
-              className="w-7 h-7"
-            />
+            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7" />
           </span>
         </a>
 
@@ -181,8 +303,7 @@ export function Blogs() {
           onMouseEnter={(e) => {
             e.currentTarget.style.width = "220px";
             e.currentTarget.querySelector(".call-label").style.opacity = "1";
-            e.currentTarget.querySelector(".call-label").style.maxWidth =
-              "160px";
+            e.currentTarget.querySelector(".call-label").style.maxWidth = "160px";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.width = "52px";
@@ -206,6 +327,7 @@ export function Blogs() {
           </span>
         </a>
       </motion.div>
+
       <Footer />
     </div>
   );
