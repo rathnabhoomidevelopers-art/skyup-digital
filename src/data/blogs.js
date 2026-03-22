@@ -400,7 +400,7 @@ export const BLOGS = [
     "Keywords": "Top Ai Companies in Bangalore",
     "category": "AI Automation",
     "date": "Mar 14, 2026",
-    "author": "Admin",
+    "author": "SKYUP",
     "image": "/images/blog_Ai_1.webp",
     "heroImage": "/images/blog_Ai_1.webp",
     "coverImage": "/images/blog_Ai_1.webp",
