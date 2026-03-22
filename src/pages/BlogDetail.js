@@ -116,7 +116,7 @@ export default function BlogDetail() {
           <div className="hidden lg:block w-[80px] mr-6">
             <div className="sticky top-64 flex flex-col gap-4">
               <a
-                href="https://www.facebook.com/sharer/sharer.php?u=YOUR_URL"
+                href="https://www.facebook.com/profile.php?id=61584820941998"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] hover:bg-[#0B3BFF] hover:text-white transition"
@@ -125,7 +125,7 @@ export default function BlogDetail() {
               </a>
 
               <a
-                href="https://wa.me/?text=YOUR_URL"
+                href="https://wa.me/918867867775"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] hover:bg-[#25D366] hover:text-white transition"
@@ -134,7 +134,7 @@ export default function BlogDetail() {
               </a>
 
               <a
-                href="https://www.linkedin.com/in/pooja-s-2480893a0/"
+                href="https://www.linkedin.com/company/110886969"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] hover:bg-[#1DA1F2] hover:text-white transition"
@@ -143,7 +143,7 @@ export default function BlogDetail() {
               </a>
 
               <a
-                href="https://www.youtube.com/@YOURCHANNEL"
+                href="https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#EEF1FF] flex items-center justify-center text-[#777777] hover:bg-[#FF0000] hover:text-white transition"
