@@ -9,9 +9,9 @@ export const BLOGS = [
     "category": "AI Automation",
     "date": "Mar 22, 2026",
     "author": "SKYUP",
-    "image": "",
-    "heroImage": "",
-    "coverImage": "",
+    "image": "/images/ove3wvgyjevabwn3ysrd.webp",
+    "heroImage": "/images/ove3wvgyjevabwn3ysrd.webp",
+    "coverImage": "/images/ove3wvgyjevabwn3ysrd.webp",
     "imageAlt": "Machine Learning Solutions in Bangalore",
     "tags": [],
     "sections": [

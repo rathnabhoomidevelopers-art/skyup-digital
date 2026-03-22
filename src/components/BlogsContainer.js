@@ -180,7 +180,6 @@ export default function BlogsContainer() {
 
           </div>
         )}
-
       </div>
     </section>
   );
