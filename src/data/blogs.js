@@ -1,7 +1,7 @@
 export const BLOGS = [
   {
     "id": 1774157641833,
-    "slug": "httpswwwskyupdigitalsolutionscombloghigh-converting-landing-page-strategies-2026",
+    "slug": "high-converting-landing-page-strategies-2026",
     "headline": "How to Create a High-Converting Landing Page in 2026: 10 Proven Strategies That Turn Visitors into Customers",
     "title": "Website Development Company in Bangalore | Skyup Guide",
     "description": "Looking for a website development company in Bangalore? Discover 10 proven landing page strategies by Skyup Digital Solutions to boost conversions. Read now!",
@@ -9,9 +9,9 @@ export const BLOGS = [
     "category": "Website Development",
     "date": "Mar 22, 2026",
     "author": "Admin",
-    "image": "",
-    "heroImage": "",
-    "coverImage": "",
+    "image": "/images/ehxrqqgc0lkvubqxmfrn.webp",
+    "heroImage": "/images/ehxrqqgc0lkvubqxmfrn.webp",
+    "coverImage": "/images/ehxrqqgc0lkvubqxmfrn.webp",
     "imageAlt": "Website Development Company in Bangalore",
     "tags": [],
     "sections": [
@@ -318,7 +318,7 @@ export const BLOGS = [
         "text": "Businesses investing in Web Development Services in Bangalore often achieve better performance through continuous optimization."
       },
       {
-        "type": "h3",
+        "type": "h2",
         "text": "Frequently Asked Questions"
       },
       {
