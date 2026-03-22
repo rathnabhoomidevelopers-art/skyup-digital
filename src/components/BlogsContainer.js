@@ -1,12 +1,13 @@
 import { useState, useMemo, useRef } from "react";
 import { BLOGS } from "../data/blogs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function BlogsContainer() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [page, setPage] = useState(1);
   const filterRef = useRef(null);
 
-  const pageSize = 12;
+  const pageSize = 6;
 
   const FILTERS = ["All", ...new Set(BLOGS.map((b) => b.category.trim()))];
 
@@ -25,11 +26,33 @@ export default function BlogsContainer() {
     setPage(1);
   };
 
+  const goTo = (n) => {
+    if (n < 1 || n > totalPages) return;
+    setPage(n);
+    filterRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Build page number list with ellipsis
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= page - 1 && i <= page + 1)) {
+        pages.push(i);
+      } else if (
+        (i === page - 2 && page - 2 > 1) ||
+        (i === page + 2 && page + 2 < totalPages)
+      ) {
+        pages.push("...");
+      }
+    }
+    return pages.filter((v, i, a) => !(v === "..." && a[i - 1] === "..."));
+  };
+
   return (
     <section className="w-full bg-white font-poppins">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
 
-        {/* ✅ Filter Section */}
+        {/* Filter Section */}
         <div
           ref={filterRef}
           className="mb-8 rounded-3xl sm:rounded-full border border-[#ded8fa] bg-[#F1EEFF] px-3 py-3 sm:px-4 sm:py-4"
@@ -39,7 +62,6 @@ export default function BlogsContainer() {
             <label className="block text-[16px] font-semibold text-[#111827] mb-2">
               Filter by category
             </label>
-
             <select
               value={activeCategory}
               onChange={(e) => onFilterChange(e.target.value)}
@@ -57,7 +79,6 @@ export default function BlogsContainer() {
           <div className="hidden sm:flex flex-wrap gap-3">
             {FILTERS.map((filter) => {
               const isActive = filter === activeCategory;
-
               return (
                 <button
                   key={filter}
@@ -76,7 +97,7 @@ export default function BlogsContainer() {
           </div>
         </div>
 
-        {/* ✅ Blog Grid */}
+        {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {paged.map((b) => (
             <a
@@ -106,6 +127,60 @@ export default function BlogsContainer() {
             </a>
           ))}
         </div>
+
+        {/* Pagination — only shown when there is more than one page */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-1.5 mt-10">
+
+            {/* Prev */}
+            <button
+              onClick={() => goTo(page - 1)}
+              disabled={page === 1}
+              aria-label="Previous page"
+              className="h-9 w-9 rounded-full border border-[#E7E9F5] flex items-center justify-center text-slate-500 hover:border-[#0B3BFF] hover:text-[#0B3BFF] disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
+            {getPageNumbers().map((num, idx) =>
+              num === "..." ? (
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="h-9 w-9 flex items-center justify-center text-slate-400 text-[13px] select-none"
+                >
+                  &hellip;
+                </span>
+              ) : (
+                <button
+                  key={num}
+                  onClick={() => goTo(num)}
+                  aria-label={`Go to page ${num}`}
+                  aria-current={num === page ? "page" : undefined}
+                  className={[
+                    "h-9 w-9 rounded-full text-[13px] font-semibold transition",
+                    num === page
+                      ? "bg-[#0B3BFF] text-white border border-[#0B3BFF]"
+                      : "border border-[#E7E9F5] text-slate-600 hover:border-[#0B3BFF] hover:text-[#0B3BFF]",
+                  ].join(" ")}
+                >
+                  {num}
+                </button>
+              )
+            )}
+
+            {/* Next */}
+            <button
+              onClick={() => goTo(page + 1)}
+              disabled={page === totalPages}
+              aria-label="Next page"
+              className="h-9 w-9 rounded-full border border-[#E7E9F5] flex items-center justify-center text-slate-500 hover:border-[#0B3BFF] hover:text-[#0B3BFF] disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+
+          </div>
+        )}
+
       </div>
     </section>
   );
