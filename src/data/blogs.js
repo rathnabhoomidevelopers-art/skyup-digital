@@ -8,7 +8,7 @@ export const BLOGS = [
     "Keywords": "Website Development Company in Bangalore",
     "category": "Website Development",
     "date": "Mar 22, 2026",
-    "author": "Admin",
+    "author": "SKYUP",
     "image": "/images/ehxrqqgc0lkvubqxmfrn.webp",
     "heroImage": "/images/ehxrqqgc0lkvubqxmfrn.webp",
     "coverImage": "/images/ehxrqqgc0lkvubqxmfrn.webp",
