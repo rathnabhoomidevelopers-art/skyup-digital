@@ -9,9 +9,9 @@ export const BLOGS = [
     "category": "SMM",
     "date": "Mar 23, 2026",
     "author": "SKYUP",
-    "image": "",
-    "heroImage": "",
-    "coverImage": "",
+    "image": "/images/fusya48n4y9aipeuxfkp.webp",
+    "heroImage": "/images/fusya48n4y9aipeuxfkp.webp",
+    "coverImage": "/images/fusya48n4y9aipeuxfkp.webp",
     "imageAlt": "Social Media Marketing Company Near Me",
     "tags": [],
     "sections": [
