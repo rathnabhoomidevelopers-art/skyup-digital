@@ -127,7 +127,7 @@ export const BLOGS = [
       },
       {
         "type": "p",
-        "text": "<b>Pro Tip:</b> Slow websites lose visitors quickly<b> 53% of users leave if a site takes more than 3 seconds to load.\n</b>"
+        "text": "<strong>Pro Tip:</strong> Slow websites lose visitors quickly<strong> 53% of users leave if a site takes more than 3 seconds to load.\n</strong>"
       },
       {
         "type": "h3",
