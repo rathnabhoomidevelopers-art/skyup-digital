@@ -1,5 +1,46 @@
 export const BLOGS = [
   {
+    "id": 1774247933704,
+    "slug": "t",
+    "category": "Digital Marketing",
+    "title": "sdsdsdsd",
+    "headline": "Testing",
+    "description": "sdsdds",
+    "date": "Mar 25, 2026",
+    "Keywords": "sd",
+    "author": "SkyUp Digital Solutions",
+    "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774431567/mhwkddsh0jblswulg7ww.webp",
+    "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774431567/mhwkddsh0jblswulg7ww.webp",
+    "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774431567/mhwkddsh0jblswulg7ww.webp",
+    "imageAlt": "sdsd",
+    "tags": [
+      "sd"
+    ],
+    "sections": [
+      {
+        "type": "table",
+        "headers": [
+          "Column 1",
+          "Column 2",
+          "Column 3"
+        ],
+        "rows": [
+          [
+            "Row 1A",
+            "Row 1B",
+            "Row 1C"
+          ],
+          [
+            "Row 2A",
+            "Row 2B",
+            "Row 2C"
+          ]
+        ],
+        "themed": false
+      }
+    ]
+  },
+  {
     "id": 1774247933703,
     "slug": "social-media-marketing-company-near-me-facebook-guide-bangalore-2026",
     "headline": "Facebook Marketing Guide for Bangalore SMBs in 2026: 11 Powerful Strategies to Skyrocket Sales Fast",
