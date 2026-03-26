@@ -72,8 +72,9 @@ const sectionToElement = (s) => {
   if (s.type === "p_with_link")      return { ...base, type: "p_with_link",      textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
   if (s.type === "p_with_bold")      return { ...base, type: "p_with_bold",      parts: s.parts || [] };
   if (s.type === "p_with_link_bold") return { ...base, type: "p_with_link_bold", partsBefore: s.partsBefore || [], linkText: s.linkText || "", href: s.href || "", partsAfter: s.partsAfter || [] };
-  if (s.type === "h2_with_link")     return { ...base, type: "h2_with_link",     linkText: s.linkText || "", href: s.href || "" };
-  if (s.type === "h3_with_link")     return { ...base, type: "h3_with_link",     linkText: s.linkText || "", href: s.href || "" };
+  // ↓ now includes textBefore / textAfter
+  if (s.type === "h2_with_link")     return { ...base, type: "h2_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
+  if (s.type === "h3_with_link")     return { ...base, type: "h3_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
   return { ...base, type: "p", text: s.text || "" };
 };
 
@@ -91,8 +92,9 @@ const toSections = (elements) =>
     if (el.type === "p_with_link")      return { type: "p_with_link",      textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
     if (el.type === "p_with_bold")      return { type: "p_with_bold",      parts: el.parts };
     if (el.type === "p_with_link_bold") return { type: "p_with_link_bold", partsBefore: el.partsBefore, linkText: el.linkText, href: el.href, partsAfter: el.partsAfter };
-    if (el.type === "h2_with_link")     return { type: "h2_with_link",     linkText: el.linkText, href: el.href };
-    if (el.type === "h3_with_link")     return { type: "h3_with_link",     linkText: el.linkText, href: el.href };
+    // ↓ now serializes textBefore / textAfter
+    if (el.type === "h2_with_link")     return { type: "h2_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
+    if (el.type === "h3_with_link")     return { type: "h3_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
     return { type: "p", text: el.text || "" };
   });
 
@@ -111,8 +113,9 @@ const createElement = (type) => {
     case "p_with_link":      return { ...base, textBefore: "Learn more about", linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", textAfter: "services we offer." };
     case "p_with_bold":      return { ...base, parts: [{ text: "Normal text here. ", bold: false }, { text: "Bold text here.", bold: true }] };
     case "p_with_link_bold": return { ...base, partsBefore: [{ text: "Read more about ", bold: false }], linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", partsAfter: [{ text: " to ", bold: false }, { text: "grow your business.", bold: true }] };
-    case "h2_with_link":     return { ...base, linkText: "Section Heading with Link", href: "https://skyupdigitalsolutions.com" };
-    case "h3_with_link":     return { ...base, linkText: "Sub-section Heading with Link", href: "https://skyupdigitalsolutions.com" };
+    // ↓ now includes textBefore / textAfter
+    case "h2_with_link":     return { ...base, textBefore: "", linkText: "Section Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "" };
+    case "h3_with_link":     return { ...base, textBefore: "", linkText: "Sub-section Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "" };
     default: return base;
   }
 };
@@ -190,9 +193,14 @@ function PreviewSection({ s, usedH3 }) {
     return <h3 id={id} className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#0A0F1E]">{s.text}</h3>;
   }
 
-  if (s.type === "h2_with_link")
+  if (s.type === "h2_with_link") {
+    const base = slugify(s.linkText || "");
+    const count = (usedH3.get(base) || 0) + 1;
+    usedH3.set(base, count);
+    const id = count === 1 ? base : `${base}-${count}`;
     return (
-      <h2 className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#0A0F1E] mt-4">
+      <h2 id={id} className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#0A0F1E] mt-4">
+        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
         <a
           href={s.href}
           target="_blank"
@@ -201,8 +209,10 @@ function PreviewSection({ s, usedH3 }) {
         >
           {s.linkText}
         </a>
+        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
       </h2>
     );
+  }
 
   if (s.type === "h3_with_link") {
     const base = slugify(s.linkText || "");
@@ -211,6 +221,7 @@ function PreviewSection({ s, usedH3 }) {
     const id = count === 1 ? base : `${base}-${count}`;
     return (
       <h3 id={id} className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#0A0F1E]">
+        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
         <a
           href={s.href}
           target="_blank"
@@ -219,6 +230,7 @@ function PreviewSection({ s, usedH3 }) {
         >
           {s.linkText}
         </a>
+        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
       </h3>
     );
   }
@@ -292,9 +304,9 @@ function PreviewSection({ s, usedH3 }) {
   if (s.type === "p_with_link")
     return (
       <p className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
-        {s.textBefore && <span dangerouslySetInnerHTML={{ __html: s.textBefore + " " }} />}
+        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
         <a href={s.href} className="text-[#0057FF] font-semibold underline underline-offset-2 hover:opacity-80">{s.linkText}</a>
-        {s.textAfter && <span dangerouslySetInnerHTML={{ __html: " " + s.textAfter }} />}
+        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
       </p>
     );
 
@@ -309,12 +321,13 @@ function PreviewSection({ s, usedH3 }) {
     return (
       <p className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
         <RenderParts parts={s.partsBefore} />
+        {" "}
         <a href={s.href} className="text-[#0057FF] font-semibold underline underline-offset-2 hover:opacity-80">{s.linkText}</a>
+        {" "}
         <RenderParts parts={s.partsAfter} />
       </p>
     );
 
-  // Default paragraph — supports <strong> HTML from bold toolbar
   return (
     <p
       className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
@@ -561,7 +574,7 @@ function BlogEditor({ editingBlog, onBack }) {
 
   const selectedEl = elements.find((el) => el.id === selectedId) || null;
 
-  // ── TOC: includes h2, h3, h2_with_link, h3_with_link ────────────────────
+  // ── TOC ──────────────────────────────────────────────────────────────────
   const toc = useMemo(() => {
     const used = new Map();
     return elements
@@ -774,7 +787,7 @@ function BlogEditor({ editingBlog, onBack }) {
     { label: "Description", done: !!meta.description },
   ];
 
-  // ── Parts editor (reusable for p_with_bold / p_with_link_bold) ───────────
+  // ── Parts editor ─────────────────────────────────────────────────────────
   const PartsEditor = ({ parts, onChange, label = "Parts" }) => (
     <div>
       <Label>{label}</Label>
@@ -849,18 +862,22 @@ function BlogEditor({ editingBlog, onBack }) {
     else if (el.type === "h2_with_link")
       content = (
         <h2 className={`text-[20px] sm:text-[24px] font-bold ${ring}`} onClick={pick}>
+          {el.textBefore && <span className="text-[#0A0F1E]">{el.textBefore.trimEnd()}{" "}</span>}
           <span className="text-[#0057FF] underline underline-offset-2 decoration-[#0057FF]/40">
             {el.linkText || "H2 Link Heading"}
           </span>
+          {el.textAfter && <span className="text-[#0A0F1E]">{" "}{el.textAfter.trimStart()}</span>}
         </h2>
       );
 
     else if (el.type === "h3_with_link")
       content = (
         <h3 className={`text-[16px] sm:text-[18px] font-bold ${ring}`} onClick={pick}>
+          {el.textBefore && <span className="text-[#0A0F1E]">{el.textBefore.trimEnd()}{" "}</span>}
           <span className="text-[#0057FF] underline underline-offset-2 decoration-[#0057FF]/40">
             {el.linkText || "H3 Link Heading"}
           </span>
+          {el.textAfter && <span className="text-[#0A0F1E]">{" "}{el.textAfter.trimStart()}</span>}
         </h3>
       );
 
@@ -925,9 +942,9 @@ function BlogEditor({ editingBlog, onBack }) {
     else if (el.type === "p_with_link")
       content = (
         <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`} onClick={pick}>
-          {el.textBefore && <span dangerouslySetInnerHTML={{ __html: el.textBefore + " " }} />}
+          {el.textBefore ? el.textBefore.trimEnd() + " " : ""}
           <span className="text-[#0057FF] font-semibold underline underline-offset-2">{el.linkText || "link"}</span>
-          {el.textAfter && <span dangerouslySetInnerHTML={{ __html: " " + el.textAfter }} />}
+          {el.textAfter ? " " + el.textAfter.trimStart() : ""}
         </p>
       );
 
@@ -942,13 +959,14 @@ function BlogEditor({ editingBlog, onBack }) {
       content = (
         <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`} onClick={pick}>
           <RenderParts parts={el.partsBefore} />
+          {" "}
           <span className="text-[#0057FF] font-semibold underline underline-offset-2">{el.linkText || "link"}</span>
+          {" "}
           <RenderParts parts={el.partsAfter} />
         </p>
       );
 
     else
-      // Default paragraph — bold via toolbar (execCommand) or **syntax** in panel
       content = (
         <div className="space-y-1">
           {selectedId === el.id && (
@@ -999,7 +1017,7 @@ function BlogEditor({ editingBlog, onBack }) {
     const el = selectedEl;
     return (
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 panel-scroll">
-        {/* Block header: type badge + move/delete controls */}
+        {/* Block header */}
         <div className="flex items-center justify-between">
           <span className="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase"
             style={{ background: "#EFF6FF", color: "#0057FF" }}>{el.type}</span>
@@ -1046,24 +1064,34 @@ function BlogEditor({ editingBlog, onBack }) {
           </div>
         )}
 
-        {/* ── h2_with_link / h3_with_link ── */}
-        {(el.type === "h2_with_link" || el.type === "h3_with_link") && (
+        {/* ── h2_with_link ── */}
+        {el.type === "h2_with_link" && (
           <div className="space-y-3">
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
-              <span className="font-semibold text-slate-500 mr-1">Preview:</span>
-              <span
-                className={`text-[#0057FF] font-bold underline underline-offset-1 ${
-                  el.type === "h2_with_link" ? "text-[16px]" : "text-[13px]"
-                }`}
-              >
-                {el.linkText || "Heading text"}
-              </span>
+            {/* Live preview */}
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg leading-snug">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-1">Preview</span>
+              <h2 className="text-[16px] font-bold text-[#0A0F1E]">
+                {el.textBefore && <span>{el.textBefore.trimEnd()}{" "}</span>}
+                <span className="text-[#0057FF] underline underline-offset-1">
+                  {el.linkText || "Link text"}
+                </span>
+                {el.textAfter && <span>{" "}{el.textAfter.trimStart()}</span>}
+              </h2>
+            </div>
+
+            <div>
+              <Label>Text before link <span className="text-slate-300">(optional)</span></Label>
+              <Input
+                value={el.textBefore || ""}
+                placeholder="e.g. Learn about"
+                onChange={(e) => updateEl(el.id, { textBefore: e.target.value })}
+              />
             </div>
             <div>
-              <Label>Heading text (link label)</Label>
+              <Label>Link text (the clickable part)</Label>
               <Input
                 value={el.linkText || ""}
-                placeholder={el.type === "h2_with_link" ? "Section heading…" : "Sub-section heading…"}
+                placeholder="e.g. Digital Marketing"
                 onChange={(e) => updateEl(el.id, { linkText: e.target.value })}
               />
             </div>
@@ -1075,9 +1103,72 @@ function BlogEditor({ editingBlog, onBack }) {
                 onChange={(e) => updateEl(el.id, { href: e.target.value })}
               />
             </div>
+            <div>
+              <Label>Text after link <span className="text-slate-300">(optional)</span></Label>
+              <Input
+                value={el.textAfter || ""}
+                placeholder="e.g. for your business"
+                onChange={(e) => updateEl(el.id, { textAfter: e.target.value })}
+              />
+            </div>
             <div className="px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg">
               <p className="text-[10px] text-slate-400 leading-snug">
-                This heading will render as a clickable link ({el.type === "h2_with_link" ? "H2" : "H3"} size) and will also appear in the Table of Contents.
+                This H2 heading will render as: <em>Text before</em> + <strong className="text-[#0057FF]">clickable link</strong> + <em>Text after</em>. It also appears in the Table of Contents.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── h3_with_link ── */}
+        {el.type === "h3_with_link" && (
+          <div className="space-y-3">
+            {/* Live preview */}
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg leading-snug">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-1">Preview</span>
+              <h3 className="text-[13px] font-bold text-[#0A0F1E]">
+                {el.textBefore && <span>{el.textBefore.trimEnd()}{" "}</span>}
+                <span className="text-[#0057FF] underline underline-offset-1">
+                  {el.linkText || "Link text"}
+                </span>
+                {el.textAfter && <span>{" "}{el.textAfter.trimStart()}</span>}
+              </h3>
+            </div>
+
+            <div>
+              <Label>Text before link <span className="text-slate-300">(optional)</span></Label>
+              <Input
+                value={el.textBefore || ""}
+                placeholder="e.g. Why choose"
+                onChange={(e) => updateEl(el.id, { textBefore: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Link text (the clickable part)</Label>
+              <Input
+                value={el.linkText || ""}
+                placeholder="e.g. SkyUp Digital"
+                onChange={(e) => updateEl(el.id, { linkText: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>URL</Label>
+              <Input
+                value={el.href || ""}
+                placeholder="https://…"
+                onChange={(e) => updateEl(el.id, { href: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Text after link <span className="text-slate-300">(optional)</span></Label>
+              <Input
+                value={el.textAfter || ""}
+                placeholder="e.g. for SEO services"
+                onChange={(e) => updateEl(el.id, { textAfter: e.target.value })}
+              />
+            </div>
+            <div className="px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg">
+              <p className="text-[10px] text-slate-400 leading-snug">
+                This H3 heading will render as: <em>Text before</em> + <strong className="text-[#0057FF]">clickable link</strong> + <em>Text after</em>. It also appears in the Table of Contents.
               </p>
             </div>
           </div>
@@ -1087,9 +1178,10 @@ function BlogEditor({ editingBlog, onBack }) {
         {el.type === "p_with_link" && (
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800">
-              Preview: <span dangerouslySetInnerHTML={{ __html: (el.textBefore || "") + " " }} />
+              <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-1">Preview</span>
+              {el.textBefore ? el.textBefore.trimEnd() + " " : ""}
               <span className="text-[#0057FF] font-semibold underline">{el.linkText}</span>
-              <span dangerouslySetInnerHTML={{ __html: " " + (el.textAfter || "") }} />
+              {el.textAfter ? " " + el.textAfter.trimStart() : ""}
             </div>
             <div>
               <Label>Text before link</Label>
@@ -1098,7 +1190,7 @@ function BlogEditor({ editingBlog, onBack }) {
                   .replace(/<strong>/gi, "**")
                   .replace(/<\/strong>/gi, "**")
                   .replace(/<[^>]+>/g, "")}
-                placeholder="Use **word** to bold"
+                placeholder="e.g. Learn more about"
                 onChange={(e) => {
                   const html = e.target.value.replace(/\*\*(.+?)\*\*/gs, "<strong>$1</strong>");
                   updateEl(el.id, { textBefore: html });
@@ -1118,7 +1210,7 @@ function BlogEditor({ editingBlog, onBack }) {
                   .replace(/<strong>/gi, "**")
                   .replace(/<\/strong>/gi, "**")
                   .replace(/<[^>]+>/g, "")}
-                placeholder="Use **word** to bold"
+                placeholder="e.g. to grow your business."
                 onChange={(e) => {
                   const html = e.target.value.replace(/\*\*(.+?)\*\*/gs, "<strong>$1</strong>");
                   updateEl(el.id, { textAfter: html });
@@ -1155,7 +1247,9 @@ function BlogEditor({ editingBlog, onBack }) {
               {(el.partsBefore || []).map((part, i) =>
                 part.bold ? <strong key={i}>{part.text}</strong> : <span key={i}>{part.text}</span>
               )}
+              {" "}
               <span className="text-[#0057FF] font-semibold underline">{el.linkText}</span>
+              {" "}
               {(el.partsAfter || []).map((part, i) =>
                 part.bold ? <strong key={i}>{part.text}</strong> : <span key={i}>{part.text}</span>
               )}
@@ -1625,9 +1719,9 @@ function BlogEditor({ editingBlog, onBack }) {
                               } else if (el.type === "ul" || el.type === "ol") {
                                 s = { type: el.type, text: el.text };
                               } else if (el.type === "h2_with_link") {
-                                s = { type: "h2_with_link", linkText: el.linkText, href: el.href };
+                                s = { type: "h2_with_link", textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
                               } else if (el.type === "h3_with_link") {
-                                s = { type: "h3_with_link", linkText: el.linkText, href: el.href };
+                                s = { type: "h3_with_link", textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
                               } else {
                                 s = { type: el.type, text: el.text };
                               }
