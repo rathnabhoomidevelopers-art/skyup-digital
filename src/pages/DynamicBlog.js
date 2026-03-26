@@ -600,7 +600,7 @@ function BlogEditor({ editingBlog, onBack }) {
       keywords:    editingBlog.Keywords    || editingBlog.keywords || "",
       slug:        editingBlog.slug        || "",
       category:    editingBlog.category    || "Digital Marketing",
-      author:      editingBlog.author      || "SkyUp Digital Solutions",
+      author:      editingBlog.author      || "SKYUP",
       date:        editingBlog.date        || "",
       heroImage:   editingBlog.heroImage   || editingBlog.image    || "",
       imageAlt:    editingBlog.imageAlt    || editingBlog.title    || "",
