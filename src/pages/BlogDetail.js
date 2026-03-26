@@ -17,15 +17,6 @@ const slugify = (str = "") =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-// Heading size map — mirrors DynamicBlog
-const HEADING_SIZE = {
-  h2: "text-[20px] sm:text-[24px]",
-  h3: "text-[16px] sm:text-[18px]",
-  h4: "text-[15px] sm:text-[16px]",
-  h5: "text-[13px] sm:text-[14px]",
-  h6: "text-[12px] sm:text-[13px]",
-};
-
 export default function BlogDetail() {
   const { routeParams } = usePageContext();
   const slug = routeParams?.slug;
@@ -41,17 +32,18 @@ export default function BlogDetail() {
         },
       ];
 
-  const TOC_HEADING_TYPES = new Set([
-    "h2","h3","h4","h5","h6",
-    "h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link",
-  ]);
-
   const toc = useMemo(() => {
     const used = new Map();
     const items = [];
 
     sections.forEach((s) => {
-      if (!TOC_HEADING_TYPES.has(s.type)) return;
+      const isHeading =
+        s.type === "h2" ||
+        s.type === "h3" ||
+        s.type === "h2_with_link" ||
+        s.type === "h3_with_link";
+
+      if (!isHeading) return;
 
       const rawText = s.linkText || s.text;
       if (!rawText) return;
@@ -61,8 +53,7 @@ export default function BlogDetail() {
       used.set(base, count);
 
       const id = count === 1 ? base : `${base}-${count}`;
-      const tag = s.type.replace("_with_link","");
-      items.push({ id, text: rawText, level: tag });
+      items.push({ id, text: rawText });
     });
 
     return items;
@@ -83,7 +74,9 @@ export default function BlogDetail() {
       (entries) => {
         const visible = entries
           .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0))[0];
+          .sort(
+            (a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0),
+          )[0];
 
         if (visible?.target?.id) setActiveId(visible.target.id);
       },
@@ -118,15 +111,11 @@ export default function BlogDetail() {
     );
   }
 
-  // Helper: resolve font weight class (stored as Tailwind class or legacy)
-  const fw = (section, defaultFw = "font-normal") => section.fontWeight || defaultFw;
-
   return (
     <section className="w-full bg-white font-poppins">
       <Header />
       <div className="relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-6 sm:py-10 flex">
-          {/* Social sidebar */}
           <div className="hidden lg:block w-[80px] mr-6">
             <div className="sticky top-64 flex flex-col gap-4">
               <a
@@ -137,6 +126,7 @@ export default function BlogDetail() {
               >
                 <Facebook className="h-5 w-5" />
               </a>
+
               <a
                 href="https://wa.me/918867867775"
                 target="_blank"
@@ -145,6 +135,7 @@ export default function BlogDetail() {
               >
                 <MessageCircle className="h-5 w-5" />
               </a>
+
               <a
                 href="https://www.linkedin.com/company/110886969"
                 target="_blank"
@@ -153,6 +144,7 @@ export default function BlogDetail() {
               >
                 <Linkedin className="h-5 w-5" />
               </a>
+
               <a
                 href="https://www.youtube.com/@SKYUPDigitalSolutionsBengaluru"
                 target="_blank"
@@ -205,64 +197,93 @@ export default function BlogDetail() {
               {(() => {
                 const used = new Map();
 
-                // Generic heading renderer for h2–h6
-                const renderHeading = (s, i, tag) => {
-                  const rawText = s.text || "";
-                  const base = slugify(rawText);
-                  const count = (used.get(base) || 0) + 1;
-                  used.set(base, count);
-                  const id = count === 1 ? base : `${base}-${count}`;
-                  const sizeClass = HEADING_SIZE[tag] || HEADING_SIZE.h6;
-                  const fontWeightClass = fw(s, "font-bold");
-                  return React.createElement(tag, {
-                    key: i,
-                    id,
-                    className: `scroll-mt-28 ${sizeClass} ${fontWeightClass} text-[#111827]`,
-                    dangerouslySetInnerHTML: { __html: rawText },
-                  });
-                };
-
-                // Generic heading-with-link renderer
-                const renderHeadingWithLink = (s, i, tag) => {
-                  const base = slugify(s.linkText || "");
-                  const count = (used.get(base) || 0) + 1;
-                  used.set(base, count);
-                  const id = count === 1 ? base : `${base}-${count}`;
-                  const sizeClass = HEADING_SIZE[tag] || HEADING_SIZE.h6;
-                  const fontWeightClass = fw(s, "font-bold");
-                  return React.createElement(tag, {
-                    key: i,
-                    id,
-                    className: `scroll-mt-28 ${sizeClass} ${fontWeightClass} text-[#111827]`,
-                  }, [
-                    s.textBefore ? s.textBefore.trimEnd() + " " : "",
-                    <a
-                      key="link"
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#0B3BFF] no-underline hover:opacity-80 transition-opacity"
-                    >
-                      {s.linkText}
-                    </a>,
-                    s.textAfter ? " " + s.textAfter.trimStart() : "",
-                  ]);
-                };
-
                 return sections.map((s, i) => {
-                  // ── h2–h6 plain ──────────────────────────────────────────
-                  if (s.type === "h2") return renderHeading(s, i, "h2");
-                  if (s.type === "h3") return renderHeading(s, i, "h3");
-                  if (s.type === "h4") return renderHeading(s, i, "h4");
-                  if (s.type === "h5") return renderHeading(s, i, "h5");
-                  if (s.type === "h6") return renderHeading(s, i, "h6");
 
-                  // ── h2–h6 with link ──────────────────────────────────────
-                  if (s.type === "h2_with_link") return renderHeadingWithLink(s, i, "h2");
-                  if (s.type === "h3_with_link") return renderHeadingWithLink(s, i, "h3");
-                  if (s.type === "h4_with_link") return renderHeadingWithLink(s, i, "h4");
-                  if (s.type === "h5_with_link") return renderHeadingWithLink(s, i, "h5");
-                  if (s.type === "h6_with_link") return renderHeadingWithLink(s, i, "h6");
+                  // ── h2 ──────────────────────────────────────────────────
+                  if (s.type === "h2") {
+                    const base = slugify(s.text || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h2
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827]"
+                      >
+                        {s.text}
+                      </h2>
+                    );
+                  }
+
+                  // ── h3 ──────────────────────────────────────────────────
+                  if (s.type === "h3") {
+                    const base = slugify(s.text || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h3
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827]"
+                      >
+                        {s.text}
+                      </h3>
+                    );
+                  }
+
+                  // ── h2_with_link ─────────────────────────────────────────
+                  if (s.type === "h2_with_link") {
+                    const base = slugify(s.linkText || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h2
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827]"
+                      >
+                        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] no-underline hover:opacity-80 transition-opacity"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
+                      </h2>
+                    );
+                  }
+
+                  // ── h3_with_link ─────────────────────────────────────────
+                  if (s.type === "h3_with_link") {
+                    const base = slugify(s.linkText || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h3
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827]"
+                      >
+                        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] no-underline hover:opacity-80 transition-opacity"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
+                      </h3>
+                    );
+                  }
 
                   // ── quote ────────────────────────────────────────────────
                   if (s.type === "quote") {
@@ -304,7 +325,7 @@ export default function BlogDetail() {
                     return (
                       <p
                         key={i}
-                        className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${fw(s)}`}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
                       >
                         {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
                         <a
@@ -325,7 +346,7 @@ export default function BlogDetail() {
                     return (
                       <p
                         key={i}
-                        className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${fw(s)}`}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
                       >
                         {s.parts.map((part, idx) =>
                           part.bold ? (
@@ -345,7 +366,7 @@ export default function BlogDetail() {
                     return (
                       <p
                         key={i}
-                        className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${fw(s)}`}
+                        className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
                       >
                         {s.partsBefore?.map((part, idx) =>
                           part.bold ? (
@@ -356,6 +377,7 @@ export default function BlogDetail() {
                             <span key={idx}>{part.text}</span>
                           ),
                         )}
+                        {/* space before link */}
                         {" "}
                         <a
                           href={s.href}
@@ -365,6 +387,7 @@ export default function BlogDetail() {
                         >
                           {s.linkText}
                         </a>
+                        {/* space after link */}
                         {" "}
                         {s.partsAfter?.map((part, idx) =>
                           part.bold ? (
@@ -466,7 +489,7 @@ export default function BlogDetail() {
                   return (
                     <p
                       key={i}
-                      className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${fw(s)}`}
+                      className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
                       dangerouslySetInnerHTML={{ __html: s.text }}
                     />
                   );
@@ -487,18 +510,12 @@ export default function BlogDetail() {
                   <div className="mt-2 space-y-1 max-h-[240px] overflow-auto pr-1">
                     {toc.map((t) => {
                       const isActive = t.id === activeId;
-                      const indentClass =
-                        t.level === "h3" ? "pl-4" :
-                        t.level === "h4" ? "pl-7" :
-                        t.level === "h5" ? "pl-10" :
-                        t.level === "h6" ? "pl-12 text-[12px]" : "";
                       return (
                         <button
                           key={t.id}
                           onClick={() => scrollToId(t.id)}
                           className={[
                             "w-full text-left rounded-lg px-2 py-1.5 text-[14px] leading-snug transition",
-                            indentClass,
                             isActive
                               ? "bg-[#EEF1FF] text-[#0B3BFF] font-semibold"
                               : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
