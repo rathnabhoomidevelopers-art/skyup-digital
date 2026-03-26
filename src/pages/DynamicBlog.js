@@ -570,7 +570,7 @@ function BlogPicker({ onSelect }) {
 // ═════════════════════════════════════════════════════════════════════════════
 function BlogEditor({ editingBlog, onBack }) {
   const { token, user, logout } = useAuth();
-  const isEditMode = !!editingBlog;
+const [isEditMode] = useState(!!editingBlog);
 
   const [elements, setElements]             = useState([]);
   const [selectedId, setSelectedId]         = useState(null);
@@ -590,6 +590,7 @@ function BlogEditor({ editingBlog, onBack }) {
     date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     heroImage: "", imageAlt: "", tags: "",
   });
+  const editingBlogId = React.useRef(editingBlog?.id ?? null);
 
   useEffect(() => {
     if (!editingBlog) return;
@@ -698,7 +699,7 @@ function BlogEditor({ editingBlog, onBack }) {
     const slug     = meta.slug || slugify(title) || `blog-${Date.now()}`;
     const tagsArr  = meta.tags ? meta.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
     return {
-      id:          isEditMode ? editingBlog.id : Date.now(),
+    id: isEditMode ? editingBlogId.current : Date.now(),
       slug,
       category:    meta.category,
       title:       meta.title || title,
@@ -760,10 +761,10 @@ function BlogEditor({ editingBlog, onBack }) {
       let newBlogsArray;
       if (isEditMode) {
         setPublishMsg("Updating existing blog entry…");
-        const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlog.id));
-        if (idx === -1) throw new Error(`Could not find blog with id ${editingBlog.id} in blogs.js`);
-        newBlogsArray = [...blogsArray];
-        newBlogsArray[idx] = { ...blogData, id: editingBlog.id };
+       const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlogId.current));
+    if (idx === -1) throw new Error(`Could not find blog with id ${editingBlogId.current} in blogs.js`);
+    newBlogsArray = [...blogsArray];  
+    newBlogsArray[idx] = { ...blogData, id: editingBlogId.current };
       } else {
         setPublishMsg("Inserting new blog entry…");
         newBlogsArray = [{ ...blogData, id: nextId }, ...blogsArray];
