@@ -8,7 +8,7 @@ export const BLOGS = [
     "description": " Skyup SEO Company in Bangalore shares 15 powerful SEO audit steps to boost rankings fast. Learn how to audit your website from scratch in 2026.\n",
     "date": "Mar 25, 2026",
     "Keywords": " SEO Company in Bangalore",
-    "author": "SkyUp Digital Solutions",
+    "author": "SKYUP",
     "image": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774438296/ia0i13b1uaip15zf0mj2.webp",
     "heroImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774438296/ia0i13b1uaip15zf0mj2.webp",
     "coverImage": "https://res.cloudinary.com/dmyj1echa/image/upload/v1774438296/ia0i13b1uaip15zf0mj2.webp",
