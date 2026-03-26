@@ -733,6 +733,8 @@ const [isEditMode] = useState(!!editingBlog);
   const GH_FILE   = "src/data/blogs.js";
 
   const publishBlog = async () => {
+    setPublishStatus(null);
+  setPublishMsg("");
     if (!meta.headline && !meta.title) {
       alert("Please add a headline first (open ⚙ Settings)."); setShowSettings(true); return;
     }
@@ -1560,10 +1562,19 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
                     }
                   </button>
                   {publishStatus === "success" && (
-                    <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
-                      <CheckCircle size={13} /> {publishMsg}
-                    </div>
-                  )}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
+               <CheckCircle size={13} /> {publishMsg}
+             </div>
+             <button
+            onClick={() => { setPublishStatus(null); setPublishMsg(""); }}
+              className="btn-ghost w-full"
+             >
+              <Send size={12} /> Publish again
+            </button>
+             </div>
+             )}
+
                   {publishStatus === "error" && (
                     <div className="flex items-start gap-2 text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs font-medium">
                       <AlertCircle size={13} className="mt-0.5 shrink-0" /> {publishMsg}
