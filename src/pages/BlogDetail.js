@@ -18,7 +18,6 @@ const slugify = (str = "") =>
     .replace(/-+/g, "-");
 
 export default function BlogDetail() {
-  // Get slug from Vike route params
   const { routeParams } = usePageContext();
   const slug = routeParams?.slug;
 
@@ -33,20 +32,28 @@ export default function BlogDetail() {
         },
       ];
 
-  // Build TOC from h3 headings
   const toc = useMemo(() => {
     const used = new Map();
     const items = [];
 
     sections.forEach((s) => {
-      if ((s.type !== "h2" && s.type !== "h3") || !s.text) return;
+      const isHeading =
+        s.type === "h2" ||
+        s.type === "h3" ||
+        s.type === "h2_with_link" ||
+        s.type === "h3_with_link";
 
-      const base = slugify(s.text);
+      if (!isHeading) return;
+
+      const rawText = s.linkText || s.text;
+      if (!rawText) return;
+
+      const base = slugify(rawText);
       const count = (used.get(base) || 0) + 1;
       used.set(base, count);
 
       const id = count === 1 ? base : `${base}-${count}`;
-      items.push({ id, text: s.text });
+      items.push({ id, text: rawText });
     });
 
     return items;
@@ -54,7 +61,6 @@ export default function BlogDetail() {
 
   const [activeId, setActiveId] = useState(toc[0]?.id || "");
 
-  // Observe headings and set active section
   useEffect(() => {
     if (!toc.length) return;
 
@@ -97,10 +103,7 @@ export default function BlogDetail() {
       <section className="w-full font-poppins">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 py-10">
           <p className="text-slate-700">Blog not found.</p>
-          <a
-            href="/blogs"
-            className="text-[#0B3BFF] no-underline font-semibold"
-          >
+          <a href="/blogs" className="text-[#0B3BFF] no-underline font-semibold">
             Go back
           </a>
         </div>
@@ -155,7 +158,6 @@ export default function BlogDetail() {
 
           {/* Blog content */}
           <div className="flex-1 max-w-6xl">
-            {/* back */}
             <a
               href="/blogs"
               className="inline-flex no-underline items-center gap-2 text-[12px] font-semibold text-slate-700 hover:text-[#0B3BFF] transition"
@@ -166,26 +168,22 @@ export default function BlogDetail() {
               Back&nbsp;to&nbsp;Blog
             </a>
 
-            {/* category */}
             <div className="mt-4">
               <span className="inline-flex rounded-full bg-[#EEF1FF] text-[#0B3BFF] px-3 py-1 text-[11px] font-semibold">
                 {blog.category}
               </span>
             </div>
 
-            {/* title */}
             <h1 className="mt-3 text-[22px] sm:text-[28px] lg:text-[38px] fw-bold text-[#111827] leading-tight">
               {blog.headline}
             </h1>
 
-            {/* meta */}
             <div className="mt-2 text-[12px] text-slate-500 flex items-center gap-3">
               <span>{blog.author}</span>
               <span className="h-1 w-1 rounded-full bg-slate-300" />
               <span>{blog.date}</span>
             </div>
 
-            {/* hero image */}
             <div className="mt-5 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100">
               <img
                 src={blog.heroImage || blog.image}
@@ -200,6 +198,8 @@ export default function BlogDetail() {
                 const used = new Map();
 
                 return sections.map((s, i) => {
+
+                  // ── h2 ──────────────────────────────────────────────────
                   if (s.type === "h2") {
                     const base = slugify(s.text || "");
                     const count = (used.get(base) || 0) + 1;
@@ -216,6 +216,7 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── h3 ──────────────────────────────────────────────────
                   if (s.type === "h3") {
                     const base = slugify(s.text || "");
                     const count = (used.get(base) || 0) + 1;
@@ -232,6 +233,59 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── h2_with_link ─────────────────────────────────────────
+                  if (s.type === "h2_with_link") {
+                    const base = slugify(s.linkText || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h2
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#111827]"
+                      >
+                        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] no-underline hover:opacity-80 transition-opacity"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
+                      </h2>
+                    );
+                  }
+
+                  // ── h3_with_link ─────────────────────────────────────────
+                  if (s.type === "h3_with_link") {
+                    const base = slugify(s.linkText || "");
+                    const count = (used.get(base) || 0) + 1;
+                    used.set(base, count);
+                    const id = count === 1 ? base : `${base}-${count}`;
+                    return (
+                      <h3
+                        key={i}
+                        id={id}
+                        className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#111827]"
+                      >
+                        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#0B3BFF] no-underline hover:opacity-80 transition-opacity"
+                        >
+                          {s.linkText}
+                        </a>
+                        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
+                      </h3>
+                    );
+                  }
+
+                  // ── quote ────────────────────────────────────────────────
                   if (s.type === "quote") {
                     return (
                       <div
@@ -245,6 +299,7 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── image ────────────────────────────────────────────────
                   if (s.type === "image") {
                     return (
                       <figure
@@ -265,13 +320,14 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── p_with_link ──────────────────────────────────────────
                   if (s.type === "p_with_link") {
                     return (
                       <p
                         key={i}
                         className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
                       >
-                        {s.textBefore}
+                        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
                         <a
                           href={s.href}
                           target="_blank"
@@ -280,11 +336,12 @@ export default function BlogDetail() {
                         >
                           {s.linkText}
                         </a>
-                        {s.textAfter}
+                        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
                       </p>
                     );
                   }
 
+                  // ── p_with_bold ──────────────────────────────────────────
                   if (s.type === "p_with_bold") {
                     return (
                       <p
@@ -293,10 +350,7 @@ export default function BlogDetail() {
                       >
                         {s.parts.map((part, idx) =>
                           part.bold ? (
-                            <strong
-                              key={idx}
-                              className="font-semibold text-[#111827]"
-                            >
+                            <strong key={idx} className="font-semibold text-[#111827]">
                               {part.text}
                             </strong>
                           ) : (
@@ -307,6 +361,7 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── p_with_link_bold ─────────────────────────────────────
                   if (s.type === "p_with_link_bold") {
                     return (
                       <p
@@ -315,16 +370,15 @@ export default function BlogDetail() {
                       >
                         {s.partsBefore?.map((part, idx) =>
                           part.bold ? (
-                            <strong
-                              key={idx}
-                              className="font-semibold text-[#111827]"
-                            >
+                            <strong key={idx} className="font-semibold text-[#111827]">
                               {part.text}
                             </strong>
                           ) : (
                             <span key={idx}>{part.text}</span>
                           ),
                         )}
+                        {/* space before link */}
+                        {" "}
                         <a
                           href={s.href}
                           target="_blank"
@@ -333,12 +387,11 @@ export default function BlogDetail() {
                         >
                           {s.linkText}
                         </a>
+                        {/* space after link */}
+                        {" "}
                         {s.partsAfter?.map((part, idx) =>
                           part.bold ? (
-                            <strong
-                              key={idx}
-                              className="font-semibold text-[#111827]"
-                            >
+                            <strong key={idx} className="font-semibold text-[#111827]">
                               {part.text}
                             </strong>
                           ) : (
@@ -349,6 +402,7 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── ul ───────────────────────────────────────────────────
                   if (s.type === "ul") {
                     return (
                       <ul
@@ -364,23 +418,90 @@ export default function BlogDetail() {
                     );
                   }
 
+                  // ── ol ───────────────────────────────────────────────────
+                  if (s.type === "ol") {
+                    return (
+                      <ol
+                        key={i}
+                        className="list-decimal list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-800"
+                      >
+                        {s.text.map((item, idx) => (
+                          <li key={idx} className="leading-relaxed">
+                            {item}
+                          </li>
+                        ))}
+                      </ol>
+                    );
+                  }
+
+                  // ── table ────────────────────────────────────────────────
+                  if (s.type === "table") {
+                    return (
+                      <div
+                        key={i}
+                        className="overflow-x-auto rounded-xl border border-slate-200"
+                      >
+                        <table className="w-full text-[13px] sm:text-[14px] text-slate-700 border-collapse">
+                          <thead>
+                            <tr>
+                              {(s.headers || []).map((h, hi) => (
+                                <th
+                                  key={hi}
+                                  className="text-left px-4 py-3 font-bold border border-slate-200 text-[#111827]"
+                                  style={{
+                                    background: s.themed ? "#DBEAFE" : "#ffffff",
+                                  }}
+                                >
+                                  {h}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(s.rows || []).map((row, ri) => (
+                              <tr
+                                key={ri}
+                                style={{
+                                  background: s.themed
+                                    ? ri % 2 === 0
+                                      ? "#EFF6FF"
+                                      : "#DBEAFE"
+                                    : "#ffffff",
+                                }}
+                              >
+                                {row.map((cell, ci) => (
+                                  <td
+                                    key={ci}
+                                    className="px-4 py-2.5 border border-slate-200"
+                                  >
+                                    {cell}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    );
+                  }
+
+                  // ── default paragraph ────────────────────────────────────
                   return (
                     <p
                       key={i}
                       className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600"
-                    >
-                      {s.text}
-                    </p>
+                      dangerouslySetInnerHTML={{ __html: s.text }}
+                    />
                   );
                 });
               })()}
             </div>
           </div>
 
-          {/* Right Table of Contents (desktop only) */}
+          {/* Right Table of Contents */}
           {toc.length > 0 && (
             <aside className="hidden lg:block w-[300px] ml-6">
-              <div className="sticky top-36 ">
+              <div className="sticky top-36">
                 <div className="rounded-2xl border border-slate-100 bg-white shadow-[0_12px_35px_rgba(0,0,0,0.06)] p-3">
                   <div className="text-[18px] font-bold text-slate-900 tracking-wide">
                     TABLE OF CONTENTS
@@ -432,7 +553,6 @@ export default function BlogDetail() {
         transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.9 }}
         className="fixed bottom-5 right-4 z-[9999] flex flex-col items-end gap-4 font-poppins"
       >
-        {/* WhatsApp - Mobile */}
         <a
           href="https://wa.me/918867867775"
           target="_blank"
@@ -442,18 +562,12 @@ export default function BlogDetail() {
           <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7" />
         </a>
 
-        {/* WhatsApp - Desktop */}
         <a
           href="https://wa.me/918867867775"
           target="_blank"
           rel="noopener noreferrer"
           className="whatsapp-chat-gtm hidden sm:inline-flex no-underline relative items-center bg-white rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] overflow-hidden"
-          style={{
-            width: "52px",
-            height: "52px",
-            transition: "width 0.3s ease",
-            paddingRight: "0",
-          }}
+          style={{ width: "52px", height: "52px", transition: "width 0.3s ease" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.width = "190px";
             e.currentTarget.querySelector(".wa-label").style.opacity = "1";
@@ -467,25 +581,15 @@ export default function BlogDetail() {
         >
           <span
             className="wa-label font-semibold text-base text-slate-800 whitespace-nowrap pl-3"
-            style={{
-              maxWidth: "0",
-              opacity: "0",
-              overflow: "hidden",
-              transition: "max-width 0.3s ease, opacity 0.3s ease",
-            }}
+            style={{ maxWidth: "0", opacity: "0", overflow: "hidden", transition: "max-width 0.3s ease, opacity 0.3s ease" }}
           >
             WhatsApp
           </span>
           <span className="absolute right-[4px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-xl bg-[#25D366] flex items-center justify-center shadow-[0_6px_16px_rgba(0,0,0,0.12)] shrink-0">
-            <img
-              src="/images/whatsapp.svg"
-              alt="whatsapp"
-              className="w-7 h-7"
-            />
+            <img src="/images/whatsapp.svg" alt="whatsapp" className="w-7 h-7" />
           </span>
         </a>
 
-        {/* Call - Mobile */}
         <a
           href="tel:+918867867775"
           className="tel-chat sm:hidden w-12 h-12 rounded-xl bg-[#3B46F6] flex items-center justify-center shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
@@ -493,20 +597,14 @@ export default function BlogDetail() {
           <img src="/images/call.svg" alt="call" className="w-7 h-7" />
         </a>
 
-        {/* Call - Desktop */}
         <a
           href="tel:+918867867775"
           className="tel-chat-gtm hidden sm:inline-flex no-underline relative items-center bg-white rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.18)] overflow-hidden"
-          style={{
-            width: "52px",
-            height: "52px",
-            transition: "width 0.3s ease",
-          }}
+          style={{ width: "52px", height: "52px", transition: "width 0.3s ease" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.width = "220px";
             e.currentTarget.querySelector(".call-label").style.opacity = "1";
-            e.currentTarget.querySelector(".call-label").style.maxWidth =
-              "160px";
+            e.currentTarget.querySelector(".call-label").style.maxWidth = "160px";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.width = "52px";
@@ -516,12 +614,7 @@ export default function BlogDetail() {
         >
           <span
             className="call-label font-semibold text-base text-slate-800 whitespace-nowrap pl-3"
-            style={{
-              maxWidth: "0",
-              opacity: "0",
-              overflow: "hidden",
-              transition: "max-width 0.3s ease, opacity 0.3s ease",
-            }}
+            style={{ maxWidth: "0", opacity: "0", overflow: "hidden", transition: "max-width 0.3s ease, opacity 0.3s ease" }}
           >
             +91 8867867775
           </span>
