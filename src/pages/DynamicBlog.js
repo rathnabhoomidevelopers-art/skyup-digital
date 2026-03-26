@@ -61,34 +61,38 @@ const compressAndUpload = (file, { maxW = 1400, quality = 0.82 } = {}) =>
 // ─── sectionToElement ─────────────────────────────────────────────────────────
 const sectionToElement = (s) => {
   const base = { id: Date.now() + Math.random() };
-  if (s.type === "p")               return { ...base, type: "p",               text: s.text };
-  if (s.type === "h2")              return { ...base, type: "h2",              text: s.text };
-  if (s.type === "h3")              return { ...base, type: "h3",              text: s.text };
-  if (s.type === "quote")           return { ...base, type: "quote",           text: s.text };
-  if (s.type === "ul")              return { ...base, type: "ul",              text: s.text };
-  if (s.type === "ol")              return { ...base, type: "ol",              text: s.text };
-  if (s.type === "table")           return { ...base, type: "table",           headers: s.headers || [], rows: s.rows || [], themed: s.themed || false };
-  if (s.type === "image")           return { ...base, type: "image",           src: s.src, caption: s.caption || "" };
-  if (s.type === "p_with_link")     return { ...base, type: "p_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
-  if (s.type === "p_with_bold")     return { ...base, type: "p_with_bold",     parts: s.parts || [] };
-  if (s.type === "p_with_link_bold")return { ...base, type: "p_with_link_bold",partsBefore: s.partsBefore || [], linkText: s.linkText || "", href: s.href || "", partsAfter: s.partsAfter || [] };
+  if (s.type === "p")                return { ...base, type: "p",                text: s.text };
+  if (s.type === "h2")               return { ...base, type: "h2",               text: s.text };
+  if (s.type === "h3")               return { ...base, type: "h3",               text: s.text };
+  if (s.type === "quote")            return { ...base, type: "quote",            text: s.text };
+  if (s.type === "ul")               return { ...base, type: "ul",               text: s.text };
+  if (s.type === "ol")               return { ...base, type: "ol",               text: s.text };
+  if (s.type === "table")            return { ...base, type: "table",            headers: s.headers || [], rows: s.rows || [], themed: s.themed || false };
+  if (s.type === "image")            return { ...base, type: "image",            src: s.src, caption: s.caption || "" };
+  if (s.type === "p_with_link")      return { ...base, type: "p_with_link",      textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
+  if (s.type === "p_with_bold")      return { ...base, type: "p_with_bold",      parts: s.parts || [] };
+  if (s.type === "p_with_link_bold") return { ...base, type: "p_with_link_bold", partsBefore: s.partsBefore || [], linkText: s.linkText || "", href: s.href || "", partsAfter: s.partsAfter || [] };
+  if (s.type === "h2_with_link")     return { ...base, type: "h2_with_link",     linkText: s.linkText || "", href: s.href || "" };
+  if (s.type === "h3_with_link")     return { ...base, type: "h3_with_link",     linkText: s.linkText || "", href: s.href || "" };
   return { ...base, type: "p", text: s.text || "" };
 };
 
 // ─── toSections ───────────────────────────────────────────────────────────────
 const toSections = (elements) =>
   elements.map((el) => {
-    if (el.type === "p")               return { type: "p",               text: el.text };
-    if (el.type === "h2")              return { type: "h2",              text: el.text };
-    if (el.type === "h3")              return { type: "h3",              text: el.text };
-    if (el.type === "quote")           return { type: "quote",           text: el.text };
-    if (el.type === "ul")              return { type: "ul",              text: el.text };
-    if (el.type === "ol")              return { type: "ol",              text: el.text };
-    if (el.type === "table")           return { type: "table",           headers: el.headers, rows: el.rows, themed: el.themed };
-    if (el.type === "image")           return { type: "image",           src: el.src, caption: el.caption };
-    if (el.type === "p_with_link")     return { type: "p_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
-    if (el.type === "p_with_bold")     return { type: "p_with_bold",     parts: el.parts };
-    if (el.type === "p_with_link_bold")return { type: "p_with_link_bold",partsBefore: el.partsBefore, linkText: el.linkText, href: el.href, partsAfter: el.partsAfter };
+    if (el.type === "p")                return { type: "p",                text: el.text };
+    if (el.type === "h2")               return { type: "h2",               text: el.text };
+    if (el.type === "h3")               return { type: "h3",               text: el.text };
+    if (el.type === "quote")            return { type: "quote",            text: el.text };
+    if (el.type === "ul")               return { type: "ul",               text: el.text };
+    if (el.type === "ol")               return { type: "ol",               text: el.text };
+    if (el.type === "table")            return { type: "table",            headers: el.headers, rows: el.rows, themed: el.themed };
+    if (el.type === "image")            return { type: "image",            src: el.src, caption: el.caption };
+    if (el.type === "p_with_link")      return { type: "p_with_link",      textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
+    if (el.type === "p_with_bold")      return { type: "p_with_bold",      parts: el.parts };
+    if (el.type === "p_with_link_bold") return { type: "p_with_link_bold", partsBefore: el.partsBefore, linkText: el.linkText, href: el.href, partsAfter: el.partsAfter };
+    if (el.type === "h2_with_link")     return { type: "h2_with_link",     linkText: el.linkText, href: el.href };
+    if (el.type === "h3_with_link")     return { type: "h3_with_link",     linkText: el.linkText, href: el.href };
     return { type: "p", text: el.text || "" };
   });
 
@@ -96,17 +100,19 @@ const toSections = (elements) =>
 const createElement = (type) => {
   const base = { id: Date.now() + Math.random(), type };
   switch (type) {
-    case "p":               return { ...base, text: "Write your paragraph here…" };
-    case "h2":              return { ...base, text: "Section Heading" };
-    case "h3":              return { ...base, text: "Sub-section Heading" };
-    case "quote":           return { ...base, text: "An insightful quote goes here…" };
-    case "ul":              return { ...base, text: ["First point", "Second point", "Third point"] };
-    case "ol":              return { ...base, text: ["Step one", "Step two", "Step three"] };
-    case "table":           return { ...base, headers: ["Column 1", "Column 2", "Column 3"], rows: [["Row 1A", "Row 1B", "Row 1C"], ["Row 2A", "Row 2B", "Row 2C"]], themed: false };
-    case "image":           return { ...base, src: "", caption: "" };
-    case "p_with_link":     return { ...base, textBefore: "Learn more about", linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", textAfter: "services we offer." };
-    case "p_with_bold":     return { ...base, parts: [{ text: "Normal text here. ", bold: false }, { text: "Bold text here.", bold: true }] };
-    case "p_with_link_bold":return { ...base, partsBefore: [{ text: "Read more about ", bold: false }], linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", partsAfter: [{ text: " to ", bold: false }, { text: "grow your business.", bold: true }] };
+    case "p":                return { ...base, text: "Write your paragraph here…" };
+    case "h2":               return { ...base, text: "Section Heading" };
+    case "h3":               return { ...base, text: "Sub-section Heading" };
+    case "quote":            return { ...base, text: "An insightful quote goes here…" };
+    case "ul":               return { ...base, text: ["First point", "Second point", "Third point"] };
+    case "ol":               return { ...base, text: ["Step one", "Step two", "Step three"] };
+    case "table":            return { ...base, headers: ["Column 1", "Column 2", "Column 3"], rows: [["Row 1A", "Row 1B", "Row 1C"], ["Row 2A", "Row 2B", "Row 2C"]], themed: false };
+    case "image":            return { ...base, src: "", caption: "" };
+    case "p_with_link":      return { ...base, textBefore: "Learn more about", linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", textAfter: "services we offer." };
+    case "p_with_bold":      return { ...base, parts: [{ text: "Normal text here. ", bold: false }, { text: "Bold text here.", bold: true }] };
+    case "p_with_link_bold": return { ...base, partsBefore: [{ text: "Read more about ", bold: false }], linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", partsAfter: [{ text: " to ", bold: false }, { text: "grow your business.", bold: true }] };
+    case "h2_with_link":     return { ...base, linkText: "Section Heading with Link", href: "https://skyupdigitalsolutions.com" };
+    case "h3_with_link":     return { ...base, linkText: "Sub-section Heading with Link", href: "https://skyupdigitalsolutions.com" };
     default: return base;
   }
 };
@@ -148,17 +154,19 @@ const SectionDivider = ({ children }) => (
 
 // ─── Element type definitions ─────────────────────────────────────────────────
 const ELEMENT_TYPES = [
-  { type: "p",               icon: Type,      label: "Paragraph" },
-  { type: "h2",              icon: Type,      label: "H2" },
-  { type: "h3",              icon: Type,      label: "H3" },
-  { type: "quote",           icon: Type,      label: "Quote" },
-  { type: "ul",              icon: List,      label: "Bullets" },
-  { type: "ol",              icon: List,      label: "Numbered" },
-  { type: "table",           icon: List,      label: "Table" },
-  { type: "image",           icon: ImageIcon, label: "Image" },
-  { type: "p_with_link",     icon: LinkIcon,  label: "Para+Link" },
-  { type: "p_with_bold",     icon: Type,      label: "Bold Para" },
-  { type: "p_with_link_bold",icon: LinkIcon,  label: "Bold+Link" },
+  { type: "p",                icon: Type,      label: "Paragraph" },
+  { type: "h2",               icon: Type,      label: "H2" },
+  { type: "h3",               icon: Type,      label: "H3" },
+  { type: "quote",            icon: Type,      label: "Quote" },
+  { type: "ul",               icon: List,      label: "Bullets" },
+  { type: "ol",               icon: List,      label: "Numbered" },
+  { type: "table",            icon: List,      label: "Table" },
+  { type: "image",            icon: ImageIcon, label: "Image" },
+  { type: "p_with_link",      icon: LinkIcon,  label: "Para+Link" },
+  { type: "p_with_bold",      icon: Type,      label: "Bold Para" },
+  { type: "p_with_link_bold", icon: LinkIcon,  label: "Bold+Link" },
+  { type: "h2_with_link",     icon: LinkIcon,  label: "H2+Link" },
+  { type: "h3_with_link",     icon: LinkIcon,  label: "H3+Link" },
 ];
 
 // ─── Parts renderer helper ────────────────────────────────────────────────────
@@ -180,6 +188,39 @@ function PreviewSection({ s, usedH3 }) {
     usedH3.set(base, count);
     const id = count === 1 ? base : `${base}-${count}`;
     return <h3 id={id} className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#0A0F1E]">{s.text}</h3>;
+  }
+
+  if (s.type === "h2_with_link")
+    return (
+      <h2 className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#0A0F1E] mt-4">
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#0057FF] hover:opacity-80 underline underline-offset-2 decoration-[#0057FF]/40 transition-opacity"
+        >
+          {s.linkText}
+        </a>
+      </h2>
+    );
+
+  if (s.type === "h3_with_link") {
+    const base = slugify(s.linkText || "");
+    const count = (usedH3.get(base) || 0) + 1;
+    usedH3.set(base, count);
+    const id = count === 1 ? base : `${base}-${count}`;
+    return (
+      <h3 id={id} className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#0A0F1E]">
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#0057FF] hover:opacity-80 underline underline-offset-2 decoration-[#0057FF]/40 transition-opacity"
+        >
+          {s.linkText}
+        </a>
+      </h3>
+    );
   }
 
   if (s.type === "quote")
@@ -520,18 +561,23 @@ function BlogEditor({ editingBlog, onBack }) {
 
   const selectedEl = elements.find((el) => el.id === selectedId) || null;
 
+  // ── TOC: includes h2, h3, h2_with_link, h3_with_link ────────────────────
   const toc = useMemo(() => {
     const used = new Map();
     return elements
-      .filter((el) => (el.type === "h2" || el.type === "h3") && el.text)
+      .filter((el) =>
+        (el.type === "h2" || el.type === "h3" || el.type === "h2_with_link" || el.type === "h3_with_link") &&
+        (el.text || el.linkText)
+      )
       .map((el) => {
-        const base = slugify(el.text);
+        const rawText = el.text || el.linkText;
+        const base = slugify(rawText);
         const count = (used.get(base) || 0) + 1;
         used.set(base, count);
         return {
-          id: count === 1 ? base : `${base}-${count}`,
-          text: el.text,
-          level: el.type,
+          id:    count === 1 ? base : `${base}-${count}`,
+          text:  rawText,
+          level: el.type === "h2" || el.type === "h2_with_link" ? "h2" : "h3",
         };
       });
   }, [elements]);
@@ -800,6 +846,24 @@ function BlogEditor({ editingBlog, onBack }) {
       content = <h3 className={`text-[16px] sm:text-[18px] font-bold text-[#0A0F1E] ${ring}`} onClick={pick}
         contentEditable suppressContentEditableWarning onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</h3>;
 
+    else if (el.type === "h2_with_link")
+      content = (
+        <h2 className={`text-[20px] sm:text-[24px] font-bold ${ring}`} onClick={pick}>
+          <span className="text-[#0057FF] underline underline-offset-2 decoration-[#0057FF]/40">
+            {el.linkText || "H2 Link Heading"}
+          </span>
+        </h2>
+      );
+
+    else if (el.type === "h3_with_link")
+      content = (
+        <h3 className={`text-[16px] sm:text-[18px] font-bold ${ring}`} onClick={pick}>
+          <span className="text-[#0057FF] underline underline-offset-2 decoration-[#0057FF]/40">
+            {el.linkText || "H3 Link Heading"}
+          </span>
+        </h3>
+      );
+
     else if (el.type === "quote")
       content = (
         <div className={`rounded-xl border border-[#B8D4FF] bg-[#EFF6FF] px-4 py-4 ${ring}`} onClick={pick}>
@@ -979,6 +1043,43 @@ function BlogEditor({ editingBlog, onBack }) {
                 onChange={(e) => updateEl(el.id, { text: e.target.value })}
                 placeholder="Type your content…" />
             )}
+          </div>
+        )}
+
+        {/* ── h2_with_link / h3_with_link ── */}
+        {(el.type === "h2_with_link" || el.type === "h3_with_link") && (
+          <div className="space-y-3">
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
+              <span className="font-semibold text-slate-500 mr-1">Preview:</span>
+              <span
+                className={`text-[#0057FF] font-bold underline underline-offset-1 ${
+                  el.type === "h2_with_link" ? "text-[16px]" : "text-[13px]"
+                }`}
+              >
+                {el.linkText || "Heading text"}
+              </span>
+            </div>
+            <div>
+              <Label>Heading text (link label)</Label>
+              <Input
+                value={el.linkText || ""}
+                placeholder={el.type === "h2_with_link" ? "Section heading…" : "Sub-section heading…"}
+                onChange={(e) => updateEl(el.id, { linkText: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>URL</Label>
+              <Input
+                value={el.href || ""}
+                placeholder="https://…"
+                onChange={(e) => updateEl(el.id, { href: e.target.value })}
+              />
+            </div>
+            <div className="px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg">
+              <p className="text-[10px] text-slate-400 leading-snug">
+                This heading will render as a clickable link ({el.type === "h2_with_link" ? "H2" : "H3"} size) and will also appear in the Table of Contents.
+              </p>
+            </div>
           </div>
         )}
 
@@ -1523,6 +1624,10 @@ function BlogEditor({ editingBlog, onBack }) {
                                 s = { type: "table", headers: el.headers, rows: el.rows, themed: el.themed };
                               } else if (el.type === "ul" || el.type === "ol") {
                                 s = { type: el.type, text: el.text };
+                              } else if (el.type === "h2_with_link") {
+                                s = { type: "h2_with_link", linkText: el.linkText, href: el.href };
+                              } else if (el.type === "h3_with_link") {
+                                s = { type: "h3_with_link", linkText: el.linkText, href: el.href };
                               } else {
                                 s = { type: el.type, text: el.text };
                               }
@@ -1561,7 +1666,7 @@ function BlogEditor({ editingBlog, onBack }) {
                                   if (heading) heading.scrollIntoView({ behavior: "smooth", block: "start" });
                                 }}
                                 className={`w-full text-left rounded-lg px-3 py-2.5 text-[13px] leading-snug transition-all
-                                  ${t.level === "h3" ? "pl-5" : ""}
+                                  ${t.level === "h3" || t.level === "h3_with_link" ? "pl-5" : ""}
                                   ${activeTocId === t.id
                                     ? "bg-[#EFF6FF] text-[#0057FF] font-semibold"
                                     : "text-slate-700 hover:bg-slate-50 hover:text-[#0057FF]"
