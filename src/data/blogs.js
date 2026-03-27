@@ -2,7 +2,7 @@ export const BLOGS = [
   {
     id: 1774247933706,
     slug: "google-ads-vs-facebook-ads-india",
-    category: "Digital Marketing",
+    category: "PPC",
     title: "Best PPC Company in Bangalore | Google Ads vs Facebook",
     headline: "9 Powerful Insights on Google Ads vs Facebook Ads by the Best PPC Company in Bangalore (2026 Guide)",
     description: "Discover Google Ads vs Facebook Ads insights by the Best PPC Company in Bangalore. Learn which platform drives leads, sales & better ROI in 2026.",
