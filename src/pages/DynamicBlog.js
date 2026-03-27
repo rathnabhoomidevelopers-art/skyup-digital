@@ -1433,7 +1433,7 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
             style={{ maxHeight: "100vh", position: "sticky", top: 0 }}>
 
             {/* Panel header */}
-            <div className="px-5 py-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+            <div className="px-3 py-4 border-b border-slate-100 bg-white sticky top-0 z-10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <button onClick={onBack} title="Back to picker"
@@ -1456,7 +1456,7 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
                 </div>
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => setPreviewMode(true)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:border-[#0057FF] hover:text-[#0057FF] hover:bg-[#EFF6FF] transition-all">
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:border-[#0057FF] hover:text-[#0057FF] hover:bg-[#EFF6FF] transition-all">
                     <Eye size={12} /> Preview
                   </button>
                   <button onClick={() => setShowSettings((v) => !v)}
