@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
   Trash2, Plus, Image as ImageIcon, Link as LinkIcon, Type, List,
@@ -10,11 +9,8 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { BLOGS } from "../data/blogs";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 const slugify = (str = "") =>
   str.toLowerCase().trim()
     .replace(/[""''"`]/g, "")
@@ -22,7 +18,6 @@ const slugify = (str = "") =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-// ─── Cloudinary config ────────────────────────────────────────────────────────
 const CL_CLOUD  = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CL_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
@@ -60,61 +55,109 @@ const compressAndUpload = (file, { maxW = 1400, quality = 0.82 } = {}) =>
     img.src = objectUrl;
   });
 
+// Font weight helpers
+const FONT_WEIGHT_OPTIONS = [
+  { value: "font-normal",    label: "Normal",   css: "400" },
+  { value: "font-medium",    label: "Medium",   css: "500" },
+  { value: "font-semibold",  label: "Semibold", css: "600" },
+  { value: "font-bold",      label: "Bold",     css: "700" },
+];
+
+const FW_DEFAULT_HEADING = "font-bold";
+const FW_DEFAULT_PARA    = "font-normal";
+
+// ─── sectionToElement ─────────────────────────────────────────────────────────
 const sectionToElement = (s) => {
   const base = { id: Date.now() + Math.random() };
-  if (s.type === "p")          return { ...base, type: "p",          text: s.text };
-  if (s.type === "h2")         return { ...base, type: "h2",         text: s.text };
-  if (s.type === "h3")         return { ...base, type: "h3",         text: s.text };
-  if (s.type === "quote")      return { ...base, type: "quote",      text: s.text };
-  if (s.type === "ul")         return { ...base, type: "ul",         text: s.text };
-  if (s.type === "ol")         return { ...base, type: "ol",         text: s.text };
-  if (s.type === "table")      return { ...base, type: "table",      headers: s.headers || [], rows: s.rows || [], themed: s.themed || false };
-  if (s.type === "image")      return { ...base, type: "image",      src: s.src,  caption: s.caption || "" };
-  if (s.type === "p_with_link")
-    return { ...base, type: "p_with_link", textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "" };
-  return { ...base, type: "p", text: s.text || "" };
+  if (s.type === "p")                return { ...base, type: "p",                text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_PARA };
+  if (s.type === "h2")               return { ...base, type: "h2",               text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h3")               return { ...base, type: "h3",               text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h4")               return { ...base, type: "h4",               text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h5")               return { ...base, type: "h5",               text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h6")               return { ...base, type: "h6",               text: s.text,  fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "quote")            return { ...base, type: "quote",            text: s.text };
+  if (s.type === "ul")               return { ...base, type: "ul",               text: s.text };
+  if (s.type === "ol")               return { ...base, type: "ol",               text: s.text };
+  if (s.type === "table")            return { ...base, type: "table",            headers: s.headers || [], rows: s.rows || [], themed: s.themed || false };
+  if (s.type === "image")            return { ...base, type: "image",            src: s.src, caption: s.caption || "" };
+  if (s.type === "p_with_link")      return { ...base, type: "p_with_link",      textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_PARA };
+  if (s.type === "p_with_bold")      return { ...base, type: "p_with_bold",      parts: s.parts || [], fontWeight: s.fontWeight || FW_DEFAULT_PARA };
+  if (s.type === "p_with_link_bold") return { ...base, type: "p_with_link_bold", partsBefore: s.partsBefore || [], linkText: s.linkText || "", href: s.href || "", partsAfter: s.partsAfter || [], fontWeight: s.fontWeight || FW_DEFAULT_PARA };
+  if (s.type === "h2_with_link")     return { ...base, type: "h2_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h3_with_link")     return { ...base, type: "h3_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h4_with_link")     return { ...base, type: "h4_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h5_with_link")     return { ...base, type: "h5_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  if (s.type === "h6_with_link")     return { ...base, type: "h6_with_link",     textBefore: s.textBefore || "", linkText: s.linkText || "", href: s.href || "", textAfter: s.textAfter || "", fontWeight: s.fontWeight || FW_DEFAULT_HEADING };
+  return { ...base, type: "p", text: s.text || "", fontWeight: FW_DEFAULT_PARA };
 };
 
+// ─── toSections ───────────────────────────────────────────────────────────────
 const toSections = (elements) =>
   elements.map((el) => {
-    if (el.type === "p")          return { type: "p",    text: el.text };
-    if (el.type === "h2")         return { type: "h2",   text: el.text };
-    if (el.type === "h3")         return { type: "h3",   text: el.text };
-    if (el.type === "quote")      return { type: "quote",text: el.text };
-    if (el.type === "ul")         return { type: "ul",   text: el.text };
-    if (el.type === "ol")         return { type: "ol",   text: el.text };
-    if (el.type === "table")      return { type: "table", headers: el.headers, rows: el.rows, themed: el.themed };
-    if (el.type === "image")      return { type: "image",src: el.src, caption: el.caption };
-    if (el.type === "p_with_link")
-      return { type: "p_with_link", textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
+    const fw = el.fontWeight || undefined;
+    if (el.type === "p")                return { type: "p",                text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "h2")               return { type: "h2",               text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "h3")               return { type: "h3",               text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "h4")               return { type: "h4",               text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "h5")               return { type: "h5",               text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "h6")               return { type: "h6",               text: el.text,  ...(fw && { fontWeight: fw }) };
+    if (el.type === "quote")            return { type: "quote",            text: el.text };
+    if (el.type === "ul")               return { type: "ul",               text: el.text };
+    if (el.type === "ol")               return { type: "ol",               text: el.text };
+    if (el.type === "table")            return { type: "table",            headers: el.headers, rows: el.rows, themed: el.themed };
+    if (el.type === "image")            return { type: "image",            src: el.src, caption: el.caption };
+    if (el.type === "p_with_link")      return { type: "p_with_link",      textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "p_with_bold")      return { type: "p_with_bold",      parts: el.parts, ...(fw && { fontWeight: fw }) };
+    if (el.type === "p_with_link_bold") return { type: "p_with_link_bold", partsBefore: el.partsBefore, linkText: el.linkText, href: el.href, partsAfter: el.partsAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "h2_with_link")     return { type: "h2_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "h3_with_link")     return { type: "h3_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "h4_with_link")     return { type: "h4_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "h5_with_link")     return { type: "h5_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
+    if (el.type === "h6_with_link")     return { type: "h6_with_link",     textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, ...(fw && { fontWeight: fw }) };
     return { type: "p", text: el.text || "" };
   });
 
+// ─── createElement ────────────────────────────────────────────────────────────
 const createElement = (type) => {
   const base = { id: Date.now() + Math.random(), type };
   switch (type) {
-    case "p":          return { ...base, text: "Write your paragraph here…" };
-    case "h2":         return { ...base, text: "Section Heading" };
-    case "h3":         return { ...base, text: "Sub-section Heading" };
-    case "quote":      return { ...base, text: "An insightful quote goes here…" };
-    case "ul":         return { ...base, text: ["First point", "Second point", "Third point"] };
-    case "ol":         return { ...base, text: ["Step one", "Step two", "Step three"] };
-    case "table":      return { ...base, headers: ["Column 1", "Column 2", "Column 3"], rows: [["Row 1A", "Row 1B", "Row 1C"], ["Row 2A", "Row 2B", "Row 2C"]], themed: false };
-    case "image":      return { ...base, src: "", caption: "" };
-    case "p_with_link":
-      return { ...base, textBefore: "Learn more about", linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", textAfter: "services we offer." };
+    case "p":                return { ...base, text: "Write your paragraph here…",         fontWeight: FW_DEFAULT_PARA };
+    case "h2":               return { ...base, text: "Section Heading",                    fontWeight: FW_DEFAULT_HEADING };
+    case "h3":               return { ...base, text: "Sub-section Heading",                fontWeight: FW_DEFAULT_HEADING };
+    case "h4":               return { ...base, text: "H4 Heading",                         fontWeight: FW_DEFAULT_HEADING };
+    case "h5":               return { ...base, text: "H5 Heading",                         fontWeight: FW_DEFAULT_HEADING };
+    case "h6":               return { ...base, text: "H6 Heading",                         fontWeight: FW_DEFAULT_HEADING };
+    case "quote":            return { ...base, text: "An insightful quote goes here…" };
+    case "ul":               return { ...base, text: ["First point", "Second point", "Third point"] };
+    case "ol":               return { ...base, text: ["Step one", "Step two", "Step three"] };
+    case "table":            return { ...base, headers: ["Column 1", "Column 2", "Column 3"], rows: [["Row 1A", "Row 1B", "Row 1C"], ["Row 2A", "Row 2B", "Row 2C"]], themed: false };
+    case "image":            return { ...base, src: "", caption: "" };
+    case "p_with_link":      return { ...base, textBefore: "Learn more about", linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", textAfter: "services we offer.", fontWeight: FW_DEFAULT_PARA };
+    case "p_with_bold":      return { ...base, parts: [{ text: "Normal text here. ", bold: false }, { text: "Bold text here.", bold: true }], fontWeight: FW_DEFAULT_PARA };
+    case "p_with_link_bold": return { ...base, partsBefore: [{ text: "Read more about ", bold: false }], linkText: "digital marketing", href: "https://skyupdigitalsolutions.com/services", partsAfter: [{ text: " to ", bold: false }, { text: "grow your business.", bold: true }], fontWeight: FW_DEFAULT_PARA };
+    case "h2_with_link":     return { ...base, textBefore: "", linkText: "Section Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "", fontWeight: FW_DEFAULT_HEADING };
+    case "h3_with_link":     return { ...base, textBefore: "", linkText: "Sub-section Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "", fontWeight: FW_DEFAULT_HEADING };
+    case "h4_with_link":     return { ...base, textBefore: "", linkText: "H4 Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "", fontWeight: FW_DEFAULT_HEADING };
+    case "h5_with_link":     return { ...base, textBefore: "", linkText: "H5 Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "", fontWeight: FW_DEFAULT_HEADING };
+    case "h6_with_link":     return { ...base, textBefore: "", linkText: "H6 Heading with Link", href: "https://skyupdigitalsolutions.com", textAfter: "", fontWeight: FW_DEFAULT_HEADING };
     default: return base;
   }
 };
 
-// ─── SkyUp Brand Colors ───────────────────────────────────────────────────────
-// Primary: #0057FF (blue)   Accent: #00C2FF (cyan)   Dark: #0A0F1E
+// ─── Heading size map ─────────────────────────────────────────────────────────
+const HEADING_SIZE = {
+  h2: "text-[20px] sm:text-[24px]",
+  h3: "text-[16px] sm:text-[18px]",
+  h4: "text-[15px] sm:text-[16px]",
+  h5: "text-[13px] sm:text-[14px]",
+  h6: "text-[12px] sm:text-[13px]",
+};
+
 const BRAND   = "#0057FF";
 const ACCENT  = "#00C2FF";
 const DARK    = "#0A0F1E";
 const SURFACE = "#F0F6FF";
 
-// ─── Tiny UI ──────────────────────────────────────────────────────────────────
 const Label = ({ children }) => (
   <label className="block mb-1 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
     {children}
@@ -143,36 +186,111 @@ const SectionDivider = ({ children }) => (
   </div>
 );
 
+// ─── Font Weight Picker ───────────────────────────────────────────────────────
+const FontWeightPicker = ({ value, onChange }) => (
+  <div>
+    <Label>Font Weight</Label>
+    <div className="flex gap-1.5">
+      {FONT_WEIGHT_OPTIONS.map((opt) => (
+        <button
+          key={opt.value}
+          onClick={() => onChange(opt.value)}
+          className={`flex-1 py-1.5 rounded-lg border text-[11px] transition-all ${
+            value === opt.value
+              ? "bg-[#0057FF] text-white border-[#0057FF] font-semibold"
+              : "bg-white text-slate-500 border-slate-200 hover:border-[#0057FF] hover:text-[#0057FF]"
+          }`}
+          style={{ fontWeight: opt.css }}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
+// ─── Element type definitions ─────────────────────────────────────────────────
 const ELEMENT_TYPES = [
-  { type: "p",          icon: Type,      label: "Paragraph" },
-  { type: "h2",         icon: Type,      label: "H2" },
-  { type: "h3",         icon: Type,      label: "H3" },
-  { type: "quote",      icon: Type,      label: "Quote" },
-  { type: "ul",         icon: List,      label: "Bullets" },
-  { type: "ol",         icon: List,      label: "Numbered" },
-  { type: "table",      icon: List,      label: "Table" },
-  { type: "image",      icon: ImageIcon, label: "Image" },
-  { type: "p_with_link",icon: LinkIcon,  label: "Para+Link" },
+  { type: "p",                icon: Type,      label: "Paragraph" },
+  { type: "h2",               icon: Type,      label: "H2" },
+  { type: "h3",               icon: Type,      label: "H3" },
+  { type: "h4",               icon: Type,      label: "H4" },
+  { type: "h5",               icon: Type,      label: "H5" },
+  { type: "h6",               icon: Type,      label: "H6" },
+  { type: "quote",            icon: Type,      label: "Quote" },
+  { type: "ul",               icon: List,      label: "Bullets" },
+  { type: "ol",               icon: List,      label: "Numbered" },
+  { type: "table",            icon: List,      label: "Table" },
+  { type: "image",            icon: ImageIcon, label: "Image" },
+  { type: "p_with_link",      icon: LinkIcon,  label: "Para+Link" },
+  { type: "p_with_bold",      icon: Type,      label: "Bold Para" },
+  { type: "p_with_link_bold", icon: LinkIcon,  label: "Bold+Link" },
+  { type: "h2_with_link",     icon: LinkIcon,  label: "H2+Link" },
+  { type: "h3_with_link",     icon: LinkIcon,  label: "H3+Link" },
+  { type: "h4_with_link",     icon: LinkIcon,  label: "H4+Link" },
+  { type: "h5_with_link",     icon: LinkIcon,  label: "H5+Link" },
+  { type: "h6_with_link",     icon: LinkIcon,  label: "H6+Link" },
 ];
 
-// ─── Preview section renderer (exact BlogDetail output) ───────────────────────
-function PreviewSection({ s, usedH3 }) {
-  if (s.type === "h2")
-    return <h2 className="scroll-mt-28 text-[20px] sm:text-[24px] font-bold text-[#0A0F1E] mt-4">{s.text}</h2>;
+const RenderParts = ({ parts = [], className = "font-semibold text-[#0A0F1E]" }) =>
+  parts.map((part, i) =>
+    part.bold
+      ? <strong key={i} className={className}>{part.text}</strong>
+      : <span key={i}>{part.text}</span>
+  );
 
-  if (s.type === "h3") {
-    const base = slugify(s.text || "");
+// ─── Preview section renderer ─────────────────────────────────────────────────
+function PreviewSection({ s, usedH3 }) {
+  const fw = s.fontWeight || FW_DEFAULT_HEADING;
+
+  // Generic heading renderer for h2–h6
+  const renderHeading = (tag, sizeClass, text, defaultFw) => {
+    const base = slugify(text || "");
     const count = (usedH3.get(base) || 0) + 1;
     usedH3.set(base, count);
     const id = count === 1 ? base : `${base}-${count}`;
-    return <h3 id={id} className="scroll-mt-28 text-[16px] sm:text-[18px] font-bold text-[#0A0F1E]">{s.text}</h3>;
-  }
+    return React.createElement(tag, {
+      id,
+      className: `scroll-mt-28 ${sizeClass} ${s.fontWeight || defaultFw} text-[#0A0F1E]`,
+    }, text);
+  };
+
+  const renderHeadingWithLink = (tag, sizeClass, defaultFw) => {
+    const base = slugify(s.linkText || "");
+    const count = (usedH3.get(base) || 0) + 1;
+    usedH3.set(base, count);
+    const id = count === 1 ? base : `${base}-${count}`;
+    return React.createElement(tag, {
+      id,
+      className: `scroll-mt-28 ${sizeClass} ${s.fontWeight || defaultFw} text-[#0A0F1E]`,
+    }, [
+      s.textBefore ? s.textBefore.trimEnd() + " " : "",
+      <a key="link" href={s.href} target="_blank" rel="noopener noreferrer"
+        className="text-[#0057FF] hover:opacity-80 underline underline-offset-2 decoration-[#0057FF]/40 transition-opacity">
+        {s.linkText}
+      </a>,
+      s.textAfter ? " " + s.textAfter.trimStart() : "",
+    ]);
+  };
+
+  if (s.type === "h2") return renderHeading("h2", HEADING_SIZE.h2, s.text, FW_DEFAULT_HEADING);
+  if (s.type === "h3") return renderHeading("h3", HEADING_SIZE.h3, s.text, FW_DEFAULT_HEADING);
+  if (s.type === "h4") return renderHeading("h4", HEADING_SIZE.h4, s.text, FW_DEFAULT_HEADING);
+  if (s.type === "h5") return renderHeading("h5", HEADING_SIZE.h5, s.text, FW_DEFAULT_HEADING);
+  if (s.type === "h6") return renderHeading("h6", HEADING_SIZE.h6, s.text, FW_DEFAULT_HEADING);
+  if (s.type === "h2_with_link") return renderHeadingWithLink("h2", HEADING_SIZE.h2, FW_DEFAULT_HEADING);
+  if (s.type === "h3_with_link") return renderHeadingWithLink("h3", HEADING_SIZE.h3, FW_DEFAULT_HEADING);
+  if (s.type === "h4_with_link") return renderHeadingWithLink("h4", HEADING_SIZE.h4, FW_DEFAULT_HEADING);
+  if (s.type === "h5_with_link") return renderHeadingWithLink("h5", HEADING_SIZE.h5, FW_DEFAULT_HEADING);
+  if (s.type === "h6_with_link") return renderHeadingWithLink("h6", HEADING_SIZE.h6, FW_DEFAULT_HEADING);
+
   if (s.type === "quote")
     return (
       <div className="rounded-xl border border-[#B8D4FF] bg-[#EFF6FF] px-4 py-4 text-[13px] sm:text-[14px] text-slate-700">
-        <div className="border-l-4 border-[#0057FF] pl-3 italic leading-relaxed">{s.text}</div>
+        <div className="border-l-4 border-[#0057FF] pl-3 italic leading-relaxed" dangerouslySetInnerHTML={{ __html: s.text }} />
       </div>
     );
+
   if (s.type === "table") {
     const themed = s.themed;
     return (
@@ -199,6 +317,7 @@ function PreviewSection({ s, usedH3 }) {
       </div>
     );
   }
+
   if (s.type === "image")
     return (
       <figure className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50">
@@ -209,27 +328,58 @@ function PreviewSection({ s, usedH3 }) {
         {s.caption && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{s.caption}</figcaption>}
       </figure>
     );
+
   if (s.type === "ul")
     return (
       <ul className="list-disc list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-600">
-        {(s.text || []).map((item, i) => <li key={i} className="leading-relaxed">{item}</li>)}
+        {(s.text || []).map((item, i) => (
+          <li key={i} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: item }} />
+        ))}
       </ul>
     );
+
   if (s.type === "ol")
     return (
       <ol className="list-decimal list-outside pl-5 space-y-2 text-[13px] sm:text-[14px] text-slate-600">
-        {(s.text || []).map((item, i) => <li key={i} className="leading-relaxed">{item}</li>)}
+        {(s.text || []).map((item, i) => (
+          <li key={i} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: item }} />
+        ))}
       </ol>
     );
+
   if (s.type === "p_with_link")
     return (
-      <p className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600">
-        {s.textBefore && <span>{s.textBefore} </span>}
-        <a href={s.href} className="text-[#0057FF] font-semibold underline underline-offset-2 hover:opacity-80">{s.linkText}</a>
-        {s.textAfter && <span> {s.textAfter}</span>}
+      <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${s.fontWeight || FW_DEFAULT_PARA}`}>
+        {s.textBefore ? s.textBefore.trimEnd() + " " : ""}
+        <a href={s.href} className="text-[#0057FF] underline underline-offset-2 hover:opacity-80">{s.linkText}</a>
+        {s.textAfter ? " " + s.textAfter.trimStart() : ""}
       </p>
     );
-  return <p className="text-[13px] sm:text-[14px] leading-relaxed text-slate-600" dangerouslySetInnerHTML={{ __html: s.text }} />;
+
+  if (s.type === "p_with_bold")
+    return (
+      <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${s.fontWeight || FW_DEFAULT_PARA}`}>
+        <RenderParts parts={s.parts} />
+      </p>
+    );
+
+  if (s.type === "p_with_link_bold")
+    return (
+      <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${s.fontWeight || FW_DEFAULT_PARA}`}>
+        <RenderParts parts={s.partsBefore} />
+        {" "}
+        <a href={s.href} className="text-[#0057FF] font-semibold underline underline-offset-2 hover:opacity-80">{s.linkText}</a>
+        {" "}
+        <RenderParts parts={s.partsAfter} />
+      </p>
+    );
+
+  return (
+    <p
+      className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${s.fontWeight || FW_DEFAULT_PARA}`}
+      dangerouslySetInnerHTML={{ __html: s.text }}
+    />
+  );
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
@@ -262,13 +412,10 @@ function LoginScreen() {
         .skyup-glow { box-shadow: 0 0 40px rgba(0,87,255,0.25), 0 0 80px rgba(0,194,255,0.1); }
         .skyup-btn-glow:hover { box-shadow: 0 4px 20px rgba(0,87,255,0.5); }
       `}</style>
-
-      {/* Background grid */}
       <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: "linear-gradient(rgba(0,87,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,87,255,0.5) 1px, transparent 1px)",
         backgroundSize: "40px 40px",
       }} />
-
       <div className="w-full max-w-sm relative z-10">
         <div className="flex flex-col items-center mb-8">
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 skyup-glow"
@@ -280,7 +427,6 @@ function LoginScreen() {
           </h1>
           <p className="text-sm text-blue-300 mt-1">Sign in to create &amp; edit blogs</p>
         </div>
-
         <div className="rounded-2xl border border-white/10 p-7 skyup-glow"
           style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}>
           {error && (
@@ -296,10 +442,7 @@ function LoginScreen() {
                 placeholder="blogger@skyupdigitalsolutions.com"
                 onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                 className="w-full px-3 py-2.5 text-sm rounded-lg text-white placeholder:text-white/25 focus:outline-none transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                }}
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
                 onFocus={e => e.target.style.borderColor = "#0057FF"}
                 onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
               />
@@ -310,22 +453,15 @@ function LoginScreen() {
                 type="password" value={form.password} placeholder="••••••••"
                 onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                 className="w-full px-3 py-2.5 text-sm rounded-lg text-white placeholder:text-white/25 focus:outline-none transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                }}
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
                 onFocus={e => e.target.style.borderColor = "#0057FF"}
                 onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
               />
             </div>
             <button type="submit" disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm
-                transition-all disabled:opacity-60 disabled:cursor-not-allowed skyup-btn-glow"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed skyup-btn-glow"
               style={{ background: loading ? "#0057FF99" : "linear-gradient(135deg,#0057FF,#00C2FF)" }}>
-              {loading
-                ? <><Loader size={15} className="animate-spin" /> Signing in…</>
-                : <><LogIn size={15} /> Sign In</>
-              }
+              {loading ? <><Loader size={15} className="animate-spin" /> Signing in…</> : <><LogIn size={15} /> Sign In</>}
             </button>
           </form>
         </div>
@@ -352,8 +488,6 @@ function BlogPicker({ onSelect }) {
   return (
     <div className="min-h-screen bg-[#F5F8FF]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');`}</style>
-
-      {/* Header */}
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -378,13 +512,10 @@ function BlogPicker({ onSelect }) {
           </button>
         </div>
       </div>
-
       <div className="max-w-4xl mx-auto px-6 py-10">
         <h2 className="text-2xl font-bold text-[#0A0F1E] mb-2"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}>What would you like to do?</h2>
         <p className="text-sm text-slate-500 mb-8">Create a new blog post, or select an existing one to edit.</p>
-
-        {/* Create new */}
         <button onClick={() => onSelect(null)}
           className="w-full mb-8 flex items-center gap-4 p-5 rounded-2xl border-2 border-dashed border-[#0057FF]/30
             bg-[#EFF6FF] hover:border-[#0057FF] hover:bg-[#DBEAFE] transition-all group text-left">
@@ -397,8 +528,6 @@ function BlogPicker({ onSelect }) {
             <div className="text-sm text-slate-500 mt-0.5">Start fresh with a blank canvas</div>
           </div>
         </button>
-
-        {/* Edit existing */}
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-bold text-slate-700 text-sm uppercase tracking-wider">Edit existing ({BLOGS.length} blogs)</h3>
           <div className="relative">
@@ -407,7 +536,6 @@ function BlogPicker({ onSelect }) {
               className="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-[#0057FF] transition-all w-44" />
           </div>
         </div>
-
         <div className="space-y-2">
           {filtered.map((blog) => (
             <button key={blog.id} onClick={() => onSelect(blog)}
@@ -442,7 +570,7 @@ function BlogPicker({ onSelect }) {
 // ═════════════════════════════════════════════════════════════════════════════
 function BlogEditor({ editingBlog, onBack }) {
   const { token, user, logout } = useAuth();
-  const isEditMode = !!editingBlog;
+const [isEditMode] = useState(!!editingBlog);
 
   const [elements, setElements]             = useState([]);
   const [selectedId, setSelectedId]         = useState(null);
@@ -462,6 +590,7 @@ function BlogEditor({ editingBlog, onBack }) {
     date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     heroImage: "", imageAlt: "", tags: "",
   });
+  const editingBlogId = React.useRef(editingBlog?.id ?? null);
 
   useEffect(() => {
     if (!editingBlog) return;
@@ -472,7 +601,7 @@ function BlogEditor({ editingBlog, onBack }) {
       keywords:    editingBlog.Keywords    || editingBlog.keywords || "",
       slug:        editingBlog.slug        || "",
       category:    editingBlog.category    || "Digital Marketing",
-      author:      editingBlog.author      || "SkyUp Digital Solutions",
+      author:      editingBlog.author      || "SKYUP",
       date:        editingBlog.date        || "",
       heroImage:   editingBlog.heroImage   || editingBlog.image    || "",
       imageAlt:    editingBlog.imageAlt    || editingBlog.title    || "",
@@ -484,18 +613,22 @@ function BlogEditor({ editingBlog, onBack }) {
 
   const selectedEl = elements.find((el) => el.id === selectedId) || null;
 
+  // ── TOC ──────────────────────────────────────────────────────────────────
+  const TOC_HEADING_TYPES = new Set(["h2","h3","h4","h5","h6","h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link"]);
+
   const toc = useMemo(() => {
     const used = new Map();
     return elements
-      .filter((el) => (el.type === "h2" || el.type === "h3") && el.text)
+      .filter((el) => TOC_HEADING_TYPES.has(el.type) && (el.text || el.linkText))
       .map((el) => {
-        const base = slugify(el.text);
+        const rawText = el.text || el.linkText;
+        const base = slugify(rawText);
         const count = (used.get(base) || 0) + 1;
         used.set(base, count);
         return {
-          id: count === 1 ? base : `${base}-${count}`,
-          text: el.text,
-          level: el.type, // "h2" or "h3"
+          id:    count === 1 ? base : `${base}-${count}`,
+          text:  rawText,
+          level: el.type.startsWith("h2") ? "h2" : el.type.startsWith("h3") ? "h3" : el.type.startsWith("h4") ? "h4" : el.type.startsWith("h5") ? "h5" : "h6",
         };
       });
   }, [elements]);
@@ -566,7 +699,7 @@ function BlogEditor({ editingBlog, onBack }) {
     const slug     = meta.slug || slugify(title) || `blog-${Date.now()}`;
     const tagsArr  = meta.tags ? meta.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
     return {
-      id:          isEditMode ? editingBlog.id : Date.now(),
+    id: isEditMode ? editingBlogId.current : Date.now(),
       slug,
       category:    meta.category,
       title:       meta.title || title,
@@ -594,22 +727,20 @@ function BlogEditor({ editingBlog, onBack }) {
     a.click(); URL.revokeObjectURL(a.href);
   };
 
-  // ── GitHub config ─────────────────────────────────────────────────────────
   const GH_TOKEN  = import.meta.env.VITE_GH_TOKEN;
   const GH_REPO   = import.meta.env.VITE_GH_REPO || "rathnabhoomidevelopers-art/skyup-digital";
   const GH_BRANCH = import.meta.env.VITE_GH_BRANCH || "main";
   const GH_FILE   = "src/data/blogs.js";
 
-  // ── Publish ───────────────────────────────────────────────────────────────
   const publishBlog = async () => {
+    setPublishStatus(null);
+  setPublishMsg("");
     if (!meta.headline && !meta.title) {
       alert("Please add a headline first (open ⚙ Settings)."); setShowSettings(true); return;
     }
     if (elements.length === 0) { alert("Please add at least one content block."); return; }
-
     setPublishStatus("loading");
     setPublishMsg("Fetching blogs.js from GitHub…");
-
     try {
       const fileRes = await fetch(
         `https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}`,
@@ -621,40 +752,61 @@ function BlogEditor({ editingBlog, onBack }) {
       const binary = atob(fileData.content.replace(/\n/g, ""));
       const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
       const currentContent = new TextDecoder("utf-8").decode(bytes);
-
       const stripped = currentContent
         .replace(/^[\s\S]*?export\s+const\s+BLOGS\s*=\s*/, "")
         .replace(/;?\s*$/, "")
         .trim();
-
       // eslint-disable-next-line no-new-func
       const blogsArray = new Function(`return ${stripped}`)();
-
       const nextId = Math.max(0, ...blogsArray.map(b => Number(b.id) || 0)) + 1;
       const blogData = exportBlogData();
-
       let newBlogsArray;
       if (isEditMode) {
         setPublishMsg("Updating existing blog entry…");
-        const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlog.id));
-        if (idx === -1) throw new Error(`Could not find blog with id ${editingBlog.id} in blogs.js`);
-        newBlogsArray = [...blogsArray];
-        newBlogsArray[idx] = { ...blogData, id: editingBlog.id };
+       const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlogId.current));
+    if (idx === -1) throw new Error(`Could not find blog with id ${editingBlogId.current} in blogs.js`);
+    newBlogsArray = [...blogsArray];  
+    newBlogsArray[idx] = { ...blogData, id: editingBlogId.current };
       } else {
         setPublishMsg("Inserting new blog entry…");
         newBlogsArray = [{ ...blogData, id: nextId }, ...blogsArray];
       }
+     function toJsValue(val, indent = 0) {
+  const pad = "  ".repeat(indent);
+  const pad1 = "  ".repeat(indent + 1);
 
-      const entriesStr = newBlogsArray
-        .map(b => "  " + JSON.stringify(b, null, 2).replace(/\n/g, "\n  "))
-        .join(",\n");
-      const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
+  if (val === null || val === undefined) return "null";
+  if (typeof val === "boolean" || typeof val === "number") return String(val);
+  if (typeof val === "string") return JSON.stringify(val);
 
+  if (Array.isArray(val)) {
+    if (val.length === 0) return "[]";
+    // Flat arrays of primitives stay on one line
+    const allPrim = val.every(v => typeof v !== "object" || v === null);
+    if (allPrim) return `[${val.map(v => toJsValue(v, 0)).join(", ")}]`;
+    const items = val.map(v => `${pad1}${toJsValue(v, indent + 1)}`).join(",\n");
+    return `[\n${items}\n${pad}]`;
+  }
+
+  if (typeof val === "object") {
+    const keys = Object.keys(val);
+    if (keys.length === 0) return "{}";
+    const entries = keys.map(k => {
+      const safe = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k) ? k : JSON.stringify(k);
+      return `${pad1}${safe}: ${toJsValue(val[k], indent + 1)}`;
+    });
+    return `{\n${entries.join(",\n")}\n${pad}}`;
+  }
+
+  return JSON.stringify(val);
+}
+
+const entriesStr = newBlogsArray
+  .map(b => `  ${toJsValue(b, 1)}`)
+  .join(",\n");
+const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
       setPublishMsg("Committing to GitHub…");
-      const commitMessage = isEditMode
-        ? `update blog: ${blogData.slug}`
-        : `add blog: ${blogData.slug}`;
-
+      const commitMessage = isEditMode ? `update blog: ${blogData.slug}` : `add blog: ${blogData.slug}`;
       const putRes = await fetch(
         `https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`,
         {
@@ -672,17 +824,14 @@ function BlogEditor({ editingBlog, onBack }) {
           }),
         }
       );
-
       if (!putRes.ok) {
         const err = await putRes.json();
         throw new Error(err.message || `Commit failed: ${putRes.status}`);
       }
-
       setPublishStatus("success");
-      setPublishMsg(
-        isEditMode
-          ? `✅ Blog updated on GitHub! Deployment will trigger shortly.`
-          : `✅ Blog published to GitHub! Deployment will trigger shortly.`
+      setPublishMsg(isEditMode
+        ? `✅ Blog updated on GitHub! Deployment will trigger shortly.`
+        : `✅ Blog published to GitHub! Deployment will trigger shortly.`
       );
     } catch (e) {
       setPublishStatus("error");
@@ -698,6 +847,75 @@ function BlogEditor({ editingBlog, onBack }) {
     { label: "Description", done: !!meta.description },
   ];
 
+  // ── Parts editor ─────────────────────────────────────────────────────────
+  const PartsEditor = ({ parts, onChange, label = "Parts" }) => (
+    <div>
+      <Label>{label}</Label>
+      <div className="space-y-2">
+        {(parts || []).map((part, i) => (
+          <div key={i} className="flex gap-2 items-center">
+            <Input
+              value={part.text}
+              className="flex-1"
+              placeholder="Text…"
+              onChange={(e) => onChange(parts.map((p, pi) => pi === i ? { ...p, text: e.target.value } : p))}
+            />
+            <button
+              onClick={() => onChange(parts.map((p, pi) => pi === i ? { ...p, bold: !p.bold } : p))}
+              title={part.bold ? "Click to unbold" : "Click to bold"}
+              className={`shrink-0 px-2.5 py-1 rounded text-xs font-bold border transition-all ${
+                part.bold
+                  ? "bg-[#0057FF] text-white border-[#0057FF]"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-[#0057FF] hover:text-[#0057FF]"
+              }`}
+            >B</button>
+            <button
+              onClick={() => onChange(parts.filter((_, pi) => pi !== i))}
+              className="shrink-0 w-6 h-6 flex items-center justify-center rounded border border-red-100 text-red-400 hover:bg-red-50 transition-all"
+            ><X size={10} /></button>
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={() => onChange([...(parts || []), { text: "New text", bold: false }])}
+        className="mt-2 w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-slate-300 text-slate-500 text-xs hover:border-[#0057FF] hover:text-[#0057FF] transition-all"
+      ><Plus size={11} /> Add part</button>
+    </div>
+  );
+
+  // ── Heading-with-link editor (reusable) ───────────────────────────────────
+  const HeadingWithLinkEditor = ({ el, tag }) => (
+    <div className="space-y-3">
+      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg leading-snug">
+        <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-1">Preview</span>
+        {React.createElement(tag, {
+          className: `${HEADING_SIZE[tag]} ${el.fontWeight || FW_DEFAULT_HEADING} text-[#0A0F1E]`
+        }, [
+          el.textBefore ? <span key="b">{el.textBefore.trimEnd()}{" "}</span> : null,
+          <span key="l" className="text-[#0057FF] underline underline-offset-1">{el.linkText || "Link text"}</span>,
+          el.textAfter ? <span key="a">{" "}{el.textAfter.trimStart()}</span> : null,
+        ])}
+      </div>
+      <FontWeightPicker value={el.fontWeight || FW_DEFAULT_HEADING} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
+      <div>
+        <Label>Text before link <span className="text-slate-300">(optional)</span></Label>
+        <Input value={el.textBefore || ""} placeholder="e.g. Learn about" onChange={(e) => updateEl(el.id, { textBefore: e.target.value })} />
+      </div>
+      <div>
+        <Label>Link text (the clickable part)</Label>
+        <Input value={el.linkText || ""} placeholder="e.g. Digital Marketing" onChange={(e) => updateEl(el.id, { linkText: e.target.value })} />
+      </div>
+      <div>
+        <Label>URL</Label>
+        <Input value={el.href || ""} placeholder="https://…" onChange={(e) => updateEl(el.id, { href: e.target.value })} />
+      </div>
+      <div>
+        <Label>Text after link <span className="text-slate-300">(optional)</span></Label>
+        <Input value={el.textAfter || ""} placeholder="e.g. for your business" onChange={(e) => updateEl(el.id, { textAfter: e.target.value })} />
+      </div>
+    </div>
+  );
+
   // ── Builder element renderer ──────────────────────────────────────────────
   const renderBuilder = (el, idx) => {
     const isSelected = selectedId === el.id;
@@ -706,6 +924,7 @@ function BlogEditor({ editingBlog, onBack }) {
         ? "ring-2 ring-[#0057FF] ring-offset-2"
         : "hover:ring-2 hover:ring-[#00C2FF] hover:ring-offset-1"}`;
     const pick = (e) => { e.stopPropagation(); setSelectedId(el.id); };
+    const fw = el.fontWeight || FW_DEFAULT_HEADING;
 
     const InsertZone = ({ after }) => {
       const key = after ? idx : idx - 0.5;
@@ -724,20 +943,46 @@ function BlogEditor({ editingBlog, onBack }) {
       );
     };
 
+    // Generic heading builder
+    const buildHeading = (tag, sizeClass) =>
+      React.createElement(tag, {
+        className: `${sizeClass} ${fw} text-[#0A0F1E] ${ring}`,
+        onClick: pick,
+        contentEditable: true,
+        suppressContentEditableWarning: true,
+        onBlur: (e) => updateEl(el.id, { text: e.currentTarget.innerText }),
+      }, el.text);
+
+    const buildHeadingWithLink = (tag, sizeClass) => (
+      React.createElement(tag, { className: `${sizeClass} ${fw} ${ring}`, onClick: pick }, [
+        el.textBefore && <span key="b" className="text-[#0A0F1E]">{el.textBefore.trimEnd()}{" "}</span>,
+        <span key="l" className="text-[#0057FF] underline underline-offset-2 decoration-[#0057FF]/40">{el.linkText || `${tag.toUpperCase()} Link`}</span>,
+        el.textAfter && <span key="a" className="text-[#0A0F1E]">{" "}{el.textAfter.trimStart()}</span>,
+      ])
+    );
+
     let content;
-    if (el.type === "h2")
-      content = <h2 className={`text-[20px] sm:text-[24px] font-bold text-[#0A0F1E] ${ring}`} onClick={pick}
-        contentEditable suppressContentEditableWarning onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</h2>;
-    else if (el.type === "h3")
-      content = <h3 className={`text-[16px] sm:text-[18px] font-bold text-[#0A0F1E] ${ring}`} onClick={pick}
-        contentEditable suppressContentEditableWarning onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</h3>;
+
+    if (el.type === "h2") content = buildHeading("h2", HEADING_SIZE.h2);
+    else if (el.type === "h3") content = buildHeading("h3", HEADING_SIZE.h3);
+    else if (el.type === "h4") content = buildHeading("h4", HEADING_SIZE.h4);
+    else if (el.type === "h5") content = buildHeading("h5", HEADING_SIZE.h5);
+    else if (el.type === "h6") content = buildHeading("h6", HEADING_SIZE.h6);
+    else if (el.type === "h2_with_link") content = buildHeadingWithLink("h2", HEADING_SIZE.h2);
+    else if (el.type === "h3_with_link") content = buildHeadingWithLink("h3", HEADING_SIZE.h3);
+    else if (el.type === "h4_with_link") content = buildHeadingWithLink("h4", HEADING_SIZE.h4);
+    else if (el.type === "h5_with_link") content = buildHeadingWithLink("h5", HEADING_SIZE.h5);
+    else if (el.type === "h6_with_link") content = buildHeadingWithLink("h6", HEADING_SIZE.h6);
+
     else if (el.type === "quote")
       content = (
         <div className={`rounded-xl border border-[#B8D4FF] bg-[#EFF6FF] px-4 py-4 ${ring}`} onClick={pick}>
           <div className="border-l-4 border-[#0057FF] pl-3 italic text-[13px] text-slate-700 leading-relaxed"
-            contentEditable suppressContentEditableWarning onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</div>
+            contentEditable suppressContentEditableWarning
+            onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</div>
         </div>
       );
+
     else if (el.type === "image")
       content = (
         <figure className={`rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 ${ring}`} onClick={pick}>
@@ -751,6 +996,7 @@ function BlogEditor({ editingBlog, onBack }) {
           {el.caption && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{el.caption}</figcaption>}
         </figure>
       );
+
     else if (el.type === "table")
       content = (
         <div className={`overflow-x-auto rounded-xl border border-slate-200 ${ring}`} onClick={pick}>
@@ -775,6 +1021,7 @@ function BlogEditor({ editingBlog, onBack }) {
           </table>
         </div>
       );
+
     else if (el.type === "ul" || el.type === "ol") {
       const Tag = el.type;
       const cls = el.type === "ul" ? "list-disc" : "list-decimal";
@@ -783,14 +1030,35 @@ function BlogEditor({ editingBlog, onBack }) {
           {(el.text || []).map((item, i) => <li key={i} className="leading-relaxed">{item}</li>)}
         </Tag>
       );
-    } else if (el.type === "p_with_link")
+    }
+
+    else if (el.type === "p_with_link")
       content = (
-        <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`} onClick={pick}>
-          {el.textBefore && <span>{el.textBefore} </span>}
-          <span className="text-[#0057FF] font-semibold underline underline-offset-2">{el.linkText || "link"}</span>
-          {el.textAfter && <span> {el.textAfter}</span>}
+        <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
+          {el.textBefore ? el.textBefore.trimEnd() + " " : ""}
+          <span className="text-[#0057FF] underline underline-offset-2">{el.linkText || "link"}</span>
+          {el.textAfter ? " " + el.textAfter.trimStart() : ""}
         </p>
       );
+
+    else if (el.type === "p_with_bold")
+      content = (
+        <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
+          <RenderParts parts={el.parts} />
+        </p>
+      );
+
+    else if (el.type === "p_with_link_bold")
+      content = (
+        <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
+          <RenderParts parts={el.partsBefore} />
+          {" "}
+          <span className="text-[#0057FF] font-semibold underline underline-offset-2">{el.linkText || "link"}</span>
+          {" "}
+          <RenderParts parts={el.partsAfter} />
+        </p>
+      );
+
     else
       content = (
         <div className="space-y-1">
@@ -807,10 +1075,14 @@ function BlogEditor({ editingBlog, onBack }) {
               >✕ bold</button>
             </div>
           )}
-          <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${ring}`}
-            onClick={pick} contentEditable suppressContentEditableWarning
+          <p
+            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`}
+            onClick={pick}
+            contentEditable
+            suppressContentEditableWarning
             dangerouslySetInnerHTML={{ __html: el.text }}
-            onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerHTML })} />
+            onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerHTML })}
+          />
         </div>
       );
 
@@ -836,8 +1108,14 @@ function BlogEditor({ editingBlog, onBack }) {
       );
 
     const el = selectedEl;
+    const isHeadingWithLink = ["h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link"].includes(el.type);
+    const isPlainHeading    = ["h2","h3","h4","h5","h6"].includes(el.type);
+    const isPara            = ["p","p_with_link","p_with_bold","p_with_link_bold"].includes(el.type);
+    const headingTag        = isPlainHeading ? el.type : isHeadingWithLink ? el.type.replace("_with_link","") : null;
+
     return (
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 panel-scroll">
+        {/* Block header */}
         <div className="flex items-center justify-between">
           <span className="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase"
             style={{ background: "#EFF6FF", color: "#0057FF" }}>{el.type}</span>
@@ -853,46 +1131,139 @@ function BlogEditor({ editingBlog, onBack }) {
           </div>
         </div>
 
-        {["p", "h2", "h3", "quote"].includes(el.type) && (
-          <div>
-            <Label>Content</Label>
-            {el.type === "p" ? (
-              <div className="space-y-2">
-                <Textarea
-                  value={el.text.replace(/<strong>/g, "**").replace(/<\/strong>/g, "**")}
-                  rows={4}
-                  onChange={(e) => {
-                    const html = e.target.value.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-                    updateEl(el.id, { text: html });
-                  }}
-                  placeholder="Type content… Use **word** to make it bold"
-                />
-                <p className="text-[10px] text-slate-400 leading-snug">
-                  Tip: wrap words in <code className="bg-slate-100 px-1 rounded">**double asterisks**</code> to make them <strong>bold</strong>.
-                </p>
-              </div>
-            ) : (
+        {/* ── Plain headings h2–h6 ── */}
+        {isPlainHeading && (
+          <div className="space-y-3">
+            <div>
+              <Label>Content</Label>
               <Textarea value={el.text} rows={2}
                 onChange={(e) => updateEl(el.id, { text: e.target.value })}
-                placeholder="Type your content…" />
-            )}
+                placeholder="Type your heading…" />
+            </div>
+            <FontWeightPicker value={el.fontWeight || FW_DEFAULT_HEADING} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
           </div>
         )}
 
+        {/* ── Heading with link h2–h6 ── */}
+        {isHeadingWithLink && <HeadingWithLinkEditor el={el} tag={headingTag} />}
+
+        {/* ── plain paragraph ── */}
+        {el.type === "p" && (
+          <div className="space-y-3">
+            <div>
+              <Label>Content</Label>
+              <Textarea
+                value={el.text
+                  .replace(/<strong>/gi, "**")
+                  .replace(/<\/strong>/gi, "**")
+                  .replace(/<[^>]+>/g, "")}
+                rows={4}
+                onChange={(e) => {
+                  const html = e.target.value.replace(/\*\*(.+?)\*\*/gs, "<strong>$1</strong>");
+                  updateEl(el.id, { text: html });
+                }}
+                placeholder="Type content… Use **word** to bold"
+              />
+              <p className="text-[10px] text-slate-400 leading-snug mt-1">
+                Wrap in <code className="bg-slate-100 px-1 rounded">**double asterisks**</code> to <strong>bold</strong>.
+              </p>
+            </div>
+            <FontWeightPicker value={el.fontWeight || FW_DEFAULT_PARA} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
+          </div>
+        )}
+
+        {/* ── quote ── */}
+        {el.type === "quote" && (
+          <div>
+            <Label>Content</Label>
+            <Textarea value={el.text} rows={3}
+              onChange={(e) => updateEl(el.id, { text: e.target.value })}
+              placeholder="Type your quote…" />
+          </div>
+        )}
+
+        {/* ── p_with_link ── */}
         {el.type === "p_with_link" && (
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800">
-              Preview: <span className="text-slate-600">{el.textBefore} </span>
-              <span className="text-[#0057FF] font-semibold underline">{el.linkText}</span>
-              <span className="text-slate-600"> {el.textAfter}</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-1">Preview</span>
+              <span className={el.fontWeight || FW_DEFAULT_PARA}>
+                {el.textBefore ? el.textBefore.trimEnd() + " " : ""}
+                <span className="text-[#0057FF] underline">{el.linkText}</span>
+                {el.textAfter ? " " + el.textAfter.trimStart() : ""}
+              </span>
             </div>
-            <div><Label>Text before link</Label><Input value={el.textBefore || ""} onChange={(e) => updateEl(el.id, { textBefore: e.target.value })} /></div>
-            <div><Label>Link text</Label><Input value={el.linkText || ""} onChange={(e) => updateEl(el.id, { linkText: e.target.value })} /></div>
-            <div><Label>URL</Label><Input value={el.href || ""} placeholder="https://…" onChange={(e) => updateEl(el.id, { href: e.target.value })} /></div>
-            <div><Label>Text after link</Label><Input value={el.textAfter || ""} onChange={(e) => updateEl(el.id, { textAfter: e.target.value })} /></div>
+            <FontWeightPicker value={el.fontWeight || FW_DEFAULT_PARA} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
+            <div>
+              <Label>Text before link</Label>
+              <Input value={(el.textBefore || "").replace(/<strong>/gi,"**").replace(/<\/strong>/gi,"**").replace(/<[^>]+>/g,"")}
+                placeholder="e.g. Learn more about"
+                onChange={(e) => updateEl(el.id, { textBefore: e.target.value.replace(/\*\*(.+?)\*\*/gs,"<strong>$1</strong>") })} />
+            </div>
+            <div><Label>Link text</Label>
+              <Input value={el.linkText || ""} onChange={(e) => updateEl(el.id, { linkText: e.target.value })} />
+            </div>
+            <div><Label>URL</Label>
+              <Input value={el.href || ""} placeholder="https://…" onChange={(e) => updateEl(el.id, { href: e.target.value })} />
+            </div>
+            <div>
+              <Label>Text after link</Label>
+              <Input value={(el.textAfter || "").replace(/<strong>/gi,"**").replace(/<\/strong>/gi,"**").replace(/<[^>]+>/g,"")}
+                placeholder="e.g. to grow your business."
+                onChange={(e) => updateEl(el.id, { textAfter: e.target.value.replace(/\*\*(.+?)\*\*/gs,"<strong>$1</strong>") })} />
+            </div>
           </div>
         )}
 
+        {/* ── p_with_bold ── */}
+        {el.type === "p_with_bold" && (
+          <div className="space-y-3">
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
+              Preview:{" "}
+              <span className={el.fontWeight || FW_DEFAULT_PARA}>
+                {(el.parts || []).map((part, i) =>
+                  part.bold ? <strong key={i}>{part.text}</strong> : <span key={i}>{part.text}</span>
+                )}
+              </span>
+            </div>
+            <FontWeightPicker value={el.fontWeight || FW_DEFAULT_PARA} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
+            <PartsEditor parts={el.parts} label="Parts (toggle B to bold each segment)"
+              onChange={(newParts) => updateEl(el.id, { parts: newParts })} />
+          </div>
+        )}
+
+        {/* ── p_with_link_bold ── */}
+        {el.type === "p_with_link_bold" && (
+          <div className="space-y-4">
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
+              Preview:{" "}
+              <span className={el.fontWeight || FW_DEFAULT_PARA}>
+                {(el.partsBefore || []).map((part, i) =>
+                  part.bold ? <strong key={i}>{part.text}</strong> : <span key={i}>{part.text}</span>
+                )}
+                {" "}
+                <span className="text-[#0057FF] font-semibold underline">{el.linkText}</span>
+                {" "}
+                {(el.partsAfter || []).map((part, i) =>
+                  part.bold ? <strong key={i}>{part.text}</strong> : <span key={i}>{part.text}</span>
+                )}
+              </span>
+            </div>
+            <FontWeightPicker value={el.fontWeight || FW_DEFAULT_PARA} onChange={(fw) => updateEl(el.id, { fontWeight: fw })} />
+            <PartsEditor parts={el.partsBefore} label="Parts before link"
+              onChange={(newParts) => updateEl(el.id, { partsBefore: newParts })} />
+            <div><Label>Link text</Label>
+              <Input value={el.linkText || ""} onChange={(e) => updateEl(el.id, { linkText: e.target.value })} />
+            </div>
+            <div><Label>URL</Label>
+              <Input value={el.href || ""} placeholder="https://…" onChange={(e) => updateEl(el.id, { href: e.target.value })} />
+            </div>
+            <PartsEditor parts={el.partsAfter} label="Parts after link"
+              onChange={(newParts) => updateEl(el.id, { partsAfter: newParts })} />
+          </div>
+        )}
+
+        {/* ── image ── */}
         {el.type === "image" && (
           <div className="space-y-3">
             <div>
@@ -915,6 +1286,7 @@ function BlogEditor({ editingBlog, onBack }) {
           </div>
         )}
 
+        {/* ── table ── */}
         {el.type === "table" && (
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-slate-50">
@@ -980,6 +1352,7 @@ function BlogEditor({ editingBlog, onBack }) {
           </div>
         )}
 
+        {/* ── ul / ol ── */}
         {(el.type === "ul" || el.type === "ol") && (
           <div>
             <Label>List items</Label>
@@ -1060,7 +1433,7 @@ function BlogEditor({ editingBlog, onBack }) {
             style={{ maxHeight: "100vh", position: "sticky", top: 0 }}>
 
             {/* Panel header */}
-            <div className="px-5 py-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+            <div className="px-3 py-4 border-b border-slate-100 bg-white sticky top-0 z-10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <button onClick={onBack} title="Back to picker"
@@ -1083,7 +1456,7 @@ function BlogEditor({ editingBlog, onBack }) {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => setPreviewMode(true)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:border-[#0057FF] hover:text-[#0057FF] hover:bg-[#EFF6FF] transition-all">
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:border-[#0057FF] hover:text-[#0057FF] hover:bg-[#EFF6FF] transition-all">
                     <Eye size={12} /> Preview
                   </button>
                   <button onClick={() => setShowSettings((v) => !v)}
@@ -1134,7 +1507,6 @@ function BlogEditor({ editingBlog, onBack }) {
                         onChange={(e) => setMeta((p) => ({ ...p, tags: e.target.value }))} /></div>
                   </div>
                 </div>
-
                 <div className="px-5 py-4 space-y-3 border-t border-slate-100">
                   <SectionDivider>Blog Details</SectionDivider>
                   <div>
@@ -1180,7 +1552,6 @@ function BlogEditor({ editingBlog, onBack }) {
                     <Input value={meta.imageAlt} placeholder="Digital marketing team Bangalore"
                       onChange={(e) => setMeta((p) => ({ ...p, imageAlt: e.target.value }))} /></div>
                 </div>
-
                 <div className="px-5 py-4 border-t border-slate-100 space-y-3">
                   <SectionDivider>Save & Publish</SectionDivider>
                   <button onClick={downloadJSON} className="btn-ghost w-full"><Upload size={12} /> Download JSON</button>
@@ -1191,10 +1562,19 @@ function BlogEditor({ editingBlog, onBack }) {
                     }
                   </button>
                   {publishStatus === "success" && (
-                    <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
-                      <CheckCircle size={13} /> {publishMsg}
-                    </div>
-                  )}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
+               <CheckCircle size={13} /> {publishMsg}
+             </div>
+             <button
+            onClick={() => { setPublishStatus(null); setPublishMsg(""); }}
+              className="btn-ghost w-full"
+             >
+              <Send size={12} /> Publish again
+            </button>
+             </div>
+             )}
+
                   {publishStatus === "error" && (
                     <div className="flex items-start gap-2 text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs font-medium">
                       <AlertCircle size={13} className="mt-0.5 shrink-0" /> {publishMsg}
@@ -1311,26 +1691,38 @@ function BlogEditor({ editingBlog, onBack }) {
 
                   <div className="mt-6 space-y-5">
                     {elements.length === 0
-                      ? <div className="text-center py-20 text-slate-300">
+                      ? (
+                        <div className="text-center py-20 text-slate-300">
                           <Type size={48} className="mx-auto mb-3 opacity-40" />
                           <p className="text-slate-400 text-base font-medium">No content blocks yet</p>
                           <p className="text-slate-300 text-sm mt-1">Add blocks using the panel on the left</p>
                         </div>
+                      )
                       : previewMode
                         ? (() => {
                             const usedH3 = new Map();
                             return elements.map((el, i) => {
                               let s;
+                              const fw = el.fontWeight;
                               if (el.type === "image") {
                                 s = { type: "image", src: el.src, caption: el.caption };
                               } else if (el.type === "p_with_link") {
-                                s = { type: "p_with_link", textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter };
+                                s = { type: "p_with_link", textBefore: el.textBefore, linkText: el.linkText, href: el.href, textAfter: el.textAfter, fontWeight: fw };
+                              } else if (el.type === "p_with_bold") {
+                                s = { type: "p_with_bold", parts: el.parts, fontWeight: fw };
+                              } else if (el.type === "p_with_link_bold") {
+                                s = { type: "p_with_link_bold", partsBefore: el.partsBefore, linkText: el.linkText, href: el.href, partsAfter: el.partsAfter, fontWeight: fw };
                               } else if (el.type === "table") {
                                 s = { type: "table", headers: el.headers, rows: el.rows, themed: el.themed };
                               } else if (el.type === "ul" || el.type === "ol") {
                                 s = { type: el.type, text: el.text };
                               } else {
-                                s = { type: el.type, text: el.text };
+                                s = { type: el.type, text: el.text, fontWeight: fw,
+                                  ...(el.textBefore !== undefined && { textBefore: el.textBefore }),
+                                  ...(el.linkText !== undefined && { linkText: el.linkText }),
+                                  ...(el.href !== undefined && { href: el.href }),
+                                  ...(el.textAfter !== undefined && { textAfter: el.textAfter }),
+                                };
                               }
                               return <PreviewSection key={i} s={s} usedH3={usedH3} />;
                             });
@@ -1340,26 +1732,18 @@ function BlogEditor({ editingBlog, onBack }) {
                   </div>
                 </div>
 
-                {/* ─── TABLE OF CONTENTS SIDEBAR ───────────────────── */}
+                {/* Table of Contents sidebar */}
                 {toc.length > 0 && (
                   <aside className="hidden lg:block w-[260px] ml-8 flex-shrink-0">
                     <div className="sticky top-10">
                       <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)] overflow-hidden">
-                        {/* Header */}
                         <div className="px-5 pt-5 pb-3">
                           <p className="text-[15px] font-extrabold text-[#0A0F1E] tracking-wide uppercase">
                             Table of Contents
                           </p>
                         </div>
-
-                        {/* Scrollable list */}
-                        <div
-                          className="px-3 pb-2 max-h-[320px] overflow-y-auto"
-                          style={{
-                            scrollbarWidth: "thin",
-                            scrollbarColor: "#cbd5e1 transparent",
-                          }}
-                        >
+                        <div className="px-3 pb-2 max-h-[320px] overflow-y-auto"
+                          style={{ scrollbarWidth: "thin", scrollbarColor: "#cbd5e1 transparent" }}>
                           <style>{`
                             .toc-scroll::-webkit-scrollbar { width: 4px; }
                             .toc-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -1375,7 +1759,8 @@ function BlogEditor({ editingBlog, onBack }) {
                                   if (heading) heading.scrollIntoView({ behavior: "smooth", block: "start" });
                                 }}
                                 className={`w-full text-left rounded-lg px-3 py-2.5 text-[13px] leading-snug transition-all
-                                  ${t.level === "h3" ? "pl-5" : ""}
+                                  ${["h3","h4","h5","h6"].includes(t.level) ? "pl-5" : ""}
+                                  ${["h4","h5","h6"].includes(t.level) ? "pl-7 text-[12px]" : ""}
                                   ${activeTocId === t.id
                                     ? "bg-[#EFF6FF] text-[#0057FF] font-semibold"
                                     : "text-slate-700 hover:bg-slate-50 hover:text-[#0057FF]"
@@ -1386,18 +1771,13 @@ function BlogEditor({ editingBlog, onBack }) {
                             ))}
                           </div>
                         </div>
-
-                        {/* Footer tip */}
                         <div className="px-5 py-3 border-t border-slate-100">
-                          <p className="text-[11px] text-slate-400 italic">
-                            Tip: Click a heading to jump.
-                          </p>
+                          <p className="text-[11px] text-slate-400 italic">Tip: Click a heading to jump.</p>
                         </div>
                       </div>
                     </div>
                   </aside>
                 )}
-                {/* ─────────────────────────────────────────────────── */}
 
               </div>
             </div>
@@ -1413,7 +1793,7 @@ function BlogEditor({ editingBlog, onBack }) {
 // ═════════════════════════════════════════════════════════════════════════════
 export default function DynamicBlog() {
   const { isAuthenticated, loading } = useAuth();
-  const [screen, setScreen]         = useState("picker");
+  const [screen, setScreen]           = useState("picker");
   const [editingBlog, setEditingBlog] = useState(null);
 
   if (loading)
