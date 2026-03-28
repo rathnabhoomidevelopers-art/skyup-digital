@@ -36,7 +36,6 @@
   },
   "scripts": {
     "start": "vite",
-    "prebuild": "node scripts/generate-sitemap.js || echo Sitemap generation skipped",
     "build": "vite build",
     "postbuild": "echo Build completed successfully!",
     "build:no-snap": "vite build",
