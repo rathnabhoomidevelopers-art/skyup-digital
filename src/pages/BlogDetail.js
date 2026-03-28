@@ -194,9 +194,9 @@ export default function BlogDetail() {
 
             {/* Breadcrumb — below author/date, no background */}
             <div className="mt-3 flex items-center gap-1.5 flex-wrap text-[12px] text-slate-400">
-              <a href="/" className="hover:text-[#0B3BFF] transition-colors no-undeline">Home</a>
+              <a href="/" className="hover:text-[#0B3BFF] transition-colors no-underline">Home</a>
               <span className="text-slate-300 text-[10px]">{">>"}</span>
-              <a href="/blogs" className="hover:text-[#0B3BFF] transition-colors text-[#0037CA] no-undeline">Blog</a>
+              <a href="/blogs" className="hover:text-[#0B3BFF] transition-colors text-[#0037CA] no-underline">Blog</a>
               <span className="text-slate-300 text-[10px]">{">>"}</span>
               <span className="text-slate-500 line-clamp-1 max-w-[420px] sm:max-w-[600px]">{blog.title}</span>
             </div>
