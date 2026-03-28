@@ -146,15 +146,24 @@ export function Blogs() {
           </h1>
         </motion.div>
 
-        <motion.p
+       <motion.p
           variants={fadeUp}
           className="text-center text-[12px] px-3 sm:text-[18px] mt-2 lg:text-[18px]"
         >
           Clear guidance, practical tips, and market updates—with added
           strategies for the Bangalore region.
         </motion.p>
-      </motion.div>
 
+        {/* Breadcrumb — pinned to bottom of banner */}
+        <div className="absolute bottom-0 left-0 right-0 px-8 py-2.5"
+          style={{ background: "linear-gradient(90deg, rgba(0,55,202,0.88) 0%, rgba(0,45,170,0.88) 50%, rgba(0,55,202,0.88) 100%)" }}>
+          <div className="flex items-center justify-center gap-2 text-[13px] font-medium text-white/80">
+            <a href="/" className="hover:text-white transition-colors">Home</a>
+            <span className="text-white/60 text-[11px]">{">>"}</span>
+            <span className="text-white font-semibold">Blog</span>
+          </div>
+        </div>
+      </motion.div>
       {/* ── Blogs section ── */}
       {/*
         id="blogs-section" is the scroll target when a page number is clicked.
