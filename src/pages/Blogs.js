@@ -155,7 +155,7 @@ export function Blogs() {
         </motion.p>
 
         {/* Breadcrumb — pinned to bottom of banner */}
-        <div className="absolute bottom-0 left-0 right-0 px-8 py-2.5 bg-[#0037CA]/10 border-t border-[#0037CA]/10">
+        <div className="absolute bottom-0 left-0 right-0 px-8 py-2 ">
           <div className="flex items-center justify-center gap-2 text-[13px] font-medium text-slate-600">
             <a href="/" className="hover:text-[#0037CA] transition-colors">Home</a>
             <span className="text-slate-400 text-[11px]">{">>"}</span>
