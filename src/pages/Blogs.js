@@ -126,7 +126,7 @@ export function Blogs() {
       <Header />
 
       {/* ── Hero banner (original, untouched) ── */}
-      <motion.div
+   <motion.div
         initial="hidden"
         animate="show"
         variants={staggerWrap}
@@ -136,7 +136,7 @@ export function Blogs() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-        className="h-[221px] sm:h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center"
+        className="h-[221px] sm:h-[400px] flex flex-col items-center bg-[#EEF1FC] justify-center relative"
       >
         <div className="text-blue-600 font-semibold text-[18px]">Blogs Hub</div>
         <motion.div variants={fadeUp}>
@@ -153,6 +153,15 @@ export function Blogs() {
           Clear guidance, practical tips, and market updates—with added
           strategies for the Bangalore region.
         </motion.p>
+
+        {/* Breadcrumb — pinned to bottom of banner */}
+        <div className="absolute bottom-0 left-0 right-0 px-8 py-2.5 bg-[#0037CA]/10 border-t border-[#0037CA]/10">
+          <div className="flex items-center justify-center gap-2 text-[13px] font-medium text-slate-600">
+            <a href="/" className="hover:text-[#0037CA] transition-colors">Home</a>
+            <span className="text-slate-400 text-[11px]">{">>"}</span>
+            <span className="text-[#0037CA] font-semibold">Blog</span>
+          </div>
+        </div>
       </motion.div>
 
       {/* ── Blogs section ── */}
