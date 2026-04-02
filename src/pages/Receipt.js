@@ -681,20 +681,55 @@ export function Receipt() {
   useEffect(() => { if (token) fetchLastInvoiceNumber(); }, [token]);
 
   const fetchLastInvoiceNumber = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/last-invoice`, { headers: { Authorization: `Bearer ${token}` } });
-      const data = await res.json();
-      if (data.lastSerial) setNextInvoiceSerial(data.lastSerial + 1);
-    } catch {
+  try {
+    const res = await fetch(`${API_URL}/receipts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (res.ok && Array.isArray(data)) {
+      const currentFY = getCurrentFinancialYear(); // e.g. "2026-27"
+
+      // Filter only receipts belonging to the current financial year
+      const currentYearReceipts = data.filter(r =>
+        r.invoice_no?.includes(currentFY)
+      );
+
+      if (currentYearReceipts.length === 0) {
+        // New financial year — reset to 1
+        setNextInvoiceSerial(1);
+      } else {
+        // Extract serial numbers and find the max
+        const serials = currentYearReceipts.map(r => {
+          const match = r.invoice_no?.match(/SDS\/(\d+)\//);
+          return match ? parseInt(match[1]) : 0;
+        });
+        setNextInvoiceSerial(Math.max(...serials) + 1);
+      }
+    }
+  } catch {
+    // Fallback to localStorage (also reset if FY changed)
+    const savedFY = localStorage.getItem("invoiceFY");
+    const currentFY = getCurrentFinancialYear();
+    if (savedFY !== currentFY) {
+      // New year — reset
+      localStorage.setItem("invoiceFY", currentFY);
+      localStorage.setItem("lastInvoiceSerial", "0");
+      setNextInvoiceSerial(1);
+    } else {
       const last = localStorage.getItem("lastInvoiceSerial");
       if (last) setNextInvoiceSerial(parseInt(last) + 1);
     }
-  };
+  }
+};
 
-  const getCurrentFinancialYear = () => {
-    const today = new Date(); const y = today.getFullYear(); const m = today.getMonth() + 1;
-    return m >= 4 ? `${y}-${(y + 1).toString().slice(-2)}` : `${y - 1}-${y.toString().slice(-2)}`;
-  };
+ const getCurrentFinancialYear = () => {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = today.getMonth() + 1;
+  return m >= 4
+    ? `${y}-${(y + 1).toString().slice(-2)}`
+    : `${y - 1}-${y.toString().slice(-2)}`;
+};
   const generateInvoiceNumber = (serial) => `SDS/${serial.toString().padStart(3, "0")}/${getCurrentFinancialYear()}`;
 
   // ── Called by ReceiptListModal when a PDF button is clicked ──────────────
