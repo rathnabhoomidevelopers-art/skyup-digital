@@ -145,12 +145,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ── logout — clears whichever session is active ───────────────────────────
+  // ── logout — clears whichever session is active and redirects to login ──────
   const logout = () => {
     clearBloggerSession();
     clearAdminSession();
     setToken(null);
     setUser(null);
+    if (isBrowser()) {
+      window.location.href = "/admin";
+    }
   };
 
   const value = {
