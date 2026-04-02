@@ -6,6 +6,13 @@ import { generatePDF } from "./utils/pdfGenerator";
 import API_URL from "../config/api";
 import { useAuth } from "../context/AuthContext";
 
+const IconLogout = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+  </svg>
+);
+
 // ─────────────────────────────────────────────
 // Tiny icon helpers
 // ─────────────────────────────────────────────
@@ -670,7 +677,6 @@ function ReceiptListModal({ isOpen, onClose, token, onDownloadPdf, downloadingId
 // Main Receipt Component
 // ─────────────────────────────────────────────
 export function Receipt() {
-  const { token } = useAuth();
   const [showPreview, setShowPreview] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
   const [nextInvoiceSerial, setNextInvoiceSerial] = useState(1);
@@ -678,49 +684,53 @@ export function Receipt() {
   const [listDownloadingId, setListDownloadingId] = useState(null);
   const receiptRef = useRef();
 
-  useEffect(() => { if (token) fetchLastInvoiceNumber(); }, [token]);
+  const { token, logout, user, loading: authLoading } = useAuth();
+  useEffect(() => {
+    // Wait until AuthContext has finished restoring the session from localStorage
+    // This prevents "failed to fetch" on page refresh (token not ready yet)
+    if (!authLoading && token) {
+      fetchLastInvoiceNumber();
+    }
+  }, [authLoading, token]);
 
   const fetchLastInvoiceNumber = async () => {
-  try {
-    const res = await fetch(`${API_URL}/receipts`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (res.ok && Array.isArray(data)) {
-      const currentFY = getCurrentFinancialYear(); // e.g. "2026-27"
-
-      // Filter only receipts belonging to the current financial year
-      const currentYearReceipts = data.filter(r =>
-        r.invoice_no?.includes(currentFY)
-      );
-
-      if (currentYearReceipts.length === 0) {
-        // New financial year — reset to 1
+    try {
+      const res = await fetch(`${API_URL}/receipts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok && Array.isArray(data)) {
+        const currentFY = getCurrentFinancialYear();
+        const currentYearReceipts = data.filter(r =>
+          r.invoice_no?.includes(currentFY)
+        );
+        if (currentYearReceipts.length === 0) {
+          setNextInvoiceSerial(1);
+        } else {
+          const serials = currentYearReceipts.map(r => {
+            const match = r.invoice_no?.match(/SDS\/(\d+)\//);
+            return match ? parseInt(match[1]) : 0;
+          });
+          setNextInvoiceSerial(Math.max(...serials) + 1);
+        }
+        // Keep localStorage in sync with current FY
+        localStorage.setItem("invoiceFY", currentFY);
+      }
+    } catch (err) {
+      console.error("Failed to fetch invoice number:", err);
+      // Fallback to localStorage — also reset serial if FY changed
+      const savedFY = localStorage.getItem("invoiceFY");
+      const currentFY = getCurrentFinancialYear();
+      if (savedFY !== currentFY) {
+        localStorage.setItem("invoiceFY", currentFY);
+        localStorage.setItem("lastInvoiceSerial", "0");
         setNextInvoiceSerial(1);
       } else {
-        // Extract serial numbers and find the max
-        const serials = currentYearReceipts.map(r => {
-          const match = r.invoice_no?.match(/SDS\/(\d+)\//);
-          return match ? parseInt(match[1]) : 0;
-        });
-        setNextInvoiceSerial(Math.max(...serials) + 1);
+        const last = localStorage.getItem("lastInvoiceSerial");
+        setNextInvoiceSerial(last ? parseInt(last) + 1 : 1);
       }
     }
-  } catch {
-    // Fallback to localStorage (also reset if FY changed)
-    const savedFY = localStorage.getItem("invoiceFY");
-    const currentFY = getCurrentFinancialYear();
-    if (savedFY !== currentFY) {
-      // New year — reset
-      localStorage.setItem("invoiceFY", currentFY);
-      localStorage.setItem("lastInvoiceSerial", "0");
-      setNextInvoiceSerial(1);
-    } else {
-      const last = localStorage.getItem("lastInvoiceSerial");
-      if (last) setNextInvoiceSerial(parseInt(last) + 1);
-    }
-  }
-};
+  };
 
  const getCurrentFinancialYear = () => {
   const today = new Date();
@@ -834,7 +844,9 @@ export function Receipt() {
         const result = await res.json();
         if (res.ok) {
           alert("Receipt created and downloaded successfully!");
-          setNextInvoiceSerial(nextInvoiceSerial + 1);
+          const newSerial = nextInvoiceSerial + 1;
+          setNextInvoiceSerial(newSerial);
+          localStorage.setItem("invoiceFY", getCurrentFinancialYear());
           localStorage.setItem("lastInvoiceSerial", nextInvoiceSerial.toString());
           resetForm();
           setShowPreview(false);
@@ -856,6 +868,18 @@ export function Receipt() {
 
   const ic = "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
 
+  // Wait for auth session to restore — prevents "failed to fetch" on refresh
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3 text-gray-500">
+          <IconSpinner />
+          <p className="text-sm font-medium">Loading session…</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 font-poppins">
       <ReceiptListModal
@@ -874,15 +898,32 @@ export function Receipt() {
               <div>
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">Create New Receipt</h1>
                 <p className="text-gray-600">Generate professional invoice for your client</p>
+                {user?.email && (
+                  <p className="text-xs text-gray-400 mt-1">Logged in as <span className="font-medium text-gray-500">{user.email}</span></p>
+                )}
               </div>
-              <button onClick={() => setShowReceiptList(true)}
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-lg transition shadow-sm hover:shadow-md text-sm flex-shrink-0">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
-                Receipt List
-              </button>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button onClick={() => setShowReceiptList(true)}
+                  className="flex items-center gap-2 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-5 rounded-lg transition shadow-sm hover:shadow-md text-sm">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                  </svg>
+                  Receipt List
+                </button>
+                <button
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to logout?")) {
+                      logout();
+                    }
+                  }}
+                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-lg transition shadow-sm hover:shadow-md text-sm"
+                  title="Logout"
+                >
+                  <IconLogout />
+                  Logout
+                </button>
+              </div>
             </div>
 
             <Formik
