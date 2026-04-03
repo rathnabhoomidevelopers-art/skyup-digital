@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import * as Yup from "yup";
 import ReceiptTemplate from "./ReceiptTemplate";
@@ -66,6 +66,102 @@ function buildTemplateData(receipt) {
     sgstLabel: receipt.sgst > 0 ? (receipt.sgst_percentage > 0 ? `SGST @ ${receipt.sgst_percentage}%` : "SGST") : "",
     igstLabel: receipt.igst > 0 ? (receipt.igst_percentage > 0 ? `IGST @ ${receipt.igst_percentage}%` : "IGST") : "",
   };
+}
+
+// ─────────────────────────────────────────────
+// Client Autocomplete Textarea
+// ─────────────────────────────────────────────
+function ClientAutocomplete({ value, onChange, onSelectClient, suggestions, placeholder, className }) {
+  const [open, setOpen] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    onChange(val);
+    if (val.trim().length > 0) {
+      const q = val.toLowerCase();
+      const matches = suggestions.filter(s =>
+        s.to.toLowerCase().includes(q) ||
+        (s.client_gst && s.client_gst.toLowerCase().includes(q))
+      );
+      // Deduplicate by `to` field
+      const seen = new Set();
+      const unique = matches.filter(s => {
+        const key = s.to.trim();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      setFiltered(unique.slice(0, 8));
+      setOpen(unique.length > 0);
+    } else {
+      setOpen(false);
+    }
+  };
+
+  const handleSelect = (item) => {
+    onSelectClient(item);
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative" ref={wrapperRef}>
+      <textarea
+        value={value}
+        onChange={handleChange}
+        onFocus={() => {
+          if (value.trim().length > 0 && filtered.length > 0) setOpen(true);
+        }}
+        rows="3"
+        placeholder={placeholder}
+        className={className}
+      />
+      {open && filtered.length > 0 && (
+        <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
+          <div className="px-3 py-2 bg-gray-50 border-b border-gray-100 flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Existing Clients</span>
+          </div>
+          <ul className="max-h-56 overflow-y-auto divide-y divide-gray-50">
+            {filtered.map((item, i) => (
+              <li key={i}>
+                <button
+                  type="button"
+                  onMouseDown={(e) => { e.preventDefault(); handleSelect(item); }}
+                  className="w-full text-left px-4 py-3 hover:bg-blue-50 transition group"
+                >
+                  <p className="text-sm font-semibold text-gray-800 group-hover:text-blue-700 truncate leading-snug">
+                    {item.to.split("\n")[0]}
+                  </p>
+                  {item.to.split("\n").length > 1 && (
+                    <p className="text-xs text-gray-400 truncate mt-0.5">
+                      {item.to.split("\n").slice(1).join(", ")}
+                    </p>
+                  )}
+                  {item.client_gst && item.client_gst !== "URD" && (
+                    <span className="inline-block mt-1 text-xs bg-blue-50 text-blue-600 border border-blue-100 rounded px-1.5 py-0.5 font-mono">
+                      GST: {item.client_gst}
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─────────────────────────────────────────────
@@ -682,6 +778,7 @@ export function Receipt() {
   const [nextInvoiceSerial, setNextInvoiceSerial] = useState(1);
   const [showReceiptList, setShowReceiptList] = useState(false);
   const [listDownloadingId, setListDownloadingId] = useState(null);
+  const [clientSuggestions, setClientSuggestions] = useState([]);
   const receiptRef = useRef();
 
   const { token, logout, user, loading: authLoading } = useAuth();
@@ -715,6 +812,16 @@ export function Receipt() {
         }
         // Keep localStorage in sync with current FY
         localStorage.setItem("invoiceFY", currentFY);
+        // Build unique client suggestions from all receipts (latest first)
+        const sorted = [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const seen = new Set();
+        const unique = sorted.filter(r => {
+          const key = r.to?.trim();
+          if (!key || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setClientSuggestions(unique.map(r => ({ to: r.to, client_gst: r.client_gst || "" })));
       }
     } catch (err) {
       console.error("Failed to fetch invoice number:", err);
@@ -848,6 +955,15 @@ export function Receipt() {
           setNextInvoiceSerial(newSerial);
           localStorage.setItem("invoiceFY", getCurrentFinancialYear());
           localStorage.setItem("lastInvoiceSerial", nextInvoiceSerial.toString());
+          // Add new client to suggestions if not already present
+          const newClientKey = values.to?.trim();
+          if (newClientKey) {
+            setClientSuggestions(prev => {
+              const exists = prev.some(s => s.to.trim() === newClientKey);
+              if (exists) return prev;
+              return [{ to: values.to, client_gst: values.client_gst || "" }, ...prev];
+            });
+          }
           resetForm();
           setShowPreview(false);
         } else { alert("Failed to save receipt: " + result.message); }
@@ -939,7 +1055,7 @@ export function Receipt() {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({ values, errors, touched, isSubmitting }) => {
+              {({ values, errors, touched, isSubmitting, setFieldValue }) => {
                 const { subtotal, cgst, sgst, igst, total } = calculateTotals(
                   values.items || [], values.cgst_percentage, values.sgst_percentage,
                   values.igst_percentage, values.use_manual_gst,
@@ -954,7 +1070,19 @@ export function Receipt() {
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Client Name & Address <span className="text-red-500">*</span></label>
-                      <Field as="textarea" name="to" rows="3" className={`${ic} resize-none`} placeholder="Enter client name and complete address" />
+                      <ClientAutocomplete
+                        value={values.to}
+                        onChange={(val) => setFieldValue("to", val)}
+                        onSelectClient={(item) => {
+                          setFieldValue("to", item.to);
+                          if (item.client_gst && item.client_gst !== "URD") {
+                            setFieldValue("client_gst", item.client_gst);
+                          }
+                        }}
+                        suggestions={clientSuggestions}
+                        placeholder="Enter client name and complete address"
+                        className={`${ic} resize-none`}
+                      />
                       {errors.to && touched.to && <p className="text-red-600 text-sm mt-1">⚠ {errors.to}</p>}
                     </div>
 
