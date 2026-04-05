@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import WhatWeDoSection from "../components/WhatWeDoSection";
 import TestimonialsSection from "../components/TestimonialsSection";
 import FAQSection from "../components/FAQSection";
+import EnquireUsPopup from "../components/EnquireUsPopup";
 
 const MotionA = motion.a;
 
@@ -371,6 +372,7 @@ export function HomePage() {
       <Carousel />
 
       <HowDoWeWorkSection />
+      <EnquireUsPopup />
 
       <TestimonialsSection />
       <FAQSection faqs={HomeFaqs} />
