@@ -1,5 +1,474 @@
 export const BLOGS = [
   {
+    id: 1774247933713,
+    slug: "linkedin-marketing-b2b-bangalore-2026",
+    category: "SMM",
+    title: "Social Media Marketing Company Near Me for B2B Growth",
+    headline: "Social Media Marketing Company Near Me: 10 Powerful LinkedIn Marketing Strategies for B2B Companies in Bangalore (2026 Guide)",
+    description: "Discover 10 powerful LinkedIn marketing strategies for B2B companies in Bangalore. Grow leads with a top social media marketing company near you.",
+    date: "Apr 6, 2026",
+    Keywords: "Social Media Marketing Company Near Me",
+    author: "Skyup Digital Solutions",
+    image: "https://res.cloudinary.com/dmyj1echa/image/upload/v1775471760/odbtdoqc0mbjsuiu3xbq.webp",
+    heroImage: "https://res.cloudinary.com/dmyj1echa/image/upload/v1775471760/odbtdoqc0mbjsuiu3xbq.webp",
+    coverImage: "https://res.cloudinary.com/dmyj1echa/image/upload/v1775471760/odbtdoqc0mbjsuiu3xbq.webp",
+    imageAlt: "Social Media Marketing Company Near Me",
+    tags: ["linkedin-marketing-b2b-bangalore-2026"],
+    sections: [
+      {
+        type: "h2",
+        text: "Introduction",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "p_with_link",
+        textBefore: "",
+        linkText: "Skyup Digital Solutions",
+        href: "https://skyupdigitalsolutions.com",
+        textAfter: "understands that B2B companies in Bangalore face intense competition when it comes to generating quality leads and building strong business relationships. In today’s digital-first world, LinkedIn has become the most powerful platform for B2B marketing.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "p",
+        text: "If you are searching for a reliable Social Media Marketing Company Near Me, LinkedIn marketing is one of the smartest strategies to grow your business, connect with decision-makers, and increase conversions.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "p",
+        text: "In this blog, we will explore 10 powerful LinkedIn marketing strategies for B2B companies in Bangalore, along with actionable tips to help you generate high-quality leads and build authority in your industry.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "p_with_link",
+        textBefore: "To get expert LinkedIn marketing support, visit:",
+        linkText: "Skyup Digital Solutions.",
+        href: "https://www.skyupdigitalsolutions.com/services/social-media-marketing",
+        textAfter: "",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h2",
+        text: "Why LinkedIn Marketing is Important for B2B Companies",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "p",
+        text: "LinkedIn is not just a social media platform, it is a professional networking powerhouse.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Key Statistics:",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "ul",
+        text: ["Over 1 billion users globally", "80% of B2B leads come from LinkedIn", "Decision-makers actively use LinkedIn for business research"]
+      },
+      {
+        type: "p",
+        text: "For businesses working with a Social Media Marketing Company in Bangalore, LinkedIn offers unmatched opportunities for lead generation and brand building.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h2",
+        text: "10 Powerful LinkedIn Marketing Strategies for B2B Success",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "h3",
+        text: "1. Optimize Your LinkedIn Company Profile",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Your company profile is your digital identity.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Make sure to:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Use a professional logo and banner", "Add clear business description", "Include keywords like Social Media Marketing Company in Bangalore"]
+      },
+      {
+        type: "p",
+        text: "A well-optimized profile builds trust instantly.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "2. Define Your Target Audience Clearly",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Knowing your audience is key.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Focus on:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Industry", "Job roles", "Company size"]
+      },
+      {
+        type: "p",
+        text: "This helps you create targeted campaigns and content.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "3. Create High-Value Content Consistently",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Content is the backbone of LinkedIn marketing.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Post:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Industry insights", "Case studies", "Tips and strategies"]
+      },
+      {
+        type: "p",
+        text: "Valuable content attracts and engages your audience.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "4. Use LinkedIn Ads for Lead Generation",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "LinkedIn Ads are powerful for B2B.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Use:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Sponsored content", "Lead generation forms", "InMail campaigns"]
+      },
+      {
+        type: "p_with_link",
+        textBefore: "A",
+        linkText: "Social Media Marketing Company Near Me",
+        href: "https://www.skyupdigitalsolutions.com/aboutus-digital-marketing-company-in-bangalore",
+        textAfter: "can help optimize ad performance.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "5. Leverage Personal Branding",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Encourage your team to build personal brands.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Benefits:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Increased reach", "Higher engagement", "Stronger trust"]
+      },
+      {
+        type: "p",
+        text: "People connect with people, not just brands.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "6. Engage with Your Audience Regularly",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Engagement builds relationships.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Respond to:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Comments", "Messages", "Mentions"]
+      },
+      {
+        type: "p",
+        text: "This increases visibility and trust.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "7. Use LinkedIn Analytics\n",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Track performance to improve results.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Measure:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Engagement rate", "Click-through rate", "Follower growth"]
+      },
+      {
+        type: "p",
+        text: "Data helps refine your strategy.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "8. Join and Participate in LinkedIn Groups",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Groups help you connect with niche audiences.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Share:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Insights", "Discussions", "Solutions"]
+      },
+      {
+        type: "p",
+        text: "This positions your brand as an expert.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "9. Run Account-Based Marketing (ABM)\n",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Target specific companies and decision-makers.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "This approach:\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Improves lead quality", "Increases conversion rates", "Builds strong relationships"]
+      },
+      {
+        type: "h3",
+        text: "10. Focus on Lead Nurturing",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Generating leads is not enough.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h5",
+        text: "Nurture leads through:",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Follow-ups", "Personalized messages", "Valuable content"]
+      },
+      {
+        type: "p",
+        text: "This converts prospects into clients.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h2",
+        text: "How LinkedIn Marketing Helps B2B Companies in Bangalore",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "p",
+        text: "LinkedIn marketing enables businesses to:\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "ul",
+        text: ["Connect with decision-makers directly", "Generate high-quality leads", "Build brand authority", "Increase conversions"]
+      },
+      {
+        type: "p_with_link",
+        textBefore: "That’s why many businesses partner with a",
+        linkText: "Social Media Marketing Company in Bangalore",
+        href: "https://www.skyupdigitalsolutions.com/contact-us",
+        textAfter: "to achieve better results.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "h4",
+        text: "What does a Social Media Marketing Company in Bangalore do for LinkedIn?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p_with_link",
+        textBefore: "A",
+        linkText: "Social Media Marketing Company in Bangalore",
+        href: "https://en.wikipedia.org/wiki/Special:Search?search=Social+Media+Marketing+Company+in+Bangalore&go=Go&ns0=1",
+        textAfter: "helps manage LinkedIn profiles, create content, run ads, and generate leads.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "Why should I choose a Social Media Marketing Company Near Me for LinkedIn marketing?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "A Social Media Marketing Company Near Me understands local markets and provides personalized strategies for better results.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "How effective is LinkedIn marketing for B2B companies in Bangalore?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "LinkedIn is highly effective for B2B companies as it connects businesses with decision-makers directly.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "What services are included in Social Media Marketing Company in Bangalore?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Services include content creation, ad campaigns, analytics, and lead generation strategies.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "Can a Social Media Marketing Company Near Me improve lead quality?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Yes, a Social Media Marketing Company Near Me uses targeted strategies to attract high-quality leads.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "How much does LinkedIn marketing cost in Bangalore?\n",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "The cost depends on campaign size, target audience, and services required.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "Is LinkedIn Ads better than other platforms for B2B?\n",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Yes, LinkedIn Ads are more effective for B2B as they target professionals and decision-makers.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "How long does it take to see results from LinkedIn marketing?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Results can be seen within a few weeks, but consistent efforts bring long-term success.\n",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h4",
+        text: "Why is a Social Media Marketing Company in Bangalore important for startups?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "It helps startups build brand awareness, generate leads, and scale faster.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h3",
+        text: "How do I choose the right Social Media Marketing Company Near Me?",
+        fontWeight: "font-medium"
+      },
+      {
+        type: "p",
+        text: "Look for experience, client reviews, and proven results before choosing a company.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "h2",
+        text: "Conclusion",
+        fontWeight: "font-bold"
+      },
+      {
+        type: "p",
+        text: "Skyup Digital Solutions believes that LinkedIn marketing is one of the most powerful tools for B2B companies in Bangalore. With the right strategies, businesses can connect with the right audience, generate high-quality leads, and achieve long-term growth.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "p_with_link",
+        textBefore: "By implementing these",
+        linkText: "10 powerful LinkedIn marketing strategies",
+        href: "https://www.skyupdigitalsolutions.com/services/social-media-marketing",
+        textAfter: "you can build a strong presence, improve engagement, and increase conversions. Whether you are a startup or an established business, LinkedIn can transform your marketing results.",
+        fontWeight: "font-normal"
+      },
+      {
+        type: "p",
+        text: "If you are looking for a trusted Social Media Marketing Company Near Me, Skyup Digital Solutions is here to help you succeed.",
+        fontWeight: "font-normal"
+      }
+    ]
+  },
+  {
     id: 1774247933712,
     slug: "ai-companies-bangalore-digital-marketing-india-2026",
     category: "AI Automation",
