@@ -243,7 +243,6 @@ const RenderParts = ({ parts = [], className = "font-semibold text-[#0A0F1E]" })
 function PreviewSection({ s, usedH3 }) {
   const fw = s.fontWeight || FW_DEFAULT_HEADING;
 
-  // Generic heading renderer for h2–h6
   const renderHeading = (tag, sizeClass, text, defaultFw) => {
     const base = slugify(text || "");
     const count = (usedH3.get(base) || 0) + 1;
@@ -570,7 +569,7 @@ function BlogPicker({ onSelect }) {
 // ═════════════════════════════════════════════════════════════════════════════
 function BlogEditor({ editingBlog, onBack }) {
   const { token, user, logout } = useAuth();
-const [isEditMode] = useState(!!editingBlog);
+  const [isEditMode] = useState(!!editingBlog);
 
   const [elements, setElements]             = useState([]);
   const [selectedId, setSelectedId]         = useState(null);
@@ -699,7 +698,7 @@ const [isEditMode] = useState(!!editingBlog);
     const slug     = meta.slug || slugify(title) || `blog-${Date.now()}`;
     const tagsArr  = meta.tags ? meta.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
     return {
-    id: isEditMode ? editingBlogId.current : Date.now(),
+      id: isEditMode ? editingBlogId.current : Date.now(),
       slug,
       category:    meta.category,
       title:       meta.title || title,
@@ -734,7 +733,7 @@ const [isEditMode] = useState(!!editingBlog);
 
   const publishBlog = async () => {
     setPublishStatus(null);
-  setPublishMsg("");
+    setPublishMsg("");
     if (!meta.headline && !meta.title) {
       alert("Please add a headline first (open ⚙ Settings)."); setShowSettings(true); return;
     }
@@ -763,48 +762,40 @@ const [isEditMode] = useState(!!editingBlog);
       let newBlogsArray;
       if (isEditMode) {
         setPublishMsg("Updating existing blog entry…");
-       const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlogId.current));
-    if (idx === -1) throw new Error(`Could not find blog with id ${editingBlogId.current} in blogs.js`);
-    newBlogsArray = [...blogsArray];  
-    newBlogsArray[idx] = { ...blogData, id: editingBlogId.current };
+        const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlogId.current));
+        if (idx === -1) throw new Error(`Could not find blog with id ${editingBlogId.current} in blogs.js`);
+        newBlogsArray = [...blogsArray];
+        newBlogsArray[idx] = { ...blogData, id: editingBlogId.current };
       } else {
         setPublishMsg("Inserting new blog entry…");
         newBlogsArray = [{ ...blogData, id: nextId }, ...blogsArray];
       }
-     function toJsValue(val, indent = 0) {
-  const pad = "  ".repeat(indent);
-  const pad1 = "  ".repeat(indent + 1);
-
-  if (val === null || val === undefined) return "null";
-  if (typeof val === "boolean" || typeof val === "number") return String(val);
-  if (typeof val === "string") return JSON.stringify(val);
-
-  if (Array.isArray(val)) {
-    if (val.length === 0) return "[]";
-    // Flat arrays of primitives stay on one line
-    const allPrim = val.every(v => typeof v !== "object" || v === null);
-    if (allPrim) return `[${val.map(v => toJsValue(v, 0)).join(", ")}]`;
-    const items = val.map(v => `${pad1}${toJsValue(v, indent + 1)}`).join(",\n");
-    return `[\n${items}\n${pad}]`;
-  }
-
-  if (typeof val === "object") {
-    const keys = Object.keys(val);
-    if (keys.length === 0) return "{}";
-    const entries = keys.map(k => {
-      const safe = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k) ? k : JSON.stringify(k);
-      return `${pad1}${safe}: ${toJsValue(val[k], indent + 1)}`;
-    });
-    return `{\n${entries.join(",\n")}\n${pad}}`;
-  }
-
-  return JSON.stringify(val);
-}
-
-const entriesStr = newBlogsArray
-  .map(b => `  ${toJsValue(b, 1)}`)
-  .join(",\n");
-const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
+      function toJsValue(val, indent = 0) {
+        const pad = "  ".repeat(indent);
+        const pad1 = "  ".repeat(indent + 1);
+        if (val === null || val === undefined) return "null";
+        if (typeof val === "boolean" || typeof val === "number") return String(val);
+        if (typeof val === "string") return JSON.stringify(val);
+        if (Array.isArray(val)) {
+          if (val.length === 0) return "[]";
+          const allPrim = val.every(v => typeof v !== "object" || v === null);
+          if (allPrim) return `[${val.map(v => toJsValue(v, 0)).join(", ")}]`;
+          const items = val.map(v => `${pad1}${toJsValue(v, indent + 1)}`).join(",\n");
+          return `[\n${items}\n${pad}]`;
+        }
+        if (typeof val === "object") {
+          const keys = Object.keys(val);
+          if (keys.length === 0) return "{}";
+          const entries = keys.map(k => {
+            const safe = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k) ? k : JSON.stringify(k);
+            return `${pad1}${safe}: ${toJsValue(val[k], indent + 1)}`;
+          });
+          return `{\n${entries.join(",\n")}\n${pad}}`;
+        }
+        return JSON.stringify(val);
+      }
+      const entriesStr = newBlogsArray.map(b => `  ${toJsValue(b, 1)}`).join(",\n");
+      const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
       setPublishMsg("Committing to GitHub…");
       const commitMessage = isEditMode ? `update blog: ${blogData.slug}` : `add blog: ${blogData.slug}`;
       const putRes = await fetch(
@@ -839,6 +830,56 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
     }
   };
 
+  // ── Drafts ────────────────────────────────────────────────────────────────
+  const [drafts, setDrafts] = useState([]);
+
+  const loadDraftsFromStorage = useCallback(() => {
+    const keys = Object.keys(localStorage).filter((k) => k.startsWith("blog_draft_"));
+    const loaded = keys
+      .map((key) => {
+        try { return { key, data: JSON.parse(localStorage.getItem(key)) }; }
+        catch { return null; }
+      })
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.data.savedAt) - new Date(a.data.savedAt));
+    setDrafts(loaded);
+  }, []);
+
+  useEffect(() => {
+    loadDraftsFromStorage();
+  }, [loadDraftsFromStorage]);
+
+  const loadDraft = useCallback((key) => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key));
+      if (!parsed) return;
+      setMeta(parsed.meta || {});
+      setElements(parsed.elements || []);
+      setShowSettings(false);
+    } catch (e) {
+      alert("Failed to load draft: " + e.message);
+    }
+  }, []);
+
+  const deleteDraft = useCallback((key) => {
+    localStorage.removeItem(key);
+    loadDraftsFromStorage();
+  }, [loadDraftsFromStorage]);
+
+  const saveDraft = () => {
+    const draftData = {
+      meta,
+      elements,
+      savedAt: new Date().toISOString(),
+    };
+    const key = `blog_draft_${meta.slug || slugify(meta.headline) || Date.now()}`;
+    localStorage.setItem(key, JSON.stringify(draftData));
+    loadDraftsFromStorage();
+    setPublishStatus("success");
+    setPublishMsg("Draft saved successfully!");
+  };
+
+  // ── Progress ──────────────────────────────────────────────────────────────
   const progress = [
     { label: "Headline",    done: !!(meta.headline || meta.title) },
     { label: "Hero image",  done: !!meta.heroImage },
@@ -847,7 +888,7 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
     { label: "Description", done: !!meta.description },
   ];
 
-  // ── Parts editor ─────────────────────────────────────────────────────────
+  // ── Parts editor ──────────────────────────────────────────────────────────
   const PartsEditor = ({ parts, onChange, label = "Parts" }) => (
     <div>
       <Label>{label}</Label>
@@ -883,7 +924,7 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
     </div>
   );
 
-  // ── Heading-with-link editor (reusable) ───────────────────────────────────
+  // ── Heading-with-link editor ──────────────────────────────────────────────
   const HeadingWithLinkEditor = ({ el, tag }) => (
     <div className="space-y-3">
       <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg leading-snug">
@@ -943,7 +984,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
       );
     };
 
-    // Generic heading builder
     const buildHeading = (tag, sizeClass) =>
       React.createElement(tag, {
         className: `${sizeClass} ${fw} text-[#0A0F1E] ${ring}`,
@@ -973,7 +1013,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
     else if (el.type === "h4_with_link") content = buildHeadingWithLink("h4", HEADING_SIZE.h4);
     else if (el.type === "h5_with_link") content = buildHeadingWithLink("h5", HEADING_SIZE.h5);
     else if (el.type === "h6_with_link") content = buildHeadingWithLink("h6", HEADING_SIZE.h6);
-
     else if (el.type === "quote")
       content = (
         <div className={`rounded-xl border border-[#B8D4FF] bg-[#EFF6FF] px-4 py-4 ${ring}`} onClick={pick}>
@@ -982,7 +1021,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
             onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerText })}>{el.text}</div>
         </div>
       );
-
     else if (el.type === "image")
       content = (
         <figure className={`rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 ${ring}`} onClick={pick}>
@@ -996,7 +1034,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           {el.caption && <figcaption className="px-4 py-3 text-[12px] text-slate-500">{el.caption}</figcaption>}
         </figure>
       );
-
     else if (el.type === "table")
       content = (
         <div className={`overflow-x-auto rounded-xl border border-slate-200 ${ring}`} onClick={pick}>
@@ -1021,7 +1058,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </table>
         </div>
       );
-
     else if (el.type === "ul" || el.type === "ol") {
       const Tag = el.type;
       const cls = el.type === "ul" ? "list-disc" : "list-decimal";
@@ -1031,7 +1067,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
         </Tag>
       );
     }
-
     else if (el.type === "p_with_link")
       content = (
         <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
@@ -1040,14 +1075,12 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           {el.textAfter ? " " + el.textAfter.trimStart() : ""}
         </p>
       );
-
     else if (el.type === "p_with_bold")
       content = (
         <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
           <RenderParts parts={el.parts} />
         </p>
       );
-
     else if (el.type === "p_with_link_bold")
       content = (
         <p className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`} onClick={pick}>
@@ -1058,7 +1091,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           <RenderParts parts={el.partsAfter} />
         </p>
       );
-
     else
       content = (
         <div className="space-y-1">
@@ -1110,12 +1142,10 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
     const el = selectedEl;
     const isHeadingWithLink = ["h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link"].includes(el.type);
     const isPlainHeading    = ["h2","h3","h4","h5","h6"].includes(el.type);
-    const isPara            = ["p","p_with_link","p_with_bold","p_with_link_bold"].includes(el.type);
     const headingTag        = isPlainHeading ? el.type : isHeadingWithLink ? el.type.replace("_with_link","") : null;
 
     return (
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 panel-scroll">
-        {/* Block header */}
         <div className="flex items-center justify-between">
           <span className="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase"
             style={{ background: "#EFF6FF", color: "#0057FF" }}>{el.type}</span>
@@ -1131,7 +1161,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         </div>
 
-        {/* ── Plain headings h2–h6 ── */}
         {isPlainHeading && (
           <div className="space-y-3">
             <div>
@@ -1144,10 +1173,8 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── Heading with link h2–h6 ── */}
         {isHeadingWithLink && <HeadingWithLinkEditor el={el} tag={headingTag} />}
 
-        {/* ── plain paragraph ── */}
         {el.type === "p" && (
           <div className="space-y-3">
             <div>
@@ -1172,7 +1199,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── quote ── */}
         {el.type === "quote" && (
           <div>
             <Label>Content</Label>
@@ -1182,7 +1208,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── p_with_link ── */}
         {el.type === "p_with_link" && (
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800">
@@ -1215,7 +1240,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── p_with_bold ── */}
         {el.type === "p_with_bold" && (
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
@@ -1232,7 +1256,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── p_with_link_bold ── */}
         {el.type === "p_with_link_bold" && (
           <div className="space-y-4">
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-800 leading-relaxed">
@@ -1263,7 +1286,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── image ── */}
         {el.type === "image" && (
           <div className="space-y-3">
             <div>
@@ -1286,7 +1308,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── table ── */}
         {el.type === "table" && (
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-slate-50">
@@ -1352,7 +1373,6 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           </div>
         )}
 
-        {/* ── ul / ol ── */}
         {(el.type === "ul" || el.type === "ol") && (
           <div>
             <Label>List items</Label>
@@ -1411,6 +1431,13 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
           transition: all .2s; font-family: 'DM Sans', sans-serif; flex: 1;
         }
         .btn-ghost:hover { border-color: #0057FF; color: #0057FF; background: #EFF6FF; }
+        .btn-danger {
+          background: white; color: #ef4444; border: 1.5px solid #fecaca;
+          padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+          cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+          transition: all .2s; font-family: 'DM Sans', sans-serif;
+        }
+        .btn-danger:hover { border-color: #ef4444; background: #fef2f2; }
         .chip {
           background: white; border: 1.5px solid #e2e8f0; color: #475569;
           padding: 8px 6px; border-radius: 8px; font-size: 11px; font-weight: 600;
@@ -1552,9 +1579,42 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
                     <Input value={meta.imageAlt} placeholder="Digital marketing team Bangalore"
                       onChange={(e) => setMeta((p) => ({ ...p, imageAlt: e.target.value }))} /></div>
                 </div>
+
+                {/* ── My Drafts ── */}
+                <div className="px-5 py-4 border-t border-slate-100 space-y-3">
+                  <SectionDivider>My Drafts</SectionDivider>
+                  <div className="space-y-2 max-h-60 overflow-auto">
+                    {drafts.length === 0 && (
+                      <p className="text-sm text-slate-400 italic">No drafts saved yet.</p>
+                    )}
+                    {drafts.map((d) => (
+                      <div key={d.key} className="p-3 border border-slate-200 rounded-lg flex justify-between items-center bg-white">
+                        <div className="min-w-0 mr-2">
+                          <h4 className="font-semibold text-slate-700 text-[13px] truncate">
+                            {d.data.meta?.headline || d.data.meta?.title || "Untitled"}
+                          </h4>
+                          <p className="text-[11px] text-slate-400 mt-0.5">
+                            {new Date(d.data.savedAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="flex gap-2 shrink-0">
+                          <button onClick={() => loadDraft(d.key)} className="btn-ghost">Edit</button>
+                          <button onClick={() => deleteDraft(d.key)} className="btn-danger">Delete</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Save & Publish ── */}
                 <div className="px-5 py-4 border-t border-slate-100 space-y-3">
                   <SectionDivider>Save & Publish</SectionDivider>
-                  <button onClick={downloadJSON} className="btn-ghost w-full"><Upload size={12} /> Download JSON</button>
+                  <button onClick={saveDraft} className="btn-ghost w-full">
+                    <Upload size={12} /> Save as Draft
+                  </button>
+                  <button onClick={downloadJSON} className="btn-ghost w-full">
+                    <Upload size={12} /> Download JSON
+                  </button>
                   <button onClick={publishBlog} disabled={publishStatus === "loading"} className="btn-publish">
                     {publishStatus === "loading"
                       ? <><Loader size={14} className="animate-spin" /> {publishMsg || "Publishing…"}</>
@@ -1562,19 +1622,15 @@ const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
                     }
                   </button>
                   {publishStatus === "success" && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
-               <CheckCircle size={13} /> {publishMsg}
-             </div>
-             <button
-            onClick={() => { setPublishStatus(null); setPublishMsg(""); }}
-              className="btn-ghost w-full"
-             >
-              <Send size={12} /> Publish again
-            </button>
-             </div>
-             )}
-
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-[#0057FF] bg-[#EFF6FF] border border-blue-200 rounded-lg px-3 py-2 text-xs font-medium">
+                        <CheckCircle size={13} /> {publishMsg}
+                      </div>
+                      <button onClick={() => { setPublishStatus(null); setPublishMsg(""); }} className="btn-ghost w-full">
+                        <Send size={12} /> Publish again
+                      </button>
+                    </div>
+                  )}
                   {publishStatus === "error" && (
                     <div className="flex items-start gap-2 text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs font-medium">
                       <AlertCircle size={13} className="mt-0.5 shrink-0" /> {publishMsg}
