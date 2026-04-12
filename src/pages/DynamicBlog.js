@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
   Trash2, Plus, Image as ImageIcon, Link as LinkIcon, Type, List,
   Settings, Upload, Send, Facebook, Youtube, MessageCircle, Instagram,
@@ -65,6 +65,12 @@ const FONT_WEIGHT_OPTIONS = [
 
 const FW_DEFAULT_HEADING = "font-bold";
 const FW_DEFAULT_PARA    = "font-normal";
+
+// ── FIX #1: Move TOC_HEADING_TYPES OUTSIDE component to avoid recreation every render ──
+const TOC_HEADING_TYPES = new Set([
+  "h2","h3","h4","h5","h6",
+  "h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link"
+]);
 
 // ─── sectionToElement ─────────────────────────────────────────────────────────
 const sectionToElement = (s) => {
@@ -259,16 +265,17 @@ function PreviewSection({ s, usedH3 }) {
     const count = (usedH3.get(base) || 0) + 1;
     usedH3.set(base, count);
     const id = count === 1 ? base : `${base}-${count}`;
+    // FIX #5: wrap string children in spans with keys to avoid React key warnings
     return React.createElement(tag, {
       id,
       className: `scroll-mt-28 ${sizeClass} ${s.fontWeight || defaultFw} text-[#0A0F1E]`,
     }, [
-      s.textBefore ? s.textBefore.trimEnd() + " " : "",
+      s.textBefore ? <span key="before">{s.textBefore.trimEnd()}{" "}</span> : null,
       <a key="link" href={s.href} target="_blank" rel="noopener noreferrer"
         className="text-[#0057FF] hover:opacity-80 underline underline-offset-2 decoration-[#0057FF]/40 transition-opacity">
         {s.linkText}
       </a>,
-      s.textAfter ? " " + s.textAfter.trimStart() : "",
+      s.textAfter ? <span key="after">{" "}{s.textAfter.trimStart()}</span> : null,
     ]);
   };
 
@@ -515,6 +522,7 @@ function BlogPicker({ onSelect }) {
         <h2 className="text-2xl font-bold text-[#0A0F1E] mb-2"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}>What would you like to do?</h2>
         <p className="text-sm text-slate-500 mb-8">Create a new blog post, or select an existing one to edit.</p>
+        {/* FIX: Pass null explicitly to signal "new blog" */}
         <button onClick={() => onSelect(null)}
           className="w-full mb-8 flex items-center gap-4 p-5 rounded-2xl border-2 border-dashed border-[#0057FF]/30
             bg-[#EFF6FF] hover:border-[#0057FF] hover:bg-[#DBEAFE] transition-all group text-left">
@@ -565,11 +573,75 @@ function BlogPicker({ onSelect }) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
+// EDITABLE PARAGRAPH — FIX #3: Resolves contentEditable + dangerouslySetInnerHTML conflict
+// Uses a ref to set innerHTML once on mount/id-change, then reads from DOM on blur
+// ═════════════════════════════════════════════════════════════════════════════
+function EditableParagraph({ el, isSelected, onSelect, onUpdate, fontWeightClass }) {
+  const ref = useRef(null);
+  const lastIdRef = useRef(null);
+
+  // Only set innerHTML when the element ID changes (i.e., a different block is rendered here)
+  // This avoids clobbering the cursor while the user is typing
+  useEffect(() => {
+    if (ref.current && lastIdRef.current !== el.id) {
+      ref.current.innerHTML = el.text || "";
+      lastIdRef.current = el.id;
+    }
+  }, [el.id]);
+
+  // If the text was updated externally (e.g., from textarea in the right panel),
+  // sync it back into the DOM only when not focused
+  useEffect(() => {
+    if (ref.current && document.activeElement !== ref.current) {
+      ref.current.innerHTML = el.text || "";
+    }
+  }, [el.text]);
+
+  const ring = `cursor-pointer rounded-lg transition-all outline-none ${
+    isSelected
+      ? "ring-2 ring-[#0057FF] ring-offset-2"
+      : "hover:ring-2 hover:ring-[#00C2FF] hover:ring-offset-1"
+  }`;
+
+  return (
+    <div className="space-y-1">
+      {isSelected && (
+        <div
+          className="flex items-center gap-1 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg w-fit"
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <button
+            title="Bold selected text"
+            onMouseDown={(e) => { e.preventDefault(); document.execCommand("bold"); }}
+            className="px-2 py-0.5 rounded text-xs font-bold text-slate-600 hover:bg-[#EFF6FF] hover:text-[#0057FF] transition-all border border-transparent hover:border-[#0057FF]/20"
+          ><strong>B</strong></button>
+          <button
+            title="Remove bold"
+            onMouseDown={(e) => { e.preventDefault(); document.execCommand("removeFormat"); }}
+            className="px-2 py-0.5 rounded text-xs text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all border border-transparent"
+          >✕ bold</button>
+        </div>
+      )}
+      <p
+        ref={ref}
+        className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${fontWeightClass} ${ring}`}
+        onClick={(e) => { e.stopPropagation(); onSelect(); }}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => onUpdate({ text: e.currentTarget.innerHTML })}
+      />
+    </div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
 // BLOG EDITOR
 // ═════════════════════════════════════════════════════════════════════════════
 function BlogEditor({ editingBlog, onBack }) {
   const { token, user, logout } = useAuth();
-  const [isEditMode] = useState(!!editingBlog);
+
+  // FIX #2: isEditMode as a plain derived value, not useState
+  const isEditMode = !!editingBlog;
 
   const [elements, setElements]             = useState([]);
   const [selectedId, setSelectedId]         = useState(null);
@@ -589,10 +661,27 @@ function BlogEditor({ editingBlog, onBack }) {
     date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     heroImage: "", imageAlt: "", tags: "",
   });
-  const editingBlogId = React.useRef(editingBlog?.id ?? null);
+
+  // FIX: Store the editing blog's id in a ref so it never changes mid-session
+  const editingBlogId = useRef(editingBlog?.id ?? null);
 
   useEffect(() => {
-    if (!editingBlog) return;
+    if (!editingBlog) {
+      // New blog — reset everything to blank
+      setMeta({
+        title: "", headline: "", description: "", keywords: "",
+        slug: "", category: "Digital Marketing",
+        author: "SkyUp Digital Solutions",
+        date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        heroImage: "", imageAlt: "", tags: "",
+      });
+      setElements([]);
+      setSelectedId(null);
+      editingBlogId.current = null;
+      return;
+    }
+    // Editing existing blog
+    editingBlogId.current = editingBlog.id;
     setMeta({
       title:       editingBlog.title       || editingBlog.headline || "",
       headline:    editingBlog.headline    || editingBlog.title    || "",
@@ -613,8 +702,6 @@ function BlogEditor({ editingBlog, onBack }) {
   const selectedEl = elements.find((el) => el.id === selectedId) || null;
 
   // ── TOC ──────────────────────────────────────────────────────────────────
-  const TOC_HEADING_TYPES = new Set(["h2","h3","h4","h5","h6","h2_with_link","h3_with_link","h4_with_link","h5_with_link","h6_with_link"]);
-
   const toc = useMemo(() => {
     const used = new Map();
     return elements
@@ -697,8 +784,13 @@ function BlogEditor({ editingBlog, onBack }) {
     const title    = meta.headline || meta.title;
     const slug     = meta.slug || slugify(title) || `blog-${Date.now()}`;
     const tagsArr  = meta.tags ? meta.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
+
+    // FIX: For new blogs, always generate a fresh numeric id via Date.now()
+    // For edits, reuse the original blog's id stored in the ref
+    const blogId = isEditMode ? editingBlogId.current : Date.now();
+
     return {
-      id: isEditMode ? editingBlogId.current : Date.now(),
+      id: blogId,
       slug,
       category:    meta.category,
       title:       meta.title || title,
@@ -757,19 +849,24 @@ function BlogEditor({ editingBlog, onBack }) {
         .trim();
       // eslint-disable-next-line no-new-func
       const blogsArray = new Function(`return ${stripped}`)();
-      const nextId = Math.max(0, ...blogsArray.map(b => Number(b.id) || 0)) + 1;
+
       const blogData = exportBlogData();
       let newBlogsArray;
+
       if (isEditMode) {
+        // UPDATE existing entry
         setPublishMsg("Updating existing blog entry…");
         const idx = blogsArray.findIndex(b => String(b.id) === String(editingBlogId.current));
         if (idx === -1) throw new Error(`Could not find blog with id ${editingBlogId.current} in blogs.js`);
         newBlogsArray = [...blogsArray];
         newBlogsArray[idx] = { ...blogData, id: editingBlogId.current };
       } else {
+        // CREATE new entry — compute a fresh id from the live array, not from exportBlogData
         setPublishMsg("Inserting new blog entry…");
+        const nextId = Math.max(0, ...blogsArray.map(b => Number(b.id) || 0)) + 1;
         newBlogsArray = [{ ...blogData, id: nextId }, ...blogsArray];
       }
+
       function toJsValue(val, indent = 0) {
         const pad = "  ".repeat(indent);
         const pad1 = "  ".repeat(indent + 1);
@@ -794,6 +891,7 @@ function BlogEditor({ editingBlog, onBack }) {
         }
         return JSON.stringify(val);
       }
+
       const entriesStr = newBlogsArray.map(b => `  ${toJsValue(b, 1)}`).join(",\n");
       const newContent = `export const BLOGS = [\n${entriesStr}\n];\n`;
       setPublishMsg("Committing to GitHub…");
@@ -872,7 +970,9 @@ function BlogEditor({ editingBlog, onBack }) {
       elements,
       savedAt: new Date().toISOString(),
     };
-    const key = `blog_draft_${meta.slug || slugify(meta.headline) || Date.now()}`;
+    // FIX #7: use timestamp in key to avoid collisions between blogs with the same slug
+    const slugKey = meta.slug || slugify(meta.headline) || "untitled";
+    const key = `blog_draft_${slugKey}_${Date.now()}`;
     localStorage.setItem(key, JSON.stringify(draftData));
     loadDraftsFromStorage();
     setPublishStatus("success");
@@ -967,8 +1067,9 @@ function BlogEditor({ editingBlog, onBack }) {
     const pick = (e) => { e.stopPropagation(); setSelectedId(el.id); };
     const fw = el.fontWeight || FW_DEFAULT_HEADING;
 
+    // FIX #4: Use string keys for hover detection to avoid float keys
     const InsertZone = ({ after }) => {
-      const key = after ? idx : idx - 0.5;
+      const key = after ? `after-${idx}` : `before-${idx}`;
       return (
         <div onMouseEnter={() => setHoveredInsert(key)} onMouseLeave={() => setHoveredInsert(null)}>
           <button
@@ -1092,30 +1193,16 @@ function BlogEditor({ editingBlog, onBack }) {
         </p>
       );
     else
+      // FIX #3: Use the dedicated EditableParagraph component instead of
+      // the forbidden contentEditable + dangerouslySetInnerHTML combo
       content = (
-        <div className="space-y-1">
-          {selectedId === el.id && (
-            <div className="flex items-center gap-1 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg w-fit"
-              onMouseDown={(e) => e.preventDefault()}>
-              <button title="Bold selected text"
-                onMouseDown={(e) => { e.preventDefault(); document.execCommand("bold"); }}
-                className="px-2 py-0.5 rounded text-xs font-bold text-slate-600 hover:bg-[#EFF6FF] hover:text-[#0057FF] transition-all border border-transparent hover:border-[#0057FF]/20"
-              ><strong>B</strong></button>
-              <button title="Remove bold"
-                onMouseDown={(e) => { e.preventDefault(); document.execCommand("removeFormat"); }}
-                className="px-2 py-0.5 rounded text-xs text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all border border-transparent"
-              >✕ bold</button>
-            </div>
-          )}
-          <p
-            className={`text-[13px] sm:text-[14px] leading-relaxed text-slate-600 ${el.fontWeight || FW_DEFAULT_PARA} ${ring}`}
-            onClick={pick}
-            contentEditable
-            suppressContentEditableWarning
-            dangerouslySetInnerHTML={{ __html: el.text }}
-            onBlur={(e) => updateEl(el.id, { text: e.currentTarget.innerHTML })}
-          />
-        </div>
+        <EditableParagraph
+          el={el}
+          isSelected={isSelected}
+          onSelect={() => setSelectedId(el.id)}
+          onUpdate={(patch) => updateEl(el.id, patch)}
+          fontWeightClass={el.fontWeight || FW_DEFAULT_PARA}
+        />
       );
 
     return (
@@ -1868,6 +1955,7 @@ export default function DynamicBlog() {
     return (
       <BlogPicker
         onSelect={(blog) => {
+          // blog is null → new blog, blog is an object → edit existing
           setEditingBlog(blog);
           setScreen("editor");
         }}
@@ -1876,7 +1964,7 @@ export default function DynamicBlog() {
 
   return (
     <BlogEditor
-      editingBlog={editingBlog}
+      editingBlog={editingBlog}   // null = new blog, object = edit
       onBack={() => { setScreen("picker"); setEditingBlog(null); }}
     />
   );
