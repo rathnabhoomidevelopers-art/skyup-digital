@@ -1,7 +1,7 @@
 export const BLOGS = [
   {
     id: 1774247933716,
-    slug: "top-ai-companies-in-bangalore-17-powerful-ways-ai-voice-agents-are-transforming-businesses-in-2026",
+    slug: "ai-voice-agents-business-2026",
     category: "AI Automation",
     title: "Top AI Companies in Bangalore | AI Voice Growth 2026",
     headline: "Top AI Companies in Bangalore: 17 Powerful Ways AI Voice Agents Are Transforming Businesses in 2026 ",
