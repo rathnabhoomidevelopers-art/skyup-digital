@@ -1,58 +1,5 @@
 export const BLOGS = [
-  {
-    id: 1774247933718,
-    slug: "d",
-    category: "Digital Marketing",
-    title: "sdaadssdads",
-    headline: "dsadsasdadsa",
-    description: "asddsasdadsa",
-    date: "Apr 18, 2026",
-    Keywords: "saddsa",
-    author: "SkyUp Digital Solutions",
-    image: "https://res.cloudinary.com/dmyj1echa/image/upload/v1776507877/srx37nvlxfq2utsd9ohw.webp",
-    heroImage: "https://res.cloudinary.com/dmyj1echa/image/upload/v1776507877/srx37nvlxfq2utsd9ohw.webp",
-    coverImage: "https://res.cloudinary.com/dmyj1echa/image/upload/v1776507877/srx37nvlxfq2utsd9ohw.webp",
-    imageAlt: "adsdasdasas",
-    tags: ["asdasddsa"],
-    sections: [
-      {
-        type: "p",
-        text: "dsaksdhkdsa",
-        fontWeight: "font-normal"
-      },
-      {
-        type: "p",
-        text: "sdaadsasd",
-        fontWeight: "font-normal"
-      },
-      {
-        type: "h2",
-        text: "sdajhasd",
-        fontWeight: "font-bold"
-      },
-      {
-        type: "h6",
-        text: "dasdasasd",
-        fontWeight: "font-bold"
-      },
-      {
-        type: "h2_with_link",
-        textBefore: "ssdsasd",
-        linkText: "ss",
-        href: "https://skyupdigitalsolutions.com",
-        textAfter: "dssds",
-        fontWeight: "font-bold"
-      },
-      {
-        type: "h5_with_link",
-        textBefore: "dsdsds",
-        linkText: "H5 Heading with Link",
-        href: "https://skyupdigitalsolutions.com",
-        textAfter: "",
-        fontWeight: "font-bold"
-      }
-    ]
-  },
+ 
   {
     id: 1774247933717,
     slug: "youtube-shorts-vs-instagram-reels-india-2026",
