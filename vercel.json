@@ -9,6 +9,11 @@
       "permanent": true
     },
     {
+      "source": "/services",
+      "destination": "/digital-marketing-services-in-bangalore",
+      "permanent": true
+    },
+    {
       "source": "/careers",
       "destination": "/careers-digital-marketing-job",
       "permanent": true
