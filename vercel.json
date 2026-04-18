@@ -37,11 +37,6 @@
       "source": "/contactus",
       "destination": "/contact-us",
       "permanent": true
-    },
-    {
-      "source": "/digital-marketing-services-in-bangalore",
-      "destination": "/service",
-      "permanent": true
     }
   ],
   "rewrites": [
