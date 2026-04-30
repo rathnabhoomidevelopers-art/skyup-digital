@@ -15,10 +15,13 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
-    cssCodeSplit: false, // was false — this was causing one giant CSS bundle
+    cssCodeSplit: true,
     cssMinify: true,
     minify: "esbuild",
     rollupOptions: {
+      external: [
+        "__STATIC_CONTENT_MANIFEST",
+      ],
       output: {
         manualChunks(id) {
           if (id.includes("node_modules/framer-motion")) return "framer-motion";
@@ -29,17 +32,25 @@ export default defineConfig({
             id.includes("node_modules/yup")
           )
             return "forms";
-          // ✅ Add this — splits the heavy receipt page
           if (
             id.includes("node_modules/html2canvas") ||
             id.includes("node_modules/jspdf")
           )
             return "pdf-libs";
+          if (id.includes("node_modules/lucide-react")) return "lucide";
+          if (id.includes("node_modules/@mui")) return "mui";
+          if (id.includes("node_modules/@emotion")) return "emotion";
         },
-        // ✅ Stable filenames for better caching
         chunkFileNames: "static/js/[name].[hash].js",
       },
     },
+  },
+  ssr: {
+    noExternal: [],
+    external: [
+      "picocolors",
+      "@brillout/picocolors",
+    ],
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify(
@@ -50,7 +61,6 @@ export default defineConfig({
     loader: "jsx",
     include: /.*\.[jt]sx?$/,
     exclude: [],
-    // ✅ Remove console.log in production
     drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
   },
   optimizeDeps: {
