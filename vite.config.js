@@ -19,9 +19,6 @@ export default defineConfig({
     cssMinify: true,
     minify: "esbuild",
     rollupOptions: {
-      external: [
-        "__STATIC_CONTENT_MANIFEST",
-      ],
       output: {
         manualChunks(id) {
           if (id.includes("node_modules/framer-motion")) return "framer-motion";
@@ -47,10 +44,7 @@ export default defineConfig({
   },
   ssr: {
     noExternal: [],
-    external: [
-      "picocolors",
-      "@brillout/picocolors",
-    ],
+    external: ["picocolors", "@brillout/picocolors"],
   },
   define: {
     "process.env.NODE_ENV": JSON.stringify(

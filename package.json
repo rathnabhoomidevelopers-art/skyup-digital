@@ -41,8 +41,8 @@
     "build:no-snap": "vite build",
     "verify-meta": "node scripts/verify-meta-tags.js",
     "test": "vitest",
-    "preview": "wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
+    "preview": "wrangler pages dev build/client",
+    "deploy": "npm run build && wrangler pages deploy build/client"
   },
   "eslintConfig": {
     "extends": [
