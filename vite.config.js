@@ -18,6 +18,7 @@ export default defineConfig({
     cssCodeSplit: true,
     cssMinify: true,
     minify: "esbuild",
+    chunkSizeWarningLimit: 650,
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -29,14 +30,18 @@ export default defineConfig({
             id.includes("node_modules/yup")
           )
             return "forms";
-          if (
-            id.includes("node_modules/html2canvas") ||
-            id.includes("node_modules/jspdf")
-          )
-            return "pdf-libs";
+          if (id.includes("node_modules/jspdf")) return "pdf-jspdf";
+          if (id.includes("node_modules/html2canvas")) return "pdf-html2canvas";
+          if (id.includes("node_modules/pdfmake")) return "pdf-pdfmake";
           if (id.includes("node_modules/lucide-react")) return "lucide";
           if (id.includes("node_modules/@mui")) return "mui";
           if (id.includes("node_modules/@emotion")) return "emotion";
+          if (id.includes("node_modules/gsap")) return "gsap";
+          if (
+            id.includes("node_modules/swiper") ||
+            id.includes("node_modules/embla-carousel")
+          )
+            return "carousel";
         },
         chunkFileNames: "static/js/[name].[hash].js",
       },
