@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "skyup-digital",
+  "compatibility_date": "2026-04-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "main": "build/server/entry.mjs",
+  "assets": {
+    "directory": "./build/client",
+    "binding": "ASSETS"
+  }
+}
