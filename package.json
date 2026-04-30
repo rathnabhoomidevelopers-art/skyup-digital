@@ -42,7 +42,7 @@
     "verify-meta": "node scripts/verify-meta-tags.js",
     "test": "vitest",
     "preview": "vite preview",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler pages deploy build/client --project-name=skyup-digital"
   },
   "eslintConfig": {
     "extends": [
