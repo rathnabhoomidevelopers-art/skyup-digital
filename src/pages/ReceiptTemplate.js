@@ -12,7 +12,6 @@ export default function ReceiptTemplate({ data }) {
   };
 
   const BORDER = "1px solid #2b2b2b";
-  const cell = { border: BORDER, padding: "8px 6px" };
 
   const taxRows = [
     { label: "Total", value: data.subtotal, show: true },
@@ -20,6 +19,11 @@ export default function ReceiptTemplate({ data }) {
     { label: data.sgstLabel || "SGST @ 9%", value: data.sgst, show: data.sgst > 0 },
     { label: data.igstLabel || "IGST @ 18%", value: data.igst, show: data.igst > 0 },
   ].filter((r) => r.show);
+
+  // Header + each item row height = 37px approx
+  // Tax rows need to be pushed down by the height of the header
+  const headerHeight = 38;
+  const rowHeight = 38;
 
   return (
     <div
@@ -105,122 +109,133 @@ export default function ReceiptTemplate({ data }) {
         </div>
       </div>
 
-      {/* Table Section */}
-      <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center">
-        <div style={{ width: "100%", position: "relative" }}>
-
-          {/* ── Main items table ── */}
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "separate",
-              borderSpacing: 0,
-              tableLayout: "fixed",
-              textAlign: "center",
-            }}
-          >
-            <thead>
-              <tr style={{ backgroundColor: "#fed7aa" }}>
-                <th style={{ ...cell, width: "8%" }}>SL.No.</th>
-                <th style={{ ...cell, width: "40%" }}>Description</th>
-                <th style={{ ...cell, width: "12%" }}>Tax Rate</th>
-                <th style={{ ...cell, width: "10%" }}>Qty</th>
-                <th style={{ ...cell, width: "15%" }}>Rate</th>
-                <th style={{ ...cell, width: "15%" }}>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.items &&
-                data.items.map((item, index) => (
-                  <tr key={index}>
-                    <td style={{ ...cell, borderTop: "none" }}>{index + 1}</td>
-                    <td style={{ ...cell, borderTop: "none", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                      {item.description}
-                    </td>
-                    <td style={{ ...cell, borderTop: "none" }}>18%</td>
-                    <td style={{ ...cell, borderTop: "none" }}>{item.qty}</td>
-                    <td style={{ ...cell, borderTop: "none" }}>{item.rate}</td>
-                    <td style={{ ...cell, borderTop: "none" }}>{item.amount}</td>
-                  </tr>
-                ))}
-
-              {/* Spacer rows so the table has height for tax rows beside it */}
-              {taxRows.map((_, i) => (
-                <tr key={`spacer-${i}`}>
-                  <td style={{ border: "none", padding: "8px 6px", color: "transparent" }}>-</td>
-                  <td style={{ border: "none", padding: "8px 6px" }}></td>
-                  <td style={{ border: "none", padding: "8px 6px" }}></td>
-                  <td style={{ border: "none", padding: "8px 6px" }}></td>
-                  <td style={{ border: "none", padding: "8px 6px" }}></td>
-                  <td style={{ border: "none", padding: "8px 6px" }}></td>
+      {/* ── Table Section ── */}
+      <div className="mb-5 px-4 sm:px-6 lg:px-8">
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            tableLayout: "fixed",
+            textAlign: "center",
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: "#fed7aa" }}>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "8%" }}>SL.No.</th>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "40%" }}>Description</th>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "12%" }}>Tax Rate</th>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "10%" }}>Qty</th>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "15%" }}>Rate</th>
+              <th style={{ border: BORDER, padding: "8px 6px", width: "15%" }}>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Item rows */}
+            {data.items &&
+              data.items.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ border: BORDER, padding: "8px 6px" }}>{index + 1}</td>
+                  <td style={{ border: BORDER, padding: "8px 6px", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    {item.description}
+                  </td>
+                  <td style={{ border: BORDER, padding: "8px 6px" }}>18%</td>
+                  <td style={{ border: BORDER, padding: "8px 6px" }}>{item.qty}</td>
+                  <td style={{ border: BORDER, padding: "8px 6px" }}>{item.rate}</td>
+                  <td style={{ border: BORDER, padding: "8px 6px" }}>{item.amount}</td>
                 </tr>
               ))}
 
-              {/* Grand Total Row */}
-              <tr style={{ backgroundColor: "#2563eb" }}>
-                <td colSpan="4" style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", color: "white" }}>
-                  {data.amount_in_words}
-                </td>
-                <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>
-                  TOTAL
-                </td>
-                <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>
-                  {data.total}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          {/* ── Tax rows overlay — separate div positioned over the right 30% ── */}
-          <div
-            style={{
-              position: "absolute",
-              right: 0,
-              /* sits just below the last item row: header(~37px) + items rows */
-              top: `${37 + (data.items?.length || 1) * 37}px`,
-              width: "30%",
-            }}
-          >
+            {/* Tax rows — first 4 cols completely empty no border, last 2 cols fully bordered */}
             {taxRows.map((row, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  borderLeft: BORDER,
-                  borderRight: BORDER,
-                  borderBottom: BORDER,
-                  borderTop: i === 0 ? BORDER : "none",
-                }}
-              >
-                <div
+              <tr key={`tax-${i}`} style={{ height: "34px" }}>
+                <td
+                  colSpan="4"
                   style={{
-                    flex: 1,
-                    padding: "8px 6px",
-                    fontSize: "14px",
+                    padding: 0,
+                    margin: 0,
+                    border: "none",
+                    background: "white",
+                  }}
+                />
+                <td
+                  style={{
+                    padding: "6px",
+                    fontSize: "13px",
                     fontWeight: "500",
                     color: "#374151",
                     textAlign: "center",
+                    background: "white",
+                    // Draw all 4 borders explicitly as inline styles
+                    borderTop: BORDER,
+                    borderBottom: BORDER,
+                    borderLeft: BORDER,
                     borderRight: BORDER,
+                    // Override top border on rows after the first to avoid double
+                    ...(i > 0 ? { borderTop: "none" } : {}),
                   }}
                 >
                   {row.label}
-                </div>
-                <div
+                </td>
+                <td
                   style={{
-                    flex: 1,
-                    padding: "8px 6px",
-                    fontSize: "14px",
+                    padding: "6px",
+                    fontSize: "13px",
                     color: "#374151",
                     textAlign: "center",
+                    background: "white",
+                    borderTop: BORDER,
+                    borderBottom: BORDER,
+                    borderLeft: "none",
+                    borderRight: BORDER,
+                    ...(i > 0 ? { borderTop: "none" } : {}),
                   }}
                 >
                   {row.value}
-                </div>
-              </div>
+                </td>
+              </tr>
             ))}
-          </div>
 
-        </div>
+            {/* Grand Total Row */}
+            <tr style={{ backgroundColor: "#2563eb" }}>
+              <td
+                colSpan="4"
+                style={{
+                  border: "1px solid #1e40af",
+                  padding: "8px 6px",
+                  fontSize: "14px",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {data.amount_in_words}
+              </td>
+              <td
+                style={{
+                  border: "1px solid #1e40af",
+                  padding: "8px 6px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                TOTAL
+              </td>
+              <td
+                style={{
+                  border: "1px solid #1e40af",
+                  padding: "8px 6px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {data.total}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       {/* Bank Details and Thank You Section */}
