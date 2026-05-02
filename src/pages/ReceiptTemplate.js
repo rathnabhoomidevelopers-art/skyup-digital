@@ -97,86 +97,68 @@ export default function ReceiptTemplate({ data }) {
 
       {/* New Table Layout with Borders */}
       <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center">
-        <table className="min-w-full table-fixed border-[#2b2b2b] table-bordered text-center align-middle">
-          <thead>
-            <tr style={{ backgroundColor: "#fed7aa" }}>
-              <th className="px-2 pb-3 w-[8%]">SL.No.</th>
-              <th className="px-2 pb-3 w-[40%]">Description</th>
-              <th className="px-2 pb-3 w-[12%]">Tax Rate</th>
-              <th className="px-2 pb-3 w-[10%]">Qty</th>
-              <th className="px-2 pb-3 w-[15%]">Rate</th>
-              <th className="px-2 pb-3 w-[15%]">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Dynamic Items Rows */}
-            {data.items &&
-              data.items.map((item, index) => (
-                <tr key={index}>
-                  <td className="px-4 pb-3">{index + 1}</td>
-                  <td className="px-4 pb-3 whitespace-pre-wrap break-words">
-                    {item.description}
-                  </td>
-                  <td className="px-4 pb-3">18%</td>
-                  <td className="px-4 pb-3">{item.qty}</td>
-                  <td className="px-4 pb-3">{item.rate}</td>
-                  <td className="px-4 pb-3">{item.amount}</td>
-                </tr>
-              ))}
+      <table className="min-w-full table-fixed text-center align-middle border-collapse border border-gray-800">
+  <thead>
+    <tr style={{ backgroundColor: "#fed7aa" }}>
+      <th className="border border-gray-800 px-2 pb-3 w-[8%]">SL.No.</th>
+      <th className="border border-gray-800 px-2 pb-3 w-[40%]">Description</th>
+      <th className="border border-gray-800 px-2 pb-3 w-[12%]">Tax Rate</th>
+      <th className="border border-gray-800 px-2 pb-3 w-[10%]">Qty</th>
+      <th className="border border-gray-800 px-2 pb-3 w-[15%]">Rate</th>
+      <th className="border border-gray-800 px-2 pb-3 w-[15%]">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {data.items && data.items.map((item, index) => (
+      <tr key={index}>
+        <td className="border border-gray-800 px-4 pb-3">{index + 1}</td>
+        <td className="border border-gray-800 px-4 pb-3 whitespace-pre-wrap break-words">{item.description}</td>
+        <td className="border border-gray-800 px-4 pb-3">18%</td>
+        <td className="border border-gray-800 px-4 pb-3">{item.qty}</td>
+        <td className="border border-gray-800 px-4 pb-3">{item.rate}</td>
+        <td className="border border-gray-800 px-4 pb-3">{item.amount}</td>
+      </tr>
+    ))}
 
-            {/* Subtotal Row */}
-            <tr>
-              <td colSpan="4" className="no-border px-2 pb-3 text-sm"></td>
-              <td className="px-2 pb-3 text-sm font-medium text-gray-700">
-                Total
-              </td>
-              <td className="px-2 pb-3 text-sm text-gray-700">
-                {data.subtotal}
-              </td>
-            </tr>
+    {/* Subtotal Row */}
+    <tr>
+      <td colSpan="4" className="px-2 pb-3 text-sm"></td>
+      <td className="border border-gray-800 px-2 pb-3 text-sm font-medium text-gray-700">Total</td>
+      <td className="border border-gray-800 px-2 pb-3 text-sm text-gray-700">{data.subtotal}</td>
+    </tr>
 
-            {/* Tax Rows (CGST, SGST, IGST) - only show if amount > 0 */}
-            {data.cgst > 0 && (
-              <tr>
-                <td colSpan="4" className="no-border px-2 pb-3"></td>
-                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
-                  {data.cgstLabel || "CGST @ 9%"}
-                </td>
-                <td className="px-2 pb-3 text-sm text-gray-700">{data.cgst}</td>
-              </tr>
-            )}
+    {data.cgst > 0 && (
+      <tr>
+        <td colSpan="4" className="px-2 pb-3"></td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm font-medium text-gray-700">{data.cgstLabel || "CGST @ 9%"}</td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm text-gray-700">{data.cgst}</td>
+      </tr>
+    )}
 
-            {data.sgst > 0 && (
-              <tr>
-                <td colSpan="4" className="no-border px-2 pb-3"></td>
-                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
-                  {data.sgstLabel || "SGST @ 9%"}
-                </td>
-                <td className="px-2 pb-3 text-sm text-gray-700">{data.sgst}</td>
-              </tr>
-            )}
+    {data.sgst > 0 && (
+      <tr>
+        <td colSpan="4" className="px-2 pb-3"></td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm font-medium text-gray-700">{data.sgstLabel || "SGST @ 9%"}</td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm text-gray-700">{data.sgst}</td>
+      </tr>
+    )}
 
-            {data.igst > 0 && (
-              <tr>
-                <td colSpan="4" className="no-border px-2 pb-3"></td>
-                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
-                  {data.igstLabel || "IGST @ 18%"}
-                </td>
-                <td className="px-2 pb-3 text-sm text-gray-700">{data.igst}</td>
-              </tr>
-            )}
+    {data.igst > 0 && (
+      <tr>
+        <td colSpan="4" className="px-2 pb-3"></td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm font-medium text-gray-700">{data.igstLabel || "IGST @ 18%"}</td>
+        <td className="border border-gray-800 px-2 pb-3 text-sm text-gray-700">{data.igst}</td>
+      </tr>
+    )}
 
-            {/* Total Amount In Words */}
-            <tr style={{ backgroundColor: "#2563eb" }}>
-              <td colSpan="4" className="text-sm px-2 pb-3 text-white">
-                {data.amount_in_words}
-              </td>
-              <td className="px-2 pb-3 text-sm font-bold text-white">TOTAL</td>
-              <td className="px-2 pb-3 text-sm font-bold text-white">
-                {data.total}
-              </td>
-            </tr>
-          </tbody>
+    {/* Total Row */}
+    <tr style={{ backgroundColor: "#2563eb" }}>
+      <td colSpan="4" className="border border-blue-800 text-sm px-2 pb-3 text-white">{data.amount_in_words}</td>
+      <td className="border border-blue-800 px-2 pb-3 text-sm font-bold text-white">TOTAL</td>
+      <td className="border border-blue-800 px-2 pb-3 text-sm font-bold text-white">{data.total}</td>
+    </tr>
+  </tbody>
+</table>
         </table>
       </div>
 
