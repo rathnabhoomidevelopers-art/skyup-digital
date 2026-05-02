@@ -12,8 +12,25 @@ export default function ReceiptTemplate({ data }) {
   };
 
   const cell = { border: "1px solid #2b2b2b", padding: "8px 6px" };
-  const taxLabelCell = { border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", fontWeight: "500", color: "#374151" };
-  const taxValueCell = { border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" };
+
+  // No borderLeft — the empty cell's borderRight already draws that line
+  const taxLabelCell = {
+    borderTop: "1px solid #2b2b2b",
+    borderRight: "1px solid #2b2b2b",
+    borderBottom: "1px solid #2b2b2b",
+    padding: "8px 6px",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#374151",
+  };
+  const taxValueCell = {
+    borderTop: "1px solid #2b2b2b",
+    borderRight: "1px solid #2b2b2b",
+    borderBottom: "1px solid #2b2b2b",
+    padding: "8px 6px",
+    fontSize: "14px",
+    color: "#374151",
+  };
 
   return (
     <div
@@ -104,7 +121,6 @@ export default function ReceiptTemplate({ data }) {
         <table
           style={{
             width: "100%",
-            // NO outer border on table itself — cell borders only, avoids double border
             borderCollapse: "collapse",
             tableLayout: "fixed",
             textAlign: "center",
@@ -136,9 +152,9 @@ export default function ReceiptTemplate({ data }) {
                 </tr>
               ))}
 
-            {/* Subtotal Row — empty left 4 cols have NO border so they appear invisible */}
+            {/* Subtotal Row */}
             <tr>
-              <td colSpan="4" style={{ padding: "0", border: "none" }}></td>
+              <td colSpan="4" style={{ padding: "0", border: "none", borderRight: "1px solid #2b2b2b" }}></td>
               <td style={taxLabelCell}>Total</td>
               <td style={taxValueCell}>{data.subtotal}</td>
             </tr>
@@ -146,7 +162,7 @@ export default function ReceiptTemplate({ data }) {
             {/* CGST Row */}
             {data.cgst > 0 && (
               <tr>
-                <td colSpan="4" style={{ padding: "0", border: "none" }}></td>
+                <td colSpan="4" style={{ padding: "0", border: "none", borderRight: "1px solid #2b2b2b" }}></td>
                 <td style={taxLabelCell}>{data.cgstLabel || "CGST @ 9%"}</td>
                 <td style={taxValueCell}>{data.cgst}</td>
               </tr>
@@ -155,7 +171,7 @@ export default function ReceiptTemplate({ data }) {
             {/* SGST Row */}
             {data.sgst > 0 && (
               <tr>
-                <td colSpan="4" style={{ padding: "0", border: "none" }}></td>
+                <td colSpan="4" style={{ padding: "0", border: "none", borderRight: "1px solid #2b2b2b" }}></td>
                 <td style={taxLabelCell}>{data.sgstLabel || "SGST @ 9%"}</td>
                 <td style={taxValueCell}>{data.sgst}</td>
               </tr>
@@ -164,7 +180,7 @@ export default function ReceiptTemplate({ data }) {
             {/* IGST Row */}
             {data.igst > 0 && (
               <tr>
-                <td colSpan="4" style={{ padding: "0", border: "none" }}></td>
+                <td colSpan="4" style={{ padding: "0", border: "none", borderRight: "1px solid #2b2b2b" }}></td>
                 <td style={taxLabelCell}>{data.igstLabel || "IGST @ 18%"}</td>
                 <td style={taxValueCell}>{data.igst}</td>
               </tr>
@@ -172,10 +188,7 @@ export default function ReceiptTemplate({ data }) {
 
             {/* Total Amount In Words */}
             <tr style={{ backgroundColor: "#2563eb" }}>
-              <td
-                colSpan="4"
-                style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", color: "white" }}
-              >
+              <td colSpan="4" style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", color: "white" }}>
                 {data.amount_in_words}
               </td>
               <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>
@@ -191,7 +204,6 @@ export default function ReceiptTemplate({ data }) {
 
       {/* Bank Details and Thank You Section */}
       <div className="flex justify-between">
-        {/* Bank Details */}
         <div className="flex-1 py-2 px-[60px]">
           <div className="font-bold text-sm mb-1">BANK DETAILS</div>
           <div className="text-sm">
