@@ -11,49 +11,6 @@ export default function ReceiptTemplate({ data }) {
     });
   };
 
-  const cellStyle = {
-    border: "1px solid #2b2b2b",
-    padding: "8px 6px",
-    textAlign: "center",
-  };
-
-  const headerCellStyle = {
-    border: "1px solid #2b2b2b",
-    padding: "8px 6px",
-    textAlign: "center",
-    fontWeight: "bold",
-  };
-
-  const taxCellStyle = {
-    border: "1px solid #2b2b2b",
-    padding: "6px 8px",
-    textAlign: "center",
-    fontWeight: "500",
-    fontSize: "13px",
-    color: "#374151",
-  };
-
-  const taxValueStyle = {
-    border: "1px solid #2b2b2b",
-    padding: "6px 8px",
-    textAlign: "center",
-    fontSize: "13px",
-    color: "#374151",
-  };
-
-  const emptyColStyle = {
-    padding: "6px",
-    border: "none",
-  };
-
-  const totalRowStyle = {
-    border: "1px solid #1e40af",
-    padding: "8px 6px",
-    color: "white",
-    textAlign: "center",
-    fontSize: "13px",
-  };
-
   return (
     <div
       className="font-poppins bg-white"
@@ -138,104 +95,84 @@ export default function ReceiptTemplate({ data }) {
         </div>
       </div>
 
-      {/* Table Section — all borders via inline styles for PDF compatibility */}
-      <div className="mb-5 px-[60px]">
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            tableLayout: "fixed",
-            border: "1px solid #2b2b2b",
-          }}
-        >
+      {/* New Table Layout with Borders */}
+      <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center">
+        <table className="min-w-full table-fixed border-[#2b2b2b] table-bordered text-center align-middle">
           <thead>
             <tr style={{ backgroundColor: "#fed7aa" }}>
-              <th style={{ ...headerCellStyle, width: "8%" }}>SL.No.</th>
-              <th style={{ ...headerCellStyle, width: "40%" }}>Description</th>
-              <th style={{ ...headerCellStyle, width: "12%" }}>Tax Rate</th>
-              <th style={{ ...headerCellStyle, width: "10%" }}>Qty</th>
-              <th style={{ ...headerCellStyle, width: "15%" }}>Rate</th>
-              <th style={{ ...headerCellStyle, width: "15%" }}>Amount</th>
+              <th className="px-2 pb-3 w-[8%]">SL.No.</th>
+              <th className="px-2 pb-3 w-[40%]">Description</th>
+              <th className="px-2 pb-3 w-[12%]">Tax Rate</th>
+              <th className="px-2 pb-3 w-[10%]">Qty</th>
+              <th className="px-2 pb-3 w-[15%]">Rate</th>
+              <th className="px-2 pb-3 w-[15%]">Amount</th>
             </tr>
           </thead>
           <tbody>
-            {/* Line Items */}
+            {/* Dynamic Items Rows */}
             {data.items &&
               data.items.map((item, index) => (
                 <tr key={index}>
-                  <td style={cellStyle}>{index + 1}</td>
-                  <td
-                    style={{
-                      ...cellStyle,
-                      wordBreak: "break-word",
-                      whiteSpace: "pre-wrap",
-                    }}
-                  >
+                  <td className="px-4 pb-3">{index + 1}</td>
+                  <td className="px-4 pb-3 whitespace-pre-wrap break-words">
                     {item.description}
                   </td>
-                  <td style={cellStyle}>18%</td>
-                  <td style={cellStyle}>{item.qty}</td>
-                  <td style={cellStyle}>{item.rate}</td>
-                  <td style={cellStyle}>{item.amount}</td>
+                  <td className="px-4 pb-3">18%</td>
+                  <td className="px-4 pb-3">{item.qty}</td>
+                  <td className="px-4 pb-3">{item.rate}</td>
+                  <td className="px-4 pb-3">{item.amount}</td>
                 </tr>
               ))}
 
             {/* Subtotal Row */}
             <tr>
-              <td colSpan="4" style={emptyColStyle}></td>
-              <td style={taxCellStyle}>Total</td>
-              <td style={taxValueStyle}>{data.subtotal}</td>
+              <td colSpan="4" className="no-border px-2 pb-3 text-sm"></td>
+              <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                Total
+              </td>
+              <td className="px-2 pb-3 text-sm text-gray-700">
+                {data.subtotal}
+              </td>
             </tr>
 
-            {/* CGST Row */}
+            {/* Tax Rows (CGST, SGST, IGST) - only show if amount > 0 */}
             {data.cgst > 0 && (
               <tr>
-                <td colSpan="4" style={emptyColStyle}></td>
-                <td style={taxCellStyle}>{data.cgstLabel || "CGST @ 9%"}</td>
-                <td style={taxValueStyle}>{data.cgst}</td>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.cgstLabel || "CGST @ 9%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.cgst}</td>
               </tr>
             )}
 
-            {/* SGST Row */}
             {data.sgst > 0 && (
               <tr>
-                <td colSpan="4" style={emptyColStyle}></td>
-                <td style={taxCellStyle}>{data.sgstLabel || "SGST @ 9%"}</td>
-                <td style={taxValueStyle}>{data.sgst}</td>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.sgstLabel || "SGST @ 9%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.sgst}</td>
               </tr>
             )}
 
-            {/* IGST Row */}
             {data.igst > 0 && (
               <tr>
-                <td colSpan="4" style={emptyColStyle}></td>
-                <td style={taxCellStyle}>{data.igstLabel || "IGST @ 18%"}</td>
-                <td style={taxValueStyle}>{data.igst}</td>
+                <td colSpan="4" className="no-border px-2 pb-3"></td>
+                <td className="px-2 pb-3 text-sm font-medium text-gray-700">
+                  {data.igstLabel || "IGST @ 18%"}
+                </td>
+                <td className="px-2 pb-3 text-sm text-gray-700">{data.igst}</td>
               </tr>
             )}
 
-            {/* Grand Total Row */}
+            {/* Total Amount In Words */}
             <tr style={{ backgroundColor: "#2563eb" }}>
-              <td
-                colSpan="4"
-                style={{ ...totalRowStyle, textAlign: "center" }}
-              >
+              <td colSpan="4" className="text-sm px-2 pb-3 text-white">
                 {data.amount_in_words}
               </td>
-              <td
-                style={{
-                  ...totalRowStyle,
-                  fontWeight: "bold",
-                }}
-              >
-                TOTAL
-              </td>
-              <td
-                style={{
-                  ...totalRowStyle,
-                  fontWeight: "bold",
-                }}
-              >
+              <td className="px-2 pb-3 text-sm font-bold text-white">TOTAL</td>
+              <td className="px-2 pb-3 text-sm font-bold text-white">
                 {data.total}
               </td>
             </tr>
@@ -247,6 +184,8 @@ export default function ReceiptTemplate({ data }) {
       <div className="flex justify-between">
         {/* Bank Details */}
         <div className="flex-1 py-2 px-[60px]">
+          {" "}
+          {/* Added mt-4 to push it up */}
           <div className="font-bold text-sm mb-1">BANK DETAILS</div>
           <div className="text-sm">
             <div>
@@ -275,7 +214,7 @@ export default function ReceiptTemplate({ data }) {
           </div>
         </div>
 
-        {/* Signature / Thank You */}
+        {/* Thank You with Geometric Design */}
         <div className="pt-6">
           <img
             src="/images/signature.webp"
