@@ -158,7 +158,7 @@ export default function ReceiptTemplate({ data }) {
       <td className="border border-blue-800 px-2 pb-3 text-sm font-bold text-white">{data.total}</td>
     </tr>
   </tbody>
-</table>
+
         </table>
       </div>
 
