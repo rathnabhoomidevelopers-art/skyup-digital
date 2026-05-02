@@ -97,7 +97,7 @@ export default function ReceiptTemplate({ data }) {
 
       {/* New Table Layout with Borders */}
       <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center">
-        <table className="min-w-full table-fixed border-[#2b2b2b] table-bordered text-center align-middle">
+        <table className="min-w-full table-fixed border-1 border-[#2b2b2b] text-center align-middle">
           <thead>
             <tr style={{ backgroundColor: "#fed7aa" }}>
               <th className="px-2 pb-3 w-[8%]">SL.No.</th>
