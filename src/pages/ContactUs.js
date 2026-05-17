@@ -323,8 +323,8 @@ export function ContactUs() {
                 iconColor="text-[#FF8D17]"
                 title="OUR OFFICE"
                 lines={[
-                  "2nd Floor, No 23, E Block, Parindhi,",
-                  "14A Dasarahalli Main Rd, Sahakar Nagar,",
+                  "2nd Floor, No 23, 14A, Dasarahalli Main Rd,",
+                  "E Block, Sahakar Nagar, Byatarayanapura,",
                   "Bengaluru, Karnataka 560092",
                 ]}
               />
