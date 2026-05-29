@@ -1,4 +1,6 @@
 // pages/+Layout.jsx
+import '../src/index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useEffect } from 'react'
 import { SERVICES, DEFAULT_SERVICE_SLUG } from '../src/data/servicesData'
@@ -66,7 +68,6 @@ export default function Layout({ children }) {
       'href',
       `https://www.skyupdigitalsolutions.com${urlPathname === '/' ? '' : urlPathname}`
     )
-
   }, [urlPathname])
 
   return <>{children}</>
