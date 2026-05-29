@@ -1,4 +1,16 @@
 import { ChevronRightIcon } from "lucide-react";
+import { navigate } from "vike/client/router";
+
+// Map each homepage card to a real destination.
+// Adjust the right-hand side to the slug/page you actually want each card to open.
+const SERVICE_LINKS = {
+  "Digital Marketing": "/digital-marketing-services-in-bangalore",
+  "Design & Branding": "/digital-marketing-services-in-bangalore",
+  "Web Development": "/digital-marketing-services-in-bangalore",
+  "AI-Automation": "/services/ai-company-in-bangalore",
+};
+
+const FALLBACK_LINK = "/digital-marketing-services-in-bangalore";
 
 const services = [
   {
@@ -41,13 +53,13 @@ const services = [
 
 export default function WhatWeDo() {
   const onViewMore = (serviceTitle) => {
-    window.location.href = `/service?category=${encodeURIComponent(serviceTitle)}`;
+    const target = SERVICE_LINKS[serviceTitle] || FALLBACK_LINK;
+    navigate(target); // Vike client-side nav — no hard reload, keeps CSS intact
   };
 
   return (
     <section className="w-full font-poppins bg-[#F8FAFC] py-16">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Headings */}
         <div className="text-center mb-10">
           <p className="text-[18px] sm:text-[24px] font-bold text-[#0037CA]">
             WHAT WE DO
@@ -61,7 +73,6 @@ export default function WhatWeDo() {
           </p>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 gap-6 sm:gap-10 lg:gap-12 xl:gap-40 md:grid-cols-4 xl:grid-cols-4 justify-items-center mx-auto">
           {services.map((item) => (
             <div
@@ -72,7 +83,6 @@ export default function WhatWeDo() {
                 flex flex-col justify-center items-center
                 shadow-[0_20px_40px_rgba(15,23,42,0.04)]`}
             >
-              {/* Icon */}
               <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-6">
                 {typeof item.icon === "string" ? (
                   <img src={item.icon} alt={`${item.title} icon`} className="w-12 h-12" />
