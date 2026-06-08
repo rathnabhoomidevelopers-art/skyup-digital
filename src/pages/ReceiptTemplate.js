@@ -1,6 +1,10 @@
 export default function ReceiptTemplate({ data }) {
   if (!data) return null;
 
+  // Format numbers as Indian currency keeping paise (always 2 decimals).
+  const money = (n) =>
+    Number(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -125,22 +129,22 @@ export default function ReceiptTemplate({ data }) {
           </td>
           <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>18%</td>
           <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{item.qty}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{item.rate}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{item.amount}</td>
+          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{money(item.rate)}</td>
+          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{money(item.amount)}</td>
         </tr>
       ))}
 
     <tr>
       <td colSpan="4" style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}></td>
       <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>Total</td>
-      <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{data.subtotal}</td>
+      <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{money(data.subtotal)}</td>
     </tr>
 
     {data.cgst > 0 && (
       <tr>
         <td colSpan="4" style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}></td>
         <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>{data.cgstLabel || "CGST @ 9%"}</td>
-        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{data.cgst}</td>
+        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{money(data.cgst)}</td>
       </tr>
     )}
 
@@ -148,7 +152,7 @@ export default function ReceiptTemplate({ data }) {
       <tr>
         <td colSpan="4" style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}></td>
         <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>{data.sgstLabel || "SGST @ 9%"}</td>
-        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{data.sgst}</td>
+        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{money(data.sgst)}</td>
       </tr>
     )}
 
@@ -156,7 +160,7 @@ export default function ReceiptTemplate({ data }) {
       <tr>
         <td colSpan="4" style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}></td>
         <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", fontWeight: "500", color: "#374151" }}>{data.igstLabel || "IGST @ 18%"}</td>
-        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{data.igst}</td>
+        <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", fontSize: "14px", color: "#374151" }}>{money(data.igst)}</td>
       </tr>
     )}
 
@@ -165,7 +169,7 @@ export default function ReceiptTemplate({ data }) {
         {data.amount_in_words}
       </td>
       <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>TOTAL</td>
-      <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>{data.total}</td>
+      <td style={{ border: "1px solid #1e40af", padding: "8px 6px", fontSize: "14px", fontWeight: "bold", color: "white" }}>{money(data.total)}</td>
     </tr>
   </tbody>
 </table>

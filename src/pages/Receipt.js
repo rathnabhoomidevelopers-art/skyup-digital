@@ -205,28 +205,38 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  const autoCalc = (amount, pct) => Math.round(amount * (pct / 100));
+  const autoCalc = (amount, pct) => Math.round((amount * (pct / 100) + Number.EPSILON) * 100) / 100;
 
   const calcTotals = (items, cP, sP, iP, manual, cM, sM, iM) => {
     const subtotal = (items || []).reduce((s, i) => s + (i.qty || 0) * (i.rate || 0), 0);
     let cgst, sgst, igst;
     if (manual) { cgst = parseFloat(cM)||0; sgst = parseFloat(sM)||0; igst = parseFloat(iM)||0; }
     else { cgst = cP ? autoCalc(subtotal, cP) : 0; sgst = sP ? autoCalc(subtotal, sP) : 0; igst = iP ? autoCalc(subtotal, iP) : 0; }
-    return { subtotal, cgst, sgst, igst, total: subtotal + cgst + sgst + igst };
+    { const r2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100; return { subtotal: r2(subtotal), cgst: r2(cgst), sgst: r2(sgst), igst: r2(igst), total: r2(subtotal + cgst + sgst + igst) }; }
   };
 
-  const numberToWords = (num) => {
+  const numberToWords = (numRaw) => {
     const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
     const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
     const teens = ["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-    if (num === 0) return "Zero rupees only";
     const cvt = (n) => { let s = ""; if (n > 99) { s += ones[Math.floor(n/100)] + " hundred "; n %= 100; } if (n > 19) { s += tens[Math.floor(n/10)] + " "; n %= 10; } else if (n >= 10) { return s + teens[n-10] + " "; } if (n > 0) s += ones[n] + " "; return s; };
-    let w = "";
-    if (num >= 10000000) { w += cvt(Math.floor(num/10000000)) + "crore "; num %= 10000000; }
-    if (num >= 100000) { w += cvt(Math.floor(num/100000)) + "lakh "; num %= 100000; }
-    if (num >= 1000) { w += cvt(Math.floor(num/1000)) + "thousand "; num %= 1000; }
-    w += cvt(num);
-    return (w.trim().charAt(0).toUpperCase() + w.trim().slice(1) + " rupees only").replace(/\s+/g, " ");
+    const toWords = (n) => {
+      if (n === 0) return "Zero";
+      let w = "";
+      if (n >= 10000000) { w += cvt(Math.floor(n/10000000)) + "crore "; n %= 10000000; }
+      if (n >= 100000) { w += cvt(Math.floor(n/100000)) + "lakh "; n %= 100000; }
+      if (n >= 1000) { w += cvt(Math.floor(n/1000)) + "thousand "; n %= 1000; }
+      w += cvt(n);
+      return w.trim();
+    };
+    const value = Math.abs(parseFloat(numRaw) || 0);
+    const rupees = Math.floor(value);
+    const paise = Math.round((value - rupees) * 100);
+    let rWords = toWords(rupees);
+    rWords = rWords.charAt(0).toUpperCase() + rWords.slice(1);
+    let result = rWords + " rupees";
+    if (paise > 0) result += " and " + toWords(paise).toLowerCase() + " paise";
+    return (result + " only").replace(/\s+/g, " ");
   };
 
   const toDateInput = (val) => { try { return val ? new Date(val).toISOString().split("T")[0] : ""; } catch { return ""; } };
@@ -277,7 +287,7 @@ function EditReceiptModal({ receipt, token, onClose, onSaved }) {
     const payload = {
       to: values.to, client_gst: values.client_gst || "URD",
       date: values.date, invoice_due: values.invoice_due || null, hsn_no: values.hsn_no || "",
-      items: values.items.map(i => ({ description: i.description, qty: parseInt(i.qty), rate: parseInt(i.rate), amount: parseInt(i.qty) * parseInt(i.rate) })),
+      items: values.items.map(i => { const qty = parseFloat(i.qty) || 0; const rate = parseFloat(i.rate) || 0; return { description: i.description, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }; }),
       subtotal, cgst, sgst, igst,
       cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
       sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
@@ -889,20 +899,30 @@ export function Receipt() {
     igst_manual: Yup.number().min(0),
   });
 
-  const autoCalc = (amount, pct) => Math.round(amount * (pct / 100));
+  const autoCalc = (amount, pct) => Math.round((amount * (pct / 100) + Number.EPSILON) * 100) / 100;
 
-  const numberToWords = (num) => {
+  const numberToWords = (numRaw) => {
     const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
     const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
     const teens = ["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-    if (num === 0) return "Zero rupees only";
     const cvt = (n) => { let s = ""; if (n > 99) { s += ones[Math.floor(n/100)] + " hundred "; n %= 100; } if (n > 19) { s += tens[Math.floor(n/10)] + " "; n %= 10; } else if (n >= 10) { return s + teens[n-10] + " "; } if (n > 0) s += ones[n] + " "; return s; };
-    let w = "";
-    if (num >= 10000000) { w += cvt(Math.floor(num/10000000)) + "crore "; num %= 10000000; }
-    if (num >= 100000) { w += cvt(Math.floor(num/100000)) + "lakh "; num %= 100000; }
-    if (num >= 1000) { w += cvt(Math.floor(num/1000)) + "thousand "; num %= 1000; }
-    w += cvt(num);
-    return (w.trim().charAt(0).toUpperCase() + w.trim().slice(1) + " rupees only").replace(/\s+/g, " ");
+    const toWords = (n) => {
+      if (n === 0) return "Zero";
+      let w = "";
+      if (n >= 10000000) { w += cvt(Math.floor(n/10000000)) + "crore "; n %= 10000000; }
+      if (n >= 100000) { w += cvt(Math.floor(n/100000)) + "lakh "; n %= 100000; }
+      if (n >= 1000) { w += cvt(Math.floor(n/1000)) + "thousand "; n %= 1000; }
+      w += cvt(n);
+      return w.trim();
+    };
+    const value = Math.abs(parseFloat(numRaw) || 0);
+    const rupees = Math.floor(value);
+    const paise = Math.round((value - rupees) * 100);
+    let rWords = toWords(rupees);
+    rWords = rWords.charAt(0).toUpperCase() + rWords.slice(1);
+    let result = rWords + " rupees";
+    if (paise > 0) result += " and " + toWords(paise).toLowerCase() + " paise";
+    return (result + " only").replace(/\s+/g, " ");
   };
 
   const calculateTotals = (items, cP, sP, iP, manual, cM, sM, iM) => {
@@ -911,8 +931,27 @@ export function Receipt() {
     let cgst, sgst, igst;
     if (manual) { cgst = parseFloat(cM)||0; sgst = parseFloat(sM)||0; igst = parseFloat(iM)||0; }
     else { cgst = cP ? autoCalc(subtotal, cP) : 0; sgst = sP ? autoCalc(subtotal, sP) : 0; igst = iP ? autoCalc(subtotal, iP) : 0; }
-    return { subtotal, cgst, sgst, igst, total: subtotal + cgst + sgst + igst };
+    { const r2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100; return { subtotal: r2(subtotal), cgst: r2(cgst), sgst: r2(sgst), igst: r2(igst), total: r2(subtotal + cgst + sgst + igst) }; }
   };
+
+  // Reverse GST from a GST-INCLUSIVE advance amount.
+  // e.g. ₹5000 incl. 18% -> base = round(5000 * 100 / 118) = 4237, gst = 5000 - 4237 = 763.
+  // base + gst always equals the entered amount exactly (no rounding drift).
+  const reverseGstFromInclusive = (inclusiveAmount, rate, mode) => {
+    const round2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100;
+    const amount = round2(parseFloat(inclusiveAmount) || 0);
+    const r = parseFloat(rate) || 0;
+    if (amount <= 0 || r <= 0) return { amount, base: amount, gstTotal: 0, cgst: 0, sgst: 0, igst: 0 };
+    const base = round2((amount * 100) / (100 + r));
+    const gstTotal = round2(amount - base); // base + gstTotal === amount, to the paise
+    if (mode === "inter") return { amount, base, gstTotal, cgst: 0, sgst: 0, igst: gstTotal };
+    const cgst = round2(gstTotal / 2);
+    const sgst = round2(gstTotal - cgst); // cgst + sgst === gstTotal, to the paise
+    return { amount, base, gstTotal, cgst, sgst, igst: 0 };
+  };
+
+  // Format a number as Indian currency keeping paise (always 2 decimals).
+  const inr2 = (n) => Number(n || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const { subtotal, cgst, sgst, igst, total } = calculateTotals(
@@ -924,7 +963,7 @@ export function Receipt() {
     const formData = {
       to: values.to, client_gst: values.client_gst || "URD", invoice_no: invoiceNumber,
       date: values.date, invoice_due: values.invoice_due || null, hsn_no: values.hsn_no || "",
-      items: values.items.map(i => ({ description: i.description, qty: parseInt(i.qty), rate: parseInt(i.rate), amount: parseInt(i.qty) * parseInt(i.rate) })),
+      items: values.items.map(i => { const qty = parseFloat(i.qty) || 0; const rate = parseFloat(i.rate) || 0; return { description: i.description, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }; }),
       subtotal, cgst, sgst, igst,
       cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
       sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
@@ -1051,6 +1090,7 @@ export function Receipt() {
                 cgst_percentage: 9, sgst_percentage: 9, igst_percentage: 18,
                 cgst_manual: "", sgst_manual: "", igst_manual: "",
                 use_manual_gst: false,
+                advance_received: "", advance_rate: 18, advance_mode: "intra", advance_amount_type: "inclusive",
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
@@ -1143,7 +1183,7 @@ export function Receipt() {
                                     <div>
                                       <label className="block text-sm font-semibold text-gray-700 mb-2">Amount</label>
                                       <div className={`${ic} bg-gray-100 border-gray-200 font-semibold text-gray-700`}>
-                                        ₹{((item.qty || 0) * (item.rate || 0)).toLocaleString("en-IN")}
+                                        ₹{inr2((parseFloat(item.qty) || 0) * (parseFloat(item.rate) || 0))}
                                       </div>
                                     </div>
                                   </div>
@@ -1160,6 +1200,120 @@ export function Receipt() {
                           </div>
                         )}
                       </FieldArray>
+                    </div>
+
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-1">Advance Received</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Choose how the amount should be treated:
+                        <span className="font-semibold"> Inclusive</span> back-calculates the base &amp; GST (default 18%) so the total
+                        matches what was received; <span className="font-semibold">Exclusive</span> treats the amount as the base and lets you add GST manually.
+                      </p>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">Amount Type</label>
+                          <Field
+                            as="select"
+                            name="advance_amount_type"
+                            className={ic}
+                            onChange={(e) => {
+                              const v = e.target.value;
+                              setFieldValue("advance_amount_type", v);
+                              // Inclusive defaults GST to 18%
+                              if (v === "inclusive") setFieldValue("advance_rate", 18);
+                            }}
+                          >
+                            <option value="inclusive">Inclusive (GST included, default 18%)</option>
+                            <option value="exclusive">Exclusive (add GST manually)</option>
+                          </Field>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            {values.advance_amount_type === "exclusive" ? "Amount (₹, before GST)" : "Amount Received (₹, incl. GST)"}
+                          </label>
+                          <Field type="number" name="advance_received" min="0" step="0.01" className={ic} placeholder="e.g. 5000" />
+                        </div>
+                      </div>
+
+                      {values.advance_amount_type === "inclusive" && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">GST Rate (%)</label>
+                            <Field type="number" name="advance_rate" min="0" max="100" step="0.01" className={ic} placeholder="18" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">GST Type</label>
+                            <Field as="select" name="advance_mode" className={ic}>
+                              <option value="intra">Intra-state (CGST + SGST)</option>
+                              <option value="inter">Inter-state (IGST)</option>
+                            </Field>
+                          </div>
+                        </div>
+                      )}
+
+                      {values.advance_amount_type === "inclusive" ? (
+                        (() => {
+                          const adv = reverseGstFromInclusive(values.advance_received, values.advance_rate, values.advance_mode);
+                          if (adv.amount <= 0) return null;
+                          return (
+                            <div className="mt-5 bg-white border border-emerald-200 rounded-lg p-4">
+                              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Breakdown preview</p>
+                              <div className="space-y-2 text-sm">
+                                <div className="flex justify-between"><span className="text-gray-600">Taxable base</span><span className="font-semibold">₹{inr2(adv.base)}</span></div>
+                                {adv.cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">CGST @ {(parseFloat(values.advance_rate) || 0) / 2}%</span><span className="font-semibold">₹{inr2(adv.cgst)}</span></div>}
+                                {adv.sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">SGST @ {(parseFloat(values.advance_rate) || 0) / 2}%</span><span className="font-semibold">₹{inr2(adv.sgst)}</span></div>}
+                                {adv.igst > 0 && <div className="flex justify-between"><span className="text-gray-600">IGST @ {parseFloat(values.advance_rate) || 0}%</span><span className="font-semibold">₹{inr2(adv.igst)}</span></div>}
+                                <div className="border-t pt-2 flex justify-between"><span className="font-bold text-gray-800">Total received</span><span className="font-bold text-emerald-700">₹{inr2(adv.amount)}</span></div>
+                              </div>
+                            </div>
+                          );
+                        })()
+                      ) : (
+                        (parseFloat(values.advance_received) || 0) > 0 && (
+                          <div className="mt-5 bg-white border border-emerald-200 rounded-lg p-4">
+                            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Breakdown preview</p>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between"><span className="text-gray-600">Taxable base</span><span className="font-semibold">₹{inr2(parseFloat(values.advance_received) || 0)}</span></div>
+                              <div className="flex justify-between"><span className="text-gray-600">GST</span><span className="font-semibold text-gray-500">Enter manually below</span></div>
+                            </div>
+                          </div>
+                        )
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const amt = Math.round(((parseFloat(values.advance_received) || 0) + Number.EPSILON) * 100) / 100;
+                          if (amt <= 0) { alert("Enter a valid amount first."); return; }
+                          const existingDesc = values.items?.[0]?.description?.trim();
+                          if (values.advance_amount_type === "exclusive") {
+                            // Amount is the taxable base; GST is added manually by the user.
+                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: amt }]);
+                            setFieldValue("use_manual_gst", true);
+                            setFieldValue("cgst_manual", "");
+                            setFieldValue("sgst_manual", "");
+                            setFieldValue("igst_manual", "");
+                          } else {
+                            // Inclusive: back-calculate base + GST (default 18%).
+                            const adv = reverseGstFromInclusive(amt, values.advance_rate || 18, values.advance_mode);
+                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: adv.base }]);
+                            setFieldValue("use_manual_gst", true);
+                            setFieldValue("cgst_manual", adv.cgst);
+                            setFieldValue("sgst_manual", adv.sgst);
+                            setFieldValue("igst_manual", adv.igst);
+                          }
+                        }}
+                        className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+                      >
+                        {values.advance_amount_type === "exclusive" ? "Apply Base Amount (add GST manually)" : "Calculate & Apply GST from Advance"}
+                      </button>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {values.advance_amount_type === "exclusive"
+                          ? "Sets one line item (the base amount) and switches GST to manual — enter CGST/SGST/IGST yourself in GST Details below."
+                          : "Sets one line item (base amount) and switches GST to manual so the receipt total equals the amount received."}
+                        {" "}You can still edit the description and line items afterwards.
+                      </p>
                     </div>
 
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
@@ -1187,13 +1341,13 @@ export function Receipt() {
                       <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Calculation Summary</h3>
                         <div className="space-y-3">
-                          <div className="flex justify-between"><span className="text-gray-600">Subtotal</span><span className="font-semibold">₹{subtotal.toLocaleString("en-IN")}</span></div>
-                          {cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{cgst.toLocaleString("en-IN")}</span></div>}
-                          {sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{sgst.toLocaleString("en-IN")}</span></div>}
-                          {igst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{igst.toLocaleString("en-IN")}</span></div>}
+                          <div className="flex justify-between"><span className="text-gray-600">Subtotal</span><span className="font-semibold">₹{inr2(subtotal)}</span></div>
+                          {cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{inr2(cgst)}</span></div>}
+                          {sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{inr2(sgst)}</span></div>}
+                          {igst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{inr2(igst)}</span></div>}
                           <div className="border-t pt-3 flex justify-between">
                             <span className="text-lg font-bold text-gray-800">Total Amount</span>
-                            <span className="text-2xl font-bold text-blue-600">₹{total.toLocaleString("en-IN")}</span>
+                            <span className="text-2xl font-bold text-blue-600">₹{inr2(total)}</span>
                           </div>
                           <p className="text-sm text-gray-600 italic">In words: {numberToWords(total)}</p>
                         </div>
