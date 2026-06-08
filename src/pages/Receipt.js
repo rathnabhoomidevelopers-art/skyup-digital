@@ -1206,7 +1206,7 @@ export function Receipt() {
                       </FieldArray>
                     </div>
 
-                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6">
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-1">Advance Received</h3>
                       <p className="text-sm text-gray-600 mb-4">
                         Choose how the amount should be treated:
@@ -1261,21 +1261,21 @@ export function Receipt() {
                           const adv = reverseGstFromInclusive(values.advance_received, values.advance_rate, values.advance_mode);
                           if (adv.amount <= 0) return null;
                           return (
-                            <div className="mt-5 bg-white border border-emerald-200 rounded-lg p-4">
+                            <div className="mt-5 bg-white border border-amber-200 rounded-lg p-4">
                               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Breakdown preview</p>
                               <div className="space-y-2 text-sm">
                                 <div className="flex justify-between"><span className="text-gray-600">Taxable base</span><span className="font-semibold">₹{inr2(adv.base)}</span></div>
                                 {adv.cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">CGST @ {(parseFloat(values.advance_rate) || 0) / 2}%</span><span className="font-semibold">₹{inr2(adv.cgst)}</span></div>}
                                 {adv.sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">SGST @ {(parseFloat(values.advance_rate) || 0) / 2}%</span><span className="font-semibold">₹{inr2(adv.sgst)}</span></div>}
                                 {adv.igst > 0 && <div className="flex justify-between"><span className="text-gray-600">IGST @ {parseFloat(values.advance_rate) || 0}%</span><span className="font-semibold">₹{inr2(adv.igst)}</span></div>}
-                                <div className="border-t pt-2 flex justify-between"><span className="font-bold text-gray-800">Total received</span><span className="font-bold text-emerald-700">₹{inr2(adv.amount)}</span></div>
+                                <div className="border-t pt-2 flex justify-between"><span className="font-bold text-gray-800">Total received</span><span className="font-bold text-amber-700">₹{inr2(adv.amount)}</span></div>
                               </div>
                             </div>
                           );
                         })()
                       ) : (
                         (parseFloat(values.advance_received) || 0) > 0 && (
-                          <div className="mt-5 bg-white border border-emerald-200 rounded-lg p-4">
+                          <div className="mt-5 bg-white border border-amber-200 rounded-lg p-4">
                             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Breakdown preview</p>
                             <div className="space-y-2 text-sm">
                               <div className="flex justify-between"><span className="text-gray-600">Taxable base</span><span className="font-semibold">₹{inr2(parseFloat(values.advance_received) || 0)}</span></div>
@@ -1310,7 +1310,7 @@ export function Receipt() {
                             }
                           }
                         }}
-                        className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+                        className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
                       >
                         {values.advance_amount_type === "exclusive" ? "Apply Base Amount (add GST manually)" : "Calculate & Apply GST from Advance"}
                       </button>
