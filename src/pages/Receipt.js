@@ -925,13 +925,20 @@ export function Receipt() {
     return (result + " only").replace(/\s+/g, " ");
   };
 
-  const calculateTotals = (items, cP, sP, iP, manual, cM, sM, iM) => {
+  const calculateTotals = (items, cP, sP, iP, gstType) => {
+    const r2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100;
     if (!items || !Array.isArray(items)) return { subtotal: 0, cgst: 0, sgst: 0, igst: 0, total: 0 };
-    const subtotal = items.reduce((s, i) => s + (i.qty || 0) * (i.rate || 0), 0);
-    let cgst, sgst, igst;
-    if (manual) { cgst = parseFloat(cM)||0; sgst = parseFloat(sM)||0; igst = parseFloat(iM)||0; }
-    else { cgst = cP ? autoCalc(subtotal, cP) : 0; sgst = sP ? autoCalc(subtotal, sP) : 0; igst = iP ? autoCalc(subtotal, iP) : 0; }
-    { const r2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100; return { subtotal: r2(subtotal), cgst: r2(cgst), sgst: r2(sgst), igst: r2(igst), total: r2(subtotal + cgst + sgst + igst) }; }
+    const subtotal = r2(items.reduce((s, i) => s + (parseFloat(i.qty) || 0) * (parseFloat(i.rate) || 0), 0));
+    let cgst = 0, sgst = 0, igst = 0;
+    if (gstType === "inter") {
+      igst = r2(subtotal * ((parseFloat(iP) || 0) / 100));
+    } else {
+      const cP2 = parseFloat(cP) || 0, sP2 = parseFloat(sP) || 0, totalPct = cP2 + sP2;
+      const gstTotal = r2(subtotal * (totalPct / 100));
+      cgst = totalPct > 0 ? r2((gstTotal * cP2) / totalPct) : 0;
+      sgst = r2(gstTotal - cgst); // cgst + sgst === gstTotal exactly (no rounding drift)
+    }
+    return { subtotal, cgst, sgst, igst, total: r2(subtotal + cgst + sgst + igst) };
   };
 
   // Reverse GST from a GST-INCLUSIVE advance amount.
@@ -956,8 +963,7 @@ export function Receipt() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const { subtotal, cgst, sgst, igst, total } = calculateTotals(
       values.items, values.cgst_percentage, values.sgst_percentage,
-      values.igst_percentage, values.use_manual_gst,
-      values.cgst_manual, values.sgst_manual, values.igst_manual
+      values.igst_percentage, values.gst_type
     );
     const invoiceNumber = generateInvoiceNumber(nextInvoiceSerial);
     const formData = {
@@ -965,18 +971,18 @@ export function Receipt() {
       date: values.date, invoice_due: values.invoice_due || null, hsn_no: values.hsn_no || "",
       items: values.items.map(i => { const qty = parseFloat(i.qty) || 0; const rate = parseFloat(i.rate) || 0; return { description: i.description, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }; }),
       subtotal, cgst, sgst, igst,
-      cgst_percentage: values.use_manual_gst ? 0 : values.cgst_percentage || 0,
-      sgst_percentage: values.use_manual_gst ? 0 : values.sgst_percentage || 0,
-      igst_percentage: values.use_manual_gst ? 0 : values.igst_percentage || 0,
+      cgst_percentage: values.gst_type === "inter" ? 0 : (values.cgst_percentage || 0),
+      sgst_percentage: values.gst_type === "inter" ? 0 : (values.sgst_percentage || 0),
+      igst_percentage: values.gst_type === "inter" ? (values.igst_percentage || 0) : 0,
       total, amount_in_words: numberToWords(total),
     };
     try {
       const receiptFullData = {
         ...formData,
         ...COMPANY_DETAILS,
-        cgstLabel: cgst > 0 ? (values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage || 9}%`) : "",
-        sgstLabel: sgst > 0 ? (values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage || 9}%`) : "",
-        igstLabel: igst > 0 ? (values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage || 18}%`) : "",
+        cgstLabel: cgst > 0 ? `CGST @ ${values.cgst_percentage || 9}%` : "",
+        sgstLabel: sgst > 0 ? `SGST @ ${values.sgst_percentage || 9}%` : "",
+        igstLabel: igst > 0 ? `IGST @ ${values.igst_percentage || 18}%` : "",
       };
       setReceiptData(receiptFullData);
       setShowPreview(true);
@@ -1088,8 +1094,7 @@ export function Receipt() {
                 invoice_due: "", hsn_no: "",
                 items: [{ description: "", qty: "", rate: "" }],
                 cgst_percentage: 9, sgst_percentage: 9, igst_percentage: 18,
-                cgst_manual: "", sgst_manual: "", igst_manual: "",
-                use_manual_gst: false,
+                gst_type: "intra",
                 advance_received: "", advance_rate: 18, advance_mode: "intra", advance_amount_type: "inclusive",
               }}
               validationSchema={validationSchema}
@@ -1098,8 +1103,7 @@ export function Receipt() {
               {({ values, errors, touched, isSubmitting, setFieldValue }) => {
                 const { subtotal, cgst, sgst, igst, total } = calculateTotals(
                   values.items || [], values.cgst_percentage, values.sgst_percentage,
-                  values.igst_percentage, values.use_manual_gst,
-                  values.cgst_manual, values.sgst_manual, values.igst_manual
+                  values.igst_percentage, values.gst_type
                 );
                 return (
                   <Form className="space-y-6">
@@ -1275,7 +1279,7 @@ export function Receipt() {
                             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Breakdown preview</p>
                             <div className="space-y-2 text-sm">
                               <div className="flex justify-between"><span className="text-gray-600">Taxable base</span><span className="font-semibold">₹{inr2(parseFloat(values.advance_received) || 0)}</span></div>
-                              <div className="flex justify-between"><span className="text-gray-600">GST</span><span className="font-semibold text-gray-500">Enter manually below</span></div>
+                              <div className="flex justify-between"><span className="text-gray-600">GST</span><span className="font-semibold text-gray-500">Set type &amp; rate in GST Details below</span></div>
                             </div>
                           </div>
                         )
@@ -1288,20 +1292,22 @@ export function Receipt() {
                           if (amt <= 0) { alert("Enter a valid amount first."); return; }
                           const existingDesc = values.items?.[0]?.description?.trim();
                           if (values.advance_amount_type === "exclusive") {
-                            // Amount is the taxable base; GST is added manually by the user.
+                            // Amount is the taxable base; choose CGST+SGST / IGST and the rate in GST Details below.
                             setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: amt }]);
-                            setFieldValue("use_manual_gst", true);
-                            setFieldValue("cgst_manual", "");
-                            setFieldValue("sgst_manual", "");
-                            setFieldValue("igst_manual", "");
+                            setFieldValue("gst_type", values.advance_mode || "intra");
                           } else {
-                            // Inclusive: back-calculate base + GST (default 18%).
+                            // Inclusive: back-calculate the base, then set the matching GST type & rate.
                             const adv = reverseGstFromInclusive(amt, values.advance_rate || 18, values.advance_mode);
+                            const rate = parseFloat(values.advance_rate) || 18;
                             setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: adv.base }]);
-                            setFieldValue("use_manual_gst", true);
-                            setFieldValue("cgst_manual", adv.cgst);
-                            setFieldValue("sgst_manual", adv.sgst);
-                            setFieldValue("igst_manual", adv.igst);
+                            if (values.advance_mode === "inter") {
+                              setFieldValue("gst_type", "inter");
+                              setFieldValue("igst_percentage", rate);
+                            } else {
+                              setFieldValue("gst_type", "intra");
+                              setFieldValue("cgst_percentage", rate / 2);
+                              setFieldValue("sgst_percentage", rate / 2);
+                            }
                           }
                         }}
                         className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
@@ -1310,29 +1316,38 @@ export function Receipt() {
                       </button>
                       <p className="text-xs text-gray-500 mt-2">
                         {values.advance_amount_type === "exclusive"
-                          ? "Sets one line item (the base amount) and switches GST to manual — enter CGST/SGST/IGST yourself in GST Details below."
-                          : "Sets one line item (base amount) and switches GST to manual so the receipt total equals the amount received."}
+                          ? "Sets one line item (the base amount) and selects the GST type — pick CGST+SGST or IGST and set the rate in GST Details below."
+                          : "Sets one line item (base amount) and the matching GST type & rate so the receipt total equals the amount received."}
                         {" "}You can still edit the description and line items afterwards.
                       </p>
                     </div>
 
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">GST Details</h3>
-                      <label className="flex items-center gap-3 cursor-pointer mb-4">
-                        <Field type="checkbox" name="use_manual_gst" className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
-                        <span className="text-sm font-medium text-gray-700">Enter GST amounts manually</span>
-                      </label>
-                      {!values.use_manual_gst ? (
-                        <div className="grid grid-cols-3 gap-6">
-                          {[["cgst_percentage","CGST %"],["sgst_percentage","SGST %"],["igst_percentage","IGST %"]].map(([n, l]) => (
-                            <div key={n}><label className="block text-sm font-semibold text-gray-700 mb-2">{l}</label><Field type="number" name={n} min="0" max="100" step="0.01" className={ic} /></div>
-                          ))}
+                      <div className="mb-4 md:max-w-xs">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">GST Type</label>
+                        <Field as="select" name="gst_type" className={ic}>
+                          <option value="intra">CGST + SGST</option>
+                          <option value="inter">IGST</option>
+                        </Field>
+                      </div>
+                      {values.gst_type === "inter" ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">IGST %</label>
+                            <Field type="number" name="igst_percentage" min="0" max="100" step="0.01" className={ic} />
+                          </div>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-3 gap-6">
-                          {[["cgst_manual","CGST (₹)"],["sgst_manual","SGST (₹)"],["igst_manual","IGST (₹)"]].map(([n, l]) => (
-                            <div key={n}><label className="block text-sm font-semibold text-gray-700 mb-2">{l}</label><Field type="number" name={n} min="0" step="0.01" className={ic} placeholder="0" /></div>
-                          ))}
+                        <div className="grid grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">CGST %</label>
+                            <Field type="number" name="cgst_percentage" min="0" max="100" step="0.01" className={ic} />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">SGST %</label>
+                            <Field type="number" name="sgst_percentage" min="0" max="100" step="0.01" className={ic} />
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1342,9 +1357,9 @@ export function Receipt() {
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Calculation Summary</h3>
                         <div className="space-y-3">
                           <div className="flex justify-between"><span className="text-gray-600">Subtotal</span><span className="font-semibold">₹{inr2(subtotal)}</span></div>
-                          {cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "CGST" : `CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{inr2(cgst)}</span></div>}
-                          {sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "SGST" : `SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{inr2(sgst)}</span></div>}
-                          {igst > 0 && <div className="flex justify-between"><span className="text-gray-600">{values.use_manual_gst ? "IGST" : `IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{inr2(igst)}</span></div>}
+                          {cgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{`CGST @ ${values.cgst_percentage}%`}</span><span className="font-semibold">₹{inr2(cgst)}</span></div>}
+                          {sgst > 0 && <div className="flex justify-between"><span className="text-gray-600">{`SGST @ ${values.sgst_percentage}%`}</span><span className="font-semibold">₹{inr2(sgst)}</span></div>}
+                          {igst > 0 && <div className="flex justify-between"><span className="text-gray-600">{`IGST @ ${values.igst_percentage}%`}</span><span className="font-semibold">₹{inr2(igst)}</span></div>}
                           <div className="border-t pt-3 flex justify-between">
                             <span className="text-lg font-bold text-gray-800">Total Amount</span>
                             <span className="text-2xl font-bold text-blue-600">₹{inr2(total)}</span>
