@@ -32,7 +32,9 @@ import {
    Replace API_BASE with your deployed Vercel URL.
    The lead form POSTs to `${API_BASE}/add-contact`.
 ══════════════════════════════════════════ */
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend-3k9s.onrender.com";; // ← paste your prod URL here (no trailing slash)
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://skyup-backend-3k9s.onrender.com"; // ← prod URL (no trailing slash)
 
 /* ══════════════════════════════════════════
    GLOBAL STYLES
@@ -40,8 +42,8 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://skyup-backend-3k9
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
-    footer a { color: #E6E5E5; }
-footer a:hover { color: #ffffff; }
+  footer a { color: #E6E5E5; }
+  footer a:hover { color: #ffffff; }
 
   html { scroll-behavior: smooth; }
   a { text-decoration: none; }
@@ -105,19 +107,6 @@ footer a:hover { color: #ffffff; }
 
   .stat-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
   .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,55,202,0.12); }
-
-  .testi-avatar {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: 800;
-    border: 4px solid white;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    position: absolute;
-    top: -36px; left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
 
   .faq-item { transition: border-color 0.2s ease, box-shadow 0.2s ease; }
   .faq-item.open { border-color: #0037CA !important; box-shadow: 0 4px 16px rgba(0,55,202,0.08); }
@@ -355,7 +344,7 @@ const TESTIMONIALS = [
     name: "Amit R",
     role: "Founder",
     initials: "AR",
-    avatar: null,
+    time: "2 weeks ago",
   },
   {
     quote:
@@ -363,7 +352,7 @@ const TESTIMONIALS = [
     name: "Ravi K",
     role: "CEO",
     initials: "RK",
-    avatar: null,
+    time: "1 month ago",
   },
   {
     quote:
@@ -371,7 +360,7 @@ const TESTIMONIALS = [
     name: "Sanya M",
     role: "Marketing Director",
     initials: "SM",
-    avatar: null,
+    time: "1 month ago",
   },
   {
     quote:
@@ -379,7 +368,7 @@ const TESTIMONIALS = [
     name: "Neha S",
     role: "Business Head",
     initials: "NS",
-    avatar: null,
+    time: "2 months ago",
   },
 ];
 
@@ -511,6 +500,32 @@ function scrollToSection(e, href, closeMobile) {
     window.scrollTo({ top, behavior: "smooth" });
   }
   if (closeMobile) closeMobile();
+}
+
+/* ══════════════════════════════════════════
+   GOOGLE "G" LOGO
+══════════════════════════════════════════ */
+function GoogleG({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"
+      />
+      <path
+        fill="#EA4335"
+        d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"
+      />
+    </svg>
+  );
 }
 
 /* ══════════════════════════════════════════
@@ -746,8 +761,6 @@ function Hero() {
     setError("");
     setLoading(true);
 
-    // Map form fields onto the backend's contact schema.
-    // Required by backend: name, mobile. Optional fields are folded into `message`.
     const extra = [
       form.company && `Company/Builder: ${form.company}`,
       form.location && `Project Location: ${form.location}`,
@@ -758,7 +771,7 @@ function Hero() {
 
     const payload = {
       name: form.name,
-      mobile: form.phone.replace(/\D/g, ""), // backend runs parseInt
+      mobile: form.phone.replace(/\D/g, ""),
       email: form.email || "",
       subject: "Real Estate Lead — Homepage Form",
       message: extra || "Homepage consultation request",
@@ -1182,7 +1195,7 @@ function Hero() {
 function About() {
   return (
     <section id="about" className="bg-white font-poppins">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-16">
         <SectionHeading
           eyebrow="Why SKYUP Digital Solutions"
           title="Built for Real Estate Lead Generation, Not Generic Marketing"
@@ -1263,7 +1276,7 @@ function Services() {
       className="font-poppins"
       style={{ background: C.cream }}
     >
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-16">
         <SectionHeading
           eyebrow="Our Real Estate Marketing Services"
           title="Services Designed to Generate More Qualified Property Leads"
@@ -1281,20 +1294,6 @@ function Services() {
                 transitionDelay: `${(i % 4) * 60}ms`,
               }}
             >
-              {/* <span
-                style={{
-                  position: "absolute",
-                  top: 20,
-                  right: 20,
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  color: `${C.brand}30`,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span> */}
-
               <div
                 className="service-icon flex items-center justify-center rounded-xl"
                 style={{
@@ -1343,7 +1342,7 @@ function Services() {
 function Process() {
   return (
     <section id="process" className="bg-white font-poppins">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-16">
         <SectionHeading
           eyebrow="Our Process"
           title="How We Generate Property Leads"
@@ -1368,7 +1367,6 @@ function Process() {
                     marginTop: "18px",
                     fontSize: "14.5px",
                     fontWeight: 700,
-
                     lineHeight: 1.4,
                   }}
                 >
@@ -1395,17 +1393,21 @@ function Process() {
 }
 
 /* ══════════════════════════════════════════
-   TESTIMONIALS
+   TESTIMONIALS — styled as Google reviews
 ══════════════════════════════════════════ */
 function Testimonials() {
+  const AVATAR_COLORS = ["#1A73E8", "#EA4335", "#34A853", "#F9AB00"];
+  const GOLD = "#FBBC04";
+
   return (
     <section
       id="testimonials"
       className="font-poppins"
       style={{ background: C.cream }}
     >
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="text-center reveal mb-16">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-16">
+        {/* heading */}
+        <div className="text-center reveal mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <span className="gold-rule" />
             <span
@@ -1429,117 +1431,115 @@ function Testimonials() {
               letterSpacing: "-0.025em",
             }}
           >
-            What the people think about us
+            What our clients say
           </h2>
         </div>
 
-        <div className="grid mt-5 gap-x-6 gap-y-14 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {TESTIMONIALS.map((t, i) => {
-            const isBlue = i % 2 === 0;
-            return (
-              <div
-                key={t.name}
-                className="testi-card reveal mt-3 px-2"
+        {/* Google rating summary */}
+        {/* <div
+          className="reveal mx-auto mb-12 flex max-w-md items-center justify-center gap-4 rounded-2xl bg-white px-6 py-4"
+          style={{
+            border: `1px solid ${C.creamBorder}`,
+            boxShadow: "0 2px 16px rgba(0,55,202,0.06)",
+          }}
+        >
+          <GoogleG size={36} />
+          <div className="text-left">
+            <div className="flex items-center gap-2">
+              <span
+                style={{ fontSize: "22px", fontWeight: 800, color: "#202124" }}
+              >
+                4.9
+              </span>
+              <div className="flex">
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <Star key={idx} size={16} fill={GOLD} stroke="none" />
+                ))}
+              </div>
+            </div>
+            <a
+              href="https://g.page/r/YOUR-GOOGLE-REVIEW-LINK"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: "12.5px", color: C.muted }}
+            >
+              Based on Google reviews
+            </a>
+          </div>
+        </div> */}
+
+        {/* review cards */}
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {TESTIMONIALS.map((t, i) => (
+            <div
+              key={t.name}
+              className="reveal flex flex-col rounded-2xl bg-white lg:mt-4 p-6"
+              style={{
+                border: `1px solid ${C.creamBorder}`,
+                boxShadow: "0 2px 16px rgba(0,55,202,0.05)",
+                transitionDelay: `${i * 80}ms`,
+              }}
+            >
+              {/* header row */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex items-center justify-center rounded-full text-white"
+                    style={{
+                      width: 44,
+                      height: 44,
+                      fontSize: "16px",
+                      fontWeight: 700,
+                      background: AVATAR_COLORS[i % AVATAR_COLORS.length],
+                    }}
+                  >
+                    {t.initials}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: 700,
+                        color: "#202124",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {t.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: C.subtle,
+                        marginTop: "2px",
+                      }}
+                    >
+                      {t.time}
+                    </div>
+                  </div>
+                </div>
+                <GoogleG size={20} />
+              </div>
+
+              {/* stars */}
+              <div className="mt-4 flex items-center gap-0.5">
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <Star key={idx} size={16} fill={GOLD} stroke="none" />
+                ))}
+              </div>
+
+              {/* review text */}
+              <p
                 style={{
-                  position: "relative",
-                  paddingTop: "44px",
+                  marginTop: "12px",
+                  fontSize: "14px",
+                  lineHeight: 1.7,
+                  color: "#3c4043",
                 }}
               >
-                <div
-                  className="testi-avatar"
-                  style={{
-                    background: isBlue ? C.brand : "#E8ECF8",
-                    color: isBlue ? "#fff" : C.brand,
-                    fontFamily: "Poppins, sans-serif",
-                    fontSize: "18px",
-                    fontWeight: 800,
-                  }}
-                >
-                  {t.initials}
-                </div>
-
-                <div
-                  style={{
-                    borderRadius: "20px",
-                    background: isBlue ? C.brand : "#F7F8FD",
-                    border: isBlue ? "none" : `1.5px solid ${C.creamBorder}`,
-                    padding: "52px 24px 28px",
-                    textAlign: "center",
-                    position: "relative",
-                    overflow: "hidden",
-                    minHeight: "260px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 14,
-                      left: 18,
-                      fontSize: "52px",
-                      lineHeight: 1,
-                      fontFamily: "Georgia, serif",
-                      fontWeight: 900,
-                      color: isBlue ? "rgba(255,255,255,0.22)" : `${C.brand}22`,
-                      pointerEvents: "none",
-                      userSelect: "none",
-                    }}
-                  >
-                    "
-                  </div>
-
-                  <div
-                    style={{
-                      fontWeight: 800,
-                      fontSize: "17px",
-                      color: isBlue ? "#fff" : C.black,
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {t.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "13px",
-                      fontWeight: 400,
-                      color: isBlue ? "rgba(255,255,255,0.70)" : C.muted,
-                      marginTop: "4px",
-                    }}
-                  >
-                    {t.role}
-                  </div>
-
-                  <div
-                    className="flex items-center justify-center gap-0.5"
-                    style={{ marginTop: "14px" }}
-                  >
-                    {Array.from({ length: 5 }).map((_, idx) => (
-                      <Star
-                        key={idx}
-                        size={13}
-                        fill={isBlue ? "rgba(255,255,255,0.90)" : C.gold}
-                        stroke="none"
-                      />
-                    ))}
-                  </div>
-
-                  <p
-                    style={{
-                      marginTop: "14px",
-                      fontSize: "14px",
-                      lineHeight: 1.75,
-                      color: isBlue ? "rgba(255,255,255,0.88)" : C.muted,
-                      textAlign: "center",
-                    }}
-                  >
-                    {t.quote}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+                {t.quote}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -1556,9 +1556,9 @@ function FAQ() {
 
   return (
     <section id="faq" className="font-poppins">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-16">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16">
-          <div className="lg:w-[320px] lg:flex-shrink-0 lg:sticky lg:top-28">
+          <div className="lg:w-[450px] lg:flex-shrink-0 lg:sticky lg:top-28">
             <div className="flex items-center gap-3 mb-5">
               <span className="gold-rule" />
               <span
@@ -1651,7 +1651,7 @@ function FAQ() {
                           height: 30,
                           borderRadius: "50%",
                           background: isOpen ? C.brand : C.cream,
-                          color: isOpen ? "white" : C.black,
+                          color: isOpen ? "white" : "#202124",
                           fontSize: "20px",
                           fontWeight: 300,
                           transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
@@ -1733,7 +1733,7 @@ function Contact() {
         background: `linear-gradient(135deg, ${C.navy} 0%, ${C.brandMid} 100%)`,
       }}
     >
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-12">
         <div className="reveal text-center ">
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="gold-rule" />
