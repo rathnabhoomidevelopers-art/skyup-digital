@@ -892,7 +892,6 @@ function Hero() {
               </a>
               <a
                 href="tel:+918867867775"
-                onClick={(e) => scrollToSection(e, "#contact")}
                 className="inline-flex items-center gap-2 font-semibold"
                 style={{ fontSize: "14px" }}
               >
