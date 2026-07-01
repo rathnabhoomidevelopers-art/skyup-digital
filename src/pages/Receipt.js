@@ -1096,7 +1096,7 @@ export function Receipt() {
                 cgst_percentage: 9, sgst_percentage: 9, igst_percentage: 18,
                 gst_type: "intra",
                 advance_received: "", advance_rate: 18, advance_mode: "intra", advance_amount_type: "inclusive",
-                advance_target_item: "",
+                advance_target_items: [],
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
@@ -1219,21 +1219,45 @@ export function Receipt() {
                         const itemOptions = (values.items || [])
                           .map((it, idx) => ({ idx, label: (it.description || "").trim() }))
                           .filter((o) => o.label.length > 0);
+                        const selected = values.advance_target_items || [];
+                        const toggle = (idxStr) => {
+                          setFieldValue(
+                            "advance_target_items",
+                            selected.includes(idxStr) ? selected.filter((v) => v !== idxStr) : [...selected, idxStr]
+                          );
+                        };
                         return (
                           <div className="mb-6">
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">Apply To Item</label>
-                            <Field as="select" name="advance_target_item" className={ic}>
-                              <option value="">+ Add as new "Advance Received" line item</option>
-                              {itemOptions.map((o) => (
-                                <option key={o.idx} value={o.idx}>
-                                  {`Item ${o.idx + 1}: ${o.label.length > 60 ? o.label.slice(0, 60) + "…" : o.label}`}
-                                </option>
-                              ))}
-                            </Field>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Apply To Item(s)</label>
+                            {itemOptions.length === 0 ? (
+                              <p className="text-xs text-gray-500">Add a description to a line item above to target it, or leave unselected to add a new line item.</p>
+                            ) : (
+                              <div className="border border-gray-300 rounded-lg divide-y divide-gray-100 bg-white max-h-48 overflow-y-auto">
+                                {itemOptions.map((o) => {
+                                  const idxStr = String(o.idx);
+                                  const checked = selected.includes(idxStr);
+                                  return (
+                                    <label key={o.idx} className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-gray-50 text-sm">
+                                      <input
+                                        type="checkbox"
+                                        checked={checked}
+                                        onChange={() => toggle(idxStr)}
+                                        className="w-4 h-4 text-amber-600 border-gray-300 rounded"
+                                      />
+                                      <span className="text-gray-700">
+                                        {`Item ${o.idx + 1}: ${o.label.length > 60 ? o.label.slice(0, 60) + "…" : o.label}`}
+                                      </span>
+                                    </label>
+                                  );
+                                })}
+                              </div>
+                            )}
                             <p className="text-xs text-gray-500 mt-1">
-                              {itemOptions.length === 0
-                                ? "Add a description to a line item above to target it, or leave this as a new line item."
-                                : "Pick an existing item to add this advance amount into its rate, or keep it as a separate line item."}
+                              {selected.length === 0
+                                ? "None selected — this will add a new \"Advance Received\" line item."
+                                : selected.length === 1
+                                ? "The advance amount will be added into this item's rate."
+                                : "The advance amount will be split across the selected items in proportion to their current amounts (evenly if they're all zero)."}
                             </p>
                           </div>
                         );
@@ -1316,6 +1340,8 @@ export function Receipt() {
                           const amt = Math.round(((parseFloat(values.advance_received) || 0) + Number.EPSILON) * 100) / 100;
                           if (amt <= 0) { alert("Enter a valid amount first."); return; }
 
+                          const round2 = (x) => Math.round((x + Number.EPSILON) * 100) / 100;
+
                           // Resolve the taxable base amount (and GST rate, for inclusive mode) from the advance.
                           let base, rate;
                           if (values.advance_amount_type === "exclusive") {
@@ -1327,21 +1353,36 @@ export function Receipt() {
                             rate = parseFloat(values.advance_rate) || 18;
                           }
 
-                          const targetIdx = values.advance_target_item !== "" && values.advance_target_item != null
-                            ? parseInt(values.advance_target_item, 10)
-                            : null;
-                          const hasValidTarget = targetIdx !== null && !Number.isNaN(targetIdx) && values.items?.[targetIdx];
+                          const targetIdxs = (values.advance_target_items || [])
+                            .map((v) => parseInt(v, 10))
+                            .filter((i) => !Number.isNaN(i) && values.items?.[i]);
 
-                          if (hasValidTarget) {
-                            // Target an existing item: fold the base amount into that item's rate (qty stays the same).
-                            const targetItem = values.items[targetIdx];
-                            const qty = parseFloat(targetItem.qty) || 1;
-                            const existingAmount = (parseFloat(targetItem.rate) || 0) * qty;
-                            const newRate = Math.round(((existingAmount + base) / qty + Number.EPSILON) * 100) / 100;
-                            setFieldValue(
-                              "items",
-                              values.items.map((it, i) => (i === targetIdx ? { ...it, rate: newRate } : it))
-                            );
+                          if (targetIdxs.length > 0) {
+                            // Split the base amount across the selected items, proportional to each item's
+                            // current amount (qty × rate). If all selected items are currently zero, split evenly.
+                            const amounts = targetIdxs.map((i) => {
+                              const it = values.items[i];
+                              return (parseFloat(it.qty) || 0) * (parseFloat(it.rate) || 0);
+                            });
+                            const amountSum = amounts.reduce((s, a) => s + a, 0);
+                            const weights = amountSum > 0
+                              ? amounts.map((a) => a / amountSum)
+                              : targetIdxs.map(() => 1 / targetIdxs.length);
+
+                            // Round each share to the paise, nudging the last share so they sum exactly to `base`.
+                            const shares = weights.map((w) => round2(base * w));
+                            const shareSum = shares.reduce((s, v) => s + v, 0);
+                            shares[shares.length - 1] = round2(shares[shares.length - 1] + round2(base - shareSum));
+
+                            const updatedItems = values.items.map((it, i) => {
+                              const pos = targetIdxs.indexOf(i);
+                              if (pos === -1) return it;
+                              const qty = parseFloat(it.qty) || 1;
+                              const existingAmount = (parseFloat(it.rate) || 0) * qty;
+                              const newRate = round2((existingAmount + shares[pos]) / qty);
+                              return { ...it, rate: newRate };
+                            });
+                            setFieldValue("items", updatedItems);
                           } else {
                             // No item targeted: keep all existing items untouched; drop only a prior
                             // auto-added "Advance Received" row if present, then add a fresh one.
@@ -1367,8 +1408,8 @@ export function Receipt() {
                         {values.advance_amount_type === "exclusive" ? "Apply Base Amount (add GST manually)" : "Calculate & Apply GST from Advance"}
                       </button>
                       <p className="text-xs text-gray-500 mt-2">
-                        {values.advance_target_item !== ""
-                          ? "Adds the calculated base amount into the selected item's rate and applies the matching GST type & rate. Other items are kept as-is."
+                        {(values.advance_target_items || []).length > 0
+                          ? "Adds the calculated base amount into the selected item(s)' rate — split proportionally if more than one is selected — and applies the matching GST type & rate. Other items are kept as-is."
                           : values.advance_amount_type === "exclusive"
                           ? "Adds a separate \"Advance Received\" line item (the base amount) and selects the GST type — pick CGST+SGST or IGST and set the rate in GST Details below. Your existing items are kept as-is."
                           : "Adds a separate \"Advance Received\" line item (base amount) and the matching GST type & rate so the receipt total equals the amount received. Your existing items are kept as-is."}
