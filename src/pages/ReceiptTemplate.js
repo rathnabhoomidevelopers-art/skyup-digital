@@ -100,7 +100,7 @@ export default function ReceiptTemplate({ data }) {
       </div>
 
       {/* New Table Layout with Borders */}
-      <div className="mb-5 px-4 sm:px-6 lg:px-8 h-[410px] flex items-center justify-center">
+      <div className="mb-5 px-4 sm:px-6 lg:px-8 min-h-[410px] flex items-start justify-center">
         <table
   style={{
     width: "100%",
