@@ -124,7 +124,10 @@ export default function ReceiptTemplate({ data }) {
       data.items.map((item, index) => (
         <tr key={index}>
           <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{index + 1}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", whiteSpace: "pre-wrap", wordBreak: "break-word", textAlign: "left" }}>
+            <div style={{ fontWeight: 600, marginBottom: item.description ? "2px" : 0 }}>
+              Item {index + 1}
+            </div>
             {item.description}
           </td>
           <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>18%</td>
