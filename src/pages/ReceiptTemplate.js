@@ -122,18 +122,18 @@ export default function ReceiptTemplate({ data }) {
   <tbody>
     {data.items &&
       data.items.map((item, index) => (
-        <tr key={index}>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{index + 1}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px", whiteSpace: "pre-wrap", wordBreak: "break-word", textAlign: "left" }}>
-            <div style={{ fontWeight: 600, marginBottom: item.description ? "2px" : 0 }}>
+        <tr key={index} style={{ borderBottom: "3px solid #2b2b2b" }}>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px", fontWeight: 700 }}>{index + 1}</td>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px", whiteSpace: "pre-wrap", wordBreak: "break-word", textAlign: "left" }}>
+            <div style={{ fontWeight: 700, marginBottom: item.description ? "2px" : 0 }}>
               Item {index + 1}
             </div>
             {item.description}
           </td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>18%</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{item.qty}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{money(item.rate)}</td>
-          <td style={{ border: "1px solid #2b2b2b", padding: "8px 6px" }}>{money(item.amount)}</td>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px" }}>18%</td>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px" }}>{item.qty}</td>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px" }}>{money(item.rate)}</td>
+          <td style={{ border: "1px solid #2b2b2b", borderBottom: "3px solid #2b2b2b", padding: "8px 6px", fontWeight: 700 }}>{money(item.amount)}</td>
         </tr>
       ))}
 
