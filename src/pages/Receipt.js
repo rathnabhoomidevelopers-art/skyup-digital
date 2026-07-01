@@ -1096,6 +1096,7 @@ export function Receipt() {
                 cgst_percentage: 9, sgst_percentage: 9, igst_percentage: 18,
                 gst_type: "intra",
                 advance_received: "", advance_rate: 18, advance_mode: "intra", advance_amount_type: "inclusive",
+                advance_target_item: "",
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
@@ -1214,6 +1215,30 @@ export function Receipt() {
                         matches what was received; <span className="font-semibold">Exclusive</span> treats the amount as the base and lets you add GST manually.
                       </p>
 
+                      {(() => {
+                        const itemOptions = (values.items || [])
+                          .map((it, idx) => ({ idx, label: (it.description || "").trim() }))
+                          .filter((o) => o.label.length > 0);
+                        return (
+                          <div className="mb-6">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Apply To Item</label>
+                            <Field as="select" name="advance_target_item" className={ic}>
+                              <option value="">+ Add as new "Advance Received" line item</option>
+                              {itemOptions.map((o) => (
+                                <option key={o.idx} value={o.idx}>
+                                  {`Item ${o.idx + 1}: ${o.label.length > 60 ? o.label.slice(0, 60) + "…" : o.label}`}
+                                </option>
+                              ))}
+                            </Field>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {itemOptions.length === 0
+                                ? "Add a description to a line item above to target it, or leave this as a new line item."
+                                : "Pick an existing item to add this advance amount into its rate, or keep it as a separate line item."}
+                            </p>
+                          </div>
+                        );
+                      })()}
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">Amount Type</label>
@@ -1290,27 +1315,51 @@ export function Receipt() {
                         onClick={() => {
                           const amt = Math.round(((parseFloat(values.advance_received) || 0) + Number.EPSILON) * 100) / 100;
                           if (amt <= 0) { alert("Enter a valid amount first."); return; }
-                          // Keep all existing items untouched; drop only a prior auto-added "Advance Received" row if present.
-                          const existingItems = (values.items || []).filter(
-                            (it) => (it.description || "").trim() !== "Advance Received"
-                          );
+
+                          // Resolve the taxable base amount (and GST rate, for inclusive mode) from the advance.
+                          let base, rate;
                           if (values.advance_amount_type === "exclusive") {
-                            // Amount is the taxable base; choose CGST+SGST / IGST and the rate in GST Details below.
-                            setFieldValue("items", [...existingItems, { description: "Advance Received", qty: 1, rate: amt }]);
-                            setFieldValue("gst_type", values.advance_mode || "intra");
+                            base = amt;
+                            rate = null;
                           } else {
-                            // Inclusive: back-calculate the base, then set the matching GST type & rate.
                             const adv = reverseGstFromInclusive(amt, values.advance_rate || 18, values.advance_mode);
-                            const rate = parseFloat(values.advance_rate) || 18;
-                            setFieldValue("items", [...existingItems, { description: "Advance Received", qty: 1, rate: adv.base }]);
-                            if (values.advance_mode === "inter") {
-                              setFieldValue("gst_type", "inter");
-                              setFieldValue("igst_percentage", rate);
-                            } else {
-                              setFieldValue("gst_type", "intra");
-                              setFieldValue("cgst_percentage", rate / 2);
-                              setFieldValue("sgst_percentage", rate / 2);
-                            }
+                            base = adv.base;
+                            rate = parseFloat(values.advance_rate) || 18;
+                          }
+
+                          const targetIdx = values.advance_target_item !== "" && values.advance_target_item != null
+                            ? parseInt(values.advance_target_item, 10)
+                            : null;
+                          const hasValidTarget = targetIdx !== null && !Number.isNaN(targetIdx) && values.items?.[targetIdx];
+
+                          if (hasValidTarget) {
+                            // Target an existing item: fold the base amount into that item's rate (qty stays the same).
+                            const targetItem = values.items[targetIdx];
+                            const qty = parseFloat(targetItem.qty) || 1;
+                            const existingAmount = (parseFloat(targetItem.rate) || 0) * qty;
+                            const newRate = Math.round(((existingAmount + base) / qty + Number.EPSILON) * 100) / 100;
+                            setFieldValue(
+                              "items",
+                              values.items.map((it, i) => (i === targetIdx ? { ...it, rate: newRate } : it))
+                            );
+                          } else {
+                            // No item targeted: keep all existing items untouched; drop only a prior
+                            // auto-added "Advance Received" row if present, then add a fresh one.
+                            const existingItems = (values.items || []).filter(
+                              (it) => (it.description || "").trim() !== "Advance Received"
+                            );
+                            setFieldValue("items", [...existingItems, { description: "Advance Received", qty: 1, rate: base }]);
+                          }
+
+                          if (values.advance_amount_type === "exclusive") {
+                            setFieldValue("gst_type", values.advance_mode || "intra");
+                          } else if (values.advance_mode === "inter") {
+                            setFieldValue("gst_type", "inter");
+                            setFieldValue("igst_percentage", rate);
+                          } else {
+                            setFieldValue("gst_type", "intra");
+                            setFieldValue("cgst_percentage", rate / 2);
+                            setFieldValue("sgst_percentage", rate / 2);
                           }
                         }}
                         className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
@@ -1318,7 +1367,9 @@ export function Receipt() {
                         {values.advance_amount_type === "exclusive" ? "Apply Base Amount (add GST manually)" : "Calculate & Apply GST from Advance"}
                       </button>
                       <p className="text-xs text-gray-500 mt-2">
-                        {values.advance_amount_type === "exclusive"
+                        {values.advance_target_item !== ""
+                          ? "Adds the calculated base amount into the selected item's rate and applies the matching GST type & rate. Other items are kept as-is."
+                          : values.advance_amount_type === "exclusive"
                           ? "Adds a separate \"Advance Received\" line item (the base amount) and selects the GST type — pick CGST+SGST or IGST and set the rate in GST Details below. Your existing items are kept as-is."
                           : "Adds a separate \"Advance Received\" line item (base amount) and the matching GST type & rate so the receipt total equals the amount received. Your existing items are kept as-is."}
                         {" "}You can still edit the description and line items afterwards.
