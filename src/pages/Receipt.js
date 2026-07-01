@@ -1290,17 +1290,19 @@ export function Receipt() {
                         onClick={() => {
                           const amt = Math.round(((parseFloat(values.advance_received) || 0) + Number.EPSILON) * 100) / 100;
                           if (amt <= 0) { alert("Enter a valid amount first."); return; }
-                          const existingDesc = values.items?.[0]?.description?.trim();
-                          const restItems = (values.items || []).slice(1);
+                          // Keep all existing items untouched; drop only a prior auto-added "Advance Received" row if present.
+                          const existingItems = (values.items || []).filter(
+                            (it) => (it.description || "").trim() !== "Advance Received"
+                          );
                           if (values.advance_amount_type === "exclusive") {
                             // Amount is the taxable base; choose CGST+SGST / IGST and the rate in GST Details below.
-                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: amt }, ...restItems]);
+                            setFieldValue("items", [...existingItems, { description: "Advance Received", qty: 1, rate: amt }]);
                             setFieldValue("gst_type", values.advance_mode || "intra");
                           } else {
                             // Inclusive: back-calculate the base, then set the matching GST type & rate.
                             const adv = reverseGstFromInclusive(amt, values.advance_rate || 18, values.advance_mode);
                             const rate = parseFloat(values.advance_rate) || 18;
-                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: adv.base }, ...restItems]);
+                            setFieldValue("items", [...existingItems, { description: "Advance Received", qty: 1, rate: adv.base }]);
                             if (values.advance_mode === "inter") {
                               setFieldValue("gst_type", "inter");
                               setFieldValue("igst_percentage", rate);
@@ -1317,8 +1319,8 @@ export function Receipt() {
                       </button>
                       <p className="text-xs text-gray-500 mt-2">
                         {values.advance_amount_type === "exclusive"
-                          ? "Sets one line item (the base amount) and selects the GST type — pick CGST+SGST or IGST and set the rate in GST Details below."
-                          : "Sets one line item (base amount) and the matching GST type & rate so the receipt total equals the amount received."}
+                          ? "Adds a separate \"Advance Received\" line item (the base amount) and selects the GST type — pick CGST+SGST or IGST and set the rate in GST Details below. Your existing items are kept as-is."
+                          : "Adds a separate \"Advance Received\" line item (base amount) and the matching GST type & rate so the receipt total equals the amount received. Your existing items are kept as-is."}
                         {" "}You can still edit the description and line items afterwards.
                       </p>
                     </div>
