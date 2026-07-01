@@ -1291,15 +1291,16 @@ export function Receipt() {
                           const amt = Math.round(((parseFloat(values.advance_received) || 0) + Number.EPSILON) * 100) / 100;
                           if (amt <= 0) { alert("Enter a valid amount first."); return; }
                           const existingDesc = values.items?.[0]?.description?.trim();
+                          const restItems = (values.items || []).slice(1);
                           if (values.advance_amount_type === "exclusive") {
                             // Amount is the taxable base; choose CGST+SGST / IGST and the rate in GST Details below.
-                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: amt }]);
+                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: amt }, ...restItems]);
                             setFieldValue("gst_type", values.advance_mode || "intra");
                           } else {
                             // Inclusive: back-calculate the base, then set the matching GST type & rate.
                             const adv = reverseGstFromInclusive(amt, values.advance_rate || 18, values.advance_mode);
                             const rate = parseFloat(values.advance_rate) || 18;
-                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: adv.base }]);
+                            setFieldValue("items", [{ description: existingDesc || "Advance received", qty: 1, rate: adv.base }, ...restItems]);
                             if (values.advance_mode === "inter") {
                               setFieldValue("gst_type", "inter");
                               setFieldValue("igst_percentage", rate);
